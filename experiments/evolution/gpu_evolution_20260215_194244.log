@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/mnt/d/00.test/PAPER/EthicaAI/simulation/genesis/run_evolution.py", line 20, in <module>
-    from simulation.genesis.theorist import Theorist
-  File "/mnt/d/00.test/PAPER/EthicaAI/simulation/genesis/theorist.py", line 4, in <module>
-    import google.generativeai as genai
-ModuleNotFoundError: No module named 'google.generativeai'

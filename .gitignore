@@ -52,3 +52,13 @@ simulation/outputs/
 dist/
 build/
 *.egg
+
+# ===== 로그 =====
+*.log
+
+# ===== 아카이브 =====
+*.tar.gz
+*.zip
+
+# ===== 런타임 =====
+.venv/
