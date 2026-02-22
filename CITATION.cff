@@ -4,9 +4,10 @@ authors:
 - family-names: "Heo"
   given-names: "Yesol"
   email: "dpfh1537@gmail.com"
-title: "EthicaAI: Computational Instantiation and Empirical Analysis of Amartya Sen's Meta-Ranking"
-version: 2.0.0
-doi: 10.5281/zenodo.18637742
+  orcid: ""
+title: "EthicaAI: Computational Verification of Amartya Sen's Meta-Ranking Theory"
+version: 5.1.1
+doi: 10.5281/zenodo.18728438
 date-released: 2026-02-22
 url: "https://github.com/Yesol-Pilot/EthicaAI"
 repository-code: "https://github.com/Yesol-Pilot/EthicaAI"
@@ -16,16 +17,16 @@ keywords:
   - meta-ranking
   - amartya sen
   - social dilemma
-  - bounded commitment
-  - SUTVA
-  - behavioral transfer
+  - cooperation
+  - evolutionary game theory
+  - moral AI
 preferred-citation:
   type: article
   authors:
   - family-names: "Heo"
     given-names: "Yesol"
-  doi: "10.5281/zenodo.18637742"
+  doi: "10.5281/zenodo.18728438"
   journal: "Zenodo"
-  title: "Beyond Homo Economicus: Computational Instantiation and Empirical Analysis of Amartya Sen's Meta-Ranking Theory in Multi-Agent Social Dilemmas"
+  title: "Beyond Homo Economicus: Computational Verification of Amartya Sen's Meta-Ranking Theory in Multi-Agent Social Dilemmas"
   year: 2026
-  url: "https://zenodo.org/records/18637742"
+  url: "https://zenodo.org/records/18728438"

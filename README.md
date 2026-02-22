@@ -2,7 +2,7 @@
 > *Autonomous Multi-Agent RL with Meta-Ranking for Social Choice Theory*
 
 [![Status](https://img.shields.io/badge/Status-Research_in_Progress-blue?style=for-the-badge&logo=arxiv)](https://ethicaai.vercel.app)
-[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.18719856-blue?style=for-the-badge&logo=zenodo)](https://doi.org/10.5281/zenodo.18719856)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.18728438-blue?style=for-the-badge&logo=zenodo)](https://doi.org/10.5281/zenodo.18728438)
 [![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)](https://python.org)
 [![Engine](https://img.shields.io/badge/Engine-JAX_GPU-red?style=for-the-badge&logo=nvidia)](https://jax.readthedocs.io)
 [![Brain](https://img.shields.io/badge/Brain-Gemini_2.0-orange?style=for-the-badge&logo=google-gemini)](https://ai.google.dev)
@@ -22,7 +22,7 @@ This project computationally verifies **Amartya Sen's meta-ranking framework** �
 | Pareto Efficiency | **0.94** | 0.82 | 0.75 |
 | Shock Recovery (steps) | **12** | 45 | 38 |
 
-> **Targeting NeurIPS 2026** — [Preprint on Zenodo](https://doi.org/10.5281/zenodo.18719856)
+> **Targeting NeurIPS 2026** — [Preprint on Zenodo](https://doi.org/10.5281/zenodo.18728438)
 
 ---
 
@@ -85,13 +85,17 @@ streamlit run dashboard_evolution.py
 
 ```
 EthicaAI/
-├── experiments/       # 🧪 Logs, Configs, and Results
-├── simulation/        # 🎮 JAX Simulation Core
-│   ├── genesis/       # Agents (Theorist, Engineer, Critic)
-│   └── jax/           # GPU Kernels
-├── paper/             # 📄 Paper drafts and supplementary
-├── dashboard_evolution.py  # 📊 Streamlit Monitor
-└── scripts/           # 🛠️ Automation Tools
+├── experiments/         # 🧪 Logs, Configs, and Results
+├── simulation/          # 🎮 JAX Simulation Core
+│   ├── genesis/         #   Agents (Theorist, Engineer, Critic)
+│   └── jax/             #   GPU Kernels
+├── paper/               # 📄 LaTeX source + compiled PDFs
+├── submission_arxiv/    # 📦 arXiv submission package
+├── submission_neurips/  # 📦 NeurIPS submission package
+├── analysis/            # 📊 Analysis notebooks
+├── dashboard/           # 📊 Streamlit dashboards
+├── scripts/             # 🛠️ Automation Tools
+└── original/            # 🗂️ Original prototype code
 ```
 
 ---
@@ -102,12 +106,13 @@ If you use EthicaAI in your research, please cite:
 
 ```bibtex
 @software{ethicaai2026,
-  title={Computational Verification of Amartya Sen's Optimal Rationality
-         via Multi-Agent Reinforcement Learning with Meta-Ranking},
+  title={Beyond Homo Economicus: Computational Verification of
+         Amartya Sen's Meta-Ranking Theory in Multi-Agent Social Dilemmas},
   author={Yesol Heo},
   year={2026},
-  doi={10.5281/zenodo.18719856},
-  url={https://github.com/Yesol-Pilot/EthicaAI}
+  doi={10.5281/zenodo.18728438},
+  url={https://github.com/Yesol-Pilot/EthicaAI},
+  version={v5.1.1}
 }
 ```
 
