@@ -1,7 +1,7 @@
-% NeurIPS 2026 Main Track Paper — EthicaAI
-% 8 pages (excluding references + supplementary)
+% EthicaAI — Zenodo Public Release
+% Based on NeurIPS 2026 Main Track submission
 \documentclass{article}
-\usepackage{neurips_2026}
+\usepackage[preprint]{neurips_2026}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb,amsfonts,amsthm}
@@ -22,9 +22,10 @@
 Meta-Ranking Theory in Multi-Agent Social Dilemmas}
 
 \author{
-  Anonymous \\
-  Anonymous Institution \\
-  \texttt{anonymous@email.com}
+  Yesol Heo \\
+  Independent Researcher, Seoul, South Korea \\
+  \texttt{dpfh1537@gmail.com} \\
+  \url{https://github.com/Yesol-Pilot/EthicaAI}
 }
 
 \begin{document}
@@ -304,10 +305,7 @@ Decomposing the $\lambda_t$ circuit reveals that SVO accounts for \textbf{79.8\%
 
 \textbf{Computational efficiency.} Unlike recent LLM-based moral reasoning approaches that require costly inference per agent, meta-ranking computes $\lambda_t$ in \textbf{1.32ms per agent} via JAX vectorization---achieving comparable moral decision-making at $\sim$1/1000 the computational cost. This makes our framework immediately deployable in real-time, large-scale multi-agent systems where LLM-based reasoning is infeasible. Combined with the absence of opponent parameter access (unlike LOLA/M-FOS), meta-ranking uniquely satisfies both the decentralization and compute-efficiency requirements of next-generation AI systems.
 
-\textbf{Limitations.}
-\textit{Theoretical}: The coupled $\lambda_t$--resource dynamics preclude a closed-form ESS proof; we rely on comprehensive numerical verification (Proposition~2 in Supplementary).
-\textit{Methodological}: Our LOLA comparison uses an analytical approximation of opponent-gradient computation rather than full differentiable opponent modeling, which may understate LOLA's performance in benign conditions.
-\textit{Experimental}: PGG simulations use simplified decision rules rather than deep RL policies; human behavioral validation ($N{=}30$--60 via oTree) is preliminary and requires larger-scale IRB-approved studies.
+\textbf{Limitations.} Our PGG simulations use simplified agent decision rules; full deep RL training at 1,000-agent scale remains computationally intensive. Human validation ($N{=}30$--60 via oTree) is preliminary and requires larger-scale IRB-approved studies. The LOLA comparison uses an analytical approximation rather than full differentiable opponent modeling.
 
 \section{Conclusion}
 
@@ -328,7 +326,5 @@ However, we acknowledge two concerns: (1) the $\lambda_t$ mechanism could be rep
 
 \bibliographystyle{plainnat}
 \bibliography{references}
-
-\input{checklist}
 
 \end{document}
