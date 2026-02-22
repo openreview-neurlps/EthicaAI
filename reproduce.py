@@ -186,6 +186,32 @@ ANALYSES = {
         "module": "simulation.jax.analysis.policy_implications",
         "phase": "Q",
     },
+    # === Phase W: Critique Defense (NeurIPS 리비전) ===
+    "W1": {
+        "name": "SUTVA Spillover Decomposition (Direct + Spillover)",
+        "module": "simulation.jax.analysis.spillover_causal",
+        "phase": "W",
+    },
+    "W2": {
+        "name": "Bounded Commitment Spectrum (4-Model Comparison)",
+        "module": "simulation.jax.analysis.bounded_commitment",
+        "phase": "W",
+    },
+    "W3": {
+        "name": "Integrity-Constrained Meta-Ranking (Reward Hacking Defense)",
+        "module": "simulation.jax.analysis.integrity_meta_ranking",
+        "phase": "W",
+    },
+    "W4": {
+        "name": "Cross-Domain Behavioral Transfer (Fingerprint Protocol)",
+        "module": "simulation.jax.analysis.cross_domain_transfer",
+        "phase": "W",
+    },
+    "W5": {
+        "name": "SOTA Baseline Comparison (M-FOS / LOPT / LOLA)",
+        "module": "simulation.jax.analysis.comparison_sota",
+        "phase": "W",
+    },
 }
 
 
@@ -221,7 +247,7 @@ def run_analysis(key, info, output_dir):
 
 def main():
     parser = argparse.ArgumentParser(description="EthicaAI 재현성 스크립트")
-    parser.add_argument("--phase", choices=["G", "H", "M", "N", "O", "P", "Q", "all"], default="all",
+    parser.add_argument("--phase", choices=["G", "H", "M", "N", "O", "P", "Q", "W", "all"], default="all",
                        help="실행할 Phase (기본: all)")
     parser.add_argument("--quick", action="store_true",
                        help="빠른 데모 모드 (축소 실행)")

@@ -55,6 +55,7 @@ In a symmetric 2-player PGG with payoff matrix $\Pi$, the Situational Commitment
 \[
 E[\pi(s^*, s^*)] > E[\pi(s', s^*)] \quad \forall s' \neq s^*
 \]
+\textit{Note: This result extends to Bounded Commitment (Definition~\ref{def:bounded}) where $\lambda_{\min} = \epsilon \cdot \sin(\theta) > 0$; see Phase~W2 for 4-model ESS comparison.}
 \end{theorem}
 
 \begin{proof}
@@ -177,12 +178,41 @@ Evolutionary competition across 7 SVO types reveals a ~12\% meta-ranking equilib
     \item \textbf{Policy Implications (Q6)}: Meta 50\% $\to$ 64.3\% carbon reduction (Fig. 67--68).
 \end{itemize}
 
+\subsubsection{Phase W: Critique Defense (Revision)}
+
+\textbf{This section addresses four critiques raised during peer review.}
+
+\begin{definition}[Bounded Commitment]
+\label{def:bounded}
+An agent $i$ exhibits \textit{Bounded Commitment} if its commitment preserves a moral residue $\epsilon \cdot \sin(\theta_i)$ even under resource crisis ($R_t < R_{\text{crisis}}$):
+\begin{equation}
+\lambda_{\min}^{(i)} = \epsilon \cdot \sin(\theta_i), \quad \epsilon \in [0, 1]
+\end{equation}
+This ensures $\lambda_t^{(i)} \geq \lambda_{\min}^{(i)} > 0$ for all $\theta_i > 0$, distinguishing Bounded Commitment from the Maslow model ($\epsilon=0$) and the Martyr model ($\epsilon=1$).
+\end{definition}
+
+\begin{theorem}[Spillover Decomposition]
+\label{thm:spillover}
+In environments with agent interactions, the naive Average Treatment Effect (ATE) decomposes as:
+\begin{equation}
+\tau_{\text{naive}} = \tau_{\text{direct}} + \tau_{\text{spillover}}
+\end{equation}
+where $\tau_{\text{direct}} = \mathbb{E}[Y | d_i{=}1, e_i] - \mathbb{E}[Y | d_i{=}0, e_i]$ (exposure-controlled) and $\tau_{\text{spillover}} = \mathbb{E}[Y | d_i, e_i{=}\text{high}] - \mathbb{E}[Y | d_i, e_i{=}\text{low}]$ (treatment-controlled). The corrected AME reports $\tau_{\text{direct}}$ as the primary estimand.
+\end{theorem}
+
+\begin{itemize}
+    \item \textbf{W1 --- SUTVA Analysis}: Explicit SUTVA violation measurement across PGG (no interference), Grid World (spatial interference), and Network PGG (network interference). Spillover accounts for $\approx$0 in PGG and up to 15\% of naive ATE in Grid World. Effect direction preserved in all cases (Fig. 75--78).
+    \item \textbf{W2 --- Bounded Commitment Spectrum}: Four commitment models (Maslow $\to$ Sen $\to$ Bounded $\to$ Martyr) compared across 7 SVO conditions. Bounded ($\epsilon{=}0.3$) achieves Pareto-optimal survival-welfare balance. Moran Process confirms evolutionary stability (Fig. 79--80).
+    \item \textbf{W3 --- Integrity-Constrained $U_{\text{meta}}$}: Four $U_{\text{meta}}$ variants (Naive, Bounded-kNN, KL-Divergence, Causal-Shapley) tested against Reward Pumping adversaries. Bounded-kNN preserves 97\% normal performance while resisting 30\% adversarial fraction. Computational overhead $<$3\% (Fig. 81--84).
+    \item \textbf{W4 --- Cross-Domain Behavioral Transfer}: 4-dimensional Behavioral Fingerprint (crisis sensitivity, contribution elasticity, Gini dynamics, role stability) measured across PGG$\to$IPD, PGG$\to$Grid World, PGG$\to$Climate, IPD$\to$Grid World. Prosocial agents show highest cross-domain cosine similarity (Fig. 85--88).
+\end{itemize}
+
 
 \section{Complete Figure Index}
 \label{app:figures}
 
 \begin{longtable}{clll}
-\caption{All 74 figures generated in the EthicaAI framework.} \\
+\caption{All 88 figures generated in the EthicaAI framework.} \\
 \toprule
 Fig & Phase & Title & Key Result \\
 \midrule
@@ -211,8 +241,87 @@ Fig & Phase & Title & Key Result \\
 65--66 & Q & Interpretability & 79.8\% SVO \\
 67--68 & Q & Policy Implications & Carbon 64.3\% \\
 69--70 & Q & GNN Agents & Attn analysis \\
+71--74 & Q & Additional analyses & Supplementary \\
+\midrule
+\multicolumn{4}{l}{\textit{Phase W: Critique Defense (Revision)}} \\
+75--76 & W1 & ATE Decomposition, Exposure-Response & SUTVA analysis \\
+77--78 & W1 & SUTVA Violation Heatmap, Corrected AME Table & Direction preserved \\
+79--80 & W2 & Commitment Radar, $\epsilon$-Sensitivity Pareto & Bounded optimal \\
+81--82 & W3 & $U_{\text{meta}}$ Normal \& Adversarial & Reward hacking defense \\
+83--84 & W3 & KL Divergence, Overhead & Anomaly detection \\
+85--86 & W4 & Transfer Similarity Heatmap, BF Radar & Cross-domain transfer \\
+87--88 & W4 & $\lambda$ Convergence, Transfer Gap & SVO invariance \\
+\midrule
+\multicolumn{4}{l}{\textit{Phase W5: SOTA Baseline Comparison}} \\
+89 & W5 & Algorithm Comparison (Bar) & Meta-Ranking dominates \\
+90 & W5 & Scalability (Time \& Coop vs N) & O(N) vs O(N$^2$) \\
+91 & W5 & Adversarial Robustness & Byzantine tolerance \\
+92 & W5 & Algorithm Radar & 6-axis comparison \\
 \bottomrule
 \end{longtable}
+
+% ============================================================
+% Phase W5: SOTA Baseline Comparison
+% ============================================================
+
+\subsection{W5: SOTA Baseline Comparison (M-FOS / LOPT / LOLA)}
+\label{app:sota}
+
+\textbf{Motivation.} A critical question for NeurIPS reviewers is how Meta-Ranking compares to recent opponent-shaping and mechanism design algorithms. We benchmark against three state-of-the-art approaches:
+
+\begin{itemize}
+    \item \textbf{M-FOS} \citep{lu2022mfos}: Model-Free Opponent Shaping --- shapes opponents' learning trajectories via meta-learning. Requires O($N^2$) pairwise interactions.
+    \item \textbf{LOPT} \citep{gemp2024lopt}: Learns optimal Pigovian taxes to internalize externalities. Requires a \textit{central regulatory agent}.
+    \item \textbf{LOLA} \citep{foerster2018lola}: Learning with Opponent-Learning Awareness --- predicts opponents' gradient steps. Requires Hessian approximation, O($N^2$).
+\end{itemize}
+
+\textbf{Results (Fig.~89--92).} In the standard PGG benchmark (N=50, SVO=$45°$):
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lcccc}
+\toprule
+Algorithm & Coop & Welfare & Gini ($\downarrow$) & Time (ms) \\
+\midrule
+\textbf{Meta-Ranking (Ours)} & \textbf{1.000} & \textbf{148.0} & \textbf{0.011} & \textbf{10.0} \\
+M-FOS & 0.600 & 134.4 & 0.015 & 93.5 \\
+LOPT & 0.000 & 101.4 & 0.014 & 44.3 \\
+LOLA & 0.000 & 101.3 & 0.013 & 102.0 \\
+\bottomrule
+\end{tabular}
+\caption{SOTA comparison in N-player PGG (N=50, 10 seeds).}
+\label{tab:sota}
+\end{table}
+
+\textbf{Key advantages of Meta-Ranking:}
+\begin{enumerate}
+    \item \textbf{Decentralized}: No external regulator (unlike LOPT) or pairwise interaction (unlike M-FOS/LOLA). Each agent uses only local $R_t$ and own SVO $\theta$.
+    \item \textbf{O(N) scaling}: Time per step grows linearly (0.44ms at N=1000) vs O($N^2$) for M-FOS (11.9ms) and LOLA (9.9ms).
+    \item \textbf{Adversarial robustness}: At 30\% adversarial agents, Meta-Ranking maintains Coop=0.700 while M-FOS collapses to 0.000.
+    \item \textbf{Scale invariance}: Cooperation rate remains 1.000 from N=20 to N=1000 while competitors degrade.
+\end{enumerate}
+
+% ============================================================
+% Philosophical Justification
+% ============================================================
+
+\subsection{Philosophical Justification: From Sen's Commitment to Bounded Commitment}
+\label{app:philosophy}
+
+A potential critique is that our dynamic $\lambda_t$ mechanism, which reduces moral commitment during resource crises, departs from Sen's (1977) conception of commitment as fundamentally \textit{non-situational}---an unconditional willingness to sacrifice personal welfare for ethical principles.
+
+\textbf{We acknowledge this departure and defend it on three grounds:}
+
+\begin{enumerate}
+    \item \textbf{Computational Survival Constraint.} Sen's framework was developed for human agents with biological survival guaranteed by institutional safety nets. Artificial agents in adversarial environments lack such guarantees. An agent that maintains unconditional commitment under resource crisis ($w < w_{\text{survival}}$) is \textit{eliminated}---and dead agents cannot commit to anything. Our Bounded Commitment (Definition~\ref{def:bounded}) preserves moral residue ($\lambda_{\min} = \epsilon \cdot \sin(\theta) > 0$) even in crisis, ensuring the agent \textit{survives to commit again}.
+
+    \item \textbf{Empirical Vindication.} Our Moral Theory Tournament (P2, Fig.~53--54) demonstrates that unconditional Kantian Deontology agents achieve 0\% evolutionary survival against Byzantine populations, while Bounded Commitment achieves 99\%+ ESS. Situational flexibility is not moral weakness---it is the \textit{necessary condition for sustained ethical agency} in hostile environments.
+
+    \item \textbf{Philosophical Precedent.} Sen himself noted that commitment ``drives a wedge between personal choice and personal welfare'' but did not prescribe \textit{self-destruction} as a consequence. Williams (1981) and Nussbaum (2001) similarly argue that moral agency requires the preservation of the agent's capacity for future moral action---the ``integrity constraint'' formalized in our W3 experiments.
+\end{enumerate}
+
+Thus, Bounded Commitment should be understood not as a \textit{betrayal} of Sen's theory but as its \textit{computational extension} to survival-constrained artificial agents, preserving the core insight that commitment is qualitatively distinct from sympathy while acknowledging the material conditions of agency.
 
 
 \section{Reproducibility Statement}
@@ -224,12 +333,13 @@ All experiments are reproduced via a single command:
 git clone https://github.com/Yesol-Pilot/EthicaAI.git
 cd EthicaAI
 pip install -r requirements.txt
-python reproduce.py            # Full pipeline (38 modules)
+python reproduce.py            # Full pipeline (43 modules)
 python reproduce.py --phase P  # Phase P only
+python reproduce.py --phase W  # Phase W (critique defense + SOTA)
 python reproduce.py --quick    # Quick demo mode
 \end{lstlisting}
 
-The \texttt{reproduce.py} script contains 38 analysis modules generating all 74 figures and associated JSON result files. Total runtime: approximately 15 minutes on a single GPU (RTX 3090) or 45 minutes CPU-only.
+The \texttt{reproduce.py} script contains 43 analysis modules generating all 92 figures and associated JSON result files. Total runtime: approximately 25 minutes on a single GPU (RTX 3090) or 70 minutes CPU-only.
 
 
 \section{Broader Impact}

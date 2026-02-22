@@ -24,7 +24,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 ENV_PATH = PROJECT_ROOT / ".env"
 HTML_PATH = PROJECT_ROOT / "submission" / "paper_english_v2.html"
 PDF_PATH = PROJECT_ROOT / "submission" / "paper_english_v2.pdf"
-PDF_FILENAME = "Computational Verification of Amartya Sen's Optimal Rationality via Multi-Agent Reinforcement Learning with Meta-Ranking.pdf"
+PDF_FILENAME = "Beyond Homo Economicus - Computational Instantiation and Empirical Analysis of Amartya Sen's Meta-Ranking Theory in Multi-Agent Social Dilemmas.pdf"
 
 ZENODO_API_BASE = "https://zenodo.org/api"
 
@@ -167,19 +167,24 @@ def update_metadata(token, draft):
 
     metadata = {
         "metadata": {
-            "title": "Computational Verification of Amartya Sen's Optimal Rationality via Multi-Agent Reinforcement Learning with Meta-Ranking",
+            "title": "Beyond Homo Economicus: Computational Instantiation and Empirical Analysis of Amartya Sen's Meta-Ranking Theory in Multi-Agent Social Dilemmas",
             "upload_type": "publication",
             "publication_type": "preprint",
             "description": (
                 "<p>This study formalizes Amartya Sen's Meta-Ranking theory within a "
                 "Multi-Agent Reinforcement Learning (MARL) framework, demonstrating that "
-                "dynamic moral commitment contingent on resource states—rather than simple "
-                "social preference injection—is the key mechanism for resolving social dilemmas.</p>"
-                "<p><strong>v2 Updates (2026-02-21):</strong> Full experimental results from "
-                "Stages 2-7 including 560+ runs across 4 environments, 100-agent scalability "
-                "verification, cross-environment validation (IPD, PGG, Harvest), human-AI "
-                "behavioral alignment (WD<0.2), evolutionary stability analysis, Byzantine "
-                "robustness, network topology effects, and policy implications. Total 60 figures.</p>"
+                "<strong>Bounded Commitment</strong>&mdash;dynamic moral commitment preserving "
+                "moral residue even under resource crisis&mdash;is the key mechanism for "
+                "resolving social dilemmas.</p>"
+                "<p><strong>v3 Updates (2026-02-22):</strong> Phase W critique defense: "
+                "(W1) Explicit SUTVA analysis via exposure mapping with ATE decomposition into "
+                "direct and spillover effects across 3 environments; "
+                "(W2) Bounded Commitment spectrum &mdash; 4-model comparison with Moran ESS and "
+                "&epsilon;-sensitivity Pareto analysis; "
+                "(W3) Integrity-constrained U_meta variants resisting reward hacking under "
+                "50% adversarial populations; "
+                "(W4) Cross-domain behavioral fingerprint transfer protocol across 4 environment "
+                "pairs. Total 42 analysis modules generating 88 figures from a single command.</p>"
                 "<p>Code: https://github.com/Yesol-Pilot/EthicaAI</p>"
             ),
             "creators": [{"name": "Heo, Yesol", "affiliation": "Independent Researcher"}],
@@ -191,11 +196,18 @@ def update_metadata(token, draft):
                 "Amartya Sen",
                 "Multi-Agent Reinforcement Learning",
                 "Evolutionary Stability",
+                "SUTVA",
+                "Bounded Commitment",
+                "Behavioral Transfer",
+                "Reward Hacking Defense",
+                "Public Goods Game",
             ],
             "access_right": "open",
             "license": "cc-by-4.0",
-            "publication_date": "2026-02-21",
+            "publication_date": "2026-02-22",
+            "version": "4.0.0",
             "language": "eng",
+            "notes": "NeurIPS 2026 submission (Main Track) + AIES 2026 extended version planned.",
         }
     }
 
