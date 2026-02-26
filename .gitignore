@@ -62,3 +62,13 @@ build/
 
 # ===== 런타임 =====
 .venv/
+
+# ===== LaTeX 컴파일 부산물 =====
+*.aux
+*.bbl
+*.blg
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc

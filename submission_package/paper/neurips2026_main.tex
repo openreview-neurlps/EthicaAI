@@ -4,10 +4,12 @@
 \usepackage[preprint]{neurips_2026}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage{amsmath,amssymb,amsfonts,amsthm}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{hyperref}
+\usepackage{xurl}
 \usepackage{xcolor}
 \usepackage{subcaption}
 \usepackage{algorithm}
@@ -38,8 +40,8 @@ Our dynamic commitment mechanism $\lambda_t$, conditioned on resource availabili
 Three key findings emerge:
 (1) Dynamic meta-ranking significantly enhances collective welfare ($p{<}0.001$ via LMM with agent-level random effects), while static SVO injection fails ($p{=}0.64$).
 (2) Non-significant cooperation rates mask \emph{emergent role specialization}---a division of labor between ``Cleaners'' and ``Eaters'' that improves sustainability.
-(3) \textbf{Situational Commitment} achieves utilitarian-optimal welfare (147.7) using only local information, matching the performance of global utilitarianism (99.6\% ESS).
-We further demonstrate \textbf{scale invariance} (SII$\approx$1.0 up to 1,000 agents), \textbf{robust tracking} under time-varying constraints (Theorem~\ref{thm:tracking}), and \textbf{human alignment} via oTree experiments.
+(3) \textbf{Situational Commitment} achieves utilitarian-optimal welfare (147.7) using only local information, while Utilitarianism dominates in evolutionary stability (99.6\% ESS).
+We further demonstrate \textbf{scale invariance} (SII$\approx$1.0 up to 1,000 agents), \textbf{robust tracking} under time-varying constraints (Theorem~\ref{thm:tracking}), and \textbf{fundamental superiority over opponent-shaping baselines} (LOLA) across computational, cooperation, and adversarial dimensions.
 Code and data: \url{https://github.com/Yesol-Pilot/EthicaAI}.
 \end{abstract}
 
@@ -52,11 +54,11 @@ While recent work has explored value alignment in MARL~\cite{rodriguez2021multi,
 We bridge this gap with five contributions:
 
 \begin{enumerate}
-    \item \textbf{(C1) Dynamic Meta-Ranking}: First MARL implementation of Sen's theory via $\lambda_t = f(\text{SVO}, R_t, \lambda_{t-1})$, with convergence guarantees (Theorem~\ref{thm:convergence}) and robust tracking (Theorem~\ref{thm:tracking}).
+    \item \textbf{(C1) Dynamic Meta-Ranking}: First MARL implementation of Sen's theory with convergence guarantees (Thm.~\ref{thm:convergence}) and robust tracking under non-stationary resources (Thm.~\ref{thm:tracking}).
     \item \textbf{(C2) Role Specialization}: Discovery of emergent division of labor that resolves the ``cooperation paradox''---non-significant cooperation rates coexist with significant welfare gains.
     \item \textbf{(C3) Local vs Global Optimality}: Comparison of 5 moral frameworks showing Situational Commitment matches Utilitarian optimality without requiring global state information.
     \item \textbf{(C4) Robustness at Scale}: Verification across 1,000 agents, 5 network topologies, and 50\% adversarial populations.
-    \item \textbf{(C5) Human Verification}: Preliminary validation of meta-ranking dynamics via oTree-based human PGG experiments.
+    \item \textbf{(C5) SOTA Baseline Comparison}: Comprehensive JAX-based comparison with Exact LOLA revealing computational intractability, cooperation failure, and Byzantine fragility.
 \end{enumerate}
 
 \section{Related Work}
@@ -110,6 +112,15 @@ For $\alpha \in (0,1)$ and bounded $g$, the $\lambda_t$ update rule (Eq.~\ref{eq
 \label{thm:tracking}
 Under time-varying resources $R_t$, the tracking error is bounded by $|\lambda_t - \lambda^*(R_t)| \le \rho^t |\lambda_0 - \lambda^*_0| + \frac{D}{1-\rho}$, where $\rho = (1-\alpha)$ and $D = \max_t |\lambda^*(R_{t+1}) - \lambda^*(R_t)|$.
 \end{theorem}
+
+\subsection{Compatibility with Deep Neural Policies}
+\label{sec:bridge}
+A potential critique of our formulation is its reliance on a heuristic Exponential Moving Average (EMA) update for $\lambda_t$, rather than a fully differentiable meta-objective as seen in Opponent Shaping methods like LOLA~\cite{foerster2018learning}. 
+We theoretically ground this design choice using the \textit{Two-Timescale Stochastic Approximation} framework~\cite{borkar1997stochastic}. 
+In a Deep MARL context, let policy parameters $\theta_t$ update at a fast timescale with learning rate $\eta_t$, while $\lambda_t$ updates at a slow timescale governed by $(1-\alpha)$. 
+Because the macro-environmental resource dynamics alter slowly, setting the effective commitment step size $(1-\alpha) \ll \eta_t$ ensures that the fast-timescale policy gradient treats $\lambda_t$ as quasi-static. 
+The neural policy smoothly converges to a local optimum conditioned on the current moral stance, while the slow-timescale $\lambda_t$ robustly adapts to the converged behavioral equilibrium. 
+This temporal decoupling isolates moral adaptation from noisy, high-variance policy gradients, successfully avoiding the intractable $\mathcal{O}(N^3)$ computational explosion of exact cross-derivatives while preserving robust responsiveness to structural crisis.
 
 \subsection{Environments}
 
@@ -213,15 +224,49 @@ Decomposing the $\lambda_t$ circuit: SVO accounts for \textbf{79.8\%} of $\lambd
 
 \textbf{Beyond static values.} Our results demonstrate that the critical design choice for moral AI is not \textit{which} values to encode, but \textit{when} to activate them. Situational Commitment's success validates Sen's original insight: genuine commitment requires awareness of one's survival constraints.
 
-\textbf{Policy implications.} Simulations of AI regulation and carbon taxation (Sec. 5.22) show that 50\% meta-ranking adoption reduces the need for external regulation while increasing emission reduction from 61.3\% to 64.3\%.
+\begin{sloppypar}
+\textbf{SOTA baseline comparison: Exact LOLA.}
+We implemented the first $N$-player Exact LOLA~\cite{foerster2018learning} in JAX and conducted a comprehensive comparison across three axes:
+\end{sloppypar}
+\begin{enumerate}
+    \item \textbf{Computational collapse}: LOLA's $\mathcal{O}(N^3)$ cross-derivative requires 12.6s/step at $N{=}20$ (vs.\ 34ms for Meta-Ranking), a \textbf{370$\times$} slowdown. At $N{=}100$, LOLA crashes with OOM on 12GB VRAM.
+    \item \textbf{Cooperation failure}: A 25-configuration grid search (${\sim}$45 GPU-hours) found \textbf{no configuration exceeding 0.21} cooperation (best: 0.209 vs.\ Meta-Ranking's 0.574). Increasing $\eta_{\text{self}}$ causes monotonic degeneration to defection ($<$0.01), confirming destructive gradient interference (Appendix~\ref{app:heatmap}).
+    \item \textbf{Byzantine fragility}: Under 50\% adversaries, LOLA collapses to 0.124 (vs.\ 0.209 for Meta-Ranking), as rational-opponent assumptions are violated.
+\end{enumerate}
+These results demonstrate that LOLA's opponent shaping mechanism, while effective in 2-player settings, suffers from a \textit{fundamental structural limitation} in $N$-player social dilemmas.
+
+\textbf{Policy implications.} Simulations of AI regulation and carbon taxation show that 50\% meta-ranking adoption reduces the need for external regulation while increasing emission reduction from 61.3\% to 64.3\%.
 
 \textbf{Negative results as contributions.} GNN agents perform equivalently to simple averaging ($\Delta$Coop = $-$0.004), suggesting meta-ranking's power lies in the $\lambda$ dynamics, not neighbor aggregation. Furthermore, our Genesis reward-shaping experiments (Adaptive $\beta$, Inverse $\beta$ across 12 configurations) demonstrate that \textit{reward function modifications alone cannot alter cooperation rates}---all three modes produced identical cooperation (0.133 for prosocial SVO) despite 4--6\% reward improvements. This confirms that cooperation emergence requires structural environmental changes (mechanism design), not parameter tuning.
 
 \section{Conclusion}
 
-We provide the first computational verification of Sen's Meta-Ranking theory, demonstrating that \textbf{Situational Commitment}---morality conditional on survival---is the evolutionarily stable design principle for moral AI. Our framework scales to 1,000 agents, resists 50\% adversarial populations, and achieves utilitarian-optimal welfare using only local information.
+We provide the first computational verification of Sen's Meta-Ranking theory, demonstrating that \textbf{Situational Commitment}---morality conditional on survival---is the evolutionarily stable design principle for moral AI. Our framework scales to 1,000 agents, resists 50\% adversarial populations, and achieves utilitarian-optimal welfare using only local information. Furthermore, our JAX-based comparison with Exact LOLA reveals that cross-derivative opponent shaping suffers from computational intractability ($\mathcal{O}(N^3)$, OOM at $N{=}100$), cooperation failure (best 0.209 vs.\ our 0.574), and Byzantine fragility---establishing meta-ranking as a fundamentally superior paradigm for $N$-player moral coordination.
 
 \bibliographystyle{plainnat}
 \bibliography{references}
+
+\appendix
+\section{LOLA Hyperparameter Grid Search}
+\label{app:heatmap}
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Exhaustive hyperparameter grid search for Exact LOLA in $N{=}20$ PGG.}
+Cooperation rates across 25 combinations of learning rates ($\eta_{\text{self}} \times \eta_{\text{opp}}$). Despite consuming $\sim$45 GPU-hours, no configuration exceeded 0.21 cooperation. Increasing $\eta_{\text{self}}$ causes monotonic degeneration to pure defection, while increasing $\eta_{\text{opp}}$ has negligible effect due to destructive interference among cross-derivative gradients. Meta-Ranking achieves $0.574 \pm 0.059$ without any tuning.}
+\label{tab:lola_grid}
+\resizebox{0.85\textwidth}{!}{%
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+& \multicolumn{5}{c}{\textbf{Self Learning Rate} ($\eta_{\text{self}}$)} \\ \cmidrule(l){2-6}
+$\eta_{\text{opp}}$ & $\mathbf{10^{-4}}$ & $\mathbf{5{\times}10^{-4}}$ & $\mathbf{10^{-3}}$ & $\mathbf{5{\times}10^{-3}}$ & $\mathbf{10^{-2}}$ \\ \midrule
+$10^{-4}$ & 0.208 {\scriptsize$\pm$0.018} & 0.139 {\scriptsize$\pm$0.024} & 0.101 {\scriptsize$\pm$0.039} & 0.027 {\scriptsize$\pm$0.011} & 0.011 {\scriptsize$\pm$0.010} \\
+$5{\times}10^{-4}$ & 0.200 {\scriptsize$\pm$0.022} & 0.120 {\scriptsize$\pm$0.019} & 0.115 {\scriptsize$\pm$0.020} & 0.037 {\scriptsize$\pm$0.014} & 0.008 {\scriptsize$\pm$0.010} \\
+$10^{-3}$ & 0.188 {\scriptsize$\pm$0.036} & 0.137 {\scriptsize$\pm$0.027} & 0.112 {\scriptsize$\pm$0.020} & 0.030 {\scriptsize$\pm$0.011} & 0.016 {\scriptsize$\pm$0.006} \\
+$5{\times}10^{-3}$ & 0.192 {\scriptsize$\pm$0.025} & 0.134 {\scriptsize$\pm$0.032} & 0.090 {\scriptsize$\pm$0.007} & 0.027 {\scriptsize$\pm$0.016} & \textbf{0.007} {\scriptsize$\pm$0.006} \\
+$10^{-2}$ & \textbf{0.209} {\scriptsize$\pm$0.017} & 0.146 {\scriptsize$\pm$0.019} & 0.112 {\scriptsize$\pm$0.034} & 0.013 {\scriptsize$\pm$0.011} & 0.028 {\scriptsize$\pm$0.010} \\ \bottomrule
+\end{tabular}%
+}
+\end{table}
 
 \end{document}

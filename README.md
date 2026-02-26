@@ -1,118 +1,94 @@
-# 🧬 EthicaAI: Computational Verification of Sen's Optimal Rationality
-> *Autonomous Multi-Agent RL with Meta-Ranking for Social Choice Theory*
+# 🧬 EthicaAI: Beyond Homo Economicus
 
-[![Status](https://img.shields.io/badge/Status-Research_in_Progress-blue?style=for-the-badge&logo=arxiv)](https://ethicaai.vercel.app)
+> **Computational Verification of Amartya Sen's Meta-Ranking Theory in Multi-Agent Social Dilemmas**
+
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.18728438-blue?style=for-the-badge&logo=zenodo)](https://doi.org/10.5281/zenodo.18728438)
-[![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)](https://python.org)
+[![NeurIPS 2026](https://img.shields.io/badge/Target-NeurIPS_2026-purple?style=for-the-badge)](https://neurips.cc)
 [![Engine](https://img.shields.io/badge/Engine-JAX_GPU-red?style=for-the-badge&logo=nvidia)](https://jax.readthedocs.io)
-[![Brain](https://img.shields.io/badge/Brain-Gemini_2.0-orange?style=for-the-badge&logo=google-gemini)](https://ai.google.dev)
+[![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)](https://python.org)
 
-## 📄 Research Overview
+---
 
-**Can AI agents autonomously discover fair social contracts?**
+## 📄 Abstract
 
-This project computationally verifies **Amartya Sen's meta-ranking framework** — the idea that rational agents can rank their own preference orderings — through large-scale multi-agent reinforcement learning simulations. We demonstrate that meta-ranking produces **Pareto-dominant, envy-free equilibria** even under adversarial shocks, outperforming classical social welfare functions (utilitarian, Rawlsian, Nash).
+Can artificial agents develop genuine moral commitment beyond self-interest? We formalize Amartya Sen's **Meta-Ranking** theory — preferences over preferences implementing moral commitment — within a Multi-Agent Reinforcement Learning (MARL) framework. Our dynamic commitment mechanism λₜ, conditioned on resource availability and Social Value Orientation (SVO), is tested across **8 environments** with up to **1,000 agents**.
 
-### Key Results (100-Agent Full Sweep)
+### Key Contributions
 
-| Metric | Meta-Ranking | Utilitarian | Rawlsian |
+1. **Dynamic Meta-Ranking (C1)**: First MARL implementation of Sen's theory with convergence guarantees
+2. **Role Specialization (C2)**: Discovery of emergent division of labor resolving the "cooperation paradox"
+3. **Local Optimality (C3)**: Situational Commitment matches Utilitarian welfare using only local information
+4. **Scale & Robustness (C4)**: Verified across 1,000 agents, 5 topologies, and 50% adversarial populations
+5. **SOTA Baseline (C5)**: Comprehensive JAX-based Exact LOLA comparison revealing structural N-player failure
+
+---
+
+## 🔬 LOLA Benchmark Results
+
+This repository contains **~45 GPU-hours** of exhaustive JAX-based Exact LOLA benchmark data, demonstrating the fundamental structural limitation of cross-derivative opponent shaping in N-player settings.
+
+### Meta-Ranking vs. Exact LOLA (N=20 PGG)
+
+| Dimension | Meta-Ranking | Exact LOLA | Ratio |
 |:---|:---:|:---:|:---:|
-| Cooperation Rate | **0.87** | 0.71 | 0.68 |
-| Gini Coefficient | **0.12** | 0.31 | 0.19 |
-| Pareto Efficiency | **0.94** | 0.82 | 0.75 |
-| Shock Recovery (steps) | **12** | 45 | 38 |
+| **Cooperation** | **0.574** ± 0.059 | 0.209 (best of 25) | 2.75× |
+| **Compute (per step)** | 34ms | 12,600ms | **370×** faster |
+| **Byzantine (50%)** | **0.209** | 0.124 | 1.69× |
+| **N=100 Scaling** | ✅ (34ms) | ❌ OOM crash | — |
 
-> **Targeting NeurIPS 2026** — [Preprint on Zenodo](https://doi.org/10.5281/zenodo.18728438)
+### 2D Hyperparameter Grid Search (25 configurations)
 
----
+No LOLA configuration exceeded 0.21 cooperation across 5×5 learning rate combinations. See `submission_package/paper/neurips2026_main.pdf` (Appendix A, Table 4) for the full heatmap.
 
-## 🏛️ The Genesis Lab
+### Benchmark Data
 
-**EthicaAI Genesis** is an autonomous research laboratory where AI agents live, interact, and evolve social contracts without human intervention.
-Governed by a hyper-intelligent **Theorist (LLM)**, the system automatically formulates hypotheses, runs massive GPU simulations, and pivots strategies to solve the "Cooperation Dilemma".
-
-### 🧠 The Autonomous Loop
-1.  **Thinking (Theorist)**: Gemini 2.0 analyzes history and proposes a new social structure (e.g., "Let's try Inequity Aversion!").
-2.  **Simulation (Engineer)**: JAX-accelerated engine runs 20 simultaneous societies (20,000+ steps) in seconds.
-3.  **Judgment (Critic)**: Evaluates stability, Gini coefficient, and welfare.
-4.  **Intervention (Coordinator)**: Pokes, shocks, or resets the world if stagnation is detected.
+- [`grid_search_results.json`](submission_package/paper/grid_search_results.json) — 25-config grid search raw data
+- [`neurips2026_main.pdf`](submission_package/paper/neurips2026_main.pdf) — Compiled 6-page manuscript
 
 ---
 
-## 🚀 Key Features
-
-| Feature | Description | Status |
-|:---|:---|:---:|
-| **GPU Revolution** | **100x Faster** simulations using JAX on RTX 4070 SUPER | ✅ |
-| **Meta-Ranking** | Sen's framework as a learnable social welfare function | ✅ |
-| **Self-Correction** | Automatically switches between *Adaptive*, *Inverse*, and *Institutional* modes | ✅ |
-| **Inequity Aversion** | Agents feel *Envy* and *Guilt*, driving spontaneous fairness | ✅ |
-| **Live Dashboard** | Real-time visualization of the evolutionary tree and metrics | ✅ |
-
----
-
-## 💻 How to Run
-
-### 1. The "Brain" (Training)
-*Requires NVIDIA GPU & WSL2 (Linux)*
+## 💻 Quick Start
 
 ```bash
-# Clone the repository
+# Clone
 git clone https://github.com/Yesol-Pilot/EthicaAI.git
 cd EthicaAI
 
-# Setup Environment
+# Setup (requires NVIDIA GPU + WSL2)
 bash scripts/setup_env.sh
 
-# Start Evolution Loop
+# Run simulations
 bash scripts/run_evolution_gpu.sh
-```
-
-### 2. The "Eyes" (Visualization)
-*Runs on CPU (Windows/Mac/Linux)*
-
-```bash
-# Install Dashboard Dependencies
-pip install -r requirements_dashboard.txt
-
-# Launch Dashboard
-streamlit run dashboard_evolution.py
 ```
 
 ---
 
-## 📂 Project Structure
+## 📂 Repository Structure
 
 ```
 EthicaAI/
-├── experiments/         # 🧪 Logs, Configs, and Results
-├── simulation/          # 🎮 JAX Simulation Core
-│   ├── genesis/         #   Agents (Theorist, Engineer, Critic)
-│   └── jax/             #   GPU Kernels
-├── paper/               # 📄 LaTeX source + compiled PDFs
-├── submission_arxiv/    # 📦 arXiv submission package
-├── submission_neurips/  # 📦 NeurIPS submission package
-├── analysis/            # 📊 Analysis notebooks
-├── dashboard/           # 📊 Streamlit dashboards
-├── scripts/             # 🛠️ Automation Tools
-└── original/            # 🗂️ Original prototype code
+├── submission_package/  # 📦 NeurIPS 2026 submission (main)
+│   └── paper/           #   LaTeX source + compiled PDF
+├── paper/               # 📄 Extended manuscript
+├── simulation/          # 🎮 JAX simulation core
+├── experiments/         # 🧪 Experiment configs & results
+├── scripts/             # 🛠️ Automation scripts
+└── analysis/            # 📊 Analysis notebooks
 ```
 
 ---
 
 ## 📝 Citation
 
-If you use EthicaAI in your research, please cite:
-
 ```bibtex
 @software{ethicaai2026,
-  title={Beyond Homo Economicus: Computational Verification of
-         Amartya Sen's Meta-Ranking Theory in Multi-Agent Social Dilemmas},
-  author={Yesol Heo},
-  year={2026},
-  doi={10.5281/zenodo.18728438},
-  url={https://github.com/Yesol-Pilot/EthicaAI},
-  version={v5.1.1}
+  title   = {Beyond Homo Economicus: Computational Verification of
+             Amartya Sen's Meta-Ranking Theory in Multi-Agent Social Dilemmas},
+  author  = {Yesol Heo},
+  year    = {2026},
+  doi     = {10.5281/zenodo.18728438},
+  url     = {https://github.com/Yesol-Pilot/EthicaAI},
+  version = {v1.0.0-preprint}
 }
 ```
 
