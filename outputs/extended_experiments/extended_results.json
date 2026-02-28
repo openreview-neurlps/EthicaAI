@@ -1,0 +1,191 @@
+{
+  "results": {
+    "N100_selfish_byz0": {
+      "label": "N100_selfish_byz0",
+      "n_agents": 100,
+      "n_byz": 0,
+      "welfare": 26.000236684595475,
+      "mean_lam": 0.5000197237162896,
+      "survival": 0.864
+    },
+    "N100_unconditional_byz0": {
+      "label": "N100_unconditional_byz0",
+      "n_agents": 100,
+      "n_byz": 0,
+      "welfare": 29.585481846544646,
+      "mean_lam": 0.7987901538787205,
+      "survival": 1.0
+    },
+    "N100_situational_byz0": {
+      "label": "N100_situational_byz0",
+      "n_agents": 100,
+      "n_byz": 0,
+      "welfare": 30.798626694599122,
+      "mean_lam": 0.8998855578832602,
+      "survival": 1.0
+    },
+    "N100_selfish_byz30": {
+      "label": "N100_selfish_byz30",
+      "n_agents": 100,
+      "n_byz": 30,
+      "welfare": 24.200325095752568,
+      "mean_lam": 0.5000387018753057,
+      "survival": 0.104
+    },
+    "N100_unconditional_byz30": {
+      "label": "N100_unconditional_byz30",
+      "n_agents": 100,
+      "n_byz": 30,
+      "welfare": 26.634473555365542,
+      "mean_lam": 0.7898182804006583,
+      "survival": 0.936
+    },
+    "N100_situational_byz30": {
+      "label": "N100_situational_byz30",
+      "n_agents": 100,
+      "n_byz": 30,
+      "welfare": 27.53497921419337,
+      "mean_lam": 0.8970213350230203,
+      "survival": 0.996
+    },
+    "N20_inequity_aversion_byz30": {
+      "label": "N20_inequity_aversion_byz30",
+      "n_agents": 20,
+      "n_byz": 6,
+      "welfare": 21.100716663808335,
+      "mean_lam": 0.13103769807242094,
+      "survival": 0.0
+    },
+    "N20_social_influence_byz30": {
+      "label": "N20_social_influence_byz30",
+      "n_agents": 20,
+      "n_byz": 6,
+      "welfare": 21.533432944683547,
+      "mean_lam": 0.18255154103375598,
+      "survival": 0.0
+    },
+    "N20_unconditional_byz30": {
+      "label": "N20_unconditional_byz30",
+      "n_agents": 20,
+      "n_byz": 6,
+      "welfare": 26.634473555365528,
+      "mean_lam": 0.7898182804006586,
+      "survival": 0.936
+    },
+    "N100_inequity_aversion_byz30": {
+      "label": "N100_inequity_aversion_byz30",
+      "n_agents": 100,
+      "n_byz": 30,
+      "welfare": 21.0904240630016,
+      "mean_lam": 0.12981238845257165,
+      "survival": 0.0
+    },
+    "N100_social_influence_byz30": {
+      "label": "N100_social_influence_byz30",
+      "n_agents": 100,
+      "n_byz": 30,
+      "welfare": 21.4988262945615,
+      "mean_lam": 0.17843170173351175,
+      "survival": 0.0
+    },
+    "sensitivity": [
+      {
+        "r_crit": 0.1,
+        "recovery_scale": 0.5,
+        "selfish_survival": 0.112,
+        "selfish_welfare": 24.19961104822971,
+        "unconditional_survival": 0.664,
+        "unconditional_welfare": 26.425491821194033
+      },
+      {
+        "r_crit": 0.1,
+        "recovery_scale": 1.0,
+        "selfish_survival": 0.06,
+        "selfish_welfare": 24.19962320887536,
+        "unconditional_survival": 0.936,
+        "unconditional_welfare": 26.623091063607163
+      },
+      {
+        "r_crit": 0.1,
+        "recovery_scale": 2.0,
+        "selfish_survival": 0.024,
+        "selfish_welfare": 24.199315615884654,
+        "unconditional_survival": 0.988,
+        "unconditional_welfare": 26.697786694357923
+      },
+      {
+        "r_crit": 0.15,
+        "recovery_scale": 0.5,
+        "selfish_survival": 0.112,
+        "selfish_welfare": 24.19961104822971,
+        "unconditional_survival": 0.64,
+        "unconditional_welfare": 26.45218379443073
+      },
+      {
+        "r_crit": 0.15,
+        "recovery_scale": 1.0,
+        "selfish_survival": 0.06,
+        "selfish_welfare": 24.19962320887536,
+        "unconditional_survival": 0.936,
+        "unconditional_welfare": 26.634473555365528
+      },
+      {
+        "r_crit": 0.15,
+        "recovery_scale": 2.0,
+        "selfish_survival": 0.024,
+        "selfish_welfare": 24.199315615884654,
+        "unconditional_survival": 0.984,
+        "unconditional_welfare": 26.699476753937567
+      },
+      {
+        "r_crit": 0.2,
+        "recovery_scale": 0.5,
+        "selfish_survival": 0.112,
+        "selfish_welfare": 24.19968494910126,
+        "unconditional_survival": 0.636,
+        "unconditional_welfare": 26.45054126060261
+      },
+      {
+        "r_crit": 0.2,
+        "recovery_scale": 1.0,
+        "selfish_survival": 0.084,
+        "selfish_welfare": 24.199622986131274,
+        "unconditional_survival": 0.932,
+        "unconditional_welfare": 26.634220999891888
+      },
+      {
+        "r_crit": 0.2,
+        "recovery_scale": 2.0,
+        "selfish_survival": 0.024,
+        "selfish_welfare": 24.199356748969418,
+        "unconditional_survival": 0.98,
+        "unconditional_welfare": 26.697467929849093
+      },
+      {
+        "r_crit": 0.25,
+        "recovery_scale": 0.5,
+        "selfish_survival": 0.112,
+        "selfish_welfare": 24.19968494910126,
+        "unconditional_survival": 0.632,
+        "unconditional_welfare": 26.451906108838454
+      },
+      {
+        "r_crit": 0.25,
+        "recovery_scale": 1.0,
+        "selfish_survival": 0.084,
+        "selfish_welfare": 24.199622986131274,
+        "unconditional_survival": 0.928,
+        "unconditional_welfare": 26.626843499643904
+      },
+      {
+        "r_crit": 0.25,
+        "recovery_scale": 2.0,
+        "selfish_survival": 0.064,
+        "selfish_welfare": 24.199411402617542,
+        "unconditional_survival": 0.976,
+        "unconditional_welfare": 26.69054547258959
+      }
+    ]
+  },
+  "time_seconds": 58.014955043792725
+}
