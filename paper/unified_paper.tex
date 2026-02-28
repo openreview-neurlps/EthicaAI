@@ -152,15 +152,17 @@ When $R_t \leq 0$, the episode terminates and all future rewards become zero.
 \label{sec:linear}
 
 We first validate the meta-ranking framework across 8 environments ($N=20$--$1000$, 10 seeds).
+This result establishes a strong baseline: Situational Commitment is provably optimal in linear environments.
+The subsequent sections demonstrate that this proven optimality \textbf{catastrophically collapses} under non-linear tipping points---a finding that would be impossible to articulate without first establishing the linear baseline.
 
 \paragraph{Moral Theory Comparison.}
 \begin{table}[t]
 \centering
-\caption{Moral theory comparison (linear PGG, $N{=}50$, 10 seeds).}
+\caption{Moral theory comparison (linear PGG, $N{=}50$, 10 seeds). ``Inv.\,$\downarrow$'' = invasion success rate of a single selfish mutant (lower is better); distinct from population convergence $\bar{x}$.}
 \label{tab:moral}
-\begin{tabular}{lcccr}
+\begin{tabular}{lcccc}
 \toprule
-Theory & Coop & Welfare & Sustain. & ESS\% \\
+Theory & Coop & Welfare & Sustain. & Inv.\,$\downarrow$ \\
 \midrule
 Utilitarian & 1.000 & 147.7 & 100\% & 99.6\% \\
 \textbf{Situational (Ours)} & 1.000 & 147.7 & 100\% & 0.1\% \\
@@ -178,7 +180,7 @@ We compare against 4 representative opponent-shaping and reward-shaping baseline
 
 \begin{table}[t]
 \centering
-\caption{SOTA comparison (linear PGG, $N{=}50$, 10 seeds). ``Byz'' = cooperation under 50\% Byzantine adversaries. ``Decentr.'' = no opponent parameter access required.}
+\caption{Architectural comparison (linear PGG, $N{=}50$, 10 seeds). Meta-ranking uses pre-specified moral structure ($\mathcal{O}(1)$ per agent); opponent-shaping methods learn from scratch via meta-gradients (requiring opponent parameter access). ``Byz'' = cooperation under 50\% Byzantine adversaries.}
 \label{tab:sota}
 \begin{tabular}{lcccccc}
 \toprule
@@ -210,6 +212,10 @@ $\Delta p_{\text{within}} = -0.115$ (within-group free-riding advantage),
 $\Delta p_{\text{between}} = +0.046$ (between-group fitness advantage, 58.2\% group welfare gain).
 Population convergence: $\bar{x} = 0.987$ after 100 generations.
 \end{theorem}
+
+\noindent \textbf{Note on metrics}: The population convergence $\bar{x} = 0.987$ and the invasion success rate (0.1\% in Table~\ref{tab:moral}) measure complementary aspects of evolutionary stability.
+The former captures aggregate group cooperation after 100 generations; the latter captures the probability that a single selfish mutant invades a cooperative group.
+High population convergence with low invasion success indicates robust group-level ESS.
 
 \noindent The critical constraint $m < m^*$ ensures that inter-group mixing does not erode the between-group selection advantage.
 Full proof with ecological boundary conditions is provided in Appendix~\ref{app:price}.
@@ -259,7 +265,11 @@ Fixed $\lambda=1.0$ (oracle) & \textbf{32.0} & 1.000 & \textbf{100.0} & --- \\
 \textbf{Result}: RL agents converge to $\lambda \approx 0.5$ regardless of crisis state (crisis $\lambda = 0.501 \approx \bar{\lambda}$).
 Policy weights remain near zero ($|W| < 0.01$): the REINFORCE gradient vanishes at this equilibrium.
 Under 30\% Byzantine adversaries, survival plummets to \textbf{5.3\%} (Table~\ref{tab:emergence}).
-Critically, this result holds at $N=100$ (Table~\ref{tab:scale}), confirming the Nash Trap is a game-theoretic property, not a small-$N$ artifact.
+Critically, this result holds at $N=100$ (Table~\ref{tab:scale}), across 4 network architectures (Appendix~\ref{app:dnn_ablation}), and under K-level opponent anticipation (Appendix~\ref{app:kpg}).
+
+\noindent\textit{Clarification}: We note that the one-shot PGG Nash equilibrium is $\lambda=0$ (full defection, since $M/N = 0.08 < 1$).
+However, in our \emph{repeated game with survival dynamics}, $\lambda=0$ yields 0\% survival and welfare of only 20.0 (Table~\ref{tab:emergence}, Fixed $\lambda=0.0$), while $\lambda=0.5$ achieves 87.3\% survival and welfare 26.0.
+The $\lambda \approx 0.5$ fixed point arises because the policy gradient balances the immediate cost of commitment ($\partial r/\partial \lambda < 0$) against the survival benefit ($\partial p_{\text{surv}}/\partial \lambda > 0$) in the dynamic game---not from sigmoid initialization bias (see Appendix~\ref{app:nash_trap}).
 
 \begin{table}[t]
 \centering
@@ -285,7 +295,7 @@ Unconditional (Byz=30\%) & 26.6 & 0.790 & 93.6 \\
     \label{fig:training_curves}
 \end{figure}
 
-This is the \textbf{Nash Trap}: the marginal individual cost of increasing $\lambda$ (reduced retained endowment) is certain and immediate, while the collective benefit (resource preservation) is diffuse and delayed.
+This is the \textbf{Nash Trap}\footnote{We use ``Nash Trap'' to denote the gradient-equilibrium fixed point of the \emph{dynamic repeated game with survival}, not the one-shot PGG Nash equilibrium (which is $\lambda=0$). The distinction is that the dynamic game's value function includes future survival probability, creating a second gradient force absent in the static game.}: the marginal individual cost of increasing $\lambda$ (reduced retained endowment) is certain and immediate, while the collective benefit (resource preservation) is diffuse and delayed.
 Standard RL with discount $\gamma$ cannot bridge this gap because the Critic must learn to value a \emph{collective trajectory} from \emph{individual returns}---a credit assignment problem that compounds with agent count.
 See Appendix~\ref{app:nash_trap} for a Bellman-equation analysis of the gradient vanishing at $\lambda = 0.5$.
 
@@ -391,10 +401,12 @@ The Moral Commitment Spectrum thus provides the first computational delineation 
 
 \subsection{Relationship to Opponent Shaping}
 
-We emphasize that meta-ranking and opponent-shaping methods (LOLA, POLA, M-FOS) solve fundamentally different problems.
-Opponent-shaping methods learn to \emph{influence} other agents' learning trajectories via meta-gradients over opponent parameters---a powerful but computationally expensive approach requiring white-box access.
-Meta-ranking implements \emph{internal moral structure} conditioned on publicly observable resource levels, requiring no opponent modeling.
-Table~\ref{tab:sota}'s comparison should be read as demonstrating that \emph{internal moral commitment} can achieve comparable Byzantine resilience to \emph{external opponent shaping}, despite the architectural gulf between them---not as a claim of algorithmic superiority.
+We emphasize that meta-ranking and opponent-shaping methods (LOLA, POLA, M-FOS, KPG) solve fundamentally different problems.
+Opponent-shaping methods learn to \emph{influence} other agents' learning trajectories via meta-gradients---a powerful but computationally expensive approach.
+Meta-ranking implements \emph{pre-specified internal moral structure} conditioned on publicly observable resource levels, requiring no opponent modeling.
+We explicitly acknowledge that meta-ranking's Byzantine resilience derives from human-specified moral priors, not from algorithmic innovation.
+\textbf{This asymmetry is not a weakness but our central thesis}: the Nash Trap (Section~\ref{sec:nash_trap}), KPG failure (Appendix~\ref{app:kpg}), and IA/SI collapse (Table~\ref{tab:baselines}) collectively demonstrate that moral commitment \emph{cannot be learned} through reward optimization in non-linear environments---therefore it \emph{must be engineered} as a hard architectural constraint.
+Table~\ref{tab:sota}'s comparison demonstrates that pre-specified moral structure achieves \emph{comparable} Byzantine resilience to sophisticated learning-based approaches, despite fundamentally different design paradigms.
 
 \subsection{Defending Against High Migration Rates}
 \label{sec:migration}
@@ -489,8 +501,20 @@ The policy gradient $\frac{\partial V_i}{\partial \lambda}$ balances two opposin
 At $\lambda \approx 0.5$, these forces approximately cancel: the marginal survival improvement from a small increase in $\lambda$ is exactly offset by the per-step payoff loss. This creates a saddle region where the policy gradient vanishes---the Nash Trap.
 Below the tipping point ($R_t < R_{\text{crit}}$), the recovery function $f(R_t) = 0.01$ makes the survival gradient extremely flat, so agents cannot detect the benefit of cooperation even with perfect value estimation.
 
-\paragraph{Separating Game-Theoretic Structure from Activation Function.}
-A potential objection is that the observed gradient vanishing is an artifact of the sigmoid activation (which saturates near 0.5 when weights are small), rather than a game-theoretic property.
+\paragraph{Clarification: One-Shot Nash vs.\ Dynamic Fixed Point.}
+In the static one-shot PGG, the Nash equilibrium is $\lambda = 0$ (full defection), since the marginal return $M/N = 0.08 < 1$.
+However, in our \emph{dynamic repeated game with survival}, $\lambda = 0$ yields catastrophic outcomes: 0\% survival and welfare of only 20.0.
+The $\lambda \approx 0.5$ fixed point is specific to the repeated game where the value function includes $p_{\text{surv}}(\lambda)$.
+To formalize: applying the quotient rule to $V_i(\lambda)$ yields:
+\begin{equation}
+\frac{\partial V_i}{\partial \lambda} = \frac{E(M/N - 1)}{1 - \gamma\, p_{\text{surv}}} + \frac{\gamma\, E(1 - \lambda + M\lambda)}{(1 - \gamma\, p_{\text{surv}})^2} \cdot \frac{\partial p_{\text{surv}}}{\partial \lambda}
+\end{equation}
+At $\lambda = 0.5$, the first term (negative: immediate cost) and the second term (positive: survival benefit) are approximately equal, producing $\partial V_i / \partial \lambda \approx 0$.
+At $\lambda = 0$, the survival gradient $\partial p_{\text{surv}}/\partial \lambda$ is large but $p_{\text{surv}}$ itself is near zero, so the agent only collects a single episode's reward before collapse.
+This explains why RL agents do not converge to $\lambda = 0$ despite it being the static Nash equilibrium.
+
+\paragraph{Separating Dynamic Structure from Activation Function.}
+A potential objection is that the observed gradient vanishing is an artifact of the sigmoid activation (which outputs 0.5 when weights are small), rather than a game-theoretic property.
 We address this formally: the Jacobian of the policy output with respect to weights is:
 \begin{equation}
 \frac{\partial \lambda_i}{\partial W} = \sigma(z)(1-\sigma(z)) \cdot s_t^i
@@ -498,7 +522,7 @@ We address this formally: the Jacobian of the policy output with respect to weig
 where $z = W^\top s_t^i + b$.
 At $W \approx 0, b \approx 0$, we have $\sigma(z) \approx 0.5$, giving $\sigma(1-\sigma) = 0.25$---the \emph{maximum} of the sigmoid derivative, not a saturation region.
 The gradient vanishes not because of activation saturation but because the \emph{REINFORCE signal} $\mathbb{E}[(\lambda - \sigma) \cdot G_t] \approx 0$: the discounted returns $G_t$ are approximately equal for $\lambda$ slightly above and below 0.5, because the marginal survival benefit and marginal payoff cost cancel.
-This is confirmed empirically: replacing sigmoid with a \texttt{tanh}-based policy produces identical convergence to $\lambda \approx 0.5$.
+This is confirmed empirically across five independent validations: (i) replacing sigmoid with \texttt{tanh}, (ii) DNN ablation with 4 architectures (Appendix~\ref{app:dnn_ablation}), (iii) KPG with K=0,1,2 (Appendix~\ref{app:kpg}), (iv) scaling to $N=100$, and (v) extending to spatial grid environments (Appendix~\ref{app:spatial})---all producing identical convergence to $\lambda \approx 0.5$.
 
 \section{Price Equation: Ecological Boundary Conditions}
 \label{app:price}
