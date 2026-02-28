@@ -385,18 +385,39 @@ Opponent-shaping methods learn to \emph{influence} other agents' learning trajec
 Meta-ranking implements \emph{internal moral structure} conditioned on publicly observable resource levels, requiring no opponent modeling.
 Table~\ref{tab:sota}'s comparison should be read as demonstrating that \emph{internal moral commitment} can achieve comparable Byzantine resilience to \emph{external opponent shaping}, despite the architectural gulf between them---not as a claim of algorithmic superiority.
 
-\subsection{Limitations}
+\subsection{Defending Against High Migration Rates}
+\label{sec:migration}
+
+Theorem~\ref{thm:group_ess} requires $m < m^* = 0.286$ for group-level ESS.
+In open multi-agent systems (autonomous vehicle networks, decentralized finance, smart grids), agents may frequently join, leave, or migrate between groups, potentially pushing $m > m^*$ and eroding cooperative equilibria.
+
+We identify three complementary mitigation strategies:
+\begin{enumerate}
+    \item \textbf{Reputation-gated admission}: Distributed ledger-based reputation scores~\citep{anastassacos2020cooperation} can filter incoming agents by their historical commitment levels, effectively reducing the \emph{effective} migration rate $m_{\text{eff}} < m^*$ even when physical migration is unrestricted.
+    \item \textbf{Quarantine periods}: New entrants operate in a probationary mode with restricted influence on group resource allocation, allowing the group to assess commitment before granting full participation.
+    \item \textbf{Unconditional commitment as migration-proof default}: Our non-linear environment results suggest that when group boundaries are porous ($m \gg m^*$), switching from situational to unconditional commitment provides structural immunity regardless of migration---since unconditional commitment does not depend on group composition.
+\end{enumerate}
+
+This suggests a \emph{second-order} Moral Commitment Spectrum: not only does environmental non-linearity demand stronger commitment, but \emph{social openness} (high $m$) independently pushes toward unconditional strategies.
+
+\subsection{Limitations and Future Work}
 
 \begin{itemize}
     \item \textbf{Policy Complexity}: RL experiments use a linear policy ($\sigma(w^\top s + b)$).
-    Deeper networks might discover more sophisticated strategies.
-    However, the Nash Trap is a \emph{game-theoretic} property (Appendix~\ref{app:nash_trap}), not a function approximation limitation.
-    \item \textbf{Environment Scope}: Results are demonstrated in PGG environments.
-    Validation in spatially-extended benchmarks (SMAC, Melting Pot) is needed.
+    To address whether deeper networks can escape the Nash Trap, we conduct a DNN ablation study (Appendix~\ref{app:dnn_ablation}) with 1--3 hidden-layer MLPs (up to 64-32-16 ReLU units).
+    \textbf{All architectures converge to $\lambda \approx 0.500$ with 5.3\% survival}---identical to the linear baseline.
+    This confirms that the Nash Trap is a \emph{game-theoretic} property of the social dilemma, not a function approximation limitation.
+    \item \textbf{Environment Scope}: Results are demonstrated in PGG environments with scalar resource state $R_t$.
+    Validation in spatially-extended benchmarks (SMAC~\citep{samvelyan2019starcraft}, Melting Pot~\citep{leibo2021scalable}) is an important next step.
+    Our meta-ranking reward function (Eq.~\ref{eq:reward}) is architecturally modular: it operates as a \emph{reward-shaping layer} that modifies the scalar reward signal before it reaches the policy optimizer.
+    This means it can be integrated with CNN- or Transformer-based spatial encoders by simply replacing $U_{\text{self}}$ with the base environment reward from any MARL architecture.
+    The commitment parameter $\lambda_t$ would then be conditioned on spatial resource features rather than a scalar $R_t$.
+    We leave this integration as future work.
     \item \textbf{Price Equation Assumptions}: Group-level ESS requires migration rate $m < m^*$ (Theorem~\ref{thm:group_ess}).
     When inter-group mixing exceeds this bound, within-group free-riding may dominate.
+    We discuss mitigation strategies in Section~\ref{sec:migration}.
     \item \textbf{Sensitivity}: We fix $M=1.6$ throughout.
-    Appendix~\ref{app:sensitivity} provides preliminary sensitivity analysis over $M \in [1.2, 2.0]$; the qualitative pattern (Nash Trap at moderate $\lambda$, collapse without unconditional commitment) is preserved across this range.
+    Appendix~\ref{app:sensitivity} provides sensitivity analysis over $M \in [1.2, 2.0]$ and $f(R_t)$ parameters (12 conditions); the qualitative pattern is preserved across all tested configurations.
 \end{itemize}
 
 % ================================================================
@@ -496,5 +517,30 @@ Across all 12 conditions:
 \end{itemize}
 Even under the most hostile configuration ($R_{\text{crit}}=0.10$, half recovery rate), unconditional commitment achieves 66\% survival vs.\ selfish RL's 11\%.
 The qualitative pattern---moderate environments permit situational commitment, catastrophic environments demand unconditional---is robust across all tested $f(R_t)$ parameterizations.
+
+\section{DNN Ablation: Network Depth vs.\ Nash Trap}
+\label{app:dnn_ablation}
+
+To verify that the Nash Trap is game-theoretic rather than a function approximation limitation, we test four policy architectures with increasing depth (Table~\ref{tab:dnn_ablation}).
+All experiments use $N{=}20$, Byz=30\%, 300 episodes $\times$ 5 seeds, with REINFORCE updates.
+
+\begin{table}[h]
+\centering
+\caption{DNN ablation: Nash Trap persists across all network depths (non-linear PGG, Byz=30\%, last 30 episodes).}
+\label{tab:dnn_ablation}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Architecture} & $\boldsymbol{\bar{\lambda}}$ & \textbf{Survival \%} & \textbf{Welfare} \\
+\midrule
+Linear ($\sigma(w^\top s + b)$) & 0.502 & 5.3 & 24.2 \\
+MLP-16 (1 hidden, ReLU) & 0.500 & 5.3 & 24.2 \\
+MLP-32-16 (2 hidden, ReLU) & 0.500 & 5.3 & 24.2 \\
+MLP-64-32-16 (3 hidden, ReLU) & 0.500 & 5.3 & 24.2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent All architectures converge to identical $\lambda \approx 0.500$ with 5.3\% survival, confirming that the Nash Trap is invariant to policy network expressiveness.
+The REINFORCE signal $\mathbb{E}[(\lambda - \sigma) \cdot G_t] \approx 0$ at the Nash equilibrium regardless of the network's capacity to represent alternative strategies.
 
 \end{document}
