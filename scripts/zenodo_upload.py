@@ -181,10 +181,12 @@ def update_metadata(token, draft):
                 "achieve 0% survival under Byzantine conditions&mdash;their other-regarding mechanisms cause "
                 "downward drift toward adversaries' zero contributions. Only unconditional commitment "
                 "is structurally immune.</p>"
-                "<p><strong>v2.0.0 (2026-02-28):</strong> "
-                "Unified paper integrating Paper 1 (Situational Commitment) + Paper 2 (Nash Trap). "
-                "N=100 scale test, Jacobian/Hessian Nash Trap proof, 12-condition f(R_t) sensitivity, "
-                "same-class baseline comparison (IA, SI). 11 pages, NeurIPS 2026 format.</p>"
+                "<p><strong>v2.1.0 (2026-03-02):</strong> "
+                "Rebuttal-hardened final version with 11 defense points. "
+                "New: DNN ablation (4 architectures), K-Level Policy Gradients (K=0,1,2) comparison, "
+                "5&times;5 Spatial Social Dilemma, Nash Trap terminology precision (one-shot vs dynamic "
+                "fixed point with p_surv derivative), principled design requirement framing. "
+                "13 pages, NeurIPS 2026 format.</p>"
                 "<p>Code: https://github.com/Yesol-Pilot/EthicaAI</p>"
             ),
             "creators": [{"name": "Heo, Yesol", "affiliation": "Independent Researcher"}],
@@ -206,10 +208,10 @@ def update_metadata(token, draft):
             ],
             "access_right": "open",
             "license": "cc-by-4.0",
-            "publication_date": "2026-02-28",
-            "version": "2.0.0",
+            "publication_date": "2026-03-02",
+            "version": "2.1.0",
             "language": "eng",
-            "notes": "Preprint v2.0.0. Unified paper: Moral Commitment Spectrum. N=100 scale test, Jacobian Nash Trap proof, 12-condition sensitivity, same-class baselines (IA/SI 0% survival).",
+            "notes": "Preprint v2.1.0. Rebuttal-hardened: DNN ablation (4 arch), KPG K=0/1/2 comparison, 5x5 Spatial Dilemma, Nash Trap precision, principled design. 13 pages, 11 defense points.",
         }
     }
 

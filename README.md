@@ -52,6 +52,15 @@ When must multi-agent systems move beyond self-interest, and how much moral comm
 | LOLA | 0.000 | 101.5 | 0.000 | ✗ |
 | **Meta-Ranking (Ours)** | 1.000 | 148.0 | **0.500** | ✓ |
 
+### Extended Validations (v2.1.0)
+
+| Validation | Result | Implication |
+|:---|:---|:---|
+| DNN Ablation (4 architectures) | All λ≈0.500 | Nash Trap is game-theoretic, not capacity-limited |
+| KPG K=0,1,2 | All λ≈0.500, 1.8× slower | SOTA opponent-shaping fails identically |
+| 5×5 Spatial Grid | Selfish 0%, Unconditional 34.7% | Pattern extends to spatially-extended environments |
+| tanh activation | λ≈0.500 | Not sigmoid initialization artifact |
+
 ---
 
 ## 📂 Repository Structure
@@ -59,13 +68,15 @@ When must multi-agent systems move beyond self-interest, and how much moral comm
 ```
 EthicaAI/
 ├── paper/                    # 📄 Unified paper (LaTeX + PDF)
-│   ├── unified_paper.tex     #   Main manuscript (11 pages)
+│   ├── unified_paper.tex     #   Main manuscript (13 pages)
 │   ├── unified_paper.pdf     #   Compiled PDF
 │   ├── unified_references.bib
 │   └── neurips2026_main.tex  #   Paper 1 (legacy)
 ├── scripts/                  # 🧪 Experiment scripts
 │   ├── mappo_emergence.py    #   Nash Trap RL experiment
 │   ├── extended_experiments.py # N=100, IA/SI baselines, f(R_t) sensitivity
+│   ├── kpg_experiment.py     #   K-Level Policy Gradient comparison
+│   ├── spatial_dilemma.py    #   5×5 Grid Spatial Social Dilemma
 │   ├── paper2_figures.py     #   Figure generation
 │   └── zenodo_upload.py      #   Zenodo deployment
 ├── outputs/                  # 📊 Experiment results (JSON)
@@ -106,7 +117,7 @@ bash scripts/run_evolution_gpu.sh
   year    = {2026},
   doi     = {10.5281/zenodo.18812419},
   url     = {https://github.com/Yesol-Pilot/EthicaAI},
-  version = {v2.0.0-preprint}
+  version = {v2.1.0-preprint}
 }
 ```
 
@@ -116,7 +127,8 @@ bash scripts/run_evolution_gpu.sh
 
 | Version | Date | Description |
 |---------|------|-------------|
-| **v2.0.0** | 2026-02-28 | Unified paper: Moral Commitment Spectrum (Paper 1 + Paper 2) |
+| **v2.1.0** | 2026-03-02 | Rebuttal-hardened: KPG, Spatial Dilemma, DNN ablation, 11 defense points (13p) |
+| v2.0.0 | 2026-02-28 | Unified paper: Moral Commitment Spectrum (Paper 1 + Paper 2) |
 | v1.2.0 | 2026-02-28 | Paper 1: Theorem 3, 8-algo SOTA, reviewer defense |
 | v1.1.0 | 2026-02-27 | Paper 1: IPPO benchmark, ESS welfare reframing |
 | v1.0.0 | 2026-02-26 | Paper 1: JAX LOLA, O(N³) collapse analysis |
