@@ -1,0 +1,115 @@
+{
+  "theorem": "Nash Trap Stability (Individual Policy Gradient)",
+  "statement": "In symmetric N-agent non-linear PGG with M/N < 1, the individual value function V_i(\u03bb_i; \u03bb_{-i}=\u03bb) has a unique interior stationary point \u03bb* where \u2202V_i/\u2202\u03bb_i = 0, satisfying \u2202\u00b2V_i/\u2202\u03bb_i\u00b2 < 0 (local maximum for unilateral deviation). This \u03bb* is the Nash Trap: no individual agent has incentive to deviate from \u03bb* in either direction.",
+  "fixed_points": [],
+  "perturbation_analysis": [],
+  "all_restoring": false,
+  "sweep_results": [
+    {
+      "M": 1.2,
+      "gamma": 0.9,
+      "fixed_points": [],
+      "gradient_at_0.01": -9.572503813615185,
+      "gradient_at_0.99": -47.14438308184299
+    },
+    {
+      "M": 1.2,
+      "gamma": 0.95,
+      "fixed_points": [],
+      "gradient_at_0.01": -9.58215380908456,
+      "gradient_at_0.99": -59.74015243737085
+    },
+    {
+      "M": 1.2,
+      "gamma": 0.99,
+      "fixed_points": [],
+      "gradient_at_0.01": -9.589878283478015,
+      "gradient_at_0.99": -74.15963738566234
+    },
+    {
+      "M": 1.4,
+      "gamma": 0.9,
+      "fixed_points": [],
+      "gradient_at_0.01": -9.469006955420411,
+      "gradient_at_0.99": -45.25720296300051
+    },
+    {
+      "M": 1.4,
+      "gamma": 0.95,
+      "fixed_points": [],
+      "gradient_at_0.01": -9.478455518241446,
+      "gradient_at_0.99": -56.36158120125856
+    },
+    {
+      "M": 1.4,
+      "gamma": 0.99,
+      "fixed_points": [],
+      "gradient_at_0.01": -9.486018281990027,
+      "gradient_at_0.99": -67.61013271727734
+    },
+    {
+      "M": 1.6,
+      "gamma": 0.9,
+      "fixed_points": [],
+      "gradient_at_0.01": -9.36551009633746,
+      "gradient_at_0.99": -43.37002285126346
+    },
+    {
+      "M": 1.6,
+      "gamma": 0.95,
+      "fixed_points": [],
+      "gradient_at_0.01": -9.374757226510155,
+      "gradient_at_0.99": -52.983009965146266
+    },
+    {
+      "M": 1.6,
+      "gamma": 0.99,
+      "fixed_points": [],
+      "gradient_at_0.01": -9.382158282278397,
+      "gradient_at_0.99": -61.060628063103195
+    },
+    {
+      "M": 1.8,
+      "gamma": 0.9,
+      "fixed_points": [],
+      "gradient_at_0.01": -9.262013239030864,
+      "gradient_at_0.99": -41.48284272531555
+    },
+    {
+      "M": 1.8,
+      "gamma": 0.95,
+      "fixed_points": [],
+      "gradient_at_0.01": -9.2710589374434,
+      "gradient_at_0.99": -49.60443872903397
+    },
+    {
+      "M": 1.8,
+      "gamma": 0.99,
+      "fixed_points": [],
+      "gradient_at_0.01": -9.278298282566766,
+      "gradient_at_0.99": -54.51112340892905
+    },
+    {
+      "M": 2.0,
+      "gamma": 0.9,
+      "fixed_points": [],
+      "gradient_at_0.01": -9.15851638083609,
+      "gradient_at_0.99": -39.5956626135785
+    },
+    {
+      "M": 2.0,
+      "gamma": 0.95,
+      "fixed_points": [],
+      "gradient_at_0.01": -9.167360646600287,
+      "gradient_at_0.99": -46.22586750002711
+    },
+    {
+      "M": 2.0,
+      "gamma": 0.99,
+      "fixed_points": [],
+      "gradient_at_0.01": -9.174438281078778,
+      "gradient_at_0.99": -47.96161874764948
+    }
+  ],
+  "key_insight": "\u2202r_i/\u2202\u03bb_i = E(M/N - 1) < 0: increasing commitment ALWAYS costs. \u2202p_surv/\u2202\u03bb_i > 0: increasing commitment improves survival. At \u03bb*, marginal survival benefit = marginal payoff cost."
+}
