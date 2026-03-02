@@ -1,16 +1,13 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
-- family-names: "Heo"
-  given-names: "Yesol"
-  email: "dpfh1537@gmail.com"
-  orcid: ""
+- name: "Anonymous Author(s)"
 title: "EthicaAI: The Moral Commitment Spectrum in Multi-Agent Social Dilemmas"
 version: 2.1.0
-doi: 10.5281/zenodo.18812419
+# doi: 10.5281/zenodo.18812419  # TODO: restore after acceptance
 date-released: 2026-03-02
-url: "https://github.com/Yesol-Pilot/EthicaAI"
-repository-code: "https://github.com/Yesol-Pilot/EthicaAI"
+# url: removed for double-blind review
+# repository-code: removed for double-blind review
 license: MIT
 keywords:
   - moral commitment spectrum
@@ -28,10 +25,7 @@ keywords:
 preferred-citation:
   type: article
   authors:
-  - family-names: "Heo"
-    given-names: "Yesol"
-  doi: "10.5281/zenodo.18812419"
-  journal: "Zenodo"
+  - name: "Anonymous Author(s)"
+  # doi: "10.5281/zenodo.18812419"  # TODO: restore after acceptance
   title: "From Situational to Unconditional: The Spectrum of Moral Commitment Required for Multi-Agent Survival in Non-linear Social Dilemmas"
   year: 2026
-  url: "https://zenodo.org/records/18812419"

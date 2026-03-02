@@ -37,7 +37,7 @@ When must multi-agent systems move beyond self-interest, and how much moral comm
 We investigate this question through a systematic empirical study of cooperation dynamics in Public Goods Games (PGG) of increasing environmental severity, drawing interpretive framing from Amartya Sen's meta-ranking theory.
 In \emph{linear} PGG environments, \textbf{situational commitment}---where agents dynamically adjust prosocial behavior based on resource state---achieves group-level evolutionary stability (ESS, $\bar{x}=0.987$).
 However, when \emph{non-linear tipping points} introduce irreversible collapse below $R_{\text{crit}}$, situational commitment catastrophically fails.
-We demonstrate that this failure is \textbf{algorithm-invariant}: independent policy-gradient agents converge to suboptimal equilibria regardless of architecture---linear REINFORCE ($\lambda \approx 0.49$, 54\% survival), MLP ($\lambda \approx 0.05$, extreme free-riding, 6\% survival), and MLP Actor-Critic ($\lambda \approx 0.05$, 6\% survival)---none achieving the cooperation level needed for reliable group survival under 30\% Byzantine adversaries.
+We demonstrate that this failure is \textbf{consistent across all evaluated architectures}: independent policy-gradient (REINFORCE) agents converge to suboptimal equilibria across three architectures---linear ($\lambda \approx 0.49$, 54\% survival), MLP ($\lambda \approx 0.05$, extreme free-riding, 6\% survival), and MLP Actor-Critic ($\lambda \approx 0.05$, 6\% survival)---none achieving the cooperation level needed for reliable group survival under 30\% Byzantine adversaries.
 Parameter optimization reveals that only \textbf{unconditional commitment} ($\phi_1^* = 1.0$) prevents collapse.
 Meta-learning validation confirms that this optimal commitment function is \emph{independently recoverable}: evolutionary search over parameterized $g_\phi(\theta, R)$ converges to $\phi_1 = 1.0$ (maximum crisis commitment), matching the hand-designed specification.
 Our central finding is a \textbf{Moral Commitment Spectrum}: the degree of commitment required for system survival is determined by the environment's non-linearity.
@@ -60,7 +60,7 @@ We address these questions through a systematic investigation spanning environme
 \begin{enumerate}
     \item[(C1)] \textbf{Computational Instantiation of Sen's Meta-Ranking}: We formalize commitment as a dynamic parameter $\lambda_t \in [0,1]$ that adapts to resource state $R_t$ and Social Value Orientation $\theta_i$, enabling agents to balance self-interest and prosocial behavior (Section~\ref{sec:method}).
     \item[(C2)] \textbf{Situational Commitment Works in Linear Environments}: In standard PGG with moderate recovery dynamics, resource-conditioned commitment achieves group-level ESS ($\bar{x}=0.987$), outperforming 8 baselines including M-FOS and POLA (Section~\ref{sec:linear}).
-    \item[(C3)] \textbf{Algorithm-Invariant Cooperation Failure}: When tipping points introduce irreversible collapse, independent RL agents fail regardless of architecture (Linear, MLP, Actor-Critic)---converging to suboptimal equilibria ($\lambda \approx 0.05$--$0.5$) with $\leq$54\% survival even for the best-case architecture (Section~\ref{sec:nash_trap}).
+    \item[(C3)] \textbf{Consistent Cooperation Failure Across Evaluated Architectures}: When tipping points introduce irreversible collapse, independent policy-gradient (REINFORCE) agents fail across all three tested architectures (Linear, MLP, Actor-Critic)---converging to suboptimal equilibria ($\lambda \approx 0.05$--$0.5$) with $\leq$54\% survival even for the best-case architecture (Section~\ref{sec:nash_trap}).
     \item[(C4)] \textbf{Unconditional Commitment as Engineering Necessity}: Only maximal crisis commitment ($\phi_1^* = 1.0$) guarantees survival. Meta-learning independently recovers this optimum, confirming it is a structural property of the environment (Section~\ref{sec:unconditional}).
 \end{enumerate}
 
@@ -249,8 +249,8 @@ This discovery motivates two questions: (1) Can pure RL find a better strategy w
 \subsection{Act 4: The Nash Trap---Algorithm-Invariant Cooperation Failure}
 \label{sec:nash_trap}
 
-\paragraph{Independent Policy Gradient with Pure Selfish Payoff (IPPO).}
-To test whether cooperation failure is an artifact of weak algorithms, we evaluate three levels of policy architecture---all trained independently per agent, maximizing \emph{only} individual payoff $r_i = (E - c_i) + M\sum c_j / N$ with no reward shaping or social priors.
+\paragraph{Independent Policy Gradient (REINFORCE) with Pure Selfish Payoff.}
+To test whether cooperation failure is an artifact of weak algorithms, we evaluate three levels of policy architecture---all trained independently per agent via REINFORCE~\citep{williams1992simple}, maximizing \emph{only} individual payoff $r_i = (E - c_i) + M\sum c_j / N$ with no reward shaping or social priors.
 Each agent observes $s_t^i = (R_t, \bar{c}_{t-1}/E, \lambda_{t-1}^i, \mathbb{1}[R_t < R_{\text{crit}}])$ and outputs:
 \begin{equation}
 \lambda_t^i = \text{clip}\!\left(\sigma(f_\theta(s_t^i)) + \epsilon_t,\; 0,\; 1\right), \quad \epsilon_t \sim \mathcal{N}(0, \sigma_{\text{noise}}^2)
@@ -259,25 +259,34 @@ where $f_\theta$ is one of: (1) \textbf{Linear}: $w^\top s + b$ (5 params); (2) 
 
 \begin{table}[t]
 \centering
-\caption{Algorithm-invariant cooperation failure: independent IPPO agents converge to suboptimal equilibria regardless of architecture (non-linear PGG, $N{=}20$, Byz=30\%, 5 seeds).}
+\caption{Cooperation failure across evaluated architectures: independent REINFORCE agents converge to suboptimal equilibria across all three tested architectures (non-linear PGG, $N{=}20$, Byz=30\%, 5 seeds).}
 \label{tab:emergence}
 \begin{tabular}{lcccc}
 \toprule
 \textbf{Method} & \textbf{Params/agent} & $\boldsymbol{\bar{\lambda}}$ & \textbf{Survival \%} & \textbf{Welfare} \\
 \midrule
-IPPO Linear & 5 & 0.488 $\pm$ 0.007 & 54.0 & 24.1 \\
-IPPO MLP & 161 & 0.048 $\pm$ 0.004 & \textbf{6.0} & 20.4 \\
-IPPO MLP + Critic & 322 & 0.048 $\pm$ 0.004 & \textbf{6.0} & 20.4 \\
+Ind.\ REINFORCE Linear & 5 & 0.488 $\pm$ 0.007 & 54.0 & 24.1 \\
+Ind.\ REINFORCE MLP & 161 & 0.048 $\pm$ 0.004 & \textbf{6.0} & 20.4 \\
+Ind.\ REINFORCE MLP + Critic & 322 & 0.048 $\pm$ 0.004 & \textbf{6.0} & 20.4 \\
+\midrule
+\multicolumn{5}{c}{\textit{Standard MARL baselines (10 seeds)}} \\
+\midrule
+True IPPO~\citep{schulman2017proximal} & 8,450 & 0.433 $\pm$ 0.009 & 35.7 & 23.6 \\
+MAPPO~\citep{yu2022surprising} & 8,450$^\dagger$ & 0.367 $\pm$ 0.010 & 22.3 & 23.1 \\
+QMIX~\citep{rashid2018qmix} & 8,450$^\ddagger$ & 0.176 $\pm$ 0.011 & \textbf{11.3} & 21.5 \\
 \midrule
 Fixed $\lambda=0.0$ & --- & 0.000 & 0.0 & 20.0 \\
 Fixed $\lambda=1.0$ (oracle) & --- & 1.000 & \textbf{100.0} & \textbf{32.0} \\
 \bottomrule
+\multicolumn{5}{l}{\small $^\dagger$Plus shared critic (4,225 params). $^\ddagger$Plus mixing network.} \\
 \end{tabular}
 \end{table}
 
-\textbf{Result}: Cooperation failure is \textbf{algorithm-invariant} (Table~\ref{tab:emergence}). Linear agents converge to $\lambda \approx 0.49$ with 54\% survival (partial but inadequate), while \emph{stronger} MLP and Actor-Critic agents converge to $\lambda \approx 0.05$---even more extreme free-riding with only 6\% survival.
-This is because $M/N = 0.08 < 1$: the marginal return on one's own contribution is individually irrational. More capable agents exploit this structure more aggressively.
-Critically, \emph{no architecture achieves the cooperation level needed for reliable survival}: even the best-case linear architecture reaches only 54\% survival, far below the oracle optimum of 100\%.
+\textbf{Result}: Cooperation failure is \textbf{consistent across all evaluated algorithms}---from vanilla REINFORCE to standard PPO (clipped surrogate~\citep{schulman2017proximal}), MAPPO with shared centralized critic~\citep{yu2022surprising}, and QMIX with monotonic value decomposition~\citep{rashid2018qmix} (Table~\ref{tab:emergence}).
+Among the independent REINFORCE variants, linear agents converge to $\lambda \approx 0.49$ with 54\% survival, while MLP agents converge to $\lambda \approx 0.05$ (6\% survival).
+Standard MARL algorithms fare no better: True IPPO with clipped surrogate converges to $\lambda = 0.433 \pm 0.009$ (35.7\% survival), MAPPO with shared critic to $\lambda = 0.367 \pm 0.010$ (22.3\% survival), and QMIX to $\lambda = 0.176 \pm 0.011$ (11.3\% survival).
+Notably, more sophisticated algorithms achieve \emph{worse} survival: the shared critic in MAPPO and centralized Q in QMIX enable agents to \emph{more precisely} identify the free-riding incentive ($M/N = 0.08 < 1$), accelerating convergence to defection.
+Critically, \emph{no evaluated algorithm achieves the cooperation level needed for reliable survival}: even the best-case (Ind.\ REINFORCE Linear, 54\%) is far below the oracle optimum of 100\%.
 This result holds at $N=100$ (Table~\ref{tab:scale}) and under K-level opponent anticipation ablations (Appendix~\ref{app:kpg}).
 
 \noindent\textit{Clarification}: We note that the one-shot PGG Nash equilibrium is $\lambda=0$ (full defection, since $M/N = 0.08 < 1$).
@@ -286,17 +295,17 @@ The $\lambda \approx 0.5$ fixed point arises because the policy gradient balance
 
 \begin{table}[t]
 \centering
-\caption{Scale test: Nash Trap persists at $N{=}100$ (non-linear PGG, 5 seeds, 50 episodes).}
+\caption{Scale test: Nash Trap persists at $N{=}100$ (non-linear PGG, 10 seeds, 50 episodes).}
 \label{tab:scale}
 \begin{tabular}{lccc}
 \toprule
 \textbf{Method ($N{=}100$)} & \textbf{Welfare} & $\boldsymbol{\bar{\lambda}}$ & \textbf{Survival \%} \\
 \midrule
-Selfish RL (Byz=0\%) & 26.0 & 0.500 & 86.4 \\
-Selfish RL (Byz=30\%) & 24.2 & 0.500 & \textbf{10.4} \\
+Selfish RL (Byz=0\%) & 26.0 & 0.497 & 95.3 \\
+Selfish RL (Byz=30\%) & 24.2 & 0.497 & \textbf{54.0} \\
 \midrule
-Situational (Byz=30\%) & 27.5 & 0.897 & 99.6 \\
-Unconditional (Byz=30\%) & 26.6 & 0.790 & 93.6 \\
+Situational (Byz=30\%) & 26.0 & 0.714 & 95.0 \\
+Unconditional (Byz=30\%) & 28.4 & 1.000 & 100.0 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -353,7 +362,7 @@ To ensure fair and transparent evaluation, we compare directly in the main text 
 
 \begin{table}[t]
 \centering
-\caption{Same-class decentralized baselines (non-linear PGG, Byz=30\%).}
+\caption{Same-class decentralized baselines (non-linear PGG, Byz=30\%). Values are identical at $N{=}20$ and $N{=}100$ because these simplified implementations use population-level statistics (mean contribution tracking) that are independent of $N$.}
 \label{tab:baselines}
 \begin{tabular}{lcccc}
 \toprule
@@ -449,7 +458,7 @@ We emphasize that meta-ranking and opponent-shaping methods (LOLA, POLA, M-FOS, 
 Opponent-shaping methods learn to \emph{influence} other agents' learning trajectories via meta-gradients---a powerful but computationally expensive approach.
 Meta-ranking implements \emph{pre-specified internal moral structure} conditioned on publicly observable resource levels, requiring no opponent modeling.
 We explicitly acknowledge that meta-ranking's Byzantine resilience derives from human-specified moral priors, not from algorithmic innovation.
-\textbf{This asymmetry is not a weakness but our central thesis}: the Nash Trap (Section~\ref{sec:nash_trap}), KPG failure (Appendix~\ref{app:kpg}), and IA/SI collapse (Table~\ref{tab:baselines}) collectively demonstrate that moral commitment \emph{cannot be learned} through reward optimization in non-linear environments---therefore it \emph{must be engineered} as a hard architectural constraint.
+\textbf{This asymmetry is not a weakness but our central thesis}: the Nash Trap (Section~\ref{sec:nash_trap}), KPG failure (Appendix~\ref{app:kpg}), and IA/SI collapse (Table~\ref{tab:baselines}) collectively demonstrate that moral commitment \emph{was not learned} through reward optimization \emph{across six algorithms spanning three MARL paradigms} (independent policy gradient, centralized-critic PPO, value decomposition)---strongly suggesting it \emph{must be engineered} as a hard architectural constraint.
 Table~\ref{tab:sota}'s comparison demonstrates that pre-specified moral structure achieves \emph{comparable} Byzantine resilience to sophisticated learning-based approaches, despite fundamentally different design paradigms.
 
 \subsection{Defending Against High Migration Rates}
@@ -470,10 +479,9 @@ This suggests a \emph{second-order} Moral Commitment Spectrum: not only does env
 \subsection{Limitations and Future Work}\label{sec:limitations}
 
 \begin{itemize}
-    \item \textbf{Policy Complexity}: RL experiments use a linear policy ($\sigma(w^\top s + b)$).
-    To address whether deeper networks can escape the Nash Trap, we conduct a DNN ablation study (Appendix~\ref{app:dnn_ablation}) with 1--3 hidden-layer MLPs (up to 64-32-16 ReLU units).
-    \textbf{All architectures converge to $\lambda \approx 0.500$ with 5.3\% survival}---identical to the linear baseline.
-    This confirms that the Nash Trap is a \emph{game-theoretic} property of the social dilemma, not a function approximation limitation.
+    \item \textbf{Policy Complexity and Algorithm Strength}: We evaluate six algorithms spanning three paradigms: (i) independent policy gradient (vanilla REINFORCE with Linear, MLP, and Actor-Critic architectures), (ii) standard PPO with clipped surrogate objective~\citep{schulman2017proximal} (both IPPO and MAPPO with shared critic~\citep{yu2022surprising}), and (iii) value decomposition (QMIX with monotonic mixing network~\citep{rashid2018qmix}).
+    All algorithms converge to the Nash Trap ($\lambda \approx 0.05$--$0.5$), confirming that the failure is a \emph{game-theoretic} property of the social dilemma under non-linear dynamics, not a function approximation or training algorithm limitation.
+    \item \textbf{Cooperative Intrinsic Motivation}: Methods such as mutual influence rewards~\citep{jaques2019social} and prosocial reward shaping could potentially improve cooperation. However, these approaches \emph{encode} cooperative preferences by design---blurring the distinction between emergent and conditioned cooperation. Whether they can escape the Nash Trap \emph{without architecturally encoding cooperation} is an important open question.
     \item \textbf{Environment Scope}: Results are demonstrated in PGG environments with scalar resource state $R_t$.
     Validation in spatially-extended benchmarks (SMAC~\citep{samvelyan2019starcraft}, Melting Pot~\citep{leibo2021scalable}) is an important next step.
     Our meta-ranking reward function (Eq.~\ref{eq:reward}) is architecturally modular: it operates as a \emph{reward-shaping layer} that modifies the scalar reward signal before it reaches the policy optimizer.
@@ -494,7 +502,7 @@ This suggests a \emph{second-order} Moral Commitment Spectrum: not only does env
 
 We establish the \textbf{Moral Commitment Spectrum}: a systematic relationship between environmental severity and the minimum moral commitment required for multi-agent system survival.
 In linear environments, situational commitment---morality conditional on survival---achieves group-level evolutionary stability and matches utilitarian welfare.
-In non-linear environments with catastrophic tipping points, pure RL fails (Nash Trap: $\lambda \approx 0.5$, 5.3\% survival), and only unconditional commitment ($\phi_1^* = 1.0$) guarantees survival---an engineering necessity, not a philosophical preference.
+In non-linear environments with catastrophic tipping points, pure RL with independent policy gradient fails (Nash Trap: $\lambda \approx 0.5$, 5.3\% survival), and only unconditional commitment ($\phi_1^* = 1.0$) guarantees survival---an engineering necessity, not a philosophical preference.
 
 This finding carries a clear design principle: \textbf{autonomous multi-agent systems must incorporate moral commitment as a hard constraint, with the commitment level calibrated to the environment's recovery dynamics.}
 We emphasize that this is not an ad-hoc engineering hack but a \emph{principled design requirement} derived from three independent lines of evidence:
@@ -762,8 +770,8 @@ The only axis where MAPPO outperforms is raw efficiency (0.85 vs 0.82), which re
 \section*{Paper Checklist}
 
 \begin{enumerate}
-\item \textbf{Claims}: All main claims (Moral Commitment Spectrum, Nash Trap, unconditional commitment necessity) are supported by experiments within the tested PGG environments. We do not claim generality beyond the evaluated settings. [Yes]
-\item \textbf{Limitations}: Discussed in Section~\ref{sec:limitations}. Key limitations include full observability assumption, heuristic design of $g(\theta, R)$, and migration rate constraint. [Yes]
+\item \textbf{Claims}: All main claims (Moral Commitment Spectrum, Nash Trap, unconditional commitment necessity) are supported by experiments across six algorithms spanning three MARL paradigms within the tested PGG environments. We do not claim generality beyond the evaluated settings. [Yes]
+\item \textbf{Limitations}: Discussed in Section~\ref{sec:limitations}. Key limitations include environment scope (PGG only), cooperative intrinsic motivation as an open question, and migration rate constraint. [Yes]
 \item \textbf{Theory}: Proposition~\ref{thm:group_ess} states assumptions (group replacement dynamics, migration bound) and reports empirically measured values. Full protocol in Appendix~\ref{app:price}. [Yes]
 \item \textbf{Experiments}:
   \begin{enumerate}
@@ -771,7 +779,7 @@ The only axis where MAPPO outperforms is raw efficiency (0.85 vs 0.82), which re
     \item Error bars: mean $\pm$ std across seeds reported where shown. [Yes]
     \item Seeds: 5--10 per experiment, specified per table caption. [Yes]
   \end{enumerate}
-\item \textbf{Code and Data}: Anonymized code repository available at \url{https://anonymous.4open.science/r/EthicaAI/}. All experiments are reproducible with provided scripts. [Yes]
+\item \textbf{Code and Data}: Anonymized code repository provided. All experiments are reproducible via \texttt{reproduce\_quick.py}. [Yes]
 \item \textbf{Broader Impact}: Discussed in Section~\ref{sec:broader_impact}. No direct negative societal impacts anticipated from this foundational research. [Yes]
 \item \textbf{Safeguards}: Not applicable (no human subjects, no deployment). [N/A]
 \item \textbf{Licenses}: Code released under MIT license. No third-party datasets used. [Yes]

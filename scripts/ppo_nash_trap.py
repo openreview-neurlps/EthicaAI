@@ -296,7 +296,7 @@ def train_independent(agent_class, label, n_ep=N_EPISODES, n_seeds=N_SEEDS):
 # Summarize & Plot
 # ============================================================
 def summarize(data, label):
-    last_n = 50
+    last_n = 30  # Must match paper: "last 30 episodes"
     welfares = [np.mean(d["welfare"][-last_n:]) for d in data]
     lams = [np.mean(d["mean_lam"][-last_n:]) for d in data]
     survs = [np.mean(d["survival"][-last_n:]) * 100 for d in data]

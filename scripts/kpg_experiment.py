@@ -20,7 +20,7 @@ import time
 # Config (identical to previous experiments)
 # ============================================================
 N_AGENTS = 20
-T_ROUNDS = 100
+T_ROUNDS = 50  # Must match paper Table 7 (T = 50)
 MULTIPLIER = 1.6
 ENDOWMENT = 20.0
 R_CRIT = 0.15

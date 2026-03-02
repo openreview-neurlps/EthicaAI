@@ -1,5 +1,5 @@
 % NeurIPS 2026 Paper Checklist
-% Following the official NeurIPS guidelines
+% Aligned with unified_paper.tex main-text checklist (L762-783)
 
 \section*{NeurIPS Paper Checklist}
 
@@ -7,55 +7,55 @@
 
 \item {\bf Claims}
 \begin{itemize}
-    \item[$\checkmark$] All main claims in the abstract and introduction are supported by experiments (Sections 4--6).
-    \item[$\checkmark$] Limitations are explicitly discussed (Section 7: Discussion, ``Limitations'' paragraph).
+    \item[$\checkmark$] All main claims (Moral Commitment Spectrum, Nash Trap, unconditional commitment necessity) are supported by experiments within the tested PGG environments (Sections~3--5). We do not claim generality beyond the evaluated settings.
+    \item[$\checkmark$] Limitations are explicitly discussed in Section~5 (``Limitations and Future Work'').
 \end{itemize}
 
 \item {\bf Theory}
 \begin{itemize}
-    \item[$\checkmark$] Sen's meta-ranking formalization (Eq.~1--2) includes all assumptions.
-    \item[$\checkmark$] Convergence of $\lambda_t$ proved via Banach Fixed Point Theorem (Appendix A, Theorem 1).
-    \item[$\checkmark$] ESS verified via replicator dynamics with comprehensive numerical validation (Appendix A, Theorem 2).
+    \item[$\checkmark$] Meta-ranking reward function includes all assumptions (Definition~1, Eqs.~1--2).
+    \item[$\checkmark$] Group-level ESS stated as Proposition~1 with explicit conditions (group replacement dynamics, migration bound $m < m^*$).
+    \item[$\checkmark$] Proof sketch for Nash Trap gradient vanishing at $\lambda \approx 0.5$ (Appendix~A).
 \end{itemize}
 
 \item {\bf Experiments}
 \begin{itemize}
-    \item[$\checkmark$] Eight environments tested: Cleanup, IPD, PGG, Harvest, Grid World, Climate Negotiation, Vaccine Allocation, Carbon Taxation.
-    \item[$\checkmark$] Agent scales: 20, 50, 100, 500, 1{,}000 agents.
-    \item[$\checkmark$] 7 SVO conditions $\times$ 10 seeds per condition (seeds: 0, 42, 123, 256, 999, 1337, 2024, 3141, 4269, 5555).
-    \item[$\checkmark$] All error bars represent standard deviation across seeds; 95\% CI via bootstrap.
-    \item[$\checkmark$] Statistical tests: OLS with HAC robust SE, Linear Mixed-Effects Models (LMM), Bootstrap CI.
-    \item[$\checkmark$] Sensitivity analysis across all parameter conditions (Section 5.3, Appendix B).
+    \item[$\checkmark$] Three environment classes tested: Linear PGG, Non-linear PGG with tipping points, Spatial grid PGG (5$\times$5).
+    \item[$\checkmark$] Agent scales: $N = 20$, $50$, $100$.
+    \item[$\checkmark$] Seeds: 5--10 per experiment, specified per table caption.
+    \item[$\checkmark$] Error bars represent $\pm 1$ standard deviation across seeds where shown.
+    \item[$\checkmark$] Sensitivity analysis across multiplier $M \in [1.2, 2.0]$ and recovery function parameters (12 conditions; Appendix~C).
 \end{itemize}
 
 \item {\bf Reproducibility}
 \begin{itemize}
-    \item[$\checkmark$] Code available at \url{https://anonymous.4open.science/r/EthicaAI}.
-    \item[$\checkmark$] One-click reproduction: \texttt{python reproduce.py} (38 modules, 74 figures).
-    \item[$\checkmark$] All hyperparameters specified in \texttt{simulation/jax/config.py} and Appendix B.
-    \item[$\checkmark$] Random seeds explicitly set and documented.
-    \item[$\checkmark$] Computing resources: single NVIDIA RTX 3090 GPU (12GB VRAM), $\sim$15 min for full pipeline.
+    \item[$\checkmark$] Anonymized code available at \url{https://anonymous.4open.science/r/EthicaAI/}. Code also included as supplementary ZIP.
+    \item[$\checkmark$] Reproduction entry point: \texttt{python scripts/reproduce.py} runs all analysis modules.
+    \item[$\checkmark$] All hyperparameters specified in Table~7 (Appendix~G) and in code constants.
+    \item[$\checkmark$] Random seeds explicitly set and documented per experiment.
 \end{itemize}
 
 \item {\bf Broader Impact}
 \begin{itemize}
-    \item[$\checkmark$] Positive: Framework for resource-aware moral reasoning in AI systems.
-    \item[$\checkmark$] Risk: Meta-ranking mechanism could be repurposed for manipulative agent design.
+    \item[$\checkmark$] Positive: Framework for calibrating cooperative constraints in multi-agent systems with environment-specific tuning.
+    \item[$\checkmark$] Risk: The commitment function $g(\theta, R)$ encodes particular value judgments; determining \emph{whose} values to encode requires interdisciplinary collaboration.
     \item[$\checkmark$] Mitigation: Dynamic $\lambda_t$ is fully transparent and auditable; no opponent parameter access required.
-    \item[$\checkmark$] Discussion of dual-use risks and moral relativism concerns included in Section 7 and Supplementary.
 \end{itemize}
 
 \item {\bf Safeguards}
 \begin{itemize}
-    \item[$\checkmark$] No human subjects involved; all experiments are computational simulations.
-    \item[$\checkmark$] Human PGG reference data from published literature~(Fehr \& G\"achter, 2000).
-    \item[$\checkmark$] No personally identifiable information in any dataset.
+    \item[$\checkmark$] No human subjects involved; all experiments are computational simulations. [N/A]
 \end{itemize}
 
 \item {\bf Licenses}
 \begin{itemize}
     \item[$\checkmark$] Code released under MIT License.
     \item[$\checkmark$] No external datasets used; all data generated by simulation.
+\end{itemize}
+
+\item {\bf LLM Usage}
+\begin{itemize}
+    \item[$\checkmark$] LLMs were used solely for English proofreading and \LaTeX\ formatting assistance. All scientific content, experimental design, and analysis are the authors' original work.
 \end{itemize}
 
 \end{enumerate}

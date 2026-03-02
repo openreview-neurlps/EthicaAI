@@ -1,0 +1,48 @@
+{
+  "experiment": "P3 Strong MARL Baselines",
+  "environment": {
+    "N": 20,
+    "Byz": 0.3,
+    "M": 1.6,
+    "T": 50,
+    "R_crit": 0.15,
+    "episodes": 500,
+    "seeds": 10
+  },
+  "results": {
+    "true_ippo": {
+      "label": "True IPPO",
+      "welfare": "23.6+/-0.1",
+      "lambda": "0.433+/-0.009",
+      "survival": "35.7+/-5.0%",
+      "lambda_mean": 0.43330145674788845,
+      "lambda_std": 0.008721845775500593,
+      "welfare_mean": 23.639732236682264,
+      "survival_mean": 35.666666666666664,
+      "survival_std": 4.9553562491061705
+    },
+    "mappo": {
+      "label": "MAPPO",
+      "welfare": "23.1+/-0.1",
+      "lambda": "0.367+/-0.010",
+      "survival": "22.3+/-4.7%",
+      "lambda_mean": 0.3673433813696574,
+      "lambda_std": 0.010002267820236051,
+      "welfare_mean": 23.085684403505123,
+      "survival_mean": 22.333333333333332,
+      "survival_std": 4.7258156262526105
+    },
+    "qmix": {
+      "label": "QMIX",
+      "welfare": "21.5+/-0.1",
+      "lambda": "0.176+/-0.011",
+      "survival": "11.3+/-4.0%",
+      "lambda_mean": 0.175865631741315,
+      "lambda_std": 0.010820737882609262,
+      "welfare_mean": 21.477271306627046,
+      "survival_mean": 11.333333333333332,
+      "survival_std": 3.999999999999999
+    }
+  },
+  "time_seconds": 347.4509046077728
+}
