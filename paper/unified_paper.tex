@@ -1,5 +1,5 @@
 % ================================================================
-% Unified Paper — NeurIPS 2026
+% Unified Paper ??NeurIPS 2026
 % "From Situational to Unconditional: The Spectrum of Moral
 %  Commitment Required for Multi-Agent Survival in Non-linear
 %  Social Dilemmas"
@@ -19,6 +19,7 @@
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}{Proposition}
+
 \newtheorem{definition}{Definition}
 
 \title{From Situational to Unconditional:\\The Spectrum of Moral Commitment Required for\\Multi-Agent Survival in Non-linear Social Dilemmas}
@@ -36,7 +37,7 @@ When must multi-agent systems move beyond self-interest, and how much moral comm
 We investigate this question by computationally instantiating Amartya Sen's meta-ranking theory---where agents' commitment level $\lambda_t$ dynamically adapts to resource availability---in Public Goods Games of increasing environmental severity.
 In \emph{linear} PGG environments (moderate recovery dynamics), \textbf{situational commitment}---where agents reduce prosocial behavior during resource crises to preserve survival---achieves group-level evolutionary stability (ESS) via multi-level selection ($\bar{x}=0.987$), outperforming selfish, deontological, and opponent-shaping baselines across 8 environments.
 However, when we extend the environment to include \emph{non-linear tipping points}---irreversible collapse below $R_{\text{crit}}$---situational commitment catastrophically fails.
-Purely selfish MAPPO agents converge to a \emph{Nash Trap} at $\lambda \approx 0.5$, with survival dropping to 5.3\% under 30\% Byzantine adversaries.
+Purely selfish REINFORCE agents converge to a \emph{Nash Trap} at $\lambda \approx 0.5$, with survival dropping to 5.3\% under 30\% Byzantine adversaries.
 Parameter optimization reveals that only \textbf{unconditional commitment} ($\phi_1^* = 1.0$) prevents collapse, improving bottom-10\% welfare by +587 points while maintaining structural immunity to adaptive adversaries ($<$1.3\% welfare reduction).
 Notably, decentralized intrinsic-motivation baselines---Inequity Aversion and Social Influence---achieve \textbf{0\% survival} under Byzantine conditions, as agents observing adversaries' zero contributions adaptively reduce their own, accelerating collective collapse.
 Our central finding is a \textbf{Moral Commitment Spectrum}: the degree of commitment required for system survival is determined by the environment's non-linearity.
@@ -59,7 +60,7 @@ We address these questions through a systematic investigation spanning environme
 \begin{enumerate}
     \item[(C1)] \textbf{Computational Instantiation of Sen's Meta-Ranking}: We formalize commitment as a dynamic parameter $\lambda_t \in [0,1]$ that adapts to resource state $R_t$ and Social Value Orientation $\theta_i$, enabling agents to balance self-interest and prosocial behavior (Section~\ref{sec:method}).
     \item[(C2)] \textbf{Situational Commitment Works in Linear Environments}: In standard PGG with moderate recovery dynamics, resource-conditioned commitment achieves group-level ESS ($\bar{x}=0.987$), outperforming 8 baselines including M-FOS and POLA (Section~\ref{sec:linear}).
-    \item[(C3)] \textbf{The Nash Trap in Non-linear Environments}: When tipping points introduce irreversible collapse, both situational commitment and pure RL (MAPPO) fail---agents converge to $\lambda \approx 0.5$, insufficient to prevent catastrophe (Section~\ref{sec:nash_trap}).
+    \item[(C3)] \textbf{The Nash Trap in Non-linear Environments}: When tipping points introduce irreversible collapse, both situational commitment and pure RL (decentralized REINFORCE) fail---agents converge to $\lambda \approx 0.5$, insufficient to prevent catastrophe (Section~\ref{sec:nash_trap}).
     \item[(C4)] \textbf{Unconditional Commitment as Engineering Necessity}: Only maximal crisis commitment ($\phi_1^* = 1.0$) guarantees system survival under adversarial conditions, while same-class decentralized baselines (Inequity Aversion, Social Influence) achieve 0\% survival---their \emph{other-regarding} mechanisms cause downward drift toward adversaries' zero contributions (Section~\ref{sec:unconditional}).
 \end{enumerate}
 
@@ -148,6 +149,18 @@ When $R_t \leq 0$, the episode terminates and all future rewards become zero.
 % ================================================================
 \section{Experiments}
 
+\paragraph{Evaluation Protocol and Metric Definitions.}
+All experiments use the following standardized evaluation:
+\begin{itemize}
+    \item \textbf{Episode horizon}: $T = 50$ steps per episode.
+    \item \textbf{Welfare}: Per-agent mean undiscounted cumulative payoff, averaged across agents and evaluation episodes: $W = \frac{1}{N \cdot |\mathcal{E}|} \sum_{e} \sum_{i=1}^{N} \sum_{t=0}^{T-1} r_t^{i,e}$.
+    \item \textbf{Survival \%}: Fraction of evaluation episodes where $R_t > 0$ for all $t \in [0, T]$ (no resource collapse).
+    \item \textbf{Cooperation (Coop)}: Mean commitment level $\bar{\lambda} = \frac{1}{N \cdot T} \sum_{i,t} \lambda_t^i$.
+    \item \textbf{Gini}: Gini coefficient of individual cumulative payoffs within each episode, averaged across episodes.
+    \item \textbf{Inv.$\downarrow$}: Probability that a single selfish mutant ($\lambda{=}0$) achieves higher fitness than the group mean over 100 invasion trials (lower is better).
+\end{itemize}
+All reported values are means over the last 30 evaluation episodes unless otherwise specified. Error bars (where shown) indicate $\pm 1$ standard deviation across seeds.
+
 \subsection{Act 2: Situational Commitment in Linear Environments}
 \label{sec:linear}
 
@@ -203,15 +216,15 @@ Meta-ranking is the only method simultaneously achieving high Byzantine resilien
 Meta-ranking operates through internal moral commitment conditioned on observable resource levels ($\mathcal{O}(1)$ per agent), while LOLA/POLA/M-FOS compute meta-gradients over opponent parameter spaces---a categorically different computational paradigm.
 Direct speed comparisons across these paradigms would be misleading; the relevant distinction is that meta-ranking \emph{requires no opponent modeling}, making it uniquely suited for decentralized, privacy-preserving deployment.
 
-\paragraph{Group-Level Evolutionary Stability (Theorem~\ref{thm:group_ess}).}
+\paragraph{Group-Level Evolutionary Stability (Proposition~\ref{thm:group_ess}).}
 
-\begin{theorem}[Group-Level ESS via Price Equation]
+\begin{proposition}[Group-Level Stability via Price Equation]
 \label{thm:group_ess}
-Under group replacement dynamics with migration rate $m < m^* = \Delta p_{\text{between}} / (|\Delta p_{\text{within}}| + \Delta p_{\text{between}})$, Situational Commitment achieves group-level evolutionary stability. Specifically:
+Under group replacement dynamics with migration rate $m < m^* = \Delta p_{\text{between}} / (|\Delta p_{\text{within}}| + \Delta p_{\text{between}})$, Situational Commitment achieves group-level evolutionary stability in simulation. The following values are empirically measured from 100 independent group competition simulations (10 generations each, 5 groups per simulation):
 $\Delta p_{\text{within}} = -0.115$ (within-group free-riding advantage),
 $\Delta p_{\text{between}} = +0.046$ (between-group fitness advantage, 58.2\% group welfare gain).
 Population convergence: $\bar{x} = 0.987$ after 100 generations.
-\end{theorem}
+\end{proposition}
 
 \noindent \textbf{Note on metrics}: The population convergence $\bar{x} = 0.987$ and the invasion success rate (0.1\% in Table~\ref{tab:moral}) measure complementary aspects of evolutionary stability.
 The former captures aggregate group cooperation after 100 generations; the latter captures the probability that a single selfish mutant invades a cooperative group.
@@ -236,8 +249,8 @@ This discovery motivates two questions: (1) Can pure RL find a better strategy w
 \subsection{Act 4: The Nash Trap---Failure of Selfish RL}
 \label{sec:nash_trap}
 
-\paragraph{MAPPO with Pure Selfish Payoff.}
-We train MAPPO agents with \emph{only} individual payoff as reward---no reward shaping, no intrinsic motivation, no social priors.
+\paragraph{Decentralized REINFORCE with Pure Selfish Payoff.}
+We train decentralized REINFORCE agents with \emph{only} individual payoff as reward---no reward shaping, no intrinsic motivation, no social priors.
 Each agent observes $s_t^i = (R_t, \bar{c}_{t-1}/E, \lambda_{t-1}^i, \mathbb{1}[R_t < R_{\text{crit}}])$ and outputs:
 \begin{equation}
 \lambda_t^i = \text{clip}\!\left(\sigma(w^\top s_t^i + b) + \epsilon_t,\; 0,\; 1\right), \quad \epsilon_t \sim \mathcal{N}(0, \sigma_{\text{noise}}^2)
@@ -252,8 +265,8 @@ with annealed exploration ($\sigma_{\text{noise}}$: $0.15 \to 0.02$).
 \toprule
 \textbf{Method} & \textbf{Welfare} & $\boldsymbol{\bar{\lambda}}$ & \textbf{Survival \%} & \textbf{Crisis $\boldsymbol{\lambda}$} \\
 \midrule
-MAPPO (selfish) & 26.0 & 0.500 & 83.3 & 0.501 \\
-MAPPO + Byz 30\% & 24.2 & 0.500 & \textbf{5.3} & 0.500 \\
+Selfish REINFORCE & 26.0 & 0.500 & 83.3 & 0.501 \\
+Selfish REINFORCE + Byz 30\% & 24.2 & 0.500 & \textbf{5.3} & 0.500 \\
 \midrule
 Fixed $\lambda=0.0$ & 20.0 & 0.000 & 0.0 & --- \\
 Fixed $\lambda=0.5$ & 26.0 & 0.500 & 87.3 & --- \\
@@ -411,7 +424,7 @@ Table~\ref{tab:sota}'s comparison demonstrates that pre-specified moral structur
 \subsection{Defending Against High Migration Rates}
 \label{sec:migration}
 
-Theorem~\ref{thm:group_ess} requires $m < m^* = 0.286$ for group-level ESS.
+Proposition~\ref{thm:group_ess} requires $m < m^* = 0.286$ for group-level ESS.
 In open multi-agent systems (autonomous vehicle networks, decentralized finance, smart grids), agents may frequently join, leave, or migrate between groups, potentially pushing $m > m^*$ and eroding cooperative equilibria.
 
 We identify three complementary mitigation strategies:
@@ -423,7 +436,7 @@ We identify three complementary mitigation strategies:
 
 This suggests a \emph{second-order} Moral Commitment Spectrum: not only does environmental non-linearity demand stronger commitment, but \emph{social openness} (high $m$) independently pushes toward unconditional strategies.
 
-\subsection{Limitations and Future Work}
+\subsection{Limitations and Future Work}\label{sec:limitations}
 
 \begin{itemize}
     \item \textbf{Policy Complexity}: RL experiments use a linear policy ($\sigma(w^\top s + b)$).
@@ -436,7 +449,7 @@ This suggests a \emph{second-order} Moral Commitment Spectrum: not only does env
     This means it can be integrated with CNN- or Transformer-based spatial encoders by simply replacing $U_{\text{self}}$ with the base environment reward from any MARL architecture.
     The commitment parameter $\lambda_t$ would then be conditioned on spatial resource features rather than a scalar $R_t$.
     We leave this integration as future work.
-    \item \textbf{Price Equation Assumptions}: Group-level ESS requires migration rate $m < m^*$ (Theorem~\ref{thm:group_ess}).
+    \item \textbf{Price Equation Assumptions}: Group-level ESS requires migration rate $m < m^*$ (Proposition~\ref{thm:group_ess}).
     When inter-group mixing exceeds this bound, within-group free-riding may dominate.
     We discuss mitigation strategies in Section~\ref{sec:migration}.
     \item \textbf{Sensitivity}: We fix $M=1.6$ throughout.
@@ -459,7 +472,7 @@ We emphasize that this is not an ad-hoc engineering hack but a \emph{principled 
 and (iii)~the same pattern reproduces in spatially-extended grid environments with local tipping points (Appendix~\ref{app:spatial}).
 The contribution is not the hard constraint itself---which is trivial to implement---but the rigorous, multi-environment demonstration of \emph{when} (non-linear dynamics), \emph{why} (gradient equilibrium in the dynamic survival game), and \emph{to what degree} ($\phi_1^* = 1.0$) such constraints become mandatory.
 
-\section*{Broader Impact}
+\section*{Broader Impact}\label{sec:broader_impact}
 
 This work addresses the safety of multi-agent AI systems in critical infrastructure.
 Our Moral Commitment Spectrum provides a principled framework for calibrating cooperative constraints:
@@ -532,7 +545,7 @@ This is confirmed empirically across five independent validations: (i) replacing
 \section{Price Equation: Ecological Boundary Conditions}
 \label{app:price}
 
-Theorem~\ref{thm:group_ess} requires the migration rate $m$ to satisfy:
+Proposition~\ref{thm:group_ess} requires the migration rate $m$ to satisfy:
 \begin{equation}
 m < m^* = \frac{\Delta p_{\text{between}}}{|\Delta p_{\text{within}}| + \Delta p_{\text{between}}} = \frac{0.046}{0.115 + 0.046} = 0.286
 \end{equation}
@@ -642,6 +655,65 @@ Situational & 0.423 & 1.3 & 11.9 \\
 Selfish RL exhibits the same Nash Trap ($\lambda = 0.500$) as in scalar PGG, confirming the phenomenon is environment-invariant.
 Situational commitment's crisis-reduction mechanism ($\lambda \to 0.3\sin\theta$) is counterproductive when local collapse demands \emph{more} commitment.
 Only unconditional commitment ($\phi_1 = 1.0$) achieves meaningful survival (34.7\%), validating the Moral Commitment Spectrum in spatially-extended settings.
+
+% ================================================================
+% Appendix G: Hyperparameters
+% ================================================================
+\section{Hyperparameter Summary}
+\label{app:hyperparams}
+
+\begin{table}[h]
+\centering
+\caption{Hyperparameters used across all experiments.}
+\label{tab:hyperparams}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Parameter} & \textbf{Linear PGG} & \textbf{Non-linear PGG} \\
+\midrule
+$N$ (agents) & 50 & 20 (100 for scale) \\
+$E$ (endowment) & 10.0 & 20.0 \\
+$M$ (multiplier) & 1.6 & 1.6 \\
+$T$ (episode horizon) & 50 & 50 \\
+$\gamma$ (discount factor) & --- & 0.99 \\
+Learning rate & --- & 0.005 \\
+Exploration noise $\sigma_{\text{noise}}$ & --- & $0.15 \to 0.02$ (annealed) \\
+Training episodes & --- & 300 \\
+Eval.\ episodes (last $k$) & 50 (last 30) & 50 (last 30) \\
+Seeds & 10 & 5 \\
+$R_{\text{crit}}$ & --- & 0.15 \\
+$R_{\text{recov}}$ & --- & 0.25 \\
+$p_{\text{shock}}$ / $\delta_{\text{shock}}$ & --- & 0.05 / 0.15 \\
+SVO $\theta$ range & $[0, \pi/2]$ & --- \\
+Byzantine fraction & 0.0--0.3 & 0.0--0.3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ================================================================
+% NeurIPS Paper Checklist
+% ================================================================
+\section*{Paper Checklist}
+
+\begin{enumerate}
+\item \textbf{Claims}: All main claims (Moral Commitment Spectrum, Nash Trap, unconditional commitment necessity) are supported by experiments within the tested PGG environments. We do not claim generality beyond the evaluated settings. [Yes]
+\item \textbf{Limitations}: Discussed in Section~\ref{sec:limitations}. Key limitations include full observability assumption, heuristic design of $g(\theta, R)$, and migration rate constraint. [Yes]
+\item \textbf{Theory}: Proposition~\ref{thm:group_ess} states assumptions (group replacement dynamics, migration bound) and reports empirically measured values. Full protocol in Appendix~\ref{app:price}. [Yes]
+\item \textbf{Experiments}:
+  \begin{enumerate}
+    \item All hyperparameters listed in Table~\ref{tab:hyperparams} (Appendix~\ref{app:hyperparams}). [Yes]
+    \item Error bars: mean $\pm$ std across seeds reported where shown. [Yes]
+    \item Seeds: 5--10 per experiment, specified per table caption. [Yes]
+  \end{enumerate}
+\item \textbf{Code and Data}: Anonymized code repository will be provided as supplementary material. All experiments are reproducible with the provided scripts. [Yes]
+\item \textbf{Broader Impact}: Discussed in Section~\ref{sec:broader_impact}. No direct negative societal impacts anticipated from this foundational research. [Yes]
+\item \textbf{Safeguards}: Not applicable (no human subjects, no deployment). [N/A]
+\item \textbf{Licenses}: Code released under MIT license. No third-party datasets used. [Yes]
+\item \textbf{New Assets}: Custom PGG environments described in Section~\ref{sec:env}. Will be released with code. [Yes]
+\item \textbf{Human Subjects}: Not applicable. [N/A]
+\item \textbf{Crowdsourcing}: Not applicable. [N/A]
+\item \textbf{IRB}: Not applicable. [N/A]
+\item \textbf{LLM Usage}: LLMs were used solely for proofreading and LaTeX formatting assistance. All scientific content, experimental design, and analysis are the authors' original work. [Yes]
+\end{enumerate}
 
 
 \end{document}
