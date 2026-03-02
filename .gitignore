@@ -72,3 +72,24 @@ build/
 *.fdb_latexmk
 *.synctex.gz
 *.toc
+
+# ===== Double-Blind Protection =====
+# Legacy folders containing author-identifying information
+# These MUST NOT be pushed to anonymous repository
+submission_arxiv/
+submission_neurips/
+submission_package/
+paper/drafts/
+paper/submission/
+paper/zenodo_main.tex
+paper/aies2026_extended.tex
+paper/icsd2026_short.tex
+original/
+dashboard/
+scripts/zenodo_upload.py
+scripts/demo.py
+scripts/prepare_arxiv.py
+scripts/_publish_draft.py
+scripts/_remove_neurips_note.py
+scripts/_update_v4_metadata.py
+_check_data.py
