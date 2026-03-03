@@ -1,0 +1,183 @@
+{
+  "phase_a_hp_sweep": {
+    "lr=1e-04_ent=0.0": {
+      "lr": 0.0001,
+      "entropy": 0.0,
+      "lambda_mean": 0.528127335692829,
+      "lambda_std": 0.00422980895644962,
+      "survival_mean": 50.0,
+      "trapped": true
+    },
+    "lr=1e-04_ent=0.01": {
+      "lr": 0.0001,
+      "entropy": 0.01,
+      "lambda_mean": 0.528127335692829,
+      "lambda_std": 0.00422980895644962,
+      "survival_mean": 50.0,
+      "trapped": true
+    },
+    "lr=1e-04_ent=0.05": {
+      "lr": 0.0001,
+      "entropy": 0.05,
+      "lambda_mean": 0.528127335692829,
+      "lambda_std": 0.00422980895644962,
+      "survival_mean": 50.0,
+      "trapped": true
+    },
+    "lr=3e-04_ent=0.0": {
+      "lr": 0.00025,
+      "entropy": 0.0,
+      "lambda_mean": 0.5060733804526115,
+      "lambda_std": 0.02286684526906275,
+      "survival_mean": 50.0,
+      "trapped": true
+    },
+    "lr=3e-04_ent=0.01": {
+      "lr": 0.00025,
+      "entropy": 0.01,
+      "lambda_mean": 0.5060733804526115,
+      "lambda_std": 0.02286684526906275,
+      "survival_mean": 50.0,
+      "trapped": true
+    },
+    "lr=3e-04_ent=0.05": {
+      "lr": 0.00025,
+      "entropy": 0.05,
+      "lambda_mean": 0.5060733804526115,
+      "lambda_std": 0.02286684526906275,
+      "survival_mean": 50.0,
+      "trapped": true
+    },
+    "lr=5e-04_ent=0.0": {
+      "lr": 0.0005,
+      "entropy": 0.0,
+      "lambda_mean": 0.49572499490942706,
+      "lambda_std": 0.03329241618740069,
+      "survival_mean": 51.666666666666664,
+      "trapped": true
+    },
+    "lr=5e-04_ent=0.01": {
+      "lr": 0.0005,
+      "entropy": 0.01,
+      "lambda_mean": 0.49572499490942706,
+      "lambda_std": 0.03329241618740069,
+      "survival_mean": 51.666666666666664,
+      "trapped": true
+    },
+    "lr=5e-04_ent=0.05": {
+      "lr": 0.0005,
+      "entropy": 0.05,
+      "lambda_mean": 0.49572499490942706,
+      "lambda_std": 0.03329241618740069,
+      "survival_mean": 51.666666666666664,
+      "trapped": true
+    },
+    "lr=1e-03_ent=0.0": {
+      "lr": 0.001,
+      "entropy": 0.0,
+      "lambda_mean": 0.5118823842744635,
+      "lambda_std": 0.007348092716378394,
+      "survival_mean": 50.0,
+      "trapped": true
+    },
+    "lr=1e-03_ent=0.01": {
+      "lr": 0.001,
+      "entropy": 0.01,
+      "lambda_mean": 0.5118823842744635,
+      "lambda_std": 0.007348092716378394,
+      "survival_mean": 50.0,
+      "trapped": true
+    },
+    "lr=1e-03_ent=0.05": {
+      "lr": 0.001,
+      "entropy": 0.05,
+      "lambda_mean": 0.5118823842744635,
+      "lambda_std": 0.007348092716378394,
+      "survival_mean": 50.0,
+      "trapped": true
+    }
+  },
+  "phase_b_ablation": {
+    "full": {
+      "label": "Full g(\u03b8,R)",
+      "lambda": 0.8929370923523923,
+      "survival": 96.66666666666667,
+      "welfare": 13.750335787880053
+    },
+    "no_crisis": {
+      "label": "No crisis zone",
+      "lambda": 0.6288750154233527,
+      "survival": 38.333333333333336,
+      "welfare": 12.64127506477808
+    },
+    "no_abundance": {
+      "label": "No abundance bonus",
+      "lambda": 0.8782123322922809,
+      "survival": 96.66666666666667,
+      "welfare": 13.688491795627584
+    },
+    "alpha_zero": {
+      "label": "No smoothing (\u03b1=0)",
+      "lambda": 0.8999999761581421,
+      "survival": 100.0,
+      "welfare": 13.7799998998642
+    },
+    "alpha_one": {
+      "label": "No adaptation (\u03b1=1)",
+      "lambda": 0.5,
+      "survival": 50.0,
+      "welfare": 12.1
+    },
+    "no_restraint": {
+      "label": "No restraint (\u03b2=0)",
+      "lambda": 0.997423127220704,
+      "survival": 100.0,
+      "welfare": 14.18917713432696
+    }
+  },
+  "phase_d_lola": {
+    "2": {
+      "N": 2,
+      "grad_norm": 0.19344707151454618,
+      "lola_correction": 0.00012652065956256128,
+      "ratio": 0.000654032436400281,
+      "diverges": false
+    },
+    "5": {
+      "N": 5,
+      "grad_norm": 0.6773788286058184,
+      "lola_correction": 0.0002835377445555515,
+      "ratio": 0.0004185807594507655,
+      "diverges": false
+    },
+    "10": {
+      "N": 10,
+      "grad_norm": 0.8386894143029092,
+      "lola_correction": 0.00019747082926915627,
+      "ratio": 0.00023545167719774107,
+      "diverges": false
+    },
+    "20": {
+      "N": 20,
+      "grad_norm": 0.9193447071514547,
+      "lola_correction": 0.00011424343921395072,
+      "ratio": 0.00012426616296677434,
+      "diverges": false
+    },
+    "50": {
+      "N": 50,
+      "grad_norm": 0.9677378828605818,
+      "lola_correction": 4.962186610706522e-05,
+      "ratio": 5.1276143034990016e-05,
+      "diverges": false
+    },
+    "100": {
+      "N": 100,
+      "grad_norm": 0.9838689414302909,
+      "lola_correction": 2.5481895167316394e-05,
+      "ratio": 2.5899684492207205e-05,
+      "diverges": false
+    },
+    "trajectory_final": 0.0
+  }
+}

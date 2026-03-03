@@ -1,0 +1,158 @@
+{
+  "lr=1e-04_ent=0.0": {
+    "lr": 0.0001,
+    "entropy_coef": 0.0,
+    "lambda_mean": 0.44614143831729763,
+    "lambda_std": 0.031144907664296558,
+    "lambda_ci95": [
+      0.4033553839978777,
+      0.4765911247373569
+    ],
+    "survival_mean": 48.333333333333336,
+    "survival_std": 2.357022603955158,
+    "still_trapped": true
+  },
+  "lr=1e-04_ent=0.01": {
+    "lr": 0.0001,
+    "entropy_coef": 0.01,
+    "lambda_mean": 0.44614143831729763,
+    "lambda_std": 0.031144907664296558,
+    "lambda_ci95": [
+      0.4033553839978777,
+      0.4765911247373569
+    ],
+    "survival_mean": 48.333333333333336,
+    "survival_std": 2.357022603955158,
+    "still_trapped": true
+  },
+  "lr=1e-04_ent=0.05": {
+    "lr": 0.0001,
+    "entropy_coef": 0.05,
+    "lambda_mean": 0.44614143831729763,
+    "lambda_std": 0.031144907664296558,
+    "lambda_ci95": [
+      0.4033553839978777,
+      0.4765911247373569
+    ],
+    "survival_mean": 48.333333333333336,
+    "survival_std": 2.357022603955158,
+    "still_trapped": true
+  },
+  "lr=3e-04_ent=0.0": {
+    "lr": 0.00025,
+    "entropy_coef": 0.0,
+    "lambda_mean": 0.423298951168551,
+    "lambda_std": 0.048489784191741186,
+    "lambda_ci95": [
+      0.3821156872702047,
+      0.4913757685701558
+    ],
+    "survival_mean": 43.333333333333336,
+    "survival_std": 6.236095644623236,
+    "still_trapped": true
+  },
+  "lr=3e-04_ent=0.01": {
+    "lr": 0.00025,
+    "entropy_coef": 0.01,
+    "lambda_mean": 0.423298951168551,
+    "lambda_std": 0.048489784191741186,
+    "lambda_ci95": [
+      0.3821156872702047,
+      0.4913757685701558
+    ],
+    "survival_mean": 43.333333333333336,
+    "survival_std": 6.236095644623236,
+    "still_trapped": true
+  },
+  "lr=3e-04_ent=0.05": {
+    "lr": 0.00025,
+    "entropy_coef": 0.05,
+    "lambda_mean": 0.423298951168551,
+    "lambda_std": 0.048489784191741186,
+    "lambda_ci95": [
+      0.3821156872702047,
+      0.4913757685701558
+    ],
+    "survival_mean": 43.333333333333336,
+    "survival_std": 6.236095644623236,
+    "still_trapped": true
+  },
+  "lr=5e-04_ent=0.0": {
+    "lr": 0.0005,
+    "entropy_coef": 0.0,
+    "lambda_mean": 0.39529585751635965,
+    "lambda_std": 0.06295957591519327,
+    "lambda_ci95": [
+      0.3214145902294565,
+      0.47527172157853165
+    ],
+    "survival_mean": 40.0,
+    "survival_std": 7.0710678118654755,
+    "still_trapped": true
+  },
+  "lr=5e-04_ent=0.01": {
+    "lr": 0.0005,
+    "entropy_coef": 0.01,
+    "lambda_mean": 0.39529585751635965,
+    "lambda_std": 0.06295957591519327,
+    "lambda_ci95": [
+      0.3214145902294565,
+      0.47527172157853165
+    ],
+    "survival_mean": 40.0,
+    "survival_std": 7.0710678118654755,
+    "still_trapped": true
+  },
+  "lr=5e-04_ent=0.05": {
+    "lr": 0.0005,
+    "entropy_coef": 0.05,
+    "lambda_mean": 0.39529585751635965,
+    "lambda_std": 0.06295957591519327,
+    "lambda_ci95": [
+      0.3214145902294565,
+      0.47527172157853165
+    ],
+    "survival_mean": 40.0,
+    "survival_std": 7.0710678118654755,
+    "still_trapped": true
+  },
+  "lr=1e-03_ent=0.0": {
+    "lr": 0.001,
+    "entropy_coef": 0.0,
+    "lambda_mean": 0.42299228202537575,
+    "lambda_std": 0.05483320879289321,
+    "lambda_ci95": [
+      0.3520400328039652,
+      0.48556739052117653
+    ],
+    "survival_mean": 38.333333333333336,
+    "survival_std": 4.714045207910317,
+    "still_trapped": true
+  },
+  "lr=1e-03_ent=0.01": {
+    "lr": 0.001,
+    "entropy_coef": 0.01,
+    "lambda_mean": 0.42299228202537575,
+    "lambda_std": 0.05483320879289321,
+    "lambda_ci95": [
+      0.3520400328039652,
+      0.48556739052117653
+    ],
+    "survival_mean": 38.333333333333336,
+    "survival_std": 4.714045207910317,
+    "still_trapped": true
+  },
+  "lr=1e-03_ent=0.05": {
+    "lr": 0.001,
+    "entropy_coef": 0.05,
+    "lambda_mean": 0.42299228202537575,
+    "lambda_std": 0.05483320879289321,
+    "lambda_ci95": [
+      0.3520400328039652,
+      0.48556739052117653
+    ],
+    "survival_mean": 38.333333333333336,
+    "survival_std": 4.714045207910317,
+    "still_trapped": true
+  }
+}
