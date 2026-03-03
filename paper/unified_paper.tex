@@ -483,12 +483,10 @@ This suggests a \emph{second-order} Moral Commitment Spectrum: not only does env
     \item \textbf{Policy Complexity and Algorithm Strength}: We evaluate six algorithms spanning three paradigms: (i) independent policy gradient (vanilla REINFORCE with Linear, MLP, and Actor-Critic architectures), (ii) standard PPO with clipped surrogate objective~\citep{schulman2017proximal} (both IPPO and MAPPO with shared critic~\citep{yu2022surprising}), and (iii) value decomposition (QMIX with monotonic mixing network~\citep{rashid2018qmix}).
     All algorithms converge to the Nash Trap ($\lambda \approx 0.05$--$0.5$), confirming that the failure is a \emph{game-theoretic} property of the social dilemma under non-linear dynamics, not a function approximation or training algorithm limitation.
     \item \textbf{Cooperative Intrinsic Motivation}: Methods such as mutual influence rewards~\citep{jaques2019social} and prosocial reward shaping could potentially improve cooperation. However, these approaches \emph{encode} cooperative preferences by design---blurring the distinction between emergent and conditioned cooperation. Whether they can escape the Nash Trap \emph{without architecturally encoding cooperation} is an important open question.
-    \item \textbf{Environment Scope}: Results are demonstrated in PGG environments with scalar resource state $R_t$.
-    Validation in spatially-extended benchmarks (SMAC~\citep{samvelyan2019starcraft}, Melting Pot~\citep{leibo2021scalable}) is an important next step.
-    Our meta-ranking reward function (Eq.~\ref{eq:reward}) is architecturally modular: it operates as a \emph{reward-shaping layer} that modifies the scalar reward signal before it reaches the policy optimizer.
-    This means it can be integrated with CNN- or Transformer-based spatial encoders by simply replacing $U_{\text{self}}$ with the base environment reward from any MARL architecture.
-    The commitment parameter $\lambda_t$ would then be conditioned on spatial resource features rather than a scalar $R_t$.
-    We leave this integration as future work.
+    \item \textbf{Environment Scope}: Primary results are demonstrated in PGG environments with scalar resource state $R_t$.
+    As preliminary cross-environment validation, we tested the Moral Commitment Spectrum on a \emph{structurally distinct} Common-Pool Resource (CPR) game (Appendix~\ref{app:cpr}), where agents \emph{extract} from rather than \emph{contribute} to a shared resource (appropriation vs.\ provision). In CPR with 30\% adversaries: selfish RL achieved 9.3\% survival, situational commitment \emph{worsened} to 6.5\% (confirming crisis-mode commitment reduction is counterproductive), while unconditional commitment achieved 46.0\%---the highest survival rate. This provides \emph{initial evidence} that the Spectrum generalizes beyond PGG.
+    Validation in spatially-extended benchmarks (Melting Pot~\citep{leibo2021scalable}) remains an important next step.
+    Our meta-ranking reward function is architecturally modular and can be integrated with spatial encoders; we leave this as future work.
     \item \textbf{Price Equation Assumptions}: Group-level ESS requires migration rate $m < m^*$ (Result~\ref{res:group_ess}).
     When inter-group mixing exceeds this bound, within-group free-riding may dominate.
     We discuss mitigation strategies in Section~\ref{sec:migration}.
@@ -610,6 +608,31 @@ Across all 12 conditions:
 \end{itemize}
 Even under the most hostile configuration ($R_{\text{crit}}=0.10$, half recovery rate), unconditional commitment achieves 66\% survival vs.\ selfish RL's 11\%.
 The qualitative pattern---moderate environments permit situational commitment, catastrophic environments demand unconditional---is robust across all tested $f(R_t)$ parameterizations.
+
+\section{Cross-Environment Validation: Common-Pool Resource}
+\label{app:cpr}
+
+To test whether the Moral Commitment Spectrum generalizes beyond PGG, we evaluate on an Ostrom-style Common-Pool Resource (CPR) game~\citep{ostrom1990governing}---a \emph{structurally distinct} social dilemma where agents \emph{extract} from a shared resource rather than \emph{contribute} to a public good.
+
+\paragraph{CPR Environment.} $N{=}20$ agents share a renewable resource with logistic growth ($r{=}0.3$, $K{=}1.0$). Each agent $i$ chooses restraint level $\lambda_i \in [0,1]$; extraction $= (1-\lambda_i) \cdot R/N$. Below $R_{\text{crit}}{=}0.15$, growth drops from 0.30 to 0.01 (tipping point). Byzantine adversaries ($30\%$) extract maximally ($\lambda{=}0$).
+
+\begin{table}[h]
+\centering
+\caption{CPR cross-environment validation ($N{=}20$, Byz=30\%, 20 seeds).}
+\label{tab:cpr}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Strategy} & $\boldsymbol{\bar{\lambda}}$ (restraint) & \textbf{Survival \%} \\
+\midrule
+Selfish RL & 0.063 & 9.3 \\
+Situational Commitment & 0.216 & \textbf{6.5} \\
+Fixed $\lambda=0.5$ & 0.500 & 8.5 \\
+\textbf{Unconditional ($\lambda=1.0$)} & \textbf{1.000} & \textbf{46.0} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent \textbf{Key finding}: The Spectrum's central prediction---that situational commitment fails under crisis dynamics---is \emph{strengthened} in CPR. Situational agents \emph{reduce} restraint during resource crises ($\lambda \to 0.3$ when $R < R_{\text{crit}}$), accelerating depletion. Only unconditional commitment (maximum restraint regardless of resource level) achieves meaningful survival (46.0\%). This confirms that the ``From Situational to Unconditional'' transition is not a PGG-specific artifact but reflects a structural property of non-linear social dilemmas with tipping points.
 
 \section{DNN Ablation: Network Depth vs.\ Nash Trap}
 \label{app:dnn_ablation}

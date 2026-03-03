@@ -1,0 +1,36 @@
+{
+  "experiment": "True IPPO (PPO Clipped Surrogate)",
+  "algorithm": "PPO (Schulman et al., 2017) with clipped surrogate, GAE, per-agent MLP",
+  "environment": {
+    "type": "Non-linear PGG with tipping point",
+    "N": 20,
+    "Byzantine": 0.3,
+    "R_crit": 0.15,
+    "M_over_N": 0.08,
+    "T_horizon": 50,
+    "episodes": 500,
+    "seeds": 10
+  },
+  "ppo_config": {
+    "clip_eps": 0.2,
+    "gae_lambda": 0.95,
+    "n_epochs": 4,
+    "lr_policy": 0.0003,
+    "lr_value": 0.001,
+    "entropy_coef": 0.01,
+    "hidden_dim": 64
+  },
+  "result": {
+    "label": "True IPPO (PPO-Clip)",
+    "welfare": "24.0+/-0.1",
+    "lambda": "0.480+/-0.012",
+    "survival": "47.3+/-5.3%",
+    "lambda_mean": 0.47970081005288134,
+    "lambda_std": 0.011777013230271945,
+    "welfare_mean": 24.029486804444204,
+    "survival_mean": 47.333333333333336,
+    "survival_std": 5.333333333333335,
+    "params_per_agent": 4546
+  },
+  "time_seconds": 57759.98223018646
+}
