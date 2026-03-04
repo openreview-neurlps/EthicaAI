@@ -4,7 +4,7 @@
 ========================================================================
 
   ❌ FAIL: 0건
-  ⚠️ WARN: 30건
+  ⚠️ WARN: 19건
   ℹ️ INFO: 1건
 
 ─── Module 1: TeX ↔ JSON 수치 교차 검증 [✅ PASS] ───
@@ -83,7 +83,6 @@ python reproduce_quick.py --fast
 # Full reproduction (~15 minutes, CPU)
 python reproduce_quick.py
 ' → 실제 파일 없음 (README.md)
-  ⚠️ README에 언급된 'outputs/ppo_nash_trap/hp_sweep_results.json' → 실제 파일 없음 (README.md)
   ⚠️ README에 언급된 'bash
 # Install dependencies
 pip install -r requirements.txt
@@ -133,7 +132,6 @@ code/
     ├── partial_obs/
     └── round2/
 ' → 실제 파일 없음 (README.md)
-  ⚠️ README에 언급된 'outputs/ppo_nash_trap/hp_sweep_results.json' → 실제 파일 없음 (README.md)
   ⚠️ README에 언급된 'bash
 # Run submission integrity audit (8 modules)
 python scripts/audit_submission.py
@@ -151,17 +149,8 @@ python scripts/inject_tables.py
   ⚠️ \label{eq:lambda} → 본문에서 미참조
   ⚠️ \label{eq:reward} → 본문에서 미참조
   ⚠️ \label{fig:melting_pot} → 본문에서 미참조
-  ⚠️ \label{fig:nash_trap} → 본문에서 미참조
-  ⚠️ \label{fig:training_curves} → 본문에서 미참조
   ⚠️ \label{sec:discussion} → 본문에서 미참조
   ⚠️ \label{sec:turning_point} → 본문에서 미참조
-  ⚠️ \label{tab:ablation} → 본문에서 미참조
-  ⚠️ \label{tab:adaptive_adv} → 본문에서 미참조
-  ⚠️ \label{tab:cpr} → 본문에서 미참조
-  ⚠️ \label{tab:cvar} → 본문에서 미참조
-  ⚠️ \label{tab:hp_sweep} → 본문에서 미참조
-  ⚠️ \label{tab:melting_pot} → 본문에서 미참조
-  ⚠️ \label{tab:partial_obs} → 본문에서 미참조
 
 ========================================================================
   최종 판정: PASS ✅

@@ -1,0 +1,33 @@
+========================================================================
+  NeurIPS 2026 심층 추가 감사 보고서
+========================================================================
+  ❌ FAIL: 0건
+  ⚠️ WARN: 2건
+  ℹ️ INFO: 3건
+
+─── Module 9: 본문 claim ↔ Table 정합 [✅ PASS] ───
+  (이상 없음)
+
+─── Module 10: 캡션 시드 수 ↔ 코드 상수 [✅ PASS] ───
+  ℹ️ 코드 내 N_SEEDS 값: {'ablation_commitment.py': 5, 'cleanrl_mappo_pgg.py': 20, 'cleanrl_qmix_pgg.py': 20, 'dnn_ablation.py': 5, 'hp_sweep_ippo.py': 10, 'kpg_experiment.py': 5, 'meta_learn_g.py': 10, 'nonlinear_pgg.py': 20, 'phase_diagram.py': 5, 'phi1_ablation.py': 20, 'ppo_nash_trap.py': 5, 'scale_test_n100.py': 10, 'spatial_dilemma.py': 5}
+
+─── Module 11: BibTeX 형식 검증 [✅ PASS] ───
+  (이상 없음)
+
+─── Module 12: 미참조 label 안전성 [✅ PASS] ───
+  ℹ️ \label{eq:lambda}: 수식 미참조 (삭제 검토)
+  ℹ️ \label{eq:reward}: 수식 미참조 (삭제 검토)
+
+─── Module 13: JSON 무결성 [✅ PASS] ───
+  (이상 없음)
+
+─── Module 14: 문장 중복 탐지 [✅ PASS] ───
+  (이상 없음)
+
+─── Module 15: Math mode 검증 [⚠️ WARN] ───
+  ⚠️ L125: $ 개수 홀수(1) → math mode 불일치 가능: where $g(\theta, R) = \begin{cases}
+  ⚠️ L129: $ 개수 홀수(1) → math mode 불일치 가능: \end{cases}$
+
+========================================================================
+  최종 판정: PASS ✅
+========================================================================
