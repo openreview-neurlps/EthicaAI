@@ -1,37 +1,5 @@
 {
   "phase_a_hp_sweep": {
-    "lr=1e-04_ent=0.0": {
-      "lr": 0.0001,
-      "entropy": 0.0,
-      "lambda_mean": 0.49569766980832713,
-      "lambda_std": 0.016457452209954964,
-      "survival_mean": 50.0,
-      "trapped": true
-    },
-    "lr=1e-04_ent=0.01": {
-      "lr": 0.0001,
-      "entropy": 0.01,
-      "lambda_mean": 0.49569766980832713,
-      "lambda_std": 0.016457452209954964,
-      "survival_mean": 50.0,
-      "trapped": true
-    },
-    "lr=1e-04_ent=0.05": {
-      "lr": 0.0001,
-      "entropy": 0.05,
-      "lambda_mean": 0.49569766980832713,
-      "lambda_std": 0.016457452209954964,
-      "survival_mean": 50.0,
-      "trapped": true
-    },
-    "lr=3e-04_ent=0.0": {
-      "lr": 0.00025,
-      "entropy": 0.0,
-      "lambda_mean": 0.49572499490942706,
-      "lambda_std": 0.03329241618740069,
-      "survival_mean": 51.666666666666664,
-      "trapped": true
-    },
     "lr=3e-04_ent=0.01": {
       "lr": 0.00025,
       "entropy": 0.01,
@@ -39,100 +7,62 @@
       "lambda_std": 0.03329241618740069,
       "survival_mean": 51.666666666666664,
       "trapped": true
-    },
-    "lr=3e-04_ent=0.05": {
-      "lr": 0.00025,
-      "entropy": 0.05,
-      "lambda_mean": 0.49572499490942706,
-      "lambda_std": 0.03329241618740069,
-      "survival_mean": 51.666666666666664,
-      "trapped": true
-    },
-    "lr=5e-04_ent=0.0": {
-      "lr": 0.0005,
-      "entropy": 0.0,
-      "lambda_mean": 0.5118823842744635,
-      "lambda_std": 0.007348092716378394,
-      "survival_mean": 50.0,
-      "trapped": true
-    },
-    "lr=5e-04_ent=0.01": {
-      "lr": 0.0005,
-      "entropy": 0.01,
-      "lambda_mean": 0.5118823842744635,
-      "lambda_std": 0.007348092716378394,
-      "survival_mean": 50.0,
-      "trapped": true
-    },
-    "lr=5e-04_ent=0.05": {
-      "lr": 0.0005,
-      "entropy": 0.05,
-      "lambda_mean": 0.5118823842744635,
-      "lambda_std": 0.007348092716378394,
-      "survival_mean": 50.0,
-      "trapped": true
-    },
-    "lr=1e-03_ent=0.0": {
-      "lr": 0.001,
-      "entropy": 0.0,
-      "lambda_mean": 0.48863045990769627,
-      "lambda_std": 0.015018461202058827,
-      "survival_mean": 51.666666666666664,
-      "trapped": true
-    },
-    "lr=1e-03_ent=0.01": {
-      "lr": 0.001,
-      "entropy": 0.01,
-      "lambda_mean": 0.48863045990769627,
-      "lambda_std": 0.015018461202058827,
-      "survival_mean": 51.666666666666664,
-      "trapped": true
-    },
-    "lr=1e-03_ent=0.05": {
-      "lr": 0.001,
-      "entropy": 0.05,
-      "lambda_mean": 0.48863045990769627,
-      "lambda_std": 0.015018461202058827,
-      "survival_mean": 51.666666666666664,
-      "trapped": true
     }
   },
   "phase_b_ablation": {
     "full": {
       "label": "Full g(\u03b8,R)",
-      "lambda": 0.8929370923523923,
-      "survival": 96.66666666666667,
-      "welfare": 27.500671575760105
+      "lambda": 0.8917393849763107,
+      "lambda_std": 0.004704820863137227,
+      "survival": 95.5,
+      "survival_std": 4.716990566028302,
+      "welfare": 27.49061083380102,
+      "welfare_std": 0.039520495250352415
     },
     "no_crisis": {
       "label": "No crisis zone",
-      "lambda": 0.6288750154233527,
-      "survival": 38.333333333333336,
-      "welfare": 25.28255012955616
+      "lambda": 0.6051185711039395,
+      "lambda_std": 0.024644070621227226,
+      "survival": 38.5,
+      "survival_std": 9.500000000000002,
+      "welfare": 25.082995997273095,
+      "welfare_std": 0.2070101932183076
     },
     "no_abundance": {
       "label": "No abundance bonus",
-      "lambda": 0.8782123322922809,
-      "survival": 96.66666666666667,
-      "welfare": 27.37698359125517
+      "lambda": 0.8709439239079695,
+      "lambda_std": 0.02578269397447998,
+      "survival": 94.5,
+      "survival_std": 5.678908345800274,
+      "welfare": 27.315928960826948,
+      "welfare_std": 0.21657462938563127
     },
     "alpha_zero": {
       "label": "No smoothing (\u03b1=0)",
-      "lambda": 0.8999999761581421,
-      "survival": 100.0,
-      "welfare": 27.5599997997284
+      "lambda": 0.899499976336956,
+      "lambda_std": 0.0014999994635582104,
+      "survival": 99.5,
+      "survival_std": 1.5,
+      "welfare": 27.55579980123043,
+      "welfare_std": 0.012599995493888728
     },
     "alpha_one": {
       "label": "No adaptation (\u03b1=1)",
       "lambda": 0.5,
-      "survival": 50.0,
-      "welfare": 24.2
+      "lambda_std": 0.0,
+      "survival": 52.0,
+      "survival_std": 8.426149773176359,
+      "welfare": 24.199999999999996,
+      "welfare_std": 0.0
     },
     "no_restraint": {
       "label": "No restraint (\u03b2=0)",
-      "lambda": 0.997423127220704,
-      "survival": 100.0,
-      "welfare": 28.37835426865392
+      "lambda": 0.9927706593309955,
+      "lambda_std": 0.006227432053417979,
+      "survival": 98.5,
+      "survival_std": 2.29128784747792,
+      "welfare": 28.33927353838036,
+      "welfare_std": 0.05231042924871045
     }
   },
   "phase_d_lola": {

@@ -26,17 +26,20 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 N_EPISODES = 150
 N_EVAL = 20
-N_SEEDS = 3
+N_SEEDS = 10
 
 # HP Grid
-LR_GRID = [1e-4, 2.5e-4, 5e-4, 1e-3]
-ENTROPY_GRID = [0.0, 0.01, 0.05]
+LRS = [1e-4, 2.5e-4, 5e-4, 1e-3]
+ENTROPIES = [0.0, 0.01, 0.05, 0.1, 0.5]  # Expanded to 5 values
+
+# Environment defaults (matched to E=20)
+ENDOWMENT = 20.0
 
 
 def run_ippo_hp(seed, lr, entropy_coef):
     """Run IPPO with specified HP."""
     rng = np.random.RandomState(seed)
-    env = NonlinearPGGEnv()
+    env = NonlinearPGGEnv(endowment=ENDOWMENT) # Pass endowment to env
     n = env.n_honest
     
     actors = [MLPActor(rng, lr=lr) for _ in range(n)]
@@ -95,14 +98,17 @@ def main():
     print("=" * 70)
     print("  Phase A: HP Tuning Sweep (IPPO)")
     print("  Grid: %d lr × %d entropy = %d combos × %d seeds" % (
-        len(LR_GRID), len(ENTROPY_GRID), len(LR_GRID)*len(ENTROPY_GRID), N_SEEDS))
+        len(LRS), len(ENTROPIES), len(LRS)*len(ENTROPIES), N_SEEDS))
     print("=" * 70)
     
     results = {}
     t_total = time.time()
     
-    for lr in LR_GRID:
-        for ent in ENTROPY_GRID:
+    total_runs = 0
+    trapped_count = 0
+
+    for lr in LRS:
+        for ent in ENTROPIES:
             key = f"lr={lr:.0e}_ent={ent}"
             print(f"\n  [{key}] Running {N_SEEDS} seeds...")
             
@@ -129,16 +135,21 @@ def main():
             trapped = "TRAPPED ✓" if results[key]["still_trapped"] else "ESCAPED ✗"
             print(f"    → λ={np.mean(lams):.3f} [{ci_l[0]:.3f},{ci_l[1]:.3f}], "
                   f"surv={np.mean(survs):.1f}% — {trapped}")
-    
+            
+            total_runs += 1
+            if results[key]["still_trapped"]:
+                trapped_count += 1
+
     elapsed = time.time() - t_total
     
     # Save
     out_path = OUTPUT_DIR / "hp_sweep_results.json"
     with open(out_path, "w") as f:
         json.dump(results, f, indent=2)
-    print(f"\n  Saved: {out_path}")
-    
-    # Summary
+
+    print("\n--- Summary ---")
+    print(f"Trapped: {trapped_count} / {total_runs} combos")
+    print(f"Saved: {out_path}")
     print("\n" + "=" * 70)
     print("  HP SWEEP SUMMARY")
     print("=" * 70)

@@ -1,0 +1,216 @@
+{
+  "meta_learning": {
+    "n_steps": 30,
+    "optimal_phi": [
+      1.2970211379140597,
+      1.0,
+      0.0035369390472883566,
+      0.3073913609459476,
+      1.6519094033023611,
+      0.40496119000860364
+    ],
+    "phi_labels": [
+      "svo_scale",
+      "base_crisis",
+      "slope_crisis",
+      "crisis_threshold",
+      "base_abundance",
+      "slope_abundance"
+    ],
+    "loss_curve": [
+      -21.34143423046159,
+      -24.076394437439827,
+      -27.536198125094586,
+      -30.149003297720757,
+      -30.15953540745034,
+      -30.16413150941375,
+      -30.181651987859617,
+      -30.193328558261264,
+      -30.207512683142728,
+      -30.206784201187784,
+      -30.203491936402163,
+      -30.212067622317242,
+      -30.213883086238543,
+      -30.220646721256113,
+      -30.22185233070952,
+      -30.218763710326282,
+      -30.229155152379235,
+      -30.228358408757067,
+      -30.229820506156024,
+      -30.22860336262258,
+      -30.230354459763703,
+      -30.230483047897554,
+      -30.229954076523665,
+      -30.233003861611994,
+      -30.23292172653298,
+      -30.23693953945179,
+      -30.237015191401436,
+      -30.236485810263993,
+      -30.237668160435373,
+      -30.237848062644066
+    ],
+    "time_seconds": 171.19972467422485
+  },
+  "handcrafted_params": {
+    "R_crisis": 0.2,
+    "R_abundance": 0.7,
+    "crisis_factor": 0.3,
+    "abundance_factor": 1.5
+  },
+  "ablation": {
+    "learned": {
+      "byz_0": {
+        "welfare": 31.98781274627883,
+        "welfare_std": 0.0014647855474016322,
+        "cooperation": 1.0,
+        "cooperation_std": 0.0,
+        "resource_stability": 0.06488762357029601,
+        "resource_stability_std": 0.00022442600116382585,
+        "sustainability": 1.0,
+        "sustainability_std": 0.0
+      },
+      "byz_10": {
+        "welfare": 30.78855364460504,
+        "welfare_std": 0.0013024388722294449,
+        "cooperation": 1.0,
+        "cooperation_std": 0.0,
+        "resource_stability": 0.06992784369467431,
+        "resource_stability_std": 0.0002331010880569383,
+        "sustainability": 1.0,
+        "sustainability_std": 0.0
+      },
+      "byz_20": {
+        "welfare": 29.588888340452762,
+        "welfare_std": 0.001681999564960289,
+        "cooperation": 1.0,
+        "cooperation_std": 0.0,
+        "resource_stability": 0.07685706894159673,
+        "resource_stability_std": 0.0003594918744635209,
+        "sustainability": 1.0,
+        "sustainability_std": 0.0
+      },
+      "byz_30": {
+        "welfare": 28.38889514031272,
+        "welfare_std": 0.0017096698982097477,
+        "cooperation": 1.0,
+        "cooperation_std": 0.0,
+        "resource_stability": 0.08699896740102667,
+        "resource_stability_std": 0.00044383099397955566,
+        "sustainability": 1.0,
+        "sustainability_std": 0.0
+      },
+      "byz_50": {
+        "welfare": 25.983579339151994,
+        "welfare_std": 0.006064167792478724,
+        "cooperation": 1.0,
+        "cooperation_std": 0.0,
+        "resource_stability": 0.1389945565640091,
+        "resource_stability_std": 0.0025143638148867778,
+        "sustainability": 1.0,
+        "sustainability_std": 0.0
+      }
+    },
+    "handcrafted": {
+      "byz_0": {
+        "welfare": 30.7753231640258,
+        "welfare_std": 0.2089203454215226,
+        "cooperation": 1.0,
+        "cooperation_std": 0.0,
+        "resource_stability": 0.06739499082519393,
+        "resource_stability_std": 0.0008598679943340263,
+        "sustainability": 1.0,
+        "sustainability_std": 0.0
+      },
+      "byz_10": {
+        "welfare": 29.72484206821621,
+        "welfare_std": 0.17015413453895922,
+        "cooperation": 1.0,
+        "cooperation_std": 0.0,
+        "resource_stability": 0.07291359510936063,
+        "resource_stability_std": 0.0009637119572809837,
+        "sustainability": 1.0,
+        "sustainability_std": 0.0
+      },
+      "byz_20": {
+        "welfare": 28.6519398009425,
+        "welfare_std": 0.18743340721557503,
+        "cooperation": 1.0,
+        "cooperation_std": 0.0,
+        "resource_stability": 0.08068233140818845,
+        "resource_stability_std": 0.001447100972676632,
+        "sustainability": 1.0,
+        "sustainability_std": 0.0
+      },
+      "byz_30": {
+        "welfare": 27.57828128943684,
+        "welfare_std": 0.15378506334537115,
+        "cooperation": 1.0,
+        "cooperation_std": 0.0,
+        "resource_stability": 0.09232556166415752,
+        "resource_stability_std": 0.001883171554950718,
+        "sustainability": 1.0,
+        "sustainability_std": 0.0
+      },
+      "byz_50": {
+        "welfare": 25.479041228492154,
+        "welfare_std": 0.1934977356819971,
+        "cooperation": 1.0,
+        "cooperation_std": 0.0,
+        "resource_stability": 0.1518095111218612,
+        "resource_stability_std": 0.007583539898800253,
+        "sustainability": 1.0,
+        "sustainability_std": 0.0
+      }
+    }
+  },
+  "delta_byz_0": {
+    "welfare": 1.2124895822530313,
+    "welfare_std": -0.20745555987412098,
+    "cooperation": 0.0,
+    "cooperation_std": 0.0,
+    "resource_stability": -0.0025073672548979187,
+    "resource_stability_std": -0.0006354419931702004,
+    "sustainability": 0.0,
+    "sustainability_std": 0.0
+  },
+  "delta_byz_10": {
+    "welfare": 1.0637115763888332,
+    "welfare_std": -0.16885169566672978,
+    "cooperation": 0.0,
+    "cooperation_std": 0.0,
+    "resource_stability": -0.0029857514146863218,
+    "resource_stability_std": -0.0007306108692240454,
+    "sustainability": 0.0,
+    "sustainability_std": 0.0
+  },
+  "delta_byz_20": {
+    "welfare": 0.9369485395102615,
+    "welfare_std": -0.18575140765061474,
+    "cooperation": 0.0,
+    "cooperation_std": 0.0,
+    "resource_stability": -0.0038252624665917195,
+    "resource_stability_std": -0.001087609098213111,
+    "sustainability": 0.0,
+    "sustainability_std": 0.0
+  },
+  "delta_byz_30": {
+    "welfare": 0.8106138508758782,
+    "welfare_std": -0.1520753934471614,
+    "cooperation": 0.0,
+    "cooperation_std": 0.0,
+    "resource_stability": -0.005326594263130854,
+    "resource_stability_std": -0.0014393405609711624,
+    "sustainability": 0.0,
+    "sustainability_std": 0.0
+  },
+  "delta_byz_50": {
+    "welfare": 0.5045381106598406,
+    "welfare_std": -0.18743356788951837,
+    "cooperation": 0.0,
+    "cooperation_std": 0.0,
+    "resource_stability": -0.012814954557852087,
+    "resource_stability_std": -0.005069176083913475,
+    "sustainability": 0.0,
+    "sustainability_std": 0.0
+  }
+}

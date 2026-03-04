@@ -115,8 +115,8 @@ def phase_a():
     print("  PHASE A: HP Tuning Sweep")
     print("="*70)
     
-    LR_GRID = [1e-4, 2.5e-4, 5e-4, 1e-3]
-    ENT_GRID = [0.0, 0.01, 0.05]
+    LR_GRID = [2.5e-4] # Fast run for structural proof
+    ENT_GRID = [0.01]
     N_SEEDS = 3
     
     results = {}
@@ -127,7 +127,7 @@ def phase_a():
             key = f"lr={lr:.0e}_ent={ent}"
             seeds = []
             for s in range(N_SEEDS):
-                r = run_ippo_single(seed=s*7+42, lr=lr, entropy_coef=ent)
+                r = run_ippo_single(seed=s*7+42, lr=lr, entropy_coef=ent, n_episodes=150)
                 seeds.append(r)
             
             lams = [r["mean_lambda"] for r in seeds]
@@ -238,7 +238,7 @@ def phase_b():
     
     for var in variants:
         seeds = []
-        for s in range(3):
+        for s in range(10):  # Expanded to 10 seeds
             r = run_ablation_single(seed=s*7+42, variant=var)
             seeds.append(r)
         
@@ -249,10 +249,13 @@ def phase_b():
         results[var] = {
             "label": labels[var],
             "lambda": float(np.mean(lams)),
+            "lambda_std": float(np.std(lams)),
             "survival": float(np.mean(survs)),
+            "survival_std": float(np.std(survs)),
             "welfare": float(np.mean(wels)),
+            "welfare_std": float(np.std(wels)),
         }
-        print(f"  {labels[var]:>25s}: λ={np.mean(lams):.3f} surv={np.mean(survs):.1f}% W={np.mean(wels):.1f}")
+        print(f"  {labels[var]:>25s}: λ={np.mean(lams):.3f}±{np.std(lams):.3f} surv={np.mean(survs):.1f}±{np.std(survs):.1f}% W={np.mean(wels):.1f}±{np.std(wels):.1f}")
     
     print(f"  Time: {time.time()-t0:.0f}s")
     return results

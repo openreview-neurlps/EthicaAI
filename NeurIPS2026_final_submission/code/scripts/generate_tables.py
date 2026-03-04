@@ -59,20 +59,22 @@ def generate_hp_sweep_table():
     """Generate HP Sweep table (Appendix H) from JSON results."""
     print("\n=== Appendix H: HP Sweep ===\n")
 
-    data = load_json("round2/round2_results.json")
-    if not data or "phase_a" not in data:
-        print("  [SKIP] round2_results.json not found or missing phase_a")
+    data = load_json("hp_sweep/hp_sweep_results.json")
+    if not data:
+        print("  [SKIP] hp_sweep/hp_sweep_results.json not found")
         return
 
     print(f"{'LR':>12} {'Entropy':>10} {'λ_mean':>10} {'Surv%':>8} {'Trapped':>8}")
     print("-" * 55)
-    for run in data["phase_a"]:
+    
+    # data is a dict of { "combo_key": { "lr": ..., "entropy_coef": ..., "lambda_mean": ..., "survival_mean": ..., "still_trapped": ... } }
+    for key, run in data.items():
         lr = run.get("lr", "?")
         ent = run.get("entropy_coef", "?")
         lam = run.get("lambda_mean", 0)
-        surv = run.get("survival_pct", 0)
-        trapped = "Yes" if lam < 0.6 else "No"
-        print(f"{lr:>12} {ent:>10} {lam:>10.3f} {surv:>8.1f} {trapped:>8}")
+        surv = run.get("survival_mean", 0)
+        trapped = "Yes" if run.get("still_trapped", True) else "No"
+        print(f"{lr:>12.0e} {ent:>10.2f} {lam:>10.3f} {surv:>8.1f} {trapped:>8}")
 
 
 if __name__ == "__main__":

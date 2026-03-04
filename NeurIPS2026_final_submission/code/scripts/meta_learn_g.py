@@ -23,7 +23,7 @@ from copy import deepcopy
 # ============================================================
 N_AGENTS = 50
 T_ROUNDS = 200
-N_SEEDS = 5
+N_SEEDS = 10
 MULTIPLIER = 1.6          # PGG multiplier
 ENDOWMENT = 20.0
 ALPHA_EMA = 0.6           # EMA smoothing for λ_t
@@ -287,9 +287,11 @@ def ablation_comparison(learned_g):
             delta = l_mean - h_mean
 
             results["learned"][bf_key][metric] = float(l_mean)
+            results["learned"][bf_key][f"{metric}_std"] = float(np.std(l_vals))
             results["handcrafted"][bf_key][metric] = float(h_mean)
+            results["handcrafted"][bf_key][f"{metric}_std"] = float(np.std(h_vals))
 
-            print(f"  {bf*100:5.0f}% | {metric:>12} | {l_mean:10.3f} | {h_mean:10.3f} | {delta:+8.3f}")
+            print(f"  {bf*100:5.0f}% | {metric:>12} | {l_mean:10.3f}±{np.std(l_vals):.2f} | {h_mean:10.3f}±{np.std(h_vals):.2f} | {delta:+8.3f}")
 
         print("  " + "-" * 55)
 
