@@ -450,7 +450,7 @@ In environments with catastrophic tipping points, only unconditional commitment 
 The environment's recovery function $f(R_t)$ determines which regime applies.
 
 We visualize this as a \textbf{phase diagram} (Figure~\ref{fig:phase_diagram}; Appendix~\ref{app:phase_diagram}), sweeping $R_{\text{crit}} \in [0.02, 0.30]$ and $\phi_1 \in [0, 1]$ across 110 conditions.
-A multi-axis comparison (Appendix~\ref{app:melting_pot}) confirms Meta-Ranking ranks 1st in 4/5 evaluation dimensions.
+A multi-axis comparison using evaluation dimensions \emph{inspired by} (but not equivalent to) the Melting Pot benchmark~\citep{leibo2021scalable} is in Appendix~\ref{app:melting_pot}.
 
 \begin{figure}[t]
     \centering
@@ -767,7 +767,7 @@ Byzantine fraction & 0.0--0.3 & 0.0--0.3 \\
 \section{Multi-Axis Criteria-Inspired Comparison}
 \label{app:melting_pot}
 
-To provide a structured qualitative comparison, we evaluate Meta-Ranking against established MARL baselines across five evaluation axes \emph{inspired by} the social evaluation dimensions discussed in the Melting Pot literature~\citep{leibo2021scalable}: cooperation, efficiency, fairness, scalability, and robustness.
+To provide a structured qualitative comparison, we evaluate Meta-Ranking against established MARL baselines across five evaluation axes. These axes are \emph{inspired by} the social evaluation dimensions discussed in the Melting Pot literature~\citep{leibo2021scalable}---cooperation, efficiency, fairness, scalability, and robustness---but \textbf{we do not run the actual Melting Pot benchmark}.
 
 \noindent\textbf{Important caveat}: These scores are \emph{not} obtained by running the actual Melting Pot evaluation suite. Instead, they represent normalized scores computed from our PGG/CPR experiments and published results for each baseline, mapped to $[0, 1]$ as follows:
 \begin{itemize}\setlength{\itemsep}{0pt}
