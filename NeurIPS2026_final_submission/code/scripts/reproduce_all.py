@@ -27,7 +27,7 @@ EXPERIMENTS = [
     {
         "name": "IPPO/MAPPO/IQL (CleanRL-style)",
         "script": "cleanrl_mappo_pgg.py",
-        "output": "cleanrl_baselines/mappo_results.json",
+        "output": "cleanrl_baselines/cleanrl_baseline_results.json",
     },
     {
         "name": "REINFORCE Nash Trap (Linear/MLP/MLP+Critic)",
@@ -56,7 +56,7 @@ OPTIONAL = [
     {
         "name": "IQL Baseline",
         "script": "cleanrl_qmix_pgg.py",
-        "output": "cleanrl_baselines/qmix_pgg_results.json",
+        "output": "cleanrl_baselines/iql_baseline_results.json",
     },
 ]
 
