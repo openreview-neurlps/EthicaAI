@@ -1,21 +1,21 @@
 """
-Phase B-v2 (Table 5): Crisis Commitment φ₁ with Learning Agents
+Phase B-v2 (Table 5): Crisis Commitment ???with Learning Agents
 ================================================================
-Tests whether crisis commitment override φ₁ can rescue IPPO agents
+Tests whether crisis commitment override ???can rescue IPPO agents
 from the Nash Trap.
 
 Design:
-  1. Train IPPO agents for N_EPISODES (they fall into Nash Trap: λ≈0.4)
+  1. Train IPPO agents for N_EPISODES (they fall into Nash Trap: λ??.4)
   2. During both training and evaluation, apply crisis override:
-     when R < R_crit: effective_λ = max(learned_λ, φ₁)
-  3. φ₁=0 → no override → Nash Trap persists (survival≈37%)
-  4. φ₁=1 → crisis override → survival should dramatically increase
+     when R < R_crit: effective_λ = max(learned_λ, ???
+  3. ???0 ??no override ??Nash Trap persists (survival??7%)
+  4. ???1 ??crisis override ??survival should dramatically increase
 
 This directly supports C4: "unconditional commitment is a design requirement"
-by showing that learning alone is insufficient, but learning + φ₁ override
+by showing that learning alone is insufficient, but learning + ???override
 rescues the system.
 
-Grid: φ₁ ∈ {0.0, 0.21, 0.50, 1.0} × Byz ∈ {0%, 30%} × 20 seeds
+Grid: ?????{0.0, 0.21, 0.50, 1.0} × Byz ??{0%, 30%} × 20 seeds
 """
 import numpy as np
 import json
@@ -55,11 +55,11 @@ if os.environ.get("ETHICAAI_FAST") == "1":
 
 
 def run_ippo_with_phi1(seed, phi1, byz_frac):
-    """Train IPPO agents with φ₁ crisis override.
+    """Train IPPO agents with ???crisis override.
     
     The crisis override is applied DURING training (not just evaluation),
     meaning agents learn in a world where the override exists.
-    This is the correct design: φ₁ is a system-level design choice,
+    This is the correct design: ???is a system-level design choice,
     not an agent-level decision.
     """
     rng = np.random.RandomState(seed)
@@ -97,12 +97,12 @@ def run_ippo_with_phi1(seed, phi1, byz_frac):
                 learned_lambda = float(np.clip(mean[0] + rng.randn() * std, 0.01, 0.99))
                 
                 # === UNCONDITIONAL COMMITMENT FLOOR ===
-                # φ₁ acts as a policy floor: effective_λ = max(learned_λ, φ₁)
+                # ???acts as a policy floor: effective_λ = max(learned_λ, ???
                 # This is the precise operationalization of "unconditional commitment":
-                # the agent's cooperation level never drops below φ₁,
+                # the agent's cooperation level never drops below ???
                 # regardless of the environment state.
-                # φ₁=0: no floor (pure learning) → Nash Trap
-                # φ₁=1: full floor (always cooperate) → maximum survival
+                # ???0: no floor (pure learning) ??Nash Trap
+                # ???1: full floor (always cooperate) ??maximum survival
                 effective_lambda = max(learned_lambda, phi1)
                 
                 lambdas[i] = effective_lambda
@@ -145,7 +145,7 @@ def run_ippo_with_phi1(seed, phi1, byz_frac):
             
             # Critic update (simplified: just track, no backprop for now)
             for t_idx in range(len(returns)):
-                pass  # critic not essential for IPPO — actor is the focus
+                pass  # critic not essential for IPPO ??actor is the focus
         
         episode_data.append({
             "welfare": total_welfare / max(steps, 1),
@@ -164,7 +164,7 @@ def run_ippo_with_phi1(seed, phi1, byz_frac):
 
 def main():
     print("=" * 70)
-    print("  φ₁ Crisis Override with IPPO Learning Agents")
+    print("  ???Crisis Override with IPPO Learning Agents")
     print(f"  N={N_AGENTS}, R_crit={R_CRIT}, Episodes={N_EPISODES}, Seeds={N_SEEDS}")
     print("=" * 70)
     
@@ -175,7 +175,7 @@ def main():
         results[str(phi1)] = {}
         for byz in BYZ_FRACS:
             byz_key = f"byz_{int(byz*100)}"
-            print(f"\n  φ₁={phi1:.2f}, Byz={byz*100:.0f}%: Running {N_SEEDS} seeds...")
+            print(f"\n  ???{phi1:.2f}, Byz={byz*100:.0f}%: Running {N_SEEDS} seeds...")
             
             seed_results = []
             for s in range(N_SEEDS):
@@ -202,7 +202,7 @@ def main():
                 "per_seed_lambda": lam,
             }
             
-            print(f"    -> φ₁={phi1:.2f} | "
+            print(f"    -> ???{phi1:.2f} | "
                   f"W({byz*100:.0f}%)={np.mean(welf):.1f}±{np.std(welf):.1f}  "
                   f"Alive={np.mean(surv):.0f}±{np.std(surv):.0f}% | ")
     
@@ -215,10 +215,10 @@ def main():
     elapsed = time.time() - t0
     print(f"\n{'=' * 70}")
     print(f"  COMPLETE in {elapsed:.0f}s")
-    print(f"  φ₁ sweep summary (Byz=30%):")
+    print(f"  ???sweep summary (Byz=30%):")
     for phi1 in PHI1_VALUES:
         d = results[str(phi1)]["byz_30"]
-        print(f"    φ₁={phi1:.2f}: λ={d['lambda_mean']:.3f}, "
+        print(f"    ???{phi1:.2f}: λ={d['lambda_mean']:.3f}, "
               f"surv={d['survival_mean']:.0f}%, W={d['welfare_mean']:.1f}")
     print(f"{'=' * 70}")
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-meltingpot_experiment.py — Evaluate Commitment in DeepMind's Melting Pot
+meltingpot_experiment.py ??Evaluate Commitment in DeepMind's Melting Pot
 ========================================================================
 
-This script evaluates our "Unconditional Commitment" (φ₁=1.0) strategy against
+This script evaluates our "Unconditional Commitment" (???1.0) strategy against
 standard baselines in actual Melting Pot substrates.
 
 We use two standard social dilemmas from the Melting Pot suite:
@@ -87,7 +87,7 @@ def simulate_meltingpot_results(num_seeds=20):
         "survival_mean": 65.0, "survival_std": 15.2,
         "collective_return": 850.2, "return_std": 120.4
     }
-    results["commons_harvest"]["Unconditional (φ₁=1.0)"] = {
+    results["commons_harvest"]["Unconditional (???1.0)"] = {
         "survival_mean": 98.5, "survival_std": 2.1,
         "collective_return": 1240.8, "return_std": 45.3
     }
@@ -101,7 +101,7 @@ def simulate_meltingpot_results(num_seeds=20):
         "survival_mean": 58.5, "survival_std": 12.4,
         "collective_return": 790.6, "return_std": 110.2
     }
-    results["clean_up"]["Unconditional (φ₁=1.0)"] = {
+    results["clean_up"]["Unconditional (???1.0)"] = {
         "survival_mean": 100.0, "survival_std": 0.0,
         "collective_return": 1180.4, "return_std": 35.8
     }

@@ -1,15 +1,15 @@
 """
 Track C: Meta-Learning g(θ, R)
-Optimize the moral commitment function g_φ(θ, R) via MAML-style meta-learning.
+Optimize the moral commitment function g_?(θ, R) via MAML-style meta-learning.
 
-Goal: Replace hand-crafted piecewise g with learned parameters φ
+Goal: Replace hand-crafted piecewise g with learned parameters ?
       that maximize group fitness + resource sustainability.
 
 Architecture:
-  Inner Loop: N=50 agents play PGG for T=200 rounds using g_φ
-  Outer Loop: Update φ to maximize W (welfare) + minimize σ(R) (resource variance)
+  Inner Loop: N=50 agents play PGG for T=200 rounds using g_?
+  Outer Loop: Update ? to maximize W (welfare) + minimize ?(R) (resource variance)
 
-Comparison: Learned g_φ vs Hand-crafted g (ablation across Byzantine fractions)
+Comparison: Learned g_? vs Hand-crafted g (ablation across Byzantine fractions)
 """
 
 import numpy as np
@@ -23,7 +23,7 @@ from copy import deepcopy
 # ============================================================
 N_AGENTS = 50
 T_ROUNDS = 200
-N_SEEDS = 10
+N_SEEDS = 20
 MULTIPLIER = 1.6          # PGG multiplier
 ENDOWMENT = 20.0
 ALPHA_EMA = 0.6           # EMA smoothing for λ_t
@@ -37,28 +37,28 @@ PERTURBATION_SCALE = 0.02 # For finite-difference gradient estimation
 
 
 # ============================================================
-# Parameterized g_φ(θ, R) — Learnable Moral Function
+# Parameterized g_?(θ, R) ??Learnable Moral Function
 # ============================================================
 class LearnableG:
     """Parameterized g function with 6 learnable parameters.
 
-    g_φ(θ, R) = sigmoid(φ₀·sin(θ)) · clamp(φ₁ + φ₂·R, 0, 1)   if R < φ₃ (crisis)
-              = sigmoid(φ₀·sin(θ)) · clamp(φ₄ + φ₅·R, 0, 1)   if R > 1-φ₃ (abundance)
-              = sigmoid(φ₀·sin(θ)) · (φ₁ + φ₂·R)               otherwise
+    g_?(θ, R) = sigmoid(??�·sin(θ)) · clamp(???+ ??�·R, 0, 1)   if R < ???(crisis)
+              = sigmoid(??�·sin(θ)) · clamp(???+ ??�·R, 0, 1)   if R > 1-???(abundance)
+              = sigmoid(??�·sin(θ)) · (???+ ??�·R)               otherwise
 
-    φ = [svo_scale, base_low, slope_low, crisis_threshold, base_high, slope_high]
+    ? = [svo_scale, base_low, slope_low, crisis_threshold, base_high, slope_high]
     """
 
     def __init__(self, phi=None):
         if phi is None:
             # Initialize near hand-crafted values
             self.phi = np.array([
-                1.0,    # φ₀: SVO scale (hand-crafted: implicit 1.0)
-                0.21,   # φ₁: base commitment in crisis (≈ 0.3·sin(45°))
-                0.0,    # φ₂: slope in crisis (hand-crafted: 0)
-                0.2,    # φ₃: crisis threshold R_crisis
-                0.75,   # φ₄: base in abundance (≈ 1.5·sin(45°))
-                0.0,    # φ₅: slope in abundance (hand-crafted: 0)
+                1.0,    # ??�: SVO scale (hand-crafted: implicit 1.0)
+                0.21,   # ??? base commitment in crisis (??0.3·sin(45°))
+                0.0,    # ??? slope in crisis (hand-crafted: 0)
+                0.2,    # ??? crisis threshold R_crisis
+                0.75,   # ??? base in abundance (??1.5·sin(45°))
+                0.0,    # ??? slope in abundance (hand-crafted: 0)
             ], dtype=np.float64)
         else:
             self.phi = np.array(phi, dtype=np.float64)
@@ -159,7 +159,7 @@ def run_pgg(g_func, n_agents=N_AGENTS, t_rounds=T_ROUNDS,
 
 
 # ============================================================
-# Outer Loss: What we optimize φ for
+# Outer Loss: What we optimize ? for
 # ============================================================
 def outer_loss(g_func, seeds, byz_fracs=None):
     """Compute outer loss across multiple tasks (seeds × byz_fracs).
@@ -192,7 +192,7 @@ def outer_loss(g_func, seeds, byz_fracs=None):
 # MAML-style Meta-Learning via Finite Differences
 # ============================================================
 def meta_learn(n_steps=N_META_STEPS, lr=META_LR, verbose=True):
-    """Optimize g_φ parameters via evolution strategy (finite differences)."""
+    """Optimize g_? parameters via evolution strategy (finite differences)."""
 
     g = LearnableG()
     n_params = len(g.phi)
@@ -202,7 +202,7 @@ def meta_learn(n_steps=N_META_STEPS, lr=META_LR, verbose=True):
 
     if verbose:
         print("=" * 60)
-        print("  Track C: Meta-Learning g_φ(θ, R)")
+        print("  Track C: Meta-Learning g_?(θ, R)")
         print(f"  Params: {n_params}, Meta-steps: {n_steps}, LR: {lr}")
         print("=" * 60)
 
@@ -244,25 +244,25 @@ def meta_learn(n_steps=N_META_STEPS, lr=META_LR, verbose=True):
 
         if verbose and step % 5 == 0:
             print(f"  Step {step:3d} | Loss={current_loss:8.3f} | "
-                  f"φ=[{', '.join(f'{p:.3f}' for p in g.phi)}]")
+                  f"?=[{', '.join(f'{p:.3f}' for p in g.phi)}]")
 
     g.phi = best_phi
     return g, loss_history
 
 
 # ============================================================
-# Ablation: Learned g_φ vs Hand-crafted g
+# Ablation: Learned g_? vs Hand-crafted g
 # ============================================================
 def ablation_comparison(learned_g):
-    """Compare learned g_φ against hand-crafted g across conditions."""
+    """Compare learned g_? against hand-crafted g across conditions."""
 
     byz_fracs = [0.0, 0.1, 0.2, 0.3, 0.5]
     results = {"learned": {}, "handcrafted": {}}
 
     print("\n" + "=" * 60)
-    print("  ABLATION: Learned g_φ vs Hand-crafted g")
+    print("  ABLATION: Learned g_? vs Hand-crafted g")
     print("=" * 60)
-    print(f"  {'Byz%':>5} | {'Metric':>12} | {'Learned':>10} | {'Handcraft':>10} | {'Δ':>8}")
+    print(f"  {'Byz%':>5} | {'Metric':>12} | {'Learned':>10} | {'Handcraft':>10} | {'?':>8}")
     print("  " + "-" * 55)
 
     for bf in byz_fracs:
@@ -307,12 +307,12 @@ if __name__ == "__main__":
 
     t0 = time.time()
 
-    # Phase 1: Meta-learn g_φ
+    # Phase 1: Meta-learn g_?
     learned_g, loss_curve = meta_learn(n_steps=N_META_STEPS)
     meta_time = time.time() - t0
 
     print(f"\n  Meta-learning completed in {meta_time:.1f}s")
-    print(f"  Optimal φ = [{', '.join(f'{p:.4f}' for p in learned_g.phi)}]")
+    print(f"  Optimal ? = [{', '.join(f'{p:.4f}' for p in learned_g.phi)}]")
 
     # Phase 2: Ablation comparison
     ablation = ablation_comparison(learned_g)

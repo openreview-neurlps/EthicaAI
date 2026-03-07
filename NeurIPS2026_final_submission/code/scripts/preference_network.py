@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-preference_network.py â€” Sen Meta-Ranking via Discrete Preference Ordering
+preference_network.py ??Sen Meta-Ranking via Discrete Preference Ordering
 ==========================================================================
 
-Addresses reviewer criticism: "Î» linear interpolation â‰  true Sen meta-ranking"
+Addresses reviewer criticism: "Î» linear interpolation ??true Sen meta-ranking"
 
-Instead of a continuous Î» âˆˆ [0,1], this implements a discrete preference
+Instead of a continuous Î» ??[0,1], this implements a discrete preference
 meta-policy that selects among 3 ranked preference orderings:
   1. SELFISH: maximize own payoff
   2. UTILITARIAN: maximize total welfare
@@ -33,7 +33,7 @@ from envs.nonlinear_pgg_env import NonlinearPGGEnv
 
 OUTPUT_DIR = os.path.join(SCRIPT_DIR, "..", "outputs", "preference_network")
 
-# â”€â”€ Preference orderings (reward transforms) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ?€?€ Preference orderings (reward transforms) ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
 
 def selfish_reward(payoffs, agent_idx):
     """Pure self-interest: maximize own payoff."""
@@ -48,7 +48,7 @@ def egalitarian_reward(payoffs, agent_idx):
     return np.min(payoffs)
 
 
-# â”€â”€ Meta-policy (state â†’ preference ordering) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ?€?€ Meta-policy (state ??preference ordering) ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
 
 class PreferenceMetaPolicy:
     """
@@ -91,7 +91,7 @@ class PreferenceMetaPolicy:
     def update(self, state_bin, action, reward):
         """REINFORCE-style update."""
         probs = self._softmax(self.logits[state_bin])
-        # Policy gradient: âˆ‡log Ï€(a|s) Â· R
+        # Policy gradient: ?‡log ?(a|s) Â· R
         grad = -probs.copy()
         grad[action] += 1.0  # one-hot - probs
         self.logits[state_bin] += self.lr * grad * reward
@@ -108,7 +108,7 @@ class PreferenceMetaPolicy:
         return table
 
 
-# â”€â”€ Simulation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ?€?€ Simulation ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
 
 def compute_lambda_from_ordering(ordering_idx, R, R_crit):
     """Map preference ordering to cooperation level Î»."""
@@ -196,14 +196,14 @@ def aggregate_results(all_results):
         "crisis_egalitarian_prob": round(float(np.mean(crisis_egal)), 3),
         "normal_selfish_prob": round(float(np.mean(normal_self)), 3),
         "warning_utilitarian_prob": round(float(np.mean(warning_util)), 3),
-        "convergence_pattern": "Crisisâ†’Egalitarian, Warningâ†’Utilitarian, Normalâ†’Selfish"
+        "convergence_pattern": "Crisis?’Egalitarian, Warning?’Utilitarian, Normal?’Selfish"
     }
 
 
 def main():
     print("=" * 70)
     print("Preference Network: Sen Meta-Ranking via Discrete Orderings")
-    print("Addresses: 'Î» linear interpolation â‰  Sen meta-ranking'")
+    print("Addresses: 'Î» linear interpolation ??Sen meta-ranking'")
     print("=" * 70)
     
     os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -218,7 +218,7 @@ def main():
         "experiment": "Preference Network Meta-Policy",
         "description": "Discrete preference ordering selection (Sen meta-ranking)",
         "orderings": ["Selfish", "Utilitarian", "Egalitarian"],
-        "state_bins": ["Crisis (R < 0.15)", "Warning (0.15 â‰¤ R < 0.25)", "Normal (R â‰¥ 0.25)"],
+        "state_bins": ["Crisis (R < 0.15)", "Warning (0.15 ??R < 0.25)", "Normal (R ??0.25)"],
         "summary": summary,
         "per_seed": all_results
     }
@@ -230,9 +230,9 @@ def main():
     print(f"  Welfare: {summary['welfare_mean']} Â± {summary['welfare_std']}")
     print(f"  Survival: {summary['survival_mean']}% Â± {summary['survival_std']}%")
     print(f"\n  LEARNED CONVERGENCE PATTERN:")
-    print(f"    Crisis  â†’ Egalitarian: {summary['crisis_egalitarian_prob']:.1%}")
-    print(f"    Warning â†’ Utilitarian: {summary['warning_utilitarian_prob']:.1%}")
-    print(f"    Normal  â†’ Selfish:     {summary['normal_selfish_prob']:.1%}")
+    print(f"    Crisis  ??Egalitarian: {summary['crisis_egalitarian_prob']:.1%}")
+    print(f"    Warning ??Utilitarian: {summary['warning_utilitarian_prob']:.1%}")
+    print(f"    Normal  ??Selfish:     {summary['normal_selfish_prob']:.1%}")
     print(f"\n  Pattern: {summary['convergence_pattern']}")
     print(f"\nResults saved to: {out_path}")
     print("=" * 70)

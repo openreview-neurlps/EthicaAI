@@ -1,5 +1,5 @@
 """
-IPPO Nash Trap Experiment (v3 — Independent Agents)
+IPPO Nash Trap Experiment (v3 ??Independent Agents)
 ====================================================
 Key insight: Nash Trap occurs when each agent independently
 maximizes its OWN reward, treating others as part of the
@@ -13,11 +13,11 @@ This script implements INDEPENDENT policy gradient:
   - But collective free-riding leads to resource collapse
 
 We test THREE architectures:
-  1. Linear (sigmoid(w·obs + b)) — 5 params per agent
-  2. MLP (2-layer 32-unit) — ~161 params per agent
-  3. MLP + Value baseline — ~322 params per agent
+  1. Linear (sigmoid(w·obs + b)) ??5 params per agent
+  2. MLP (2-layer 32-unit) ??~161 params per agent
+  3. MLP + Value baseline ??~322 params per agent
 
-All should converge to λ≈0.3~0.6 (Nash equilibrium).
+All should converge to λ??.3~0.6 (Nash equilibrium).
 
 Dependencies: NumPy only.
 """
@@ -35,7 +35,7 @@ import matplotlib.pyplot as plt
 # ============================================================
 N_AGENTS = 20
 ENDOWMENT = 20.0
-MULTIPLIER = 1.6  # M/N = 0.08 < 1 → free-riding is individually rational
+MULTIPLIER = 1.6  # M/N = 0.08 < 1 ??free-riding is individually rational
 T_HORIZON = 50
 R_CRIT = 0.15
 R_RECOV = 0.25
@@ -44,7 +44,7 @@ SHOCK_MAG = 0.15
 STATE_DIM = 4  # (R, mean_c, my_lam_prev, crisis)
 GAMMA = 0.99
 N_EPISODES = 300
-N_SEEDS = 5
+N_SEEDS = 20
 
 if os.environ.get("ETHICAAI_FAST") == "1":
     print("  [FAST MODE] Overriding N_SEEDS=2, N_EPISODES=10")
@@ -259,8 +259,8 @@ def train_independent(agent_class, label, n_ep=N_EPISODES, n_seeds=N_SEEDS):
                 if isinstance(agents[i], LinearAgent):
                     agents[i].update_reinforce(agent_obs[i], agent_acts[i], returns)
                 elif isinstance(agents[i], (MLPAgent, MLPCriticAgent)):
-                    # Gaussian REINFORCE for MLP: ∇θ log N(a|μ(s),σ) · G_t
-                    # μ = sigmoid(MLP(obs)), σ fixed = 0.15
+                    # Gaussian REINFORCE for MLP: ?��?log N(a|μ(s),?) · G_t
+                    # μ = sigmoid(MLP(obs)), ? fixed = 0.15
                     sigma = 0.15
                     lr = agents[i].lr
                     
@@ -273,7 +273,7 @@ def train_independent(agent_class, label, n_ep=N_EPISODES, n_seeds=N_SEEDS):
                         if isinstance(agents[i], MLPCriticAgent):
                             v_t = agents[i].value(obs_t)
                             advantage = G_t - v_t
-                            # Update critic: V ← V + lr_v · (G - V) · ∇V
+                            # Update critic: V ??V + lr_v · (G - V) · ?�V
                             h_v = np.tanh(obs_t @ agents[i].V_W1 + agents[i].V_b1)
                             v_pred = (h_v @ agents[i].V_W2 + agents[i].V_b2).item()
                             delta_v = agents[i].lr_v * (G_t - v_pred)
@@ -290,21 +290,21 @@ def train_independent(agent_class, label, n_ep=N_EPISODES, n_seeds=N_SEEDS):
                         logit = float((h @ agents[i].W2 + agents[i].b2).item())
                         mu = sigmoid(logit)
                         
-                        # ∂log N(a|μ,σ) / ∂μ = (a - μ) / σ²
+                        # ?�log N(a|μ,?) / ?��?= (a - μ) / ?²
                         d_logp_d_mu = (act_t - mu) / (sigma**2)
                         
-                        # ∂μ/∂logit = μ(1-μ) (sigmoid derivative)
+                        # ?��??�logit = μ(1-μ) (sigmoid derivative)
                         d_mu_d_logit = mu * (1 - mu)
                         
                         # Signal to backprop
                         delta = advantage * d_logp_d_mu * d_mu_d_logit
                         
-                        # ∂logit/∂W2 = h, ∂logit/∂b2 = 1
+                        # ?�logit/?�W2 = h, ?�logit/?�b2 = 1
                         agents[i].W2 += lr * delta * h.reshape(-1, 1)
                         agents[i].b2 += lr * delta
                         
-                        # ∂logit/∂h = W2.flatten()
-                        # ∂h/∂z1 = 1 - tanh²(z1) (tanh derivative)
+                        # ?�logit/?�h = W2.flatten()
+                        # ?�h/?�z1 = 1 - tanh²(z1) (tanh derivative)
                         d_h = delta * agents[i].W2.flatten() * (1 - h**2)
                         agents[i].W1 += lr * np.outer(obs_t, d_h)
                         agents[i].b1 += lr * d_h

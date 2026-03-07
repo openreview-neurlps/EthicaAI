@@ -26,7 +26,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 N_EPISODES = 200
 N_EVAL = 30
-N_SEEDS = 5
+N_SEEDS = 20
 N_AGENTS = 14  # honest agents (20 total - 30% byz)
 T = 50
 
@@ -162,7 +162,7 @@ def main():
             "welfare_mean": float(np.mean(wels)),
         }
         
-        print(f"    → λ={np.mean(lams):.3f}, surv={np.mean(survs):.1f}% [{ci_s[0]:.1f},{ci_s[1]:.1f}]")
+        print(f"    ??λ={np.mean(lams):.3f}, surv={np.mean(survs):.1f}% [{ci_s[0]:.1f},{ci_s[1]:.1f}]")
     
     elapsed = time.time() - t0
     

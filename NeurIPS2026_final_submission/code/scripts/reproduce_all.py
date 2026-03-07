@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-reproduce_all.py — One-click reproduction pipeline
+reproduce_all.py ??One-click reproduction pipeline
 ====================================================
 Runs ALL experiments in the correct order and validates outputs.
 
@@ -9,8 +9,8 @@ Usage:
   ETHICAAI_FAST=1 python reproduce_all.py   # Fast mode (2 seeds, ~5 minutes)
 
 Exit codes:
-  0 — All experiments completed and validated
-  1 — Some experiment(s) failed
+  0 ??All experiments completed and validated
+  1 ??Some experiment(s) failed
 """
 import subprocess
 import sys
@@ -45,7 +45,7 @@ EXPERIMENTS = [
         "output": "cleanrl_baselines/lola_results.json",
     },
     {
-        "name": "φ₁ Commitment Floor Sweep",
+        "name": "???Commitment Floor Sweep",
         "script": "phi1_with_learning.py",
         "output": "phi1_ablation/phi1_results.json",
     },
@@ -67,13 +67,13 @@ def run_experiment(exp):
     output_path = OUTPUT_DIR / exp["output"]
     
     if not script_path.exists():
-        print(f"  ⚠ Script not found: {exp['script']}")
+        print(f"  ??Script not found: {exp['script']}")
         return False
     
-    print(f"\n{'─' * 60}")
+    print(f"\n{'?�' * 60}")
     print(f"  Running: {exp['name']}")
     print(f"  Script: {exp['script']}")
-    print(f"{'─' * 60}")
+    print(f"{'?�' * 60}")
     
     t0 = time.time()
     result = subprocess.run(
@@ -85,21 +85,21 @@ def run_experiment(exp):
     elapsed = time.time() - t0
     
     if result.returncode != 0:
-        print(f"  ✗ FAILED (exit code {result.returncode}, {elapsed:.0f}s)")
+        print(f"  ??FAILED (exit code {result.returncode}, {elapsed:.0f}s)")
         return False
     
     # Validate output exists and is valid JSON
     if not output_path.exists():
-        print(f"  ✗ Output not found: {exp['output']}")
+        print(f"  ??Output not found: {exp['output']}")
         return False
     
     try:
         with open(output_path) as f:
             data = json.load(f)
-        print(f"  ✓ Completed in {elapsed:.0f}s → {exp['output']}")
+        print(f"  ??Completed in {elapsed:.0f}s ??{exp['output']}")
         return True
     except json.JSONDecodeError:
-        print(f"  ✗ Invalid JSON: {exp['output']}")
+        print(f"  ??Invalid JSON: {exp['output']}")
         return False
 
 
@@ -130,9 +130,9 @@ def main():
     print(f"\n{'=' * 60}")
     print(f"  REPRODUCTION COMPLETE in {elapsed_total/60:.1f} minutes")
     print(f"  {n_ok}/{n_total} experiments passed")
-    print(f"{'─' * 60}")
+    print(f"{'?�' * 60}")
     for name, ok in results.items():
-        status = "✓" if ok else "✗"
+        status = "?? if ok else "??
         print(f"  {status} {name}")
     print(f"{'=' * 60}")
     

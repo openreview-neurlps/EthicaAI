@@ -24,7 +24,7 @@ from cleanrl_mappo_pgg import NonlinearPGGEnv, bootstrap_ci
 OUTPUT_DIR = Path(__file__).resolve().parent.parent / "outputs" / "cleanrl_baselines"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# â”€â”€â”€ Hyperparameters â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ?€?€?€ Hyperparameters ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
 HIDDEN_DIM = 64
 LR = 5e-4
 GAMMA = 0.99

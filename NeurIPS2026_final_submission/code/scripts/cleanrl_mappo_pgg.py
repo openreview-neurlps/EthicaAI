@@ -28,7 +28,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 # Import our standardized environment
 from envs.nonlinear_pgg_env import NonlinearPGGEnv
 
-# â”€â”€â”€ Hyperparameters (CleanRL defaults) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ?€?€?€ Hyperparameters (CleanRL defaults) ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
 HIDDEN_DIM = 64
 LR_ACTOR = 2.5e-4
 LR_CRITIC = 1e-3
@@ -51,7 +51,7 @@ if os.environ.get("ETHICAAI_FAST") == "1":
     N_EPISODES = 10
 
 
-# â”€â”€â”€ Neural Network Layers (numpy only, portable) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ?€?€?€ Neural Network Layers (numpy only, portable) ?€?€?€?€?€?€?€?€?€?€?€
 def relu(x):
     return np.maximum(0, x)
 
@@ -96,7 +96,7 @@ class MLPActor:
         self.fc1 = NNLayer(rng, obs_dim, hidden, lr)
         self.fc2 = NNLayer(rng, hidden, hidden, lr)
         self.mean_head = NNLayer(rng, hidden, 1, lr)
-        self.log_std = np.array([-0.5], dtype=np.float32)  # Initial std â‰ˆ 0.6
+        self.log_std = np.array([-0.5], dtype=np.float32)  # Initial std ??0.6
     
     def forward(self, obs):
         h = relu(self.fc1.forward(obs))
@@ -165,8 +165,8 @@ def ppo_update_actor(actor, obs_list, act_list, old_lps, advantages, entropy_coe
     """PPO gradient step with entropy bonus (numerical gradient for portability).
     
     The entropy bonus encourages exploration by increasing log_std when
-    entropy_coef > 0. For Gaussian policy, H(Ï€) = 0.5 + 0.5*ln(2Ï€) + log_std,
-    so âˆ‚H/âˆ‚log_std = 1 (always positive â†’ entropy bonus pushes std up).
+    entropy_coef > 0. For Gaussian policy, H(?) = 0.5 + 0.5*ln(2?) + log_std,
+    so ?‚H/?‚log_std = 1 (always positive ??entropy bonus pushes std up).
     """
     for obs, act, old_lp, adv in zip(obs_list, act_list, old_lps, advantages):
         new_lp = actor.log_prob(obs, act)
@@ -218,10 +218,10 @@ def ppo_update_actor(actor, obs_list, act_list, old_lps, advantages, entropy_coe
         actor.fc1.adam_update(grad_W_fc1, grad_b_fc1)
         
         # --- Entropy bonus: update log_std ---
-        # Gaussian entropy H = 0.5 + 0.5*ln(2Ï€) + log_std
-        # âˆ‚H/âˆ‚log_std = 1, so gradient of (-entropy_coef * H) w.r.t. log_std = -entropy_coef
+        # Gaussian entropy H = 0.5 + 0.5*ln(2?) + log_std
+        # ?‚H/?‚log_std = 1, so gradient of (-entropy_coef * H) w.r.t. log_std = -entropy_coef
         # We also add the log_prob gradient w.r.t. log_std:
-        # âˆ‚log_prob/âˆ‚log_std = ((act - mean)^2 / std^2) - 1
+        # ?‚log_prob/?‚log_std = ((act - mean)^2 / std^2) - 1
         d_lp_d_logstd = ((act - mean_val[0])**2 / (std[0]**2)) - 1.0
         log_std_grad = -(d_lp_d_logstd * adv + entropy_coef * 1.0)
         # Apply simple SGD to log_std (small lr to keep stable)

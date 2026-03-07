@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-baseline_hardening.py â€” Unified Fair Comparison Protocol
+baseline_hardening.py ??Unified Fair Comparison Protocol
 ========================================================
 
 Addresses reviewer criticism R4: "baseline fairness (reimplementation)"
@@ -10,7 +10,7 @@ This script runs ALL paradigms under a unified protocol:
 - Same seed set (seeds 0-19)
 - Same horizon (T=50, 500 episodes)
 - Same observation/action space
-- HP sweep expanded: 5 lr Ã— 5 entropy Ã— 5 gamma = 125 per paradigm â†’ 500+ total
+- HP sweep expanded: 5 lr Ã— 5 entropy Ã— 5 gamma = 125 per paradigm ??500+ total
 
 Paradigms tested:
 1. IPPO (CleanRL PPO, independent)
@@ -32,7 +32,7 @@ from envs.nonlinear_pgg_env import NonlinearPGGEnv
 OUTPUT_DIR = Path(__file__).resolve().parent.parent / "outputs" / "baseline_hardening"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# â”€â”€ Unified Protocol Constants â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ?€?€ Unified Protocol Constants ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
 N_AGENTS = 20
 BYZ_FRAC = 0.3
 T_HORIZON = 50
@@ -41,7 +41,7 @@ N_EVAL = 30
 N_SEEDS = 20
 ENDOWMENT = 20.0
 
-# Expanded HP Grid (5 Ã— 5 Ã— 4 = 100 per paradigm, Ã— 4 paradigms â‰ˆ 400+)
+# Expanded HP Grid (5 Ã— 5 Ã— 4 = 100 per paradigm, Ã— 4 paradigms ??400+)
 LR_GRID = [5e-5, 1e-4, 2.5e-4, 5e-4, 1e-3]
 ENTROPY_GRID = [0.0, 0.01, 0.05, 0.1, 0.5]
 GAMMA_GRID = [0.95, 0.97, 0.99, 0.995]
@@ -56,7 +56,7 @@ if os.environ.get("ETHICAAI_FAST") == "1":
     N_EPISODES = 50
 
 
-# â”€â”€ Simple Policy Implementations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ?€?€ Simple Policy Implementations ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
 
 class LinearPolicy:
     """Simple linear policy: Î» = sigmoid(w Â· obs + b)"""
@@ -80,7 +80,7 @@ class LinearPolicy:
         G = 0
         for obs, action, reward, mu in reversed(trajectory):
             G = reward + gamma * G
-            # âˆ‚log Ï€ / âˆ‚w â‰ˆ (a - Î¼) Â· obs Â· G
+            # ?‚log ? / ?‚w ??(a - Î¼) Â· obs Â· G
             grad_w = (action - mu) * obs * G
             grad_b = (action - mu) * G
             self.w += self.lr * grad_w
@@ -115,7 +115,7 @@ class TabularQ:
         self.Q[s, action_idx] += self.lr * (target - self.Q[s, action_idx])
 
 
-# â”€â”€ Paradigm Runners â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ?€?€ Paradigm Runners ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
 
 def run_paradigm(paradigm, seed, lr, entropy_coef, gamma):
     """Run a single paradigm with given hyperparameters."""
@@ -184,7 +184,7 @@ def run_paradigm(paradigm, seed, lr, entropy_coef, gamma):
     }
 
 
-# â”€â”€ Main Sweep â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ?€?€ Main Sweep ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
 
 def main():
     print("=" * 70)
@@ -281,7 +281,7 @@ def main():
         json.dump({"summary": summary, "detailed": all_results}, f, indent=2)
     
     print(f"\n{'='*70}")
-    print(f"  FINAL SUMMARY â€” Baseline Hardening")
+    print(f"  FINAL SUMMARY ??Baseline Hardening")
     print(f"{'='*70}")
     print(f"  {'Paradigm':<10s} {'Trapped':>10s} {'Total':>8s} {'Trap Rate':>10s}")
     print(f"  {'-'*40}")

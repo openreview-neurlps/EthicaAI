@@ -22,7 +22,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = PROJECT_ROOT / "outputs" / "cpr_experiment"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# â”€â”€â”€ CPR Environment â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ?€?€?€ CPR Environment ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
 class CommonPoolResource:
     """
     Ostrom-style Common-Pool Resource game.
@@ -98,7 +98,7 @@ class CommonPoolResource:
         return payoffs, survived, self.R, terminated
 
 
-# â”€â”€â”€ Algorithms â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ?€?€?€ Algorithms ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
 def sigmoid(x):
     return 1.0 / (1.0 + np.exp(-np.clip(x, -10, 10)))
 
@@ -284,7 +284,7 @@ def main():
         print(f"    survival: {np.mean(surv_vals):.1f}% [{ci_surv[0]:.1f}, {ci_surv[1]:.1f}]")
         print(f"    welfare: {np.mean(welf_vals):.3f}")
     
-    # â”€â”€â”€ Spectrum Validation Test â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    # ?€?€?€ Spectrum Validation Test ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
     print("\n" + "=" * 70)
     print("  MORAL COMMITMENT SPECTRUM VALIDATION (CPR)")
     print("=" * 70)

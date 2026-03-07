@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-verify_numbers.py — Verify ALL paper numbers match JSON outputs.
+verify_numbers.py ??Verify ALL paper numbers match JSON outputs.
 Single Source of Truth: outputs/*.json -> paper/unified_paper.tex
 
 Run: python verify_numbers.py
@@ -210,7 +210,7 @@ def main():
     print("\n" + "=" * 60)
     print(f"RESULTS: PASS={PASS_COUNT}  FAIL={FAIL_COUNT}  WARN={WARN_COUNT}")
     if FAIL_COUNT > 0:
-        print("STATUS: NUMBERS MISMATCH DETECTED — FIX BEFORE SUBMISSION")
+        print("STATUS: NUMBERS MISMATCH DETECTED ??FIX BEFORE SUBMISSION")
         sys.exit(1)
     else:
         print("STATUS: ALL VERIFIED NUMBERS MATCH")

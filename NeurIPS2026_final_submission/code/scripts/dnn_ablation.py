@@ -26,7 +26,7 @@ SHOCK_MAG = 0.15
 STATE_DIM = 4
 GAMMA_RL = 0.99
 N_EPISODES = 300
-N_SEEDS = 5
+N_SEEDS = 20
 
 if os.environ.get("ETHICAAI_FAST") == "1":
     print("  [FAST MODE] Overriding N_SEEDS=2, N_EPISODES=10")

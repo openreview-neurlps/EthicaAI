@@ -7,8 +7,8 @@ LOLA key idea: Agent i anticipates how its gradient step affects
 opponents' parameters, and accounts for how opponents' learning
 will change the game.
 
-Standard PG:    θ_i ← θ_i + α · ∇_{θ_i} V_i(θ)
-LOLA:           θ_i ← θ_i + α · ∇_{θ_i} V_i(θ + α·∇V_{-i})
+Standard PG:    θ_i ??θ_i + α · ??{θ_i} V_i(θ)
+LOLA:           θ_i ??θ_i + α · ??{θ_i} V_i(θ + α·?�V_{-i})
 
 In N-agent PGG, the LOLA update for agent i considers the
 anticipated policy updates of ALL other honest agents.
@@ -80,14 +80,14 @@ class LOLAAgent:
         self.b = np.float32(vec[STATE_DIM])
     
     def policy_gradient(self, obs_list, act_list, returns):
-        """Compute ∇θ J = E[∇θ log π(a|s) · G_t]"""
+        """Compute ?��?J = E[?��?log ?(a|s) · G_t]"""
         grad_w = np.zeros(STATE_DIM, dtype=np.float32)
         grad_b = np.float32(0.0)
         
         for obs, act, G in zip(obs_list, act_list, returns):
             mu = self.forward(obs)
-            # ∂log N(a|μ,σ)/∂μ · ∂μ/∂θ
-            # = (a-μ)/σ² · μ(1-μ) · obs
+            # ?�log N(a|μ,?)/?��?· ?��??��?
+            # = (a-μ)/?² · μ(1-μ) · obs
             sigma = 0.1
             d_logp = (act - mu) / (sigma**2) * mu * (1 - mu)
             grad_w += G * d_logp * obs
@@ -160,8 +160,8 @@ def run_lola(seed):
             grad = agents[i].policy_gradient(all_obs[i], all_acts[i], all_returns[i])
             standard_grads.append(grad)
         
-        # Step 2: LOLA correction — anticipate opponents' updates
-        # For agent i, imagine all j≠i take a gradient step, then compute
+        # Step 2: LOLA correction ??anticipate opponents' updates
+        # For agent i, imagine all j?�i take a gradient step, then compute
         # how agent i's value changes in the updated landscape
         for i in range(N_HONEST):
             original_params = agents[i].get_params().copy()
@@ -173,15 +173,15 @@ def run_lola(seed):
             for j in range(N_HONEST):
                 if j == i:
                     continue
-                # Opponent j would update: θ_j ← θ_j + LR · ∇_j V_j
+                # Opponent j would update: θ_j ??θ_j + LR · ??j V_j
                 # Effect on agent i's gradient (cross-derivative approximation):
-                # ΔG_i ≈ d²V_i/(dθ_i·dθ_j) · (LR · ∇_j V_j)
+                # ?G_i ??d²V_i/(dθ_i·dθ_j) · (LR · ??j V_j)
                 # Simplified: finite difference of agent i's gradient w.r.t agent j's params
                 old_params_j = agents[j].get_params().copy()
                 agents[j].set_params(old_params_j + LOLA_LR * standard_grads[j])
                 
                 # Recompute agent i's gradient in the world where j has updated
-                # (using same trajectory — this is the 1-step LOLA approximation)
+                # (using same trajectory ??this is the 1-step LOLA approximation)
                 grad_after = agents[i].policy_gradient(all_obs[i], all_acts[i], all_returns[i])
                 opponent_effect += (grad_after - standard_grads[i])
                 
@@ -239,7 +239,7 @@ def main():
         print(f"\n  Seed {s+1}/{N_SEEDS}")
         r = run_lola(s)
         all_results.append(r)
-        print(f"    → λ={r['lambda']:.3f}, Surv={r['survival']:.0f}%, W={r['welfare']:.1f}")
+        print(f"    ??λ={r['lambda']:.3f}, Surv={r['survival']:.0f}%, W={r['welfare']:.1f}")
     
     lams = [r["lambda"] for r in all_results]
     survs = [r["survival"] for r in all_results]

@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 """
-cpo_learn_phi1.py — Learn the commitment floor φ₁ via Lagrangian relaxation
+cpo_learn_phi1.py ??Learn the commitment floor ???via Lagrangian relaxation
 ============================================================================
 
 This script addresses the critical reviewer concern:
-  "φ₁=1.0 is hardcoding, not learning"
+  "???1.0 is hardcoding, not learning"
 
 We formulate commitment floor discovery as a constrained optimization:
-  maximize  welfare(φ₁)
-  subject to  P(survival | φ₁) ≥ target_survival
+  maximize  welfare(???
+  subject to  P(survival | ??? ??target_survival
 
 Using Lagrangian relaxation with dual variable μ:
-  L(φ₁, μ) = welfare(φ₁) + μ * (P(survival) - target)
+  L(??? μ) = welfare(??? + μ * (P(survival) - target)
 
-The agent DISCOVERS that φ₁ ≈ 1.0 is optimal through gradient-based search,
+The agent DISCOVERS that ?????1.0 is optimal through gradient-based search,
 rather than having it hard-coded.
 
 Also includes Evolution Strategy (ES) baseline for comparison.
@@ -33,10 +33,10 @@ sys.path.insert(0, os.path.join(SCRIPT_DIR, "envs"))
 from nonlinear_pgg_env import NonlinearPGGEnv
 
 
-# ─── Commitment Function g(θ, R) ──────────────────────────────
+# ?�?�?� Commitment Function g(θ, R) ?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�
 def commitment_function(theta_i: float, R: float, phi: np.ndarray) -> float:
     """
-    Parameterized commitment function g(θ, R; φ).
+    Parameterized commitment function g(θ, R; ?).
     
     phi = [svo_scale, base_crisis, slope_crisis, 
            crisis_threshold, base_abundance, slope_abundance]
@@ -47,7 +47,7 @@ def commitment_function(theta_i: float, R: float, phi: np.ndarray) -> float:
     crisis_threshold = phi[3]
     
     if R < crisis_threshold:
-        # Crisis regime — φ₁ = phi[1] is the floor
+        # Crisis regime ?????= phi[1] is the floor
         return max(phi[1], np.sin(theta_i) * phi[2])
     else:
         # Normal regime
@@ -57,7 +57,7 @@ def commitment_function(theta_i: float, R: float, phi: np.ndarray) -> float:
 def evaluate_phi1(phi1: float, env_kwargs: dict, n_episodes: int = 10, 
                   n_agents: int = 20, svo_mean: float = 0.6) -> Dict:
     """
-    Evaluate a commitment floor φ₁ across multiple episodes.
+    Evaluate a commitment floor ???across multiple episodes.
     Returns welfare, survival rate, mean λ.
     """
     phi = np.array([1.0, phi1, 0.3, 0.2, 1.5, 0.4])  # Default params, only vary phi1
@@ -112,13 +112,13 @@ def lagrangian_search(target_survival: float = 0.95,
                       n_eval_episodes: int = 20,
                       env_kwargs: dict = None) -> Dict:
     """
-    Lagrangian relaxation to find optimal φ₁.
+    Lagrangian relaxation to find optimal ???
     
-    maximize  welfare(φ₁)
-    s.t.      survival(φ₁) ≥ target_survival
+    maximize  welfare(???
+    s.t.      survival(??? ??target_survival
     
     Dual: L = welfare + μ * (survival - target)
-    Primal update: φ₁ += lr * dL/dφ₁ ≈ lr * (d_welfare/d_phi + μ * d_survival/d_phi)
+    Primal update: ???+= lr * dL/d?????lr * (d_welfare/d_phi + μ * d_survival/d_phi)
     Dual update:   μ = max(0, μ - lr_mu * (survival - target))
     """
     if env_kwargs is None:
@@ -130,9 +130,9 @@ def lagrangian_search(target_survival: float = 0.95,
     trajectory = []
     
     print(f"\n{'='*70}")
-    print(f"Lagrangian Search for φ₁ (target survival ≥ {target_survival*100:.0f}%)")
+    print(f"Lagrangian Search for ???(target survival ??{target_survival*100:.0f}%)")
     print(f"{'='*70}")
-    print(f"{'Step':>4} | {'φ₁':>6} | {'μ':>6} | {'Survival':>8} | {'Welfare':>8} | {'λ_mean':>6}")
+    print(f"{'Step':>4} | {'???:>6} | {'μ':>6} | {'Survival':>8} | {'Welfare':>8} | {'λ_mean':>6}")
     print(f"{'-'*4:>4}-+-{'-'*6:>6}-+-{'-'*6:>6}-+-{'-'*8:>8}-+-{'-'*8:>8}-+-{'-'*6:>6}")
     
     for step in range(n_steps):
@@ -155,7 +155,7 @@ def lagrangian_search(target_survival: float = 0.95,
         if step % 5 == 0 or step == n_steps - 1:
             print(f"{step:4d} | {phi1:6.3f} | {mu:6.3f} | {survival*100:7.1f}% | {welfare:8.1f} | {lam:6.3f}")
         
-        # Numerical gradient of welfare and survival w.r.t. φ₁
+        # Numerical gradient of welfare and survival w.r.t. ???
         eps = 0.02
         stats_plus = evaluate_phi1(min(phi1 + eps, 1.0), env_kwargs, n_eval_episodes)
         stats_minus = evaluate_phi1(max(phi1 - eps, 0.0), env_kwargs, n_eval_episodes)
@@ -166,10 +166,10 @@ def lagrangian_search(target_survival: float = 0.95,
         # Lagrangian gradient: d_welfare + mu * d_survival
         d_lagrangian = d_welfare + mu * d_survival
         
-        # Primal update (maximize → gradient ascent)
+        # Primal update (maximize ??gradient ascent)
         phi1 = np.clip(phi1 + lr_phi * d_lagrangian, 0.0, 1.0)
         
-        # Dual update (constraint: survival ≥ target)
+        # Dual update (constraint: survival ??target)
         mu = max(0.0, mu - lr_mu * (survival - target_survival))
     
     return {
@@ -187,7 +187,7 @@ def evolution_strategy_search(n_steps: int = 30,
                               n_eval_episodes: int = 20,
                               env_kwargs: dict = None) -> Dict:
     """
-    Evolution Strategy (ES) baseline for φ₁ search.
+    Evolution Strategy (ES) baseline for ???search.
     Directly maximizes welfare + survival_bonus.
     """
     if env_kwargs is None:
@@ -197,7 +197,7 @@ def evolution_strategy_search(n_steps: int = 30,
     trajectory = []
     
     print(f"\n{'='*70}")
-    print(f"Evolution Strategy Search for φ₁")
+    print(f"Evolution Strategy Search for ???)
     print(f"{'='*70}")
     
     for step in range(n_steps):
@@ -234,7 +234,7 @@ def evolution_strategy_search(n_steps: int = 30,
         })
         
         if step % 5 == 0 or step == n_steps - 1:
-            print(f"  Step {step:3d}: φ₁={phi1:.4f}, survival={stats['survival_rate']*100:.1f}%, welfare={stats['welfare_mean']:.1f}")
+            print(f"  Step {step:3d}: ???{phi1:.4f}, survival={stats['survival_rate']*100:.1f}%, welfare={stats['welfare_mean']:.1f}")
     
     return {
         'method': 'evolution_strategy',
@@ -245,8 +245,8 @@ def evolution_strategy_search(n_steps: int = 30,
 
 def main():
     print("=" * 70)
-    print("CPO/Lagrangian Learning of Commitment Floor φ₁")
-    print("Addresses reviewer concern: 'φ₁ is hardcoding, not learning'")
+    print("CPO/Lagrangian Learning of Commitment Floor ???)
+    print("Addresses reviewer concern: '???is hardcoding, not learning'")
     print("=" * 70)
     
     env_kwargs = {
@@ -289,15 +289,15 @@ def main():
             'welfare': float(stats['welfare_mean']),
             'lambda_mean': float(stats['lambda_mean']),
         })
-        print(f"  φ₁={phi1:.1f}: survival={stats['survival_rate']*100:.0f}%, welfare={stats['welfare_mean']:.1f}")
+        print(f"  ???{phi1:.1f}: survival={stats['survival_rate']*100:.0f}%, welfare={stats['welfare_mean']:.1f}")
     
     # Compile results
     all_results = {
-        'experiment': 'CPO/Lagrangian Learning of φ₁',
+        'experiment': 'CPO/Lagrangian Learning of ???,
         'description': (
-            'Automatically discovers optimal commitment floor φ₁ via '
+            'Automatically discovers optimal commitment floor ???via '
             'constrained optimization (Lagrangian relaxation) and evolution strategy. '
-            'Both methods converge to φ₁ ≈ 1.0, matching the hand-crafted specification.'
+            'Both methods converge to ?????1.0, matching the hand-crafted specification.'
         ),
         'environment': env_kwargs,
         'lagrangian': lag_results,
@@ -316,8 +316,8 @@ def main():
     print(f"\n{'='*70}")
     print(f"RESULTS SUMMARY")
     print(f"{'='*70}")
-    print(f"Lagrangian final φ₁: {lag_results['final_phi1']:.4f}")
-    print(f"ES final φ₁:         {es_results['final_phi1']:.4f}")
+    print(f"Lagrangian final ??? {lag_results['final_phi1']:.4f}")
+    print(f"ES final ???         {es_results['final_phi1']:.4f}")
     print(f"Hand-crafted:         1.0000")
     print(f"\nResults saved to: {out_path}")
     print(f"{'='*70}")

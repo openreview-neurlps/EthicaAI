@@ -29,7 +29,7 @@ R_RECOV = 0.30
 SHOCK_PROB = 0.12
 SHOCK_MAG = 0.25
 N_EPISODES = 200
-N_SEEDS = 5
+N_SEEDS = 20
 GAMMA = 0.99
 OBS_DIM = 8  # [my_x, my_y, local_R, neighbor_avg_R, global_avg_R, my_lam_prev, crisis_flag, t_norm]
 

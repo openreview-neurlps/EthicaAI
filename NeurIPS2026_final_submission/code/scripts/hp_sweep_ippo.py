@@ -4,7 +4,7 @@ Phase A: HP Tuning Sweep for IPPO on Non-linear PGG
 Tests lr × entropy_coef grid to show Nash Trap persists 
 even with reasonable hyperparameter tuning.
 
-Grid: lr ∈ {1e-4, 2.5e-4, 5e-4, 1e-3} × entropy ∈ {0.0, 0.01, 0.05, 0.1, 0.5}
+Grid: lr ??{1e-4, 2.5e-4, 5e-4, 1e-3} × entropy ??{0.0, 0.01, 0.05, 0.1, 0.5}
 = 20 combinations × 10 seeds = 200 runs
 """
 import numpy as np
@@ -26,7 +26,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 N_EPISODES = 150
 N_EVAL = 20
-N_SEEDS = 10
+N_SEEDS = 20
 
 # HP Grid
 LRS = [1e-4, 2.5e-4, 5e-4, 1e-3]
@@ -138,9 +138,9 @@ def main():
                 "still_trapped": float(np.mean(lams)) < 0.7,  # Nash Trap threshold
             }
             
-            trapped = "TRAPPED ✓" if results[key]["still_trapped"] else "ESCAPED ✗"
-            print(f"    → λ={np.mean(lams):.3f} [{ci_l[0]:.3f},{ci_l[1]:.3f}], "
-                  f"surv={np.mean(survs):.1f}% — {trapped}")
+            trapped = "TRAPPED ?? if results[key]["still_trapped"] else "ESCAPED ??
+            print(f"    ??λ={np.mean(lams):.3f} [{ci_l[0]:.3f},{ci_l[1]:.3f}], "
+                  f"surv={np.mean(survs):.1f}% ??{trapped}")
             
             total_runs += 1
             if results[key]["still_trapped"]:

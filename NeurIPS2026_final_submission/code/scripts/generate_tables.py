@@ -79,7 +79,7 @@ def generate_hp_sweep_table():
 
 if __name__ == "__main__":
     print("=" * 60)
-    print("  LaTeX Table Generator — EthicaAI")
+    print("  LaTeX Table Generator ??EthicaAI")
     print("=" * 60)
     generate_table3()
     generate_hp_sweep_table()

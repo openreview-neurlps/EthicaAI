@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-reproduce_fast.py — Quick smoke-test reproduction (NeurIPS submission)
+reproduce_fast.py ??Quick smoke-test reproduction (NeurIPS submission)
 ======================================================================
 Runs core experiments with 2 seeds for rapid verification (~5 minutes).
 For full reproduction (20 seeds), use: python reproduce_all.py
@@ -9,8 +9,8 @@ Usage:
   python reproduce_fast.py
 
 Exit codes:
-  0 — All smoke tests passed
-  1 — Some test(s) failed
+  0 ??All smoke tests passed
+  1 ??Some test(s) failed
 """
 import subprocess
 import sys
@@ -30,7 +30,7 @@ SMOKE_TESTS = [
         "output": "ppo_nash_trap/ippo_results.json",
     },
     {
-        "name": "φ₁ Commitment Floor Sweep",
+        "name": "???Commitment Floor Sweep",
         "script": "phi1_with_learning.py",
         "output": "phi1_ablation/phi1_results.json",
     },
@@ -43,13 +43,13 @@ def run_smoke_test(exp):
     output_path = OUTPUT_DIR / exp["output"]
 
     if not script_path.exists():
-        print(f"  ⚠ Script not found: {exp['script']}")
+        print(f"  ??Script not found: {exp['script']}")
         return False
 
-    print(f"\n{'─' * 60}")
+    print(f"\n{'?�' * 60}")
     print(f"  Smoke test: {exp['name']}")
     print(f"  Script: {exp['script']}")
-    print(f"{'─' * 60}")
+    print(f"{'?�' * 60}")
 
     t0 = time.time()
     env = {**os.environ, "ETHICAAI_FAST": "1"}
@@ -62,20 +62,20 @@ def run_smoke_test(exp):
     elapsed = time.time() - t0
 
     if result.returncode != 0:
-        print(f"  ✗ FAILED (exit code {result.returncode}, {elapsed:.0f}s)")
+        print(f"  ??FAILED (exit code {result.returncode}, {elapsed:.0f}s)")
         return False
 
     if not output_path.exists():
-        print(f"  ✗ Output not found: {exp['output']}")
+        print(f"  ??Output not found: {exp['output']}")
         return False
 
     try:
         with open(output_path) as f:
             data = json.load(f)
-        print(f"  ✓ Passed in {elapsed:.0f}s → {exp['output']}")
+        print(f"  ??Passed in {elapsed:.0f}s ??{exp['output']}")
         return True
     except json.JSONDecodeError:
-        print(f"  ✗ Invalid JSON: {exp['output']}")
+        print(f"  ??Invalid JSON: {exp['output']}")
         return False
 
 
@@ -99,9 +99,9 @@ def main():
     print(f"\n{'=' * 60}")
     print(f"  SMOKE TEST COMPLETE in {elapsed_total/60:.1f} minutes")
     print(f"  {n_ok}/{n_total} tests passed")
-    print(f"{'─' * 60}")
+    print(f"{'?�' * 60}")
     for name, ok in results.items():
-        status = "✓" if ok else "✗"
+        status = "?? if ok else "??
         print(f"  {status} {name}")
     print(f"{'=' * 60}")
 
