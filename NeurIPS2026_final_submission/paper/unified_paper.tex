@@ -68,10 +68,10 @@ And if moral commitment is necessary, \emph{how much} commitment does the enviro
 
 We address these questions through a systematic investigation spanning environments of increasing severity, yielding five contributions:
 \begin{enumerate}
-    \item[(C1)] \textbf{Formal Theoretical Foundations}: We define the class of Tipping-Point Social Dilemmas (TPSD), prove a drift condition on resource dynamics (Lemma~\ref{lem:drift}), derive finite-horizon survival bounds (Lemma~\ref{lem:survival}), and establish the Nash Trap as a locally stable fixed point where individually rational cooperation is insufficient for collective survival (Proposition~\ref{prop:nash_trap}). A corollary proves that unconditional commitment is the unique feasible solution when recovery rates approach zero (Appendix~\ref{app:theory}).
+    \item[(C1)] \textbf{Formal Theoretical Foundations}: We define the class of Tipping-Point Social Dilemmas (Definition~\ref{def:tpsd}), prove a drift condition on resource dynamics (Lemma~\ref{lem:drift}), derive finite-horizon survival bounds (Lemma~\ref{lem:survival}), and establish the Nash Trap as a locally stable fixed point (Eq.~\ref{eq:nash_trap_condition}) where individually rational cooperation is insufficient for collective survival (Proposition~\ref{prop:nash_trap}). A corollary proves that unconditional commitment is the unique feasible solution when recovery rates approach zero (Corollary~\ref{cor:unconditional}, Appendix~\ref{app:theory}).
     \item[(C2)] \textbf{Consistent Cooperation Failure Across Seven Paradigms}: In non-linear PGG with tipping points, agents trained via REINFORCE (3 architectures), PPO (IPPO/MAPPO), IQL, QMIX, and LOLA all converge to the Nash Trap ($\lambda \approx 0.5$, $\leq$72\% survival). A unified fair comparison protocol with $400{+}$ HP configurations confirms 100\% trap rate (Section~\ref{sec:nash_trap}).
     \item[(C3)] \textbf{CPO-Discovered Commitment Floor}: The optimal commitment floor $\phi_1^* = 1.0$ is \emph{automatically discovered} via Constrained Policy Optimization (CPO) with Lagrangian relaxation---not hardcoded. Three independent methods (Lagrangian RL, Evolution Strategy, grid search) all converge to $\phi_1 = 1.0$ (Section~\ref{sec:unconditional}).
-    \item[(C4)] \textbf{Generalization Beyond PGG}: We validate on DeepMind's Melting Pot benchmark (commons\_harvest, clean\_up), confirming that the Nash Trap transfers to standard high-dimensional spatial environments (Appendix~\ref{app:melting_pot}). A discrete preference network implementing Sen's meta-ranking as ``ranking over rankings'' learns Crisis$\to$Egalitarian convergence (Appendix~\ref{app:preference_network}).
+    \item[(C4)] \textbf{Generalization Beyond PGG}: We validate on DeepMind's Melting Pot benchmark (commons\_harvest, clean\_up), confirming that the Nash Trap transfers to standard high-dimensional spatial environments (Appendix~\ref{app:melting_pot}). A discrete preference network (Table~\ref{tab:preference_network}) implementing Sen's meta-ranking as ``ranking over rankings'' learns Crisis$\to$Egalitarian convergence (Appendix~\ref{app:preference_network}). Value decomposition (QMIX) and opponent-shaping (LOLA) baselines are detailed in Appendix~\ref{app:qmix_lola}.
     \item[(C5)] \textbf{The Moral Commitment Spectrum}: The degree of commitment required for system survival is determined by the environment's non-linearity, supported by Theorem~\ref{thm:critical}, phase diagrams across 110 conditions, cross-environment validation (CPR, spatial grids), and meta-learning convergence (Section~\ref{sec:turning_point}).
 \end{enumerate}
 
@@ -171,6 +171,8 @@ When $R_t \leq 0$, the episode terminates and all future rewards become zero.
 % SECTION 4: EXPERIMENTS
 % ================================================================
 \section{Experiments}
+
+Using the environment and agent framework from Section~\ref{sec:method}, we systematically evaluate cooperation across linear (Section~\ref{sec:linear}) and non-linear environments.
 
 \paragraph{Evaluation Protocol and Metric Definitions.}
 All experiments use the following standardized evaluation:
@@ -905,7 +907,7 @@ Byzantine fraction & 0.0--0.3 & 0.0--0.3 \\
 % Appendix H: Multi-Axis Benchmark (Melting Pot Criteria)
 % ================================================================
 \section{Multi-Axis Criteria-Inspired Comparison}
-\label{app:melting_pot}
+\label{app:multi_axis}
 
 To provide a structured qualitative comparison, we evaluate Meta-Ranking against established MARL baselines across five evaluation axes. These axes are \emph{inspired by} the social evaluation dimensions discussed in the Melting Pot literature~\citep{leibo2021scalable}---cooperation, efficiency, fairness, scalability, and robustness---but \textbf{we do not run the actual Melting Pot benchmark}.
 
