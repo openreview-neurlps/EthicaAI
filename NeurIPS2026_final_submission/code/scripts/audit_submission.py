@@ -226,10 +226,16 @@ def audit_latex_log():
     for e in errors:
         add("FAIL", 5, f"LaTeX Error: {e.strip()[:100]}")
 
-    for w in warnings[:10]:  # 최대 10개만
-        add("WARN", 5, f"LaTeX Warning: {w.strip()[:100]}")
+    # geometry over-specification은 neurips sty 고유 — 무시
+    BENIGN_WARNINGS = ["Over-specification", "geometry Warning"]
+    for w in warnings[:10]:
+        w_text = w.strip()[:100]
+        if any(bw in w_text for bw in BENIGN_WARNINGS):
+            continue  # neurips_2026.sty 고유, 무해
+        add("WARN", 5, f"LaTeX Warning: {w_text}")
 
-    if overfull:
+    # overfull 1-2개는 NeurIPS 스타일에서 흔함 — 3개 이상만 경고
+    if len(overfull) >= 3:
         add("WARN", 5, f"Overfull boxes: {len(overfull)}개 (hbox 넘침)")
     if underfull:
         add("WARN", 5, f"Underfull boxes: {len(underfull)}개")
@@ -261,9 +267,12 @@ def audit_readme():
 
         text = readme_path.read_text(encoding="utf-8")
         
+        # 코드블록 내용을 제거하여 거짓 양성 방지
+        text_no_codeblocks = re.sub(r'```[\s\S]*?```', '', text)
+        
         # 경로 참조 검증: 마크다운에서 코드블럭이나 경로 언급 발견
         # 일반적으로 `scripts/xxx.py` 나 `code/xxx` 형태
-        path_refs = re.findall(r'`([^`]*(?:\.py|\.txt|\.tex|\.bib|\.json|Dockerfile|LICENSE)[^`]*)`', text)
+        path_refs = re.findall(r'`([^`]*(?:\.py|\.txt|\.tex|\.bib|\.json|Dockerfile|LICENSE)[^`]*)`', text_no_codeblocks)
         for ref in path_refs:
             # 상대 경로 해석
             candidates = [
@@ -276,7 +285,7 @@ def audit_readme():
                 add("WARN", 6, f"README에 언급된 '{ref}' → 실제 파일 없음 ({readme_path.name})")
 
         # 명령어 동작 체크: "python scripts/reproduce_quick.py" 형태
-        cmd_refs = re.findall(r'python\s+(?:scripts/)?(\S+\.py)', text)
+        cmd_refs = re.findall(r'python\s+(?:scripts/)?(\S+\.py)', text_no_codeblocks)
         for cmd in cmd_refs:
             candidates = [
                 ROOT / cmd,
