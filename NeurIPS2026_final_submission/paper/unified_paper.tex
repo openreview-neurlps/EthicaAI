@@ -1169,7 +1169,7 @@ Adaptive (undercutting) & 23.2 & \textbf{100.0} \\
 \section*{Paper Checklist}
 
 \begin{enumerate}
-\item \textbf{Claims}: All main claims (Moral Commitment Spectrum, Nash Trap, unconditional commitment necessity) are supported by experiments across six algorithms spanning three MARL paradigms within the tested PGG environments. We do not claim generality beyond the evaluated settings. [Yes]
+\item \textbf{Claims}: All five contributions (C1--C5: Formal Theoretical Foundations, Seven-Paradigm Failure Analysis, CPO-Discovered Commitment Floor, Generalization Beyond PGG via Melting Pot + Preference Network, and the Moral Commitment Spectrum) are empirically and theoretically supported in the corresponding sections. We do not claim generality beyond the evaluated settings. [Yes]
 \item \textbf{Limitations}: Discussed in Section~\ref{sec:limitations}. Key limitations include environment scope (PGG only), cooperative intrinsic motivation as an open question, and migration rate constraint. [Yes]
 \item \textbf{Theory}: Result~\ref{res:group_ess} states assumptions (group replacement dynamics, migration bound) and reports empirically measured values ($\pm$ 1 std). Full protocol in Appendix~\ref{app:price}. [Yes]
 \item \textbf{Experiments}:
@@ -1238,50 +1238,5 @@ Selfish RL agents achieve 9.3\% survival (Nash Trap);
 situational commitment achieves 6.5\% (worse, due to crisis overcommitment enabling exploitation);
 unconditional commitment achieves \textbf{46.0\%} survival.
 The Moral Commitment Spectrum pattern---unconditional commitment outperforms learned strategies in environments with irreversible tipping points---holds across both environments.
-
-% ================================================================
-% NEURIPS PAPER CHECKLIST (MANDATORY)
-% ================================================================
-\section*{NeurIPS Paper Checklist}
-
-\begin{enumerate}
-
-\item {\bf Claims}
-\begin{enumerate}
-  \item Do the main claims made in the abstract and introduction accurately reflect the paper's contributions and scope?
-  \answerYes{All five contributions (C1--C5) are empirically and theoretically supported in the corresponding sections.}
-\end{enumerate}
-
-\item {\bf Limitations}
-\begin{enumerate}
-  \item Does the paper discuss the limitations of the work performed by the authors?
-  \answerYes{Section~\ref{sec:limitations} explicitly discusses algorithm scope, baseline scope, environment scope, ethical scope, and philosophical fidelity.}
-\end{enumerate}
-
-\item {\bf Theory}
-\begin{enumerate}
-  \item For each theoretical result, does the paper provide the full set of assumptions and a complete proof?
-  \answerYes{Appendix~\ref{app:theory} provides Definition~1 (TPSD), Lemmas~2--3, Proposition~4, and Corollary~5 with full proofs.}
-\end{enumerate}
-
-\item {\bf Experiments}
-\begin{enumerate}
-  \item Does the paper include the code, data, and instructions needed to reproduce the main experimental results?
-  \answerYes{All code is provided as single-file Python scripts with NumPy-only dependencies. \texttt{reproduce\_all.py} reproduces all results with fixed seeds.}
-  \item Does the paper specify all the training and test details necessary to understand the results?
-  \answerYes{All hyperparameters are listed in Table~\ref{tab:hyperparams} and environment parameters in Table~\ref{tab:env_params}.}
-  \item Does the paper report error bars?
-  \answerYes{All results report mean $\pm$ std over 20 seeds with 95\% bootstrap confidence intervals.}
-  \item Is the code provided as supplemental material?
-  \answerYes{Anonymized zip with \texttt{reproduce\_fast.py} (2 seeds, $\sim$5 min) and \texttt{reproduce\_all.py} (20 seeds).}
-\end{enumerate}
-
-\item {\bf Broader Impact}
-\begin{enumerate}
-  \item Does the paper discuss potential broader impact?
-  \answerYes{We discuss implications for autonomous systems managing shared infrastructure (Section~\ref{sec:limitations}). We treat commitment as a safety specification, not a normative ethical prescription.}
-\end{enumerate}
-
-\end{enumerate}
 
 \end{document}

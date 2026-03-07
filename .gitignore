@@ -94,7 +94,7 @@ dashboard/
 # ===== Legacy/Archive (NOT the submission source) =====
 # Root paper/ is the OLD version — DO NOT USE
 # Single source of truth: NeurIPS2026_final_submission/
-paper/
+/paper/
 scripts/zenodo_upload.py
 scripts/demo.py
 scripts/prepare_arxiv.py
