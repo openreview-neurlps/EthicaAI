@@ -1,4 +1,4 @@
-"""
+﻿"""
 Phase Diagram: phi1 x beta -> Survival Heatmap
 ==========================================
 Sweeps commitment floor phi1 in [0, 1] x Byzantine fraction beta in [0, 0.5]
@@ -37,7 +37,7 @@ if os.environ.get("ETHICAAI_FAST") == "1":
     print("  [FAST MODE]")
     PHI1_GRID = [0.0, 0.25, 0.50, 0.75, 1.0]
     BETA_GRID = [0.0, 0.15, 0.30, 0.45]
-    N_SEEDS = 3
+    N_SEEDS = 2
     N_EPISODES = 50
     N_EVAL = 10
 

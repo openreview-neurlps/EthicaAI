@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+ï»¿#!/usr/bin/env python3
 """
 baseline_hardening.py ??Unified Fair Comparison Protocol
 ========================================================
@@ -10,7 +10,7 @@ This script runs ALL paradigms under a unified protocol:
 - Same seed set (seeds 0-19)
 - Same horizon (T=50, 500 episodes)
 - Same observation/action space
-- HP sweep expanded: 5 lr Ã— 5 entropy Ã— 5 gamma = 125 per paradigm ??500+ total
+- HP sweep expanded: 5 lr íš 5 entropy íš 5 gamma = 125 per paradigm ??500+ total
 
 Paradigms tested:
 1. IPPO (CleanRL PPO, independent)
@@ -32,7 +32,7 @@ from envs.nonlinear_pgg_env import NonlinearPGGEnv
 OUTPUT_DIR = Path(__file__).resolve().parent.parent / "outputs" / "baseline_hardening"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# ?€?€ Unified Protocol Constants ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
+# ?Â€?Â€ Unified Protocol Constants ?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€
 N_AGENTS = 20
 BYZ_FRAC = 0.3
 T_HORIZON = 50
@@ -41,7 +41,7 @@ N_EVAL = 30
 N_SEEDS = 20
 ENDOWMENT = 20.0
 
-# Expanded HP Grid (5 Ã— 5 Ã— 4 = 100 per paradigm, Ã— 4 paradigms ??400+)
+# Expanded HP Grid (5 íš 5 íš 4 = 100 per paradigm, íš 4 paradigms ??400+)
 LR_GRID = [5e-5, 1e-4, 2.5e-4, 5e-4, 1e-3]
 ENTROPY_GRID = [0.0, 0.01, 0.05, 0.1, 0.5]
 GAMMA_GRID = [0.95, 0.97, 0.99, 0.995]
@@ -52,14 +52,14 @@ if os.environ.get("ETHICAAI_FAST") == "1":
     LR_GRID = [1e-4, 5e-4]
     ENTROPY_GRID = [0.01, 0.1]
     GAMMA_GRID = [0.99]
-    N_SEEDS = 3
+    N_SEEDS = 2
     N_EPISODES = 50
 
 
-# ?€?€ Simple Policy Implementations ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
+# ?Â€?Â€ Simple Policy Implementations ?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€
 
 class LinearPolicy:
-    """Simple linear policy: Î» = sigmoid(w Â· obs + b)"""
+    """Simple linear policy: è²« = sigmoid(w ì¨Œ obs + b)"""
     def __init__(self, rng, obs_dim=4, lr=1e-4):
         self.w = rng.randn(obs_dim).astype(np.float32) * 0.1
         self.b = np.float32(0.0)
@@ -80,7 +80,7 @@ class LinearPolicy:
         G = 0
         for obs, action, reward, mu in reversed(trajectory):
             G = reward + gamma * G
-            # ?‚log ? / ?‚w ??(a - Î¼) Â· obs Â· G
+            # ?êµƒog ? / ?êµ“ ??(a - é—œ) ì¨Œ obs ì¨Œ G
             grad_w = (action - mu) * obs * G
             grad_b = (action - mu) * G
             self.w += self.lr * grad_w
@@ -106,7 +106,7 @@ class TabularQ:
             a = rng.randint(self.n_actions)
         else:
             a = np.argmax(self.Q[s])
-        return a / (self.n_actions - 1), a  # Î», action_idx
+        return a / (self.n_actions - 1), a  # è²«, action_idx
     
     def update(self, obs, action_idx, reward, next_obs, done):
         s = self._state_bin(obs)
@@ -115,7 +115,7 @@ class TabularQ:
         self.Q[s, action_idx] += self.lr * (target - self.Q[s, action_idx])
 
 
-# ?€?€ Paradigm Runners ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
+# ?Â€?Â€ Paradigm Runners ?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€
 
 def run_paradigm(paradigm, seed, lr, entropy_coef, gamma):
     """Run a single paradigm with given hyperparameters."""
@@ -184,7 +184,7 @@ def run_paradigm(paradigm, seed, lr, entropy_coef, gamma):
     }
 
 
-# ?€?€ Main Sweep ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
+# ?Â€?Â€ Main Sweep ?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€
 
 def main():
     print("=" * 70)
@@ -196,7 +196,7 @@ def main():
     total_configs = len(LR_GRID) * len(ENTROPY_GRID) * len(GAMMA_GRID) * len(paradigms)
     
     print(f"\n  Paradigms: {paradigms}")
-    print(f"  HP Grid: {len(LR_GRID)} lr Ã— {len(ENTROPY_GRID)} ent Ã— {len(GAMMA_GRID)} Î³ = "
+    print(f"  HP Grid: {len(LR_GRID)} lr íš {len(ENTROPY_GRID)} ent íš {len(GAMMA_GRID)} æ¬¾ = "
           f"{len(LR_GRID)*len(ENTROPY_GRID)*len(GAMMA_GRID)} per paradigm")
     print(f"  Total configurations: {total_configs}")
     print(f"  Seeds per config: {N_SEEDS}")
@@ -246,7 +246,7 @@ def main():
                     
                     status = "TRAPPED" if is_trapped else "ESCAPED"
                     print(f"  [{config_idx:3d}/{total_configs}] {paradigm} {key}: "
-                          f"Î»={np.mean(lams):.3f} surv={np.mean(survs):.0f}% [{status}]")
+                          f"è²«={np.mean(lams):.3f} surv={np.mean(survs):.0f}% [{status}]")
         
         trap_rate = trapped_count / total_count * 100 if total_count > 0 else 0
         all_results[paradigm] = {

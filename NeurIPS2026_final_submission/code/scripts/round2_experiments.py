@@ -1,8 +1,8 @@
-"""
+﻿"""
 Round 2: All experimental phases in one script
 ================================================
-Phase A: HP Sweep (IPPO lr × entropy, 12 combos × 3 seeds)
-Phase B: Commitment Ablation (5 variants × 3 seeds)
+Phase A: HP Sweep (IPPO lr 횞 entropy, 12 combos 횞 3 seeds)
+Phase B: Commitment Ablation (5 variants 횞 3 seeds)
 Phase D: LOLA Divergence Analysis (analytical)
 """
 import numpy as np
@@ -19,7 +19,7 @@ from envs.nonlinear_pgg_env import NonlinearPGGEnv
 OUTPUT_DIR = Path(__file__).resolve().parent.parent / "outputs" / "round2"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# ?�?�?� Shared NN components ?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�
+# ??? Shared NN components ????????????????????????????????????
 def relu(x):
     return np.maximum(0, x)
 
@@ -107,9 +107,9 @@ def run_ippo_single(seed, lr, entropy_coef, n_episodes=150):
     }
 
 
-# ?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═??
+# ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??
 # PHASE A: HP SWEEP
-# ?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═??
+# ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??
 def phase_a():
     print("\n" + "="*70)
     print("  PHASE A: HP Tuning Sweep")
@@ -117,7 +117,7 @@ def phase_a():
     
     LR_GRID = [2.5e-4] # Fast run for structural proof
     ENT_GRID = [0.01]
-    N_SEEDS = 3
+    N_SEEDS = 2
     
     results = {}
     t0 = time.time()
@@ -143,7 +143,7 @@ def phase_a():
             }
             
             st = "TRAPPED" if trapped else "ESCAPED"
-            print(f"  lr={lr:.0e} ent={ent:.2f}: λ={np.mean(lams):.3f} surv={np.mean(survs):.1f}% {st}")
+            print(f"  lr={lr:.0e} ent={ent:.2f}: 貫={np.mean(lams):.3f} surv={np.mean(survs):.1f}% {st}")
     
     elapsed = time.time() - t0
     all_trapped = all(r["trapped"] for r in results.values())
@@ -153,9 +153,9 @@ def phase_a():
     return results
 
 
-# ?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═??
+# ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??
 # PHASE B: COMMITMENT ABLATION
-# ?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═??
+# ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??
 def compute_g(R_t, variant, prev_lambda):
     """Commitment function with ablation variants."""
     alpha = 0.9
@@ -228,9 +228,9 @@ def phase_b():
     
     variants = ["full", "no_crisis", "no_abundance", "alpha_zero", "alpha_one", "no_restraint"]
     labels = {
-        "full": "Full g(θ,R)", "no_crisis": "No crisis zone",
-        "no_abundance": "No abundance bonus", "alpha_zero": "No smoothing (α=0)",
-        "alpha_one": "No adaptation (α=1)", "no_restraint": "No restraint (β=0)",
+        "full": "Full g(罐,R)", "no_crisis": "No crisis zone",
+        "no_abundance": "No abundance bonus", "alpha_zero": "No smoothing (慣=0)",
+        "alpha_one": "No adaptation (慣=1)", "no_restraint": "No restraint (棺=0)",
     }
     
     results = {}
@@ -255,15 +255,15 @@ def phase_b():
             "welfare": float(np.mean(wels)),
             "welfare_std": float(np.std(wels)),
         }
-        print(f"  {labels[var]:>25s}: λ={np.mean(lams):.3f}±{np.std(lams):.3f} surv={np.mean(survs):.1f}±{np.std(survs):.1f}% W={np.mean(wels):.1f}±{np.std(wels):.1f}")
+        print(f"  {labels[var]:>25s}: 貫={np.mean(lams):.3f}짹{np.std(lams):.3f} surv={np.mean(survs):.1f}짹{np.std(survs):.1f}% W={np.mean(wels):.1f}짹{np.std(wels):.1f}")
     
     print(f"  Time: {time.time()-t0:.0f}s")
     return results
 
 
-# ?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═??
+# ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??
 # PHASE D: LOLA DIVERGENCE
-# ?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═??
+# ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??
 def phase_d():
     print("\n" + "="*70)
     print("  PHASE D: LOLA Divergence Analysis")
@@ -280,14 +280,14 @@ def phase_d():
         p_surv = 1.0 / (1.0 + np.exp(-20*(R - R_crit)))
         dp = p_surv*(1-p_surv)*20
         
-        # 1st order gradient: ?�r_i/?��?i
+        # 1st order gradient: ?굍_i/?궽?i
         grad1 = -1.0 + M/N * p_surv + M/N * np.sum(lambdas) * dp/N
         
-        # 2nd order cross-derivative: ?�²r_i/?��?i?��?j
+        # 2nd order cross-derivative: ?궰쾟_i/?궽?i?궽?j
         d2p = dp * (1 - 2*p_surv) * 20 / N
         cross = M/N * (dp/N + np.sum(lambdas) * d2p/N)
         
-        # LOLA correction magnitude: Σ_{j?�i} lr_opp * grad_j * cross
+        # LOLA correction magnitude: 誇_{j?쟧} lr_opp * grad_j * cross
         lr_opp = 0.01
         lola_correction = (N-1) * lr_opp * abs(grad1) * abs(cross)
         
@@ -319,14 +319,14 @@ def phase_d():
         trajectory.append(float(np.mean(lambdas)))
     
     results["trajectory_final"] = float(trajectory[-1])
-    print(f"\n  N=20 LOLA trajectory ??λ_final = {trajectory[-1]:.4f}")
+    print(f"\n  N=20 LOLA trajectory ??貫_final = {trajectory[-1]:.4f}")
     
     return results
 
 
-# ?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═??
+# ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??
 # MAIN
-# ?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═?�═??
+# ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??
 def main():
     print("=" * 70)
     print("  ROUND 2: ALL EXPERIMENTAL PHASES")
