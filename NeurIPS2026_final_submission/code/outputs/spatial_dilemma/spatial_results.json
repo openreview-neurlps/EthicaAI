@@ -1,0 +1,34 @@
+{
+  "results": [
+    {
+      "name": "Selfish RL",
+      "mean_lam": 0.4998230001393911,
+      "survival": 0.0,
+      "welfare": 12.201314254565128
+    },
+    {
+      "name": "Free-riding",
+      "mean_lam": 0.0,
+      "survival": 0.0,
+      "welfare": 10.0,
+      "final_R": 0.007073870195599644
+    },
+    {
+      "name": "Situational",
+      "mean_lam": 0.4240075243599216,
+      "survival": 0.013333333333333334,
+      "welfare": 11.865633107183656,
+      "final_R": 0.007189532748169976
+    },
+    {
+      "name": "Unconditional",
+      "mean_lam": 1.0,
+      "survival": 0.4066666666666667,
+      "welfare": 14.400000000000006,
+      "final_R": 0.01286872371780167
+    }
+  ],
+  "time_seconds": 545.2855002880096,
+  "grid_size": 5,
+  "n_agents": 15
+}

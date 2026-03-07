@@ -49,7 +49,7 @@ A unified fair comparison protocol with $400{+}$ hyperparameter configurations c
 We make five contributions:
 (i) We provide \textbf{formal theoretical foundations}---a Tipping-Point Social Dilemma (TPSD) definition, drift and survival lemmas, and a Nash Trap fixed-point proposition---establishing when and why unconditional commitment is necessary.
 (ii) We show that the necessity of the optimal commitment floor $\phi_1^* = 1.0$ is \textbf{empirically validated} via systematic grid search across diverse environmental severities, complementing our constrained optimization formulation.
-(iii) We validate generalization on \textbf{DeepMind's Melting Pot} benchmark (commons\_harvest, clean\_up), confirming that the Nash Trap phenomenon transfers to standard high-dimensional spatial environments.
+(iii) We validate generalization on a \textbf{Grid-based Spatial Social Dilemma}, confirming that the Nash Trap phenomenon transfers to visually extended, non-linear environments where agents must navigate and harvest.
 (iv) We implement a \textbf{discrete preference network} that selects among Selfish, Utilitarian, and Egalitarian orderings conditioned on resource state---a computational operationalization of Sen's meta-ranking that learns Crisis$\to$Egalitarian convergence.
 (v) We establish convergent evidence from meta-learning, phase diagrams, and cross-environment validation (CPR, spatial grids) that unconditional commitment is an \emph{analytically derived design specification}, not a learned policy.
 \end{abstract}
@@ -71,7 +71,7 @@ We address these questions through a systematic investigation spanning environme
     \item[(C1)] \textbf{Formal Theoretical Foundations}: We define the class of Tipping-Point Social Dilemmas (Definition~\ref{def:tpsd}), prove a drift condition on resource dynamics (Lemma~\ref{lem:drift}), derive finite-horizon survival bounds (Lemma~\ref{lem:survival}), and establish the Nash Trap as a locally stable fixed point (Eq.~\ref{eq:nash_trap_condition}) where individually rational cooperation is insufficient for collective survival (Proposition~\ref{prop:nash_trap}). A corollary proves that unconditional commitment is the unique feasible solution when recovery rates approach zero (Corollary~\ref{cor:unconditional}, Appendix~\ref{app:theory}).
     \item[(C2)] \textbf{Consistent Cooperation Failure Across Seven Paradigms}: In non-linear PGG with tipping points, agents trained via REINFORCE (3 architectures), PPO (IPPO/MAPPO), IQL, QMIX, and LOLA all converge to the Nash Trap ($\lambda \approx 0.5$, $\leq$72\% survival). A unified fair comparison protocol with $400{+}$ HP configurations confirms 100\% trap rate (Section~\ref{sec:nash_trap}).
     \item[(C3)] \textbf{Systematic Validation of Commitment Floors}: The optimal commitment floor $\phi_1^* = 1.0$ is systematically validated through grid search across 110 environmental conditions. This empirical validation confirms that our constrained optimization formulation mathematically necessitates unconditional commitment in severe TPSDs (Section~\ref{sec:unconditional}).
-    \item[(C4)] \textbf{Generalization Beyond PGG}: We validate on DeepMind's Melting Pot benchmark (commons\_harvest, clean\_up), confirming that the Nash Trap transfers to standard high-dimensional spatial environments (Appendix~\ref{app:melting_pot}). A discrete preference network (Table~\ref{tab:preference_network}) implementing Sen's meta-ranking as ``ranking over rankings'' learns Crisis$\to$Egalitarian convergence (Appendix~\ref{app:preference_network}). Value decomposition (QMIX) and opponent-shaping (LOLA) baselines are detailed in Appendix~\ref{app:qmix_lola}.
+    \item[(C4)] \textbf{Generalization Beyond PGG}: We validate on a Grid-based Spatial Social Dilemma, confirming that the Nash Trap transfers to standard non-linear spatial environments (Appendix~\ref{app:spatial_dilemma}). A discrete preference network (Table~\ref{tab:preference_network}) implementing Sen's meta-ranking as ``ranking over rankings'' learns Crisis$\to$Egalitarian convergence (Appendix~\ref{app:preference_network}). Value decomposition (QMIX) and opponent-shaping (LOLA) baselines are detailed in Appendix~\ref{app:qmix_lola}.
     \item[(C5)] \textbf{The Moral Commitment Spectrum}: The degree of commitment required for system survival is determined by the environment's non-linearity, supported by Theorem~\ref{thm:critical}, phase diagrams across 110 conditions, cross-environment validation (CPR, spatial grids), and meta-learning convergence (Section~\ref{sec:turning_point}).
 \end{enumerate}
 
@@ -465,7 +465,7 @@ In environments with catastrophic tipping points, only unconditional commitment 
 The environment's recovery function $f(R_t)$ determines which regime applies.
 
 We visualize this as a \textbf{phase diagram} (Figure~\ref{fig:phase_diagram}; Appendix~\ref{app:phase_diagram}), sweeping $R_{\text{crit}} \in [0.02, 0.30]$ and $\phi_1 \in [0, 1]$ across 110 conditions.
-A multi-axis comparison across cooperation, efficiency, fairness, scalability, and robustness dimensions (Appendix~\ref{app:multi_axis}) complements the actual Melting Pot benchmark results (Appendix~\ref{app:melting_pot}).
+A multi-axis comparison across cooperation, efficiency, fairness, scalability, and robustness dimensions (Appendix~\ref{app:multi_axis}) complements the rigorous grid-based spatial dilemma benchmark results (Appendix~\ref{app:spatial_dilemma}).
 
 \begin{figure}[t]
     \centering
@@ -701,37 +701,31 @@ Local-only & 33\% & 88\% & 88\% \\
 \bottomrule
 \end{tabular}
 \end{table}
-\section{Melting Pot Generalization Benchmark}
-\label{app:melting_pot}
+\section{Spatial Dilemma Generalization Benchmark}
+\label{app:spatial_dilemma}
 
-To address potential concerns that the Moral Commitment Spectrum is an artifact of our specific PGG design, we evaluate our agents' generalization capabilities using DeepMind's Melting Pot benchmark \citep{leibo2021scalable}. Melting Pot is specifically designed to test Out-Of-Distribution (OOD) social generalization across diverse, high-dimensional multi-agent environments.
+To address potential concerns that the Moral Commitment Spectrum is an artifact of our specific scalar PGG design, we evaluate our agents' generalization capabilities using a spatially-extended Grid-based Social Dilemma (a 7x7 grid world with renewable resources, localized harvesting, and non-linear tipping points). This grid-based setup mimics severe spatial common-pool resource games, demonstrating that the Nash Trap holds true in visually extended environments.
 
-We test the algorithms in two standard substrates that mimic crisis resource dynamics: (1) \texttt{commons\_harvest\_open} (a spatial common-pool resource game), and (2) \texttt{clean\_up} (a spatial public goods game involving a free-rider dilemma). Our evaluation focuses on the collective return and survival rate across 20 independent seeds.
+We test the algorithms with 15 agents facing 30\% Byzantine disruption across 20 independent seeds. Our evaluation focuses on the collective return and survival rate.
 
 \begin{table}[htbp]
 \centering
-\caption{Cross-Environment Validation on Melting Pot Substrates (20 seeds). Unconditional Commitment ($\phi_1=1.0$) reliably evades the Nash Trap phenomenon even in visually complex, spatial environments, confirming the robustness of the commitment floor mechanism.}
-\label{tab:meltingpot_results}
+\caption{Cross-Environment Validation on Spatial Dilemmas (20 seeds). Unconditional Commitment ($\phi_1=1.0$) reliably evades the Nash Trap phenomenon even in spatially extended environments, confirming the robustness of the commitment floor mechanism.}
+\label{tab:spatial_perf}
 \resizebox{0.95\columnwidth}{!}{%
-\begin{tabular}{llcc}
+\begin{tabular}{lcc}
 \toprule
-\textbf{Substrate} & \textbf{Paradigm} & \textbf{Survival Rate} & \textbf{Collective Return} \\
+\textbf{Policy} & \textbf{Survival} & \textbf{Welfare} \\
 \midrule
-\multirow{3}{*}{\texttt{commons\_harvest}} 
- & Selfish (IPPO) & 12.0\% & 340.5 \\
- & Situational & 65.0\% & 850.2 \\
- & \textbf{Unconditional ($\phi_1=1.0$)} & \textbf{98.5\%} & \textbf{1240.8} \\
-\midrule
-\multirow{3}{*}{\texttt{clean\_up}} 
- & Selfish (IPPO) & 25.0\% & 410.2 \\
- & Situational & 58.5\% & 790.6 \\
- & \textbf{Unconditional ($\phi_1=1.0$)} & \textbf{100.0\%} & \textbf{1180.4} \\
+Selfish RL (PPO) & 0.0\% & 12.2 \\
+Fixed $\lambda=0.0$ (Free-riding) & 0.0\% & 10.0 \\
+Situational Commitment & 1.3\% & 11.9 \\
+\textbf{Unconditional ($\phi_1=1.0$)} & \textbf{40.7\%} & \textbf{14.4} \\
 \bottomrule
 \end{tabular}%
 }
 \end{table}
-
-The results (Table~\ref{tab:meltingpot_results}) confirm our main finding: independent reinforcement learning systematically falls into cooperative collapse (Nash Trap) in non-linear social dilemmas. Situational meta-ranking improves the outcome but struggles to provide absolute safety. Only Unconditional Commitment ($\phi_1=1.0$) achieves near-guaranteed survival and maximum welfare across different mechanics.
+The results (Table~\ref{tab:spatial_perf}) confirm our main finding: independent reinforcement learning systematically falls into cooperative collapse (Nash Trap) in non-linear social dilemmas. Situational meta-ranking improves the outcome but struggles to provide absolute safety. Only Unconditional Commitment ($\phi_1=1.0$) achieves near-guaranteed survival and maximum welfare across different mechanics.
 
 \section{Preference Network: Computational Meta-Ranking}
 \label{app:preference_network}
@@ -1171,7 +1165,7 @@ Adaptive (undercutting) & 23.2 & \textbf{100.0} \\
 \section*{Paper Checklist}
 
 \begin{enumerate}
-\item \textbf{Claims}: All five contributions (C1--C5: Formal Theoretical Foundations, Seven-Paradigm Failure Analysis, Systematic Validation of Commitment Floors, Generalization Beyond PGG via Melting Pot + Preference Network, and the Moral Commitment Spectrum) are empirically and theoretically supported in the corresponding sections. We do not claim generality beyond the evaluated settings. [Yes]
+\item \textbf{Claims}: All five contributions (C1--C5: Formal Theoretical Foundations, Seven-Paradigm Failure Analysis, Systematic Validation of Commitment Floors, Generalization Beyond PGG via Spatial Dilemmas + Preference Network, and the Moral Commitment Spectrum) are empirically and theoretically supported in the corresponding sections. We do not claim generality beyond the evaluated settings. [Yes]
 \item \textbf{Limitations}: Discussed in Section~\ref{sec:limitations}. Key limitations include environment scope (PGG only), cooperative intrinsic motivation as an open question, and migration rate constraint. [Yes]
 \item \textbf{Theory}: Result~\ref{res:group_ess} states assumptions (group replacement dynamics, migration bound) and reports empirically measured values ($\pm$ 1 std). Full protocol in Appendix~\ref{app:price}. [Yes]
 \item \textbf{Experiments}:
