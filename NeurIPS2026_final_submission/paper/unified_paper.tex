@@ -37,7 +37,7 @@ When must multi-agent systems move beyond self-interest, and how much moral comm
 We investigate this question through a systematic empirical study of cooperation dynamics in Public Goods Games (PGG) of increasing environmental severity, drawing interpretive framing from Amartya Sen's meta-ranking theory.
 In \emph{linear} PGG environments, \textbf{situational commitment}---where agents dynamically adjust prosocial behavior based on resource state---achieves group-level evolutionary stability (ESS, $\bar{x}=0.987$).
 However, when \emph{non-linear tipping points} introduce irreversible collapse below $R_{\text{crit}}$, situational commitment catastrophically fails.
-We demonstrate that this failure is \textbf{consistent across seven evaluated paradigms}: independent policy-gradient (REINFORCE) agents across three architectures---linear ($\lambda \approx 0.49$, 54\% survival), MLP ($\lambda \approx 0.37$, 31\% survival), and MLP Actor-Critic ($\lambda \approx 0.37$, 26\% survival)---as well as PPO (IPPO/MAPPO), independent Q-learning (IQL), \textbf{value decomposition} (QMIX with monotonic mixing network, 67\% survival), and \textbf{opponent-shaping} (LOLA, 51\% survival), none achieving reliable group survival under 30\% Byzantine adversaries.
+We demonstrate that this failure is \textbf{consistent across seven evaluated paradigms}: independent policy-gradient (REINFORCE) agents across three architectures---linear ($\lambda \approx 0.49$, 54\% survival), MLP ($\lambda \approx 0.37$, 31\% survival), and MLP Actor-Critic ($\lambda \approx 0.37$, 26\% survival)---as well as PPO (IPPO/MAPPO), independent Q-learning (IQL), \textbf{value decomposition} (QMIX with monotonic mixing network, 67\% survival; Appendix~\ref{app:qmix_lola}), and \textbf{opponent-shaping} (LOLA, 51\% survival; Appendix~\ref{app:qmix_lola}), none achieving reliable group survival under 30\% Byzantine adversaries.
 The commitment floor $\phi_1$ acts as a policy lower bound on cooperation: agents trained with $\phi_1{=}1.0$ achieve 100\% survival under 30\% Byzantine adversaries, while $\phi_1{=}0$ (pure learning) results in only 30\% survival.
 Meta-learning validation confirms that this optimal commitment function is \emph{independently recoverable}: evolutionary search over parameterized $g_\phi(\theta, R)$ converges to $\phi_1 = 1.0$ (maximum crisis commitment), matching the hand-designed specification.
 Our central finding is a \textbf{Moral Commitment Spectrum}: the degree of commitment required for system survival is determined by the environment's non-linearity.
@@ -247,7 +247,7 @@ Full proof with ecological boundary conditions is provided in Appendix~\ref{app:
 \subsection{Act 3: The Turning Point---Non-linear Extension}
 \label{sec:turning_point}
 
-Having established that situational commitment succeeds in linear environments, we now ask: \emph{does it survive when the environment introduces catastrophic tipping points?}
+Having established that situational commitment succeeds in linear environments (Section~\ref{sec:discussion} provides a full analysis), we now ask: \emph{does it survive when the environment introduces catastrophic tipping points?} We formalize cooperation via Eq.~\ref{eq:reward} and Eq.~\ref{eq:lambda}.
 
 We deploy the same meta-ranking agents in the non-linear PGG (Equations~\ref{eq:resource}--\ref{eq:tipping}) with $R_{\text{crit}} = 0.15$, stochastic shocks ($p_{\text{shock}} = 0.05$, $\delta_{\text{shock}} = 0.15$), and 30\% Byzantine adversaries.\footnote{We select 30\% as it exceeds the standard Byzantine fault tolerance threshold ($f < n/3$). Our ``Byzantine'' model is deterministic worst-case (always-defect, $\lambda{=}0$), not arbitrary-failure Byzantine in the distributed systems sense. Sensitivity analysis across $\{0\%, 10\%, 30\%, 50\%\}$ confirms qualitative robustness (Appendix~\ref{app:sensitivity}).}
 
@@ -306,7 +306,7 @@ IPPO converges to $\lambda = 0.412 \pm 0.080$ (38.7\% survival, 20 seeds), MAPPO
 Notably, \textbf{QMIX with a monotonic mixing network} ($\lambda = 0.524 \pm 0.201$, 66.5\% survival) does not outperform IQL, indicating that value decomposition does not help escape the Nash Trap.
 Similarly, \textbf{LOLA} ($\lambda = 0.490 \pm 0.006$, 50.8\% survival) shows that anticipating opponent learning steps is insufficient when the underlying game structure traps all agents in a local equilibrium.
 All seven paradigms fall substantially short of the oracle ($\lambda = 1.0$, 100\% survival), confirming that the Nash Trap is a fundamental property of the non-linear PGG, not an algorithmic deficiency.
-This result holds at $N=100$ (Table~\ref{tab:scale}), under K-level opponent anticipation ablations (Appendix~\ref{app:kpg}), across a hyperparameter sweep (Table~\ref{tab:hp_sweep}, 20 combinations $\times$ 10 seeds = 200 runs, Appendix~\ref{app:hp_sweep}), commitment function ablations (Table~\ref{tab:ablation}), CVaR risk-sensitive objectives (Table~\ref{tab:cvar}), partial observability (Table~\ref{tab:partial_obs}), adaptive adversaries (Table~\ref{tab:adaptive_adv}), and cross-environment CPR validation (Table~\ref{tab:cpr}). Training dynamics and the Nash Trap cost landscape are visualized in Figures~\ref{fig:training_curves} and~\ref{fig:nash_trap}; multi-axis normalized comparison appears in Table~\ref{tab:melting_pot} and Figure~\ref{fig:melting_pot} (see Appendix~\ref{app:robustness}).
+This result holds at $N=100$ (Table~\ref{tab:scale}), under K-level opponent anticipation ablations (Appendix~\ref{app:kpg}), across a hyperparameter sweep (Table~\ref{tab:hp_sweep}, 20 combinations $\times$ 10 seeds = 200 runs, Appendix~\ref{app:hp_sweep}), commitment function ablations (Table~\ref{tab:ablation}), CVaR risk-sensitive objectives (Table~\ref{tab:cvar}), partial observability (Table~\ref{tab:partial_obs}), adaptive adversaries (Table~\ref{tab:adaptive_adv}), and cross-environment CPR validation (Table~\ref{tab:cpr}; Appendix~\ref{app:cpr_detail}). Training dynamics and the Nash Trap cost landscape are visualized in Figures~\ref{fig:training_curves} and~\ref{fig:nash_trap}; multi-axis normalized comparison appears in Table~\ref{tab:melting_pot} and Figure~\ref{fig:melting_pot} (see Appendix~\ref{app:robustness}).
 
 \noindent\textit{Clarification}: We note that the one-shot PGG Nash equilibrium is $\lambda=0$ (full defection, since $M/N = 0.08 < 1$).
 However, in our \emph{repeated game with survival dynamics}, $\lambda=0$ yields 0\% survival and welfare of only 20.0 (Table~\ref{tab:emergence}, Fixed $\lambda=0.0$), while $\lambda=1.0$ yields 100\% survival and welfare 32.0.
@@ -448,7 +448,7 @@ In moderate environments, situational commitment is evolutionarily stable.
 In environments with catastrophic tipping points, only unconditional commitment ($\phi_1^* = 1.0$) prevents collapse \emph{within the tested non-linear PGG class}.
 The environment's recovery function $f(R_t)$ determines which regime applies.
 
-We visualize this as a \textbf{phase diagram} (Figure~\ref{fig:phase_diagram}), sweeping $R_{\text{crit}} \in [0.02, 0.30]$ and $\phi_1 \in [0, 1]$ across 110 conditions.
+We visualize this as a \textbf{phase diagram} (Figure~\ref{fig:phase_diagram}; Appendix~\ref{app:phase_diagram}), sweeping $R_{\text{crit}} \in [0.02, 0.30]$ and $\phi_1 \in [0, 1]$ across 110 conditions.
 A multi-axis comparison (Appendix~\ref{app:melting_pot}) confirms Meta-Ranking ranks 1st in 4/5 evaluation dimensions.
 
 \begin{figure}[t]
@@ -460,7 +460,7 @@ A multi-axis comparison (Appendix~\ref{app:melting_pot}) confirms Meta-Ranking r
     \label{fig:phase_diagram}
 \end{figure}
 
-\citet{sen1977rational} argued that commitment must be unconditional. Our Spectrum refines this: unconditional commitment is necessary precisely when the environment has irreversible consequences.
+\citet{sen1977rational} argued that commitment must be unconditional. Our Spectrum refines this: unconditional commitment is necessary precisely when the environment has irreversible consequences (Section~\ref{sec:turning_point}).
 Unlike opponent-shaping methods (LOLA, M-FOS, KPG) that learn to influence others' learning via meta-gradients, meta-ranking implements pre-specified moral structure without opponent modeling. The Nash Trap, LOLA failure ($\lambda = 0.490$, 50.8\% survival), QMIX failure ($\lambda = 0.524$, 66.5\%), KPG failure (Appendix~\ref{app:kpg}), and IA/SI collapse (Table~\ref{tab:baselines}) collectively demonstrate that moral commitment was not learned by any of the \textbf{seven} tested paradigms in our non-linear PGG environments---suggesting it may need to be architecturally encoded for this class of problems.
 Group-level ESS requires $m < m^* = 0.286$; when migration exceeds this bound, unconditional commitment provides structural immunity (Appendix~\ref{app:migration}).
 
@@ -473,7 +473,9 @@ Group-level ESS requires $m < m^* = 0.286$; when migration exceeds this bound, u
     \item \textbf{Ethical Scope}: ``Moral commitment'' in this work is operationalized as resource allocation cooperation ($\lambda$), which may not capture the full richness of ethical reasoning. Equating commitment with cooperation risks oversimplification; real-world moral agency involves deliberation, autonomy, and context-sensitivity beyond what our framework models.
 \end{itemize}
 
-\noindent Additional robustness checks (Appendix~\ref{app:robustness}): CVaR objectives, partial observability (noisy/delayed/local $R_t$), and adaptive adversaries all confirm the Nash Trap's persistence.
+\noindent Additional robustness checks (Appendix~\ref{app:robustness})
+confirm that CVaR objectives, partial observability,
+and adaptive adversaries do not break the Nash Trap.
 
 % ================================================================
 % SECTION 6: CONCLUSION + BROADER IMPACT
@@ -492,7 +494,7 @@ The commitment function $g(\theta, R)$ encodes value judgments; determining \emp
 Our framework admits a direct mapping to real-world common-pool resource problems.
 The tipping point $R_{\text{crit}} = 0.15$ corresponds structurally to planetary boundaries (e.g., the 1.5\textdegree{}C warming threshold~\citep{ipcc2018}): once crossed, recovery dynamics slow catastrophically ($f(R) \to 0.01$), mirroring the irreversibility of permafrost methane release or ice-sheet disintegration.
 The commitment floor $\phi_1$ maps to \textbf{mandatory minimum cooperation levels}---analogous to the Paris Agreement's Nationally Determined Contributions (NDCs), which set binding emission reduction floors regardless of short-term economic incentives.
-Theorem~\ref{thm:critical} provides the engineering specification: in our model, $\phi_1^* \geq 1.64$ (truncated to 1.0), meaning \textbf{partial commitment is provably insufficient} when the recovery rate at the tipping point is small.
+A full ablation is in Appendix~\ref{app:ablation}. Theorem~\ref{thm:critical} provides the engineering specification: in our model, $\phi_1^* \geq 1.64$ (truncated to 1.0), meaning \textbf{partial commitment is provably insufficient} when the recovery rate at the tipping point is small.
 For AI governance, this suggests that \textbf{high-risk autonomous systems managing shared resources} (e.g., autonomous fishing fleets, energy grid agents, carbon credit markets) should be designed with hard-coded cooperation floors rather than relying on learned cooperation, which our seven-paradigm analysis shows consistently fails.
 
 \paragraph{When to Apply (and When Not To).}
@@ -597,7 +599,7 @@ Our primary results assume agents observe the precise resource state $R_t$.
 To test realism, we injected observation noise ($R_t + \mathcal{N}(0, \sigma^2)$), delayed observations ($R_{t-k}$), and local-only observations (where $R_t$ is hidden entirely) under Byz=30\% conditions.
 Table~\ref{tab:partial_obs_extended} shows that the Nash Trap persists across all partial observability conditions. Situational commitment performance degrades further under noisy or delayed signals, while unconditional commitment remains impervious, as it requires no environmental feedback.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \caption{Survival under Partial Observability conditions (non-linear PGG, Byz=30\%).}
 \label{tab:partial_obs_extended}
@@ -622,7 +624,7 @@ To test whether the Moral Commitment Spectrum generalizes beyond PGG, we evaluat
 
 \paragraph{CPR Environment.} $N{=}20$ agents share a renewable resource with logistic growth ($r{=}0.3$, $K{=}1.0$). Each agent $i$ chooses restraint level $\lambda_i \in [0,1]$; extraction $= (1-\lambda_i) \cdot R/N$. Below $R_{\text{crit}}{=}0.15$, growth drops from 0.30 to 0.01 (tipping point). Byzantine adversaries ($30\%$) extract maximally ($\lambda{=}0$).
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \caption{CPR cross-environment validation ($N{=}20$, Byz=30\%, 20 seeds).}
 \label{tab:cpr}
@@ -646,7 +648,7 @@ Fixed $\lambda=0.5$ & 0.500 & 8.5 \\
 To verify that the Nash Trap is game-theoretic rather than a function approximation limitation, we test four policy architectures with increasing depth (Table~\ref{tab:dnn_ablation}).
 All experiments use $N{=}20$, Byz=30\%, 300 episodes $\times$ 5 seeds, with REINFORCE updates.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \caption{DNN ablation: Nash Trap persists across all network depths (non-linear PGG, Byz=30\%, last 30 episodes).}
 \label{tab:dnn_ablation}
@@ -672,7 +674,7 @@ We implement a simplified K-Level Policy Gradient (KPG)~\citep{reddi2025kpg} to 
 At each level $k$, agents simulate $k$ steps of opponent REINFORCE updates, then compute their own gradient \emph{assuming opponents will follow the anticipated trajectory}.
 Experiments use $N{=}20$, Byz=30\%, 300 episodes $\times$ 5 seeds.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \caption{KPG fails to escape Nash Trap (non-linear PGG, Byz=30\%, last 30 episodes).}
 \label{tab:kpg}
@@ -704,7 +706,7 @@ Resource depletion is proportional to the number of agents at each cell and thei
 Stochastic shocks (Poisson-distributed) and global degradation ($0.2\%$ per step) create sustained pressure.
 Collapse occurs when \emph{global} average resource falls below 0.01.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \caption{Spatial social dilemma (5$\times$5 grid, $N{=}15$, Byz=30\%, 200 ep $\times$ 5 seeds, last 30 episodes).}
 \label{tab:spatial}
@@ -731,7 +733,7 @@ Only unconditional commitment ($\phi_1 = 1.0$) achieves meaningful survival (34.
 \section{Hyperparameter Summary}
 \label{app:hyperparams}
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \caption{Hyperparameters used across all experiments.}
 \label{tab:hyperparams}
@@ -775,9 +777,10 @@ To provide a structured qualitative comparison, we evaluate Meta-Ranking against
     \item \textbf{Robustness}: Survival rate (\%) under 30\% Byzantine adversaries + stochastic shocks / 100.
 \end{itemize}
 
-\noindent All scores can be exactly reproduced from our experiment logs using the provided \texttt{compute\_radar\_scores.py} script.
+\noindent All scores can be exactly reproduced from the experiment results
+in \texttt{outputs/} using the provided scripts.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \caption{Multi-axis criteria-inspired comparison (normalized scores from our PGG/CPR experiments; higher is better). See text for normalization procedure.}
 \label{tab:melting_pot}
@@ -794,7 +797,7 @@ Inequity Averse~\citep{mckee2020social} & 0.78 & 0.72 & 0.82 & 0.50 & 0.65 \\
 \end{tabular}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=0.65\textwidth]{fig22_melting_pot.png}
 \caption{Criteria-inspired profile comparison (\textbf{qualitative}). Scores for our method and IPPO/MAPPO/IQL are derived from PGG/CPR experiment JSON outputs; A3C+SVO and Inequity Averse scores are estimated from published results. This figure serves as a high-level overview; see individual tables for rigorous quantitative comparisons. Meta-Ranking ranks 1st in 4/5 dimensions within the tested environments.}
@@ -810,7 +813,7 @@ The only axis where MAPPO outperforms is raw efficiency (0.85 vs 0.82), which re
 \section{Baseline Implementation Details}
 \label{app:baselines}
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \caption{Same-class decentralized baselines (non-linear PGG, Byz=30\%).}
 \label{tab:baselines}
@@ -865,7 +868,7 @@ IQL's higher $\lambda$ likely reflects the discrete action space and $\varepsilo
 To verify that the Nash Trap is not an artifact of suboptimal hyperparameters, we conduct an expanded grid search over learning rate $\text{lr} \in \{10^{-4}, 2.5{\times}10^{-4}, 5{\times}10^{-4}, 10^{-3}\}$ and entropy coefficient $\in \{0.0, 0.01, 0.05, 0.1, 0.5\}$ (20 combinations, 10 seeds each = 200 total runs).
 Crucially, we verify that varying \texttt{entropy\_coef} produces measurably different policy entropy $H(\pi)$, confirming that the entropy bonus is correctly integrated into the policy gradient updates (see the $H(\pi)$ column below).
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \caption{Expanded hyperparameter sweep: Nash Trap persists across all 20 lr$\times$entropy combinations (non-linear PGG, $N{=}20$, $E{=}20$, Byz=30\%, 150 episodes, 10 seeds). $H(\pi)$ = mean policy entropy of trained agents.}
 \label{tab:hp_sweep}
@@ -905,7 +908,7 @@ Entropy regularization has no measurable effect, consistent with the gradient-va
 
 We ablate each component of the commitment function $g(\theta, R)$ to verify that the Moral Commitment Spectrum is not dependent on any single design choice.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \caption{Ablation of commitment function components (non-linear PGG, $N{=}20$, Byz=30\%, 3 seeds). Wilson 95\% CI for survival (binomial proportion).}
 \label{tab:ablation}
@@ -960,7 +963,7 @@ This deliberately isolates the \emph{structural} advantage of unconditional comm
 \paragraph{CVaR Risk-Sensitive REINFORCE.}
 To test whether the Nash Trap is an artifact of risk-neutral objectives, we train REINFORCE agents with Conditional Value-at-Risk (CVaR) objectives at $\alpha \in \{0.1, 0.3, 0.5, 1.0\}$ (where $\alpha{=}1.0$ is standard risk-neutral).
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \caption{CVaR REINFORCE in non-linear PGG. The Nash Trap persists regardless of risk sensitivity.}
 \label{tab:cvar}
@@ -981,7 +984,7 @@ To test whether the Nash Trap is an artifact of risk-neutral objectives, we trai
 \paragraph{Partial Observability.}
 We add Gaussian noise $\mathcal{N}(0, \sigma^2)$ to the global resource observation $R_t$.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \caption{Survival (\%) under noisy $R_t$ observation. Unconditional commitment is immune to observation noise.}
 \label{tab:partial_obs}
@@ -1002,7 +1005,7 @@ We add Gaussian noise $\mathcal{N}(0, \sigma^2)$ to the global resource observat
 \paragraph{Adaptive Adversaries.}
 We test three adversary models: (i) \textit{Fixed}: always $\lambda{=}0$; (ii) \textit{Strategic}: cooperates when $R{>}0.3$, defects during crisis (camouflage); (iii) \textit{Adaptive}: tracks group mean and undercuts by 50\%.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \caption{Survival (\%) against different adversary types. Unconditional commitment provides structural immunity.}
 \label{tab:adaptive_adv}
@@ -1066,7 +1069,7 @@ We implement N-agent LOLA~\citep{foerster2018learning} with 1-step opponent mode
 Each agent estimates opponent policy gradients using cross-derivatives and anticipates one step of opponent learning before updating its own policy.
 \textbf{Result}: $\lambda = 0.490 \pm 0.006$ (50.8\% survival, 20 seeds).
 The remarkably low variance ($\sigma = 0.006$) indicates that LOLA converges to a tight equilibrium---but this equilibrium is the Nash Trap, not the cooperative optimum.
-Anticipating opponent learning does not help when all opponents face the same structural barrier.
+Anticipating opponent learning does not help when all opponents face the same structural barrier. See also Appendix~\ref{app:lola} for K-level anticipation results.
 
 \section{Phase Diagram: Commitment Floor vs.\ Byzantine Fraction}
 \label{app:phase_diagram}
