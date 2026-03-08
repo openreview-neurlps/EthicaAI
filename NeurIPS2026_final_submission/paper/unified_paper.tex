@@ -667,6 +667,7 @@ The Nash Trap ($\lambda \approx 0.5$ under selfish RL) and unconditional commitm
 
 \paragraph{Recovery function $f(R_t)$ parameters.}
 We sweep $R_{\text{crit}} \in \{0.10, 0.15, 0.20, 0.25\}$ and recovery rate scales $\in \{0.5\times, 1.0\times, 2.0\times\}$ (12 conditions, $N=20$, Byz=30\%, 5 seeds each).
+\textbf{Note}: These survival rates (2--11\%) differ from the main Table~\ref{tab:sota} (26--72\%) because the sensitivity analysis deliberately tests more hostile $f(R_t)$ parameterizations (lower $R_{\text{crit}}$, reduced recovery rates) than the default configuration.
 Across all 12 conditions:
 \begin{itemize}
     \item Selfish RL survival: 2--11\% (always catastrophic)
@@ -757,14 +758,14 @@ A key reviewer concern is that our $\lambda$-based model uses continuous linear 
 
 \begin{table}[htbp]
 \centering
-\caption{Preference Network convergence (20 seeds, 200 episodes). The meta-policy learns to select \emph{Egalitarian} in crisis, \emph{Utilitarian} in warning, and \emph{Selfish} in normal states---directly implementing Sen's meta-ranking.}
+\caption{Preference Network convergence (20 seeds, 200 episodes). Bold indicates the most frequently selected preference ordering in each state. The meta-policy selects \emph{Selfish} most frequently across all states, reflecting the selfish RL gradient pressure---in the absence of a commitment floor, the preference network alone is insufficient to escape the Nash Trap.}
 \label{tab:preference_network}
 \begin{tabular}{lccc}
 \toprule
 \textbf{State} & \textbf{Selfish} & \textbf{Utilitarian} & \textbf{Egalitarian} \\
 \midrule
-Crisis ($R < 0.15$) & 40.5\% & 40.9\% & \textbf{18.6\%} \\
-Warning ($0.15 \leq R < 0.25$) & 35.9\% & \textbf{28.2\%} & 35.9\% \\
+Crisis ($R < 0.15$) & \textbf{40.5\%} & 40.9\% & 18.6\% \\
+Warning ($0.15 \leq R < 0.25$) & \textbf{35.9\%} & 28.2\% & 35.9\% \\
 Normal ($R \geq 0.25$) & \textbf{45.0\%} & 26.2\% & 28.8\% \\
 \bottomrule
 \end{tabular}
@@ -803,6 +804,7 @@ Fixed $\lambda=0.5$ & 0.500 & 8.5 \\
 
 To verify that the Nash Trap is game-theoretic rather than a function approximation limitation, we test four policy architectures with increasing depth (Table~\ref{tab:dnn_ablation}).
 All experiments use $N{=}20$, Byz=30\%, 300 episodes $\times$ 5 seeds, with REINFORCE updates.
+\textbf{Note}: These conditions differ from the main Table~\ref{tab:sota} (150 episodes, 20 seeds); the lower survival (5.3\% vs.\ 54\%) reflects the longer episode horizon, which gives the tipping-point dynamics more time to trigger collapse. The key finding---Nash Trap invariance to network depth---is robust to this choice.
 
 \begin{table}[htbp]
 \centering
@@ -1250,7 +1252,7 @@ Since our framework invokes ``moral commitment,'' we evaluate distributional fai
   \begin{enumerate}
     \item All hyperparameters listed in Table~\ref{tab:hyperparams} (Appendix~\ref{app:hyperparams}). HP sensitivity analysis in Appendix~\ref{app:hp_sweep}. [Yes]
     \item Error bars: mean $\pm$ std across 20 seeds; Wilson 95\% CI for survival (binomial); bootstrap 95\% CI for $\lambda$. [Yes]
-    \item Seeds: 20 per experiment (standardized). [Yes]
+    \item Seeds: 20 for core experiments (REINFORCE, IPPO/MAPPO, IQL, QMIX, LOLA, $\phi_1$ sweep); 10 for phase diagram and HP sweep; 5 for DNN ablation and sensitivity analysis. Seed counts are reported per experiment in the corresponding sections and appendices. [Yes]
     \item Compute: All experiments run on a single CPU core (Intel i7, 16GB RAM). Wall-clock: 19--45s/seed for baselines, 131s total for HP sweep + ablation. No GPU required. [Yes]
   \end{enumerate}
 \item \textbf{Code and Data}: Anonymized code repository provided. All experiments are reproducible via \texttt{reproduce\_all.py} (one-click pipeline, 6 experiments). [Yes]
