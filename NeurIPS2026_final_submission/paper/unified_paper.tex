@@ -47,7 +47,7 @@ In \emph{non-linear} environments with irreversible tipping points, situational 
 We demonstrate that this failure is \textbf{consistent across seven paradigms}: REINFORCE (3 architectures), PPO (IPPO/MAPPO), IQL, QMIX, and LOLA---none achieving reliable survival under 30\% Byzantine adversaries.
 A unified fair comparison protocol with $400{+}$ hyperparameter configurations confirms 100\% trap rate.
 We make five contributions:
-(i) We provide \textbf{formal theoretical foundations}---a Tipping-Point Social Dilemma (TPSD) definition, drift and survival lemmas, and a Nash Trap fixed-point proposition---establishing when and why unconditional commitment is necessary.
+(i) We provide \textbf{formal theoretical foundations}---a Tipping-Point Social Dilemma (TPSD) definition, drift and survival lemmas, and a Nash Trap fixed-point proposition---establishing when and why unconditional commitment is sufficient for collective survival.
 (ii) We show that the necessity of the optimal commitment floor $\phi_1^* = 1.0$ is \textbf{empirically validated} via systematic grid search across diverse environmental severities, complementing our constrained optimization formulation.
 (iii) We validate generalization on a \textbf{Grid-based Spatial Social Dilemma} and demonstrate robustness across \textbf{36 shock parameter regimes}---confirming that the Nash Trap is universal, not an artifact of specific environmental conditions.
 (iv) We implement a \textbf{discrete preference network} operationalizing Sen's meta-ranking, show that \textbf{crisis-only} intervention fails (50\% survival vs.\ 100\% for global commitment), and demonstrate that commitment floors simultaneously improve \textbf{fairness} (Gini: 0.064$\to$0.000, worst-case return: $+$87\%).
@@ -107,7 +107,7 @@ Meta-ranking differs in that cooperation arises from pre-specified moral structu
 
 \paragraph{Moral Theory in Reward Design.}
 \citet{tennant2023modeling} systematically embed moral theories (utilitarian, deontological, virtue ethics) into MARL reward functions for social dilemma analysis.
-Our contribution extends this line by identifying \emph{when} each moral commitment level is necessary: the Moral Commitment Spectrum provides a principled mapping from environmental non-linearity to the required degree of commitment.
+Our contribution extends this line by identifying \emph{when} each moral commitment level is sufficient for survival: the Moral Commitment Spectrum provides a principled mapping from environmental non-linearity to the required degree of commitment.
 
 % ================================================================
 % SECTION 3: METHOD (Act 1 continued)
@@ -415,8 +415,7 @@ Under ``Exploitative Scarcity'' attacks (adversaries strategically drain resourc
 The ``always-commit'' strategy does not create exploitable vulnerabilities because the public goods multiplier ($M = 1.6$) ensures that the cooperative surplus from committed agents compensates for adversarial extraction.
 
 \paragraph{Same-Class Baseline Comparison.}
-Simplified Inequity Aversion and Social Influence proxies both achieve 0\% survival under 30\% Byzantine conditions, as cooperation drifts downward via aversion/influence mechanisms (Table~\ref{tab:baselines}, Appendix~\ref{app:baselines}).
-Unconditional commitment ($\phi_1{=}1.0$) achieves 93.6\% survival because it does not condition on others' behavior.
+Simplified Inequity Aversion and Social Influence proxies both achieve 0\% survival under 30\% Byzantine conditions (Table~\ref{tab:baselines}, Appendix~\ref{app:baselines}), as cooperation drifts downward. Unconditional commitment ($\phi_1{=}1.0$) achieves 93.6\% survival because it does not condition on others' behavior.
 
 \paragraph{Meta-Learning Validation.}
 To address the concern that $g(\theta, R)$ is merely a hand-crafted heuristic, we apply evolutionary meta-learning (ES, 30 steps) to optimize the 6 parameters $\phi = [\phi_0, \ldots, \phi_5]$ of a parameterized $g_\phi(\theta, R)$, maximizing welfare and resource stability across multiple Byzantine fractions with no human priors on parameter values.
@@ -440,10 +439,8 @@ This provides convergent evidence that the commitment function's structure is a 
 \end{tabular}
 \end{table}
 
-\paragraph{K-Level Opponent Anticipation Ablation.}
-To test whether anticipating opponents' adaptations can escape cooperation failure, we implement a simplified K-level anticipation ablation with $K \in \{0, 1, 2\}$ recursive levels (Appendix~\ref{app:kpg}).
-All three levels converge to $\lambda \approx 0.500$ with $\leq$8.7\% survival, while incurring up to 1.8$\times$ computational overhead.
-Note: this is a \emph{simplified} ablation, not a full implementation of opponent-shaping algorithms such as LOLA or M-FOS, and conclusions should be interpreted accordingly.
+\paragraph{K-Level Opponent Anticipation.}
+A simplified K-level anticipation ablation ($K \in \{0, 1, 2\}$) shows all levels converge to $\lambda \approx 0.500$ with $\leq$8.7\% survival (details in Appendix~\ref{app:kpg}).
 
 \paragraph{Spatial Extension.}
 To verify generalization beyond scalar-state PGG, we construct a 5$\times$5 grid social dilemma with \emph{local} tipping points: each cell has independent non-linear recovery dynamics, agents observe only their neighborhood, and must choose both commitment level and movement direction (Appendix~\ref{app:spatial}).
@@ -475,7 +472,7 @@ A multi-axis comparison across cooperation, efficiency, fairness, scalability, a
     \label{fig:phase_diagram}
 \end{figure}
 
-\citet{sen1977rational} argued that commitment must be unconditional. Our Spectrum refines this: unconditional commitment is necessary precisely when the environment has irreversible consequences (Section~\ref{sec:turning_point}).
+\citet{sen1977rational} argued that commitment must be unconditional. Our Spectrum refines this: unconditional commitment is sufficient for survival precisely when the environment has irreversible consequences (Section~\ref{sec:turning_point}).
 Unlike opponent-shaping methods (LOLA, M-FOS, KPG) that learn to influence others' learning via meta-gradients, meta-ranking implements pre-specified moral structure without opponent modeling. The Nash Trap, LOLA failure ($\lambda = 0.490$, 50.8\% survival), QMIX failure ($\lambda = 0.524$, 66.5\%), KPG failure (Appendix~\ref{app:kpg}), and IA/SI collapse (Table~\ref{tab:baselines}) collectively demonstrate that moral commitment was not learned by any of the \textbf{seven} tested paradigms in our non-linear PGG environments---suggesting it may need to be architecturally encoded for this class of problems.
 Group-level ESS requires $m < m^* = 0.286$; when migration exceeds this bound, unconditional commitment provides structural immunity (Appendix~\ref{app:migration}).
 
@@ -501,10 +498,10 @@ and adaptive adversaries do not break the Nash Trap.
 
 We establish the \textbf{Moral Commitment Spectrum}: in linear environments, situational commitment achieves group-level ESS; in non-linear environments with tipping points, only unconditional commitment ($\phi_1^* = 1.0$) prevents collapse \emph{across all seven tested paradigms and environment configurations}.
 This is supported by Theorem~\ref{thm:critical}, the Nash Trap ($\lambda{\approx}0.5$ across seven paradigms), and spatial replication (Appendix~\ref{app:spatial}).
-The contribution is the systematic demonstration of \emph{when}, \emph{why}, and \emph{to what degree} moral commitment must be architecturally encoded.
+The contribution is the systematic demonstration of \emph{when}, \emph{why}, and \emph{to what degree} moral commitment needs to be architecturally encoded within the tested TPSD class.
 
 \paragraph{Broader Impact.}\label{sec:broader_impact}
-Within our tested environment class, the Spectrum suggests a design principle: for autonomous systems operating near irreversible tipping points, cooperative constraints should be unconditional ($\phi_1=1.0$), as adaptive or situational moral priors collapse under selfish gradient pressure. We emphasize that $\phi_1$ is an analytically-derived \emph{design specification} (not a learned policy); the contribution is identifying \emph{when} such hard constraints are necessary.
+Within our tested environment class, the Spectrum suggests a design principle: for autonomous systems operating near irreversible tipping points, cooperative constraints should be unconditional ($\phi_1=1.0$), as adaptive or situational moral priors collapse under selfish gradient pressure. We emphasize that $\phi_1$ is a stability-derived \emph{design specification} (not a learned policy); the contribution is identifying \emph{when} such hard constraints are sufficient for survival.
 The commitment function $g(\theta, R)$ encodes value judgments; determining \emph{whose} values requires interdisciplinary collaboration. We provide \textit{descriptive} insight, not \textit{normative} prescription.
 
 \paragraph{Potential Policy Analogies.}
