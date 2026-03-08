@@ -327,17 +327,17 @@ The $\lambda \approx 0.5$ fixed point arises because the policy gradient balance
 
 \begin{table}[t]
 \centering
-\caption{Scale test: Nash Trap persists at $N{=}100$ (non-linear PGG, 10 seeds, 50 episodes).}
+\caption{Scale test: Nash Trap persists at $N{=}100$ (non-linear PGG, 20 seeds, 50 episodes).}
 \label{tab:scale}
 \begin{tabular}{lccc}
 \toprule
 \textbf{Method ($N{=}100$)} & \textbf{Welfare} & $\boldsymbol{\bar{\lambda}}$ & \textbf{Survival \%} \\
 \midrule
-Selfish RL (Byz=0\%) & 26.0 & 0.497 & 95.3 \\
-Selfish RL (Byz=30\%) & 24.2 & 0.497 & \textbf{54.0} \\
+Selfish RL (Byz=0\%) & 26.0 & 0.497 & 95.0 \\
+Selfish RL (Byz=30\%) & 24.2 & 0.497 & \textbf{53.7} \\
 \midrule
-Situational (Byz=30\%) & 26.0 & 0.714 & 95.0 \\
-Unconditional (Byz=30\%) & 28.4 & 1.000 & 100.0 \\
+Situational (Byz=30\%) & 26.0 & 0.713 & 95.3 \\
+Unconditional (Byz=30\%) & 28.4 & 1.000 & 99.8 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1283,10 +1283,10 @@ Since our framework invokes ``moral commitment,'' we evaluate distributional fai
   \begin{enumerate}
     \item All hyperparameters listed in Table~\ref{tab:hyperparams} (Appendix~\ref{app:hyperparams}). HP sensitivity analysis in Appendix~\ref{app:hp_sweep}. [Yes]
     \item Error bars: mean $\pm$ std across 20 seeds; Wilson 95\% CI for survival (binomial); bootstrap 95\% CI for $\lambda$. [Yes]
-    \item Seeds: 20 for core experiments (REINFORCE, IPPO/MAPPO, IQL, QMIX, LOLA, $\phi_1$ sweep); 10 for phase diagram and HP sweep; 5 for DNN ablation and sensitivity analysis. Seed counts are reported per experiment in the corresponding sections and appendices. [Yes]
+    \item Seeds: 20 for core experiments (REINFORCE, IPPO/MAPPO, IQL, QMIX, LOLA, $\phi_1$ sweep, and $N{=}100$ scale test); 10 for phase diagram and HP sweep; 5 for DNN ablation and sensitivity analysis. Seed counts are reported per experiment in the corresponding sections and appendices. [Yes]
     \item Compute: All experiments run on a single CPU core (Intel i7, 16GB RAM). Wall-clock: 19--45s/seed for baselines, 131s total for HP sweep + ablation. No GPU required. [Yes]
   \end{enumerate}
-\item \textbf{Code and Data}: Anonymized code repository provided. All experiments are reproducible via \texttt{reproduce\_all.py} (one-click pipeline, 9 experiments: 5 core + 4 extension). Seed counts per experiment are listed in Table~\ref{tab:seed_summary}. [Yes]
+\item \textbf{Code and Data}: Anonymized code repository provided. All experiments are reproducible via \texttt{reproduce\_all.py} (one-click pipeline, 10 experiments: 5 core + 5 extension). Seed counts per experiment are listed in Table~\ref{tab:seed_summary}. [Yes]
 \item \textbf{Broader Impact}: Discussed in Section~\ref{sec:broader_impact}. No direct negative societal impacts anticipated from this foundational research. [Yes]
 \item \textbf{Safeguards}: Not applicable (no human subjects, no deployment). [N/A]
 \item \textbf{Licenses}: Code released under MIT license. No third-party datasets used. [Yes]
