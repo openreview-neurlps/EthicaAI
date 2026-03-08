@@ -918,6 +918,37 @@ Byzantine fraction & 0.0--0.3 & 0.0--0.3 \\
 \end{tabular}
 \end{table}
 
+\paragraph{Seed Counts and Statistical Design.}
+To allow reviewers to verify statistical claims, we report the exact seed count per experiment:
+
+\begin{table}[htbp]
+\centering
+\caption{Seed counts per experiment. Core experiments use 20 seeds; supplementary experiments use 5--10 seeds as noted.}
+\label{tab:seed_summary}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Experiment} & \textbf{Seeds} & \textbf{Paper Reference} \\
+\midrule
+REINFORCE (3 arch.) & 20 & Table~\ref{tab:sota} \\
+IPPO / MAPPO & 20 & Table~\ref{tab:sota} \\
+IQL / QMIX / LOLA & 20 & Table~\ref{tab:sota}, App.~\ref{app:qmix_lola} \\
+$\phi_1$ Floor Sweep & 20 & Table~\ref{tab:phi1_ablation} \\
+Preference Network & 20 & Table~\ref{tab:preference_network} \\
+Meta-Learning & 10 & Table~\ref{tab:meta_learn} \\
+Phase Diagram & 10 & App.~\ref{app:phase} \\
+HP Sensitivity & 10 $\times$ 20 configs & App.~\ref{app:hp_sweep} \\
+DNN Ablation & 5 & Table~\ref{tab:dnn_ablation} \\
+Sensitivity Analysis & 5 & App.~\ref{app:sensitivity} \\
+CPR Cross-Validation & 20 & App.~\ref{app:cpr} \\
+Spatial Dilemma & 5 & App.~\ref{app:spatial} \\
+Shock Sweep & 5 & App.~\ref{app:shock_robustness} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Environment Implementation Note.}
+Each experiment script contains a self-contained environment implementation following CleanRL~\citep{huang2022cleanrl} single-file conventions. While the canonical environment class is in \texttt{envs/nonlinear_pgg_env.py}, individual scripts embed identical dynamics to ensure reproducibility without cross-file dependencies. The environment dynamics (tipping-point threshold $R_{\text{crit}}$, recovery function $f(R_t)$, shock model) are specified by the same parameter set across all scripts (Table~\ref{tab:hyperparams}).
+
 % ================================================================
 % Appendix H: Multi-Axis Benchmark (Melting Pot Criteria)
 % ================================================================
