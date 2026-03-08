@@ -289,9 +289,9 @@ where $f_\theta$ is one of: (1) \textbf{Linear}: $w^\top s + b$ (5 params); (2) 
 \toprule
 \textbf{Method} & \textbf{Params/agent} & $\boldsymbol{\bar{\lambda}}$ & \textbf{Survival \%} & \textbf{Welfare} \\
 \midrule
-Ind.\ REINFORCE Linear & 5 & 0.488 $\pm$ 0.007 & 54.0 & 24.1 \\
-Ind.\ REINFORCE MLP & 161 & 0.372 $\pm$ 0.066 & 31.3 & 23.2 \\
-Ind.\ REINFORCE MLP + Critic & 322 & 0.373 $\pm$ 0.043 & 26.0 & 23.2 \\
+Ind.\ REINFORCE Linear & 5 & 0.483 $\pm$ 0.011 & 51.3 & 24.1 \\
+Ind.\ REINFORCE MLP & 161 & 0.351 $\pm$ 0.068 & 23.2 & 22.9 \\
+Ind.\ REINFORCE MLP + Critic & 322 & 0.358 $\pm$ 0.042 & 23.3 & 23.0 \\
 \midrule
 \multicolumn{5}{c}{\textit{PPO / Value Decomposition / Opponent-Shaping (20 seeds)}} \\
 \midrule
@@ -312,8 +312,8 @@ Fixed $\lambda=1.0$ (oracle) & --- & 1.000 & \textbf{100.0} & \textbf{32.0} \\
 \end{table}
 
 \textbf{Result}: Across \textbf{seven evaluated paradigms} (Table~\ref{tab:emergence}), all tested algorithms converge to suboptimal cooperation levels in our non-linear PGG.
-Among the independent REINFORCE variants, linear agents converge to $\lambda \approx 0.49$ with 54\% survival, while MLP agents converge to $\lambda \approx 0.37$ (31\% survival)---still substantially below the survival threshold.
-Standard MARL implementations spanning five paradigms---independent policy gradient (IPPO), centralized critic (MAPPO), independent Q-learning (IQL), value decomposition with monotonic mixing (QMIX~\citep{rashid2018qmix}), and opponent-shaping (LOLA~\citep{foerster2018learning})---all converge to suboptimal equilibria.
+Among the independent REINFORCE variants, linear agents converge to $\lambda \approx 0.48$ with 51% survival, while MLP agents converge to $\lambda \approx 0.35$ with even lower survival (23%), confirming that the Nash Trap is \emph{game-theoretic}, not a capacity limitation.
+Standard MARL implementations spanning five paradigms---independent policy gradient (IPPO), centralized critic (MAPPO), independent Q-learning (IQL), value decomposition with monotonic mixing (QMIX~\citep{rashid2017qmix}), and opponent-shaping (LOLA~\citep{foerster2018learning})---all converge to suboptimal equilibria.
 Crucially, this is not a failure of learning per se: the algorithms \emph{successfully} converge to a local optimum of their individual reward landscapes. We interpret this as a \textbf{consistent pattern} of individually-rational optimization in a game where the collective benefit of cooperation is not captured by individual payoffs.
 IPPO converges to $\lambda = 0.412 \pm 0.080$ (38.7\% survival, 20 seeds), MAPPO to $\lambda = 0.392 \pm 0.070$ (37.0\%), and IQL achieves the highest $\lambda = 0.584 \pm 0.021$ (71.8\% survival) due to its discrete action space and $\varepsilon$-greedy exploration.
 Notably, \textbf{QMIX with a monotonic mixing network} ($\lambda = 0.524 \pm 0.201$, 66.5\% survival) does not outperform IQL, indicating that value decomposition does not help escape the Nash Trap.
@@ -480,7 +480,7 @@ Group-level ESS requires $m < m^* = 0.286$; when migration exceeds this bound, u
 
 \begin{itemize}
     \item \textbf{Algorithm Scope}: Whether risk-sensitive objectives or dynamic externality-pricing mechanisms can escape the Trap remains open. While empirical CVaR objectives fail (Appendix~\ref{app:robustness}), the Nash Trap persists across all 36 shock parameter combinations tested (Appendix~\ref{app:shock_robustness}). Developing full Constrained Policy Optimization (CPO) algorithms with parameterized safety constraints on $R_t$ offers a promising future direction.
-    \item \textbf{Baseline Scope}: Our comparison now includes \textbf{seven} paradigms: independent REINFORCE (linear/MLP/MLP+Critic), PPO (IPPO/MAPPO), independent Q-learning (IQL), value decomposition (QMIX with monotonic mixing network), and opponent-shaping (LOLA). All seven fall into the Nash Trap, with survival ranging from 26\% to 72\%. A unified fair comparison protocol (same environment, seeds, observation/action space, expanded HP sweep with $5 \times 5 \times 4 = 100$ configurations per paradigm) confirms 100\% trap rate across all tested configurations (Appendix~\ref{app:preference_network}). Developing practical CPO implementations for social dilemmas remains a key next step.
+    \item \textbf{Baseline Scope}: Our comparison now includes \textbf{seven} paradigms: independent REINFORCE (linear/MLP/MLP+Critic), PPO (IPPO/MAPPO), independent Q-learning (IQL), value decomposition (QMIX with monotonic mixing network), and opponent-shaping (LOLA). All seven fall into the Nash Trap, with survival ranging from 23\% to 72\%. A unified fair comparison protocol (same environment, seeds, observation/action space, expanded HP sweep with $5 \times 5 \times 4 = 100$ configurations per paradigm) confirms 100\% trap rate across all tested configurations (Appendix~\ref{app:preference_network}). Developing practical CPO implementations for social dilemmas remains a key next step.
     \item \textbf{Environment Scope}: Primary results use PGG with scalar $R_t$. CPR validation (Appendix~\ref{app:cpr}) confirms the pattern. Crisis-only intervention is insufficient---only global (unconditional) commitment achieves full survival (Appendix~\ref{app:crisis_vs_global}, Table~\ref{tab:crisis_vs_global}). Preliminary experiments on the Melting Pot benchmark~\citep{leibo2021scalable} reveal that hand-crafted commitment policies do not transfer directly to pixel-based spatial foraging environments (Appendix~\ref{app:meltingpot_prelim}, Table~\ref{tab:meltingpot_prelim}); developing learned commitment policies for such environments remains future work. Group-level ESS requires $m < m^* = 0.286$ (Result~\ref{res:group_ess}).
     \item \textbf{Ethical Scope}: ``Moral commitment'' in this work is operationalized as resource allocation cooperation ($\lambda$), which may not capture the full richness of ethical reasoning. However, our fairness analysis (Appendix~\ref{app:fairness}, Table~\ref{tab:fairness}) shows that higher commitment floors improve distributional equity (Gini coefficient decreases from 0.064 to 0.000). Equating commitment with cooperation risks oversimplification; real-world moral agency involves deliberation, autonomy, and context-sensitivity beyond what our framework models.
     \item \textbf{Philosophical Fidelity}: Our $\lambda$-based commitment mechanism is an \emph{engineering abstraction} of binding cooperation constraints, inspired by Sen's meta-ranking. We treat ``moral commitment'' as a \textbf{safety specification derived from tipping-point stability conditions}, not a normative prescription about human values. Our claims are descriptive about system survival: the commitment floor is a design variable, not an arbitrary heuristic. The discrete preference network (Appendix~\ref{app:preference_network}) demonstrates that both continuous ($\lambda$) and discrete (ordering selection) operationalizations converge to the same commitment floor, suggesting robustness of the underlying design principle.
@@ -667,7 +667,7 @@ The Nash Trap ($\lambda \approx 0.5$ under selfish RL) and unconditional commitm
 
 \paragraph{Recovery function $f(R_t)$ parameters.}
 We sweep $R_{\text{crit}} \in \{0.10, 0.15, 0.20, 0.25\}$ and recovery rate scales $\in \{0.5\times, 1.0\times, 2.0\times\}$ (12 conditions, $N=20$, Byz=30\%, 5 seeds each).
-\textbf{Note}: These survival rates (2--11\%) differ from the main Table~\ref{tab:sota} (26--72\%) because the sensitivity analysis deliberately tests more hostile $f(R_t)$ parameterizations (lower $R_{\text{crit}}$, reduced recovery rates) than the default configuration.
+\textbf{Note}: These survival rates (2--11\%) differ from the main Table~\ref{tab:sota} (23--72\%) because the sensitivity analysis deliberately tests more hostile $f(R_t)$ parameterizations (lower $R_{\text{crit}}$, reduced recovery rates) than the default configuration.
 Across all 12 conditions:
 \begin{itemize}
     \item Selfish RL survival: 2--11\% (always catastrophic)
