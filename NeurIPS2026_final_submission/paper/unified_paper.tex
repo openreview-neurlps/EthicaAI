@@ -313,7 +313,7 @@ Fixed $\lambda=1.0$ (oracle) & --- & 1.000 & \textbf{100.0} & \textbf{32.0} \\
 
 \textbf{Result}: Across \textbf{seven evaluated paradigms} (Table~\ref{tab:emergence}), all tested algorithms converge to suboptimal cooperation levels in our non-linear PGG.
 Among the independent REINFORCE variants, linear agents converge to $\lambda \approx 0.48$ with 51% survival, while MLP agents converge to $\lambda \approx 0.35$ with even lower survival (23%), confirming that the Nash Trap is \emph{game-theoretic}, not a capacity limitation.
-Standard MARL implementations spanning five paradigms---independent policy gradient (IPPO), centralized critic (MAPPO), independent Q-learning (IQL), value decomposition with monotonic mixing (QMIX~\citep{rashid2017qmix}), and opponent-shaping (LOLA~\citep{foerster2018learning})---all converge to suboptimal equilibria.
+Standard MARL implementations spanning five paradigms---independent policy gradient (IPPO), centralized critic (MAPPO), independent Q-learning (IQL), value decomposition with monotonic mixing (QMIX~\citep{rashid2018qmix}), and opponent-shaping (LOLA~\citep{foerster2018learning})---all converge to suboptimal equilibria.
 Crucially, this is not a failure of learning per se: the algorithms \emph{successfully} converge to a local optimum of their individual reward landscapes. We interpret this as a \textbf{consistent pattern} of individually-rational optimization in a game where the collective benefit of cooperation is not captured by individual payoffs.
 IPPO converges to $\lambda = 0.412 \pm 0.080$ (38.7\% survival, 20 seeds), MAPPO to $\lambda = 0.392 \pm 0.070$ (37.0\%), and IQL achieves the highest $\lambda = 0.584 \pm 0.021$ (71.8\% survival) due to its discrete action space and $\varepsilon$-greedy exploration.
 Notably, \textbf{QMIX with a monotonic mixing network} ($\lambda = 0.524 \pm 0.201$, 66.5\% survival) does not outperform IQL, indicating that value decomposition does not help escape the Nash Trap.
@@ -398,9 +398,9 @@ We verify Theorem~\ref{thm:critical} empirically by training IPPO agents with va
 \toprule
 $\boldsymbol{\phi_1}$ & \textbf{W (Byz=0\%)} & \textbf{W (Byz=30\%)} & \textbf{Alive (0\%)} & \textbf{Alive (30\%)} \\
 \midrule
-0.00 & 25.2 $\pm$ 0.3 & 21.0 $\pm$ 0.1 & 83 $\pm$ 7\% & 39 $\pm$ 10\% \\
-0.21 & 26.4 $\pm$ 0.3 & 21.3 $\pm$ 0.1 & 98 $\pm$ 2\% & 64 $\pm$ 8\% \\
-0.50 & 28.4 $\pm$ 0.2 & 21.6 $\pm$ 0.0 & 100 $\pm$ 0\% & 94 $\pm$ 4\% \\
+0.00 & 24.9 $\pm$ 0.2 & 21.0 $\pm$ 0.0 & 75 $\pm$ 5\% & 30 $\pm$ 20\% \\
+0.21 & 26.0 $\pm$ 0.0 & 21.2 $\pm$ 0.0 & 95 $\pm$ 5\% & 60 $\pm$ 0\% \\
+0.50 & 28.3 $\pm$ 0.0 & 21.6 $\pm$ 0.0 & 100 $\pm$ 0\% & 95 $\pm$ 5\% \\
 \textbf{1.00} & \textbf{32.0 $\pm$ 0.0} & \textbf{22.4 $\pm$ 0.0} & \textbf{100 $\pm$ 0\%} & \textbf{100 $\pm$ 0\%} \\
 \bottomrule
 \end{tabular}
@@ -932,10 +932,10 @@ To allow reviewers to verify statistical claims, we report the exact seed count 
 REINFORCE (3 arch.) & 20 & Table~\ref{tab:sota} \\
 IPPO / MAPPO & 20 & Table~\ref{tab:sota} \\
 IQL / QMIX / LOLA & 20 & Table~\ref{tab:sota}, App.~\ref{app:qmix_lola} \\
-$\phi_1$ Floor Sweep & 20 & Table~\ref{tab:phi1_ablation} \\
+$\phi_1$ Floor Sweep & 20 & Table~\ref{tab:phi1} \\
 Preference Network & 20 & Table~\ref{tab:preference_network} \\
 Meta-Learning & 10 & Table~\ref{tab:meta_learn} \\
-Phase Diagram & 10 & App.~\ref{app:phase} \\
+Phase Diagram & 10 & App.~\ref{app:phase_diagram} \\
 HP Sensitivity & 10 $\times$ 20 configs & App.~\ref{app:hp_sweep} \\
 DNN Ablation & 5 & Table~\ref{tab:dnn_ablation} \\
 Sensitivity Analysis & 5 & App.~\ref{app:sensitivity} \\
@@ -947,7 +947,7 @@ Shock Sweep & 5 & App.~\ref{app:shock_robustness} \\
 \end{table}
 
 \paragraph{Environment Implementation Note.}
-Each experiment script contains a self-contained environment implementation following CleanRL~\citep{huang2022cleanrl} single-file conventions. While the canonical environment class is in \texttt{envs/nonlinear_pgg_env.py}, individual scripts embed identical dynamics to ensure reproducibility without cross-file dependencies. The environment dynamics (tipping-point threshold $R_{\text{crit}}$, recovery function $f(R_t)$, shock model) are specified by the same parameter set across all scripts (Table~\ref{tab:hyperparams}).
+Each experiment script contains a self-contained environment implementation following CleanRL~\citep{huang2022cleanrl} single-file conventions. While the canonical environment class is in \texttt{envs/nonlinear\_pgg\_env.py}, individual scripts embed identical dynamics to ensure reproducibility without cross-file dependencies. The environment dynamics (tipping-point threshold $R_{\text{crit}}$, recovery function $f(R_t)$, shock model) are specified by the same parameter set across all scripts (Table~\ref{tab:hyperparams}).
 
 % ================================================================
 % Appendix H: Multi-Axis Benchmark (Melting Pot Criteria)
