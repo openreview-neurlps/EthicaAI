@@ -1,4 +1,4 @@
-﻿"""
+"""
 Round 2: All experimental phases in one script
 ================================================
 Phase A: HP Sweep (IPPO lr 횞 entropy, 12 combos 횞 3 seeds)

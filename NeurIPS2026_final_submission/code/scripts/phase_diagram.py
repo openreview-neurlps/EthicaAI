@@ -1,4 +1,4 @@
-﻿"""
+"""
 Phase Diagram: phi1 x beta -> Survival Heatmap
 ==========================================
 Sweeps commitment floor phi1 in [0, 1] x Byzantine fraction beta in [0, 0.5]

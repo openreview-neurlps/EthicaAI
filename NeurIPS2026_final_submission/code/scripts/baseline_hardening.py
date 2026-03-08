@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 baseline_hardening.py ??Unified Fair Comparison Protocol
 ========================================================
