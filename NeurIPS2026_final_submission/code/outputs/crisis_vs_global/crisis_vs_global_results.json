@@ -1,0 +1,226 @@
+{
+  "global": {
+    "0.0": {
+      "byz_0": {
+        "survival_mean": 75.0,
+        "survival_std": 5.0,
+        "survival_ci95": [
+          70.0,
+          80.0
+        ],
+        "welfare_mean": 24.89892482437572,
+        "welfare_std": 0.18478786358126342
+      },
+      "byz_30": {
+        "survival_mean": 30.0,
+        "survival_std": 20.0,
+        "survival_ci95": [
+          10.0,
+          50.0
+        ],
+        "welfare_mean": 21.038248973241522,
+        "welfare_std": 0.03037450417317089
+      }
+    },
+    "0.3": {
+      "byz_0": {
+        "survival_mean": 100.0,
+        "survival_std": 0.0,
+        "survival_ci95": [
+          100.0,
+          100.0
+        ],
+        "welfare_mean": 26.756829578399657,
+        "welfare_std": 0.24479113388061435
+      },
+      "byz_30": {
+        "survival_mean": 65.0,
+        "survival_std": 5.0,
+        "survival_ci95": [
+          60.0,
+          70.0
+        ],
+        "welfare_mean": 21.290954097098624,
+        "welfare_std": 0.009094826645569043
+      }
+    },
+    "0.5": {
+      "byz_0": {
+        "survival_mean": 100.0,
+        "survival_std": 0.0,
+        "survival_ci95": [
+          100.0,
+          100.0
+        ],
+        "welfare_mean": 28.31131739807129,
+        "welfare_std": 0.0430108909606961
+      },
+      "byz_30": {
+        "survival_mean": 95.0,
+        "survival_std": 5.0,
+        "survival_ci95": [
+          90.0,
+          100.0
+        ],
+        "welfare_mean": 21.585365322699914,
+        "welfare_std": 0.03188564241849612
+      }
+    },
+    "0.7": {
+      "byz_0": {
+        "survival_mean": 100.0,
+        "survival_std": 0.0,
+        "survival_ci95": [
+          100.0,
+          100.0
+        ],
+        "welfare_mean": 29.733595735549926,
+        "welfare_std": 0.09375955390930102
+      },
+      "byz_30": {
+        "survival_mean": 95.0,
+        "survival_std": 5.0,
+        "survival_ci95": [
+          90.0,
+          100.0
+        ],
+        "welfare_mean": 21.905175750732422,
+        "welfare_std": 0.026686450958255392
+      }
+    },
+    "1.0": {
+      "byz_0": {
+        "survival_mean": 100.0,
+        "survival_std": 0.0,
+        "survival_ci95": [
+          100.0,
+          100.0
+        ],
+        "welfare_mean": 32.0,
+        "welfare_std": 0.0
+      },
+      "byz_30": {
+        "survival_mean": 100.0,
+        "survival_std": 0.0,
+        "survival_ci95": [
+          100.0,
+          100.0
+        ],
+        "welfare_mean": 22.39999771118164,
+        "welfare_std": 0.0
+      }
+    }
+  },
+  "crisis_only": {
+    "0.0": {
+      "byz_0": {
+        "survival_mean": 75.0,
+        "survival_std": 5.0,
+        "survival_ci95": [
+          70.0,
+          80.0
+        ],
+        "welfare_mean": 24.89892482437572,
+        "welfare_std": 0.18478786358126342
+      },
+      "byz_30": {
+        "survival_mean": 30.0,
+        "survival_std": 20.0,
+        "survival_ci95": [
+          10.0,
+          50.0
+        ],
+        "welfare_mean": 21.038248973241522,
+        "welfare_std": 0.03037450417317089
+      }
+    },
+    "0.3": {
+      "byz_0": {
+        "survival_mean": 65.0,
+        "survival_std": 5.0,
+        "survival_ci95": [
+          60.0,
+          70.0
+        ],
+        "welfare_mean": 25.0575185413622,
+        "welfare_std": 0.14728528498796578
+      },
+      "byz_30": {
+        "survival_mean": 30.0,
+        "survival_std": 10.0,
+        "survival_ci95": [
+          20.0,
+          40.0
+        ],
+        "welfare_mean": 21.101207498578432,
+        "welfare_std": 0.026899136791167066
+      }
+    },
+    "0.5": {
+      "byz_0": {
+        "survival_mean": 65.0,
+        "survival_std": 5.0,
+        "survival_ci95": [
+          60.0,
+          70.0
+        ],
+        "welfare_mean": 25.487338133091505,
+        "welfare_std": 0.20446427476964857
+      },
+      "byz_30": {
+        "survival_mean": 45.0,
+        "survival_std": 5.0,
+        "survival_ci95": [
+          40.0,
+          50.0
+        ],
+        "welfare_mean": 21.23425731232544,
+        "welfare_std": 0.0015970064192867284
+      }
+    },
+    "0.7": {
+      "byz_0": {
+        "survival_mean": 75.0,
+        "survival_std": 15.0,
+        "survival_ci95": [
+          60.0,
+          90.0
+        ],
+        "welfare_mean": 26.048328176119085,
+        "welfare_std": 0.23210002335553703
+      },
+      "byz_30": {
+        "survival_mean": 50.0,
+        "survival_std": 0.0,
+        "survival_ci95": [
+          50.0,
+          50.0
+        ],
+        "welfare_mean": 21.431262138282914,
+        "welfare_std": 0.0013632919148101053
+      }
+    },
+    "1.0": {
+      "byz_0": {
+        "survival_mean": 80.0,
+        "survival_std": 10.0,
+        "survival_ci95": [
+          70.0,
+          90.0
+        ],
+        "welfare_mean": 26.91531002307253,
+        "welfare_std": 0.38488653111142845
+      },
+      "byz_30": {
+        "survival_mean": 50.0,
+        "survival_std": 0.0,
+        "survival_ci95": [
+          50.0,
+          50.0
+        ],
+        "welfare_mean": 21.73937848842462,
+        "welfare_std": 0.005451269297298111
+      }
+    }
+  }
+}

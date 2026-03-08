@@ -3,9 +3,9 @@
 preference_network.py ??Sen Meta-Ranking via Discrete Preference Ordering
 ==========================================================================
 
-Addresses reviewer criticism: "λ linear interpolation ??true Sen meta-ranking"
+Addresses reviewer criticism: "Î» linear interpolation ??true Sen meta-ranking"
 
-Instead of a continuous λ ??[0,1], this implements a discrete preference
+Instead of a continuous Î» ??[0,1], this implements a discrete preference
 meta-policy that selects among 3 ranked preference orderings:
   1. SELFISH: maximize own payoff
   2. UTILITARIAN: maximize total welfare
@@ -33,7 +33,7 @@ from envs.nonlinear_pgg_env import NonlinearPGGEnv
 
 OUTPUT_DIR = os.path.join(SCRIPT_DIR, "..", "outputs", "preference_network")
 
-# ?�?� Preference orderings (reward transforms) ?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�
+# ?? Preference orderings (reward transforms) ??????????????????????
 
 def selfish_reward(payoffs, agent_idx):
     """Pure self-interest: maximize own payoff."""
@@ -48,7 +48,7 @@ def egalitarian_reward(payoffs, agent_idx):
     return np.min(payoffs)
 
 
-# ?�?� Meta-policy (state ??preference ordering) ?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�
+# ?? Meta-policy (state ??preference ordering) ?????????????????????
 
 class PreferenceMetaPolicy:
     """
@@ -67,7 +67,7 @@ class PreferenceMetaPolicy:
         self.R_recov = R_recov
         self.lr = lr
         self.temperature = temperature
-        # 3 states × 3 actions: logits for softmax policy
+        # 3 states Ã 3 actions: logits for softmax policy
         self.logits = np.zeros((3, 3))
     
     def _state_bin(self, R):
@@ -91,7 +91,7 @@ class PreferenceMetaPolicy:
     def update(self, state_bin, action, reward):
         """REINFORCE-style update."""
         probs = self._softmax(self.logits[state_bin])
-        # Policy gradient: ?�log ?(a|s) · R
+        # Policy gradient: ?log ?(a|s) Â· R
         grad = -probs.copy()
         grad[action] += 1.0  # one-hot - probs
         self.logits[state_bin] += self.lr * grad * reward
@@ -108,10 +108,10 @@ class PreferenceMetaPolicy:
         return table
 
 
-# ?�?� Simulation ?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�
+# ?? Simulation ?????????????????????????????????????????????????????
 
 def compute_lambda_from_ordering(ordering_idx, R, R_crit):
-    """Map preference ordering to cooperation level λ."""
+    """Map preference ordering to cooperation level Î»."""
     if ordering_idx == 0:  # Selfish
         return 0.3  # minimal cooperation
     elif ordering_idx == 1:  # Utilitarian
@@ -145,7 +145,7 @@ def run_preference_network_experiment(n_episodes=200, n_seeds=20):
                 # Meta-policy selects preference ordering
                 ordering_idx, probs = meta.select_ordering(R)
                 
-                # Convert ordering to λ for all honest agents
+                # Convert ordering to Î» for all honest agents
                 lam = compute_lambda_from_ordering(ordering_idx, R, meta.R_crit)
                 actions = np.full(env.n_honest, lam)  # only honest agents take actions
                 
@@ -196,14 +196,14 @@ def aggregate_results(all_results):
         "crisis_egalitarian_prob": round(float(np.mean(crisis_egal)), 3),
         "normal_selfish_prob": round(float(np.mean(normal_self)), 3),
         "warning_utilitarian_prob": round(float(np.mean(warning_util)), 3),
-        "convergence_pattern": "Crisis?�Egalitarian, Warning?�Utilitarian, Normal?�Selfish"
+        "convergence_pattern": "Crisis?Egalitarian, Warning?Utilitarian, Normal?Selfish"
     }
 
 
 def main():
     print("=" * 70)
     print("Preference Network: Sen Meta-Ranking via Discrete Orderings")
-    print("Addresses: 'λ linear interpolation ??Sen meta-ranking'")
+    print("Addresses: 'Î» linear interpolation ??Sen meta-ranking'")
     print("=" * 70)
     
     os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -227,8 +227,8 @@ def main():
         json.dump(final_data, f, indent=2)
     
     print(f"\nRESULTS SUMMARY:")
-    print(f"  Welfare: {summary['welfare_mean']} ± {summary['welfare_std']}")
-    print(f"  Survival: {summary['survival_mean']}% ± {summary['survival_std']}%")
+    print(f"  Welfare: {summary['welfare_mean']} Â± {summary['welfare_std']}")
+    print(f"  Survival: {summary['survival_mean']}% Â± {summary['survival_std']}%")
     print(f"\n  LEARNED CONVERGENCE PATTERN:")
     print(f"    Crisis  ??Egalitarian: {summary['crisis_egalitarian_prob']:.1%}")
     print(f"    Warning ??Utilitarian: {summary['warning_utilitarian_prob']:.1%}")

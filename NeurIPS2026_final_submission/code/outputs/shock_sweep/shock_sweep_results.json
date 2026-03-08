@@ -1,0 +1,82 @@
+{
+  "p0.1_d0.1_b1": {
+    "p_shock": 0.1,
+    "delta_shock": 0.1,
+    "burst_len": 1,
+    "survival_mean": 5.0,
+    "survival_std": 5.0,
+    "welfare_mean": 20.977407324855257,
+    "cvar_10_mean": 20.870552284997487,
+    "cvar_10_std": 0.08431155671957491
+  },
+  "p0.1_d0.1_b5": {
+    "p_shock": 0.1,
+    "delta_shock": 0.1,
+    "burst_len": 5,
+    "survival_mean": 0.0,
+    "survival_std": 0.0,
+    "welfare_mean": 21.06639924769927,
+    "cvar_10_mean": 20.921467208862303,
+    "cvar_10_std": 0.0594852447509755
+  },
+  "p0.1_d0.3_b1": {
+    "p_shock": 0.1,
+    "delta_shock": 0.3,
+    "burst_len": 1,
+    "survival_mean": 0.0,
+    "survival_std": 0.0,
+    "welfare_mean": 21.032292273879328,
+    "cvar_10_mean": 20.818708280722298,
+    "cvar_10_std": 0.015028496583303408
+  },
+  "p0.1_d0.3_b5": {
+    "p_shock": 0.1,
+    "delta_shock": 0.3,
+    "burst_len": 5,
+    "survival_mean": 0.0,
+    "survival_std": 0.0,
+    "welfare_mean": 21.172478074730847,
+    "cvar_10_mean": 20.979479551315308,
+    "cvar_10_std": 0.07742190361022949
+  },
+  "p0.3_d0.1_b1": {
+    "p_shock": 0.3,
+    "delta_shock": 0.1,
+    "burst_len": 1,
+    "survival_mean": 0.0,
+    "survival_std": 0.0,
+    "welfare_mean": 21.042637779886547,
+    "cvar_10_mean": 20.925079859220062,
+    "cvar_10_std": 0.06121774820181081
+  },
+  "p0.3_d0.1_b5": {
+    "p_shock": 0.3,
+    "delta_shock": 0.1,
+    "burst_len": 5,
+    "survival_mean": 0.0,
+    "survival_std": 0.0,
+    "welfare_mean": 21.110694748333522,
+    "cvar_10_mean": 20.970239639282227,
+    "cvar_10_std": 0.01792106628418111
+  },
+  "p0.3_d0.3_b1": {
+    "p_shock": 0.3,
+    "delta_shock": 0.3,
+    "burst_len": 1,
+    "survival_mean": 0.0,
+    "survival_std": 0.0,
+    "welfare_mean": 21.086395867131337,
+    "cvar_10_mean": 20.810211181640625,
+    "cvar_10_std": 0.04779052734375
+  },
+  "p0.3_d0.3_b5": {
+    "p_shock": 0.3,
+    "delta_shock": 0.3,
+    "burst_len": 5,
+    "survival_mean": 0.0,
+    "survival_std": 0.0,
+    "welfare_mean": 21.09806291262309,
+    "cvar_10_mean": 20.87283945083618,
+    "cvar_10_std": 0.03766965866088867
+  }
+}

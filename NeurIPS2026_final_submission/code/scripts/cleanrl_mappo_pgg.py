@@ -28,7 +28,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 # Import our standardized environment
 from envs.nonlinear_pgg_env import NonlinearPGGEnv
 
-# ?€?€?€ Hyperparameters (CleanRL defaults) ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
+# ?Â€?Â€?Â€ Hyperparameters (CleanRL defaults) ?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€
 HIDDEN_DIM = 64
 LR_ACTOR = 2.5e-4
 LR_CRITIC = 1e-3
@@ -51,7 +51,7 @@ if os.environ.get("ETHICAAI_FAST") == "1":
     N_EPISODES = 10
 
 
-# ?€?€?€ Neural Network Layers (numpy only, portable) ?€?€?€?€?€?€?€?€?€?€?€
+# ?Â€?Â€?Â€ Neural Network Layers (numpy only, portable) ?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€?Â€
 def relu(x):
     return np.maximum(0, x)
 
@@ -166,7 +166,7 @@ def ppo_update_actor(actor, obs_list, act_list, old_lps, advantages, entropy_coe
     
     The entropy bonus encourages exploration by increasing log_std when
     entropy_coef > 0. For Gaussian policy, H(?) = 0.5 + 0.5*ln(2?) + log_std,
-    so ?‚H/?‚log_std = 1 (always positive ??entropy bonus pushes std up).
+    so ?Â‚H/?Â‚log_std = 1 (always positive ??entropy bonus pushes std up).
     """
     for obs, act, old_lp, adv in zip(obs_list, act_list, old_lps, advantages):
         new_lp = actor.log_prob(obs, act)
@@ -219,9 +219,9 @@ def ppo_update_actor(actor, obs_list, act_list, old_lps, advantages, entropy_coe
         
         # --- Entropy bonus: update log_std ---
         # Gaussian entropy H = 0.5 + 0.5*ln(2?) + log_std
-        # ?‚H/?‚log_std = 1, so gradient of (-entropy_coef * H) w.r.t. log_std = -entropy_coef
+        # ?Â‚H/?Â‚log_std = 1, so gradient of (-entropy_coef * H) w.r.t. log_std = -entropy_coef
         # We also add the log_prob gradient w.r.t. log_std:
-        # ?‚log_prob/?‚log_std = ((act - mean)^2 / std^2) - 1
+        # ?Â‚log_prob/?Â‚log_std = ((act - mean)^2 / std^2) - 1
         d_lp_d_logstd = ((act - mean_val[0])**2 / (std[0]**2)) - 1.0
         log_std_grad = -(d_lp_d_logstd * adv + entropy_coef * 1.0)
         # Apply simple SGD to log_std (small lr to keep stable)

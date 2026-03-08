@@ -46,10 +46,10 @@ def run_smoke_test(exp):
         print(f"  ??Script not found: {exp['script']}")
         return False
 
-    print(f"\n{'?€' * 60}")
+    print(f"\n{'?Â€' * 60}")
     print(f"  Smoke test: {exp['name']}")
     print(f"  Script: {exp['script']}")
-    print(f"{'?€' * 60}")
+    print(f"{'?Â€' * 60}")
 
     t0 = time.time()
     env = {**os.environ, "ETHICAAI_FAST": "1"}
@@ -99,7 +99,7 @@ def main():
     print(f"\n{'=' * 60}")
     print(f"  SMOKE TEST COMPLETE in {elapsed_total/60:.1f} minutes")
     print(f"  {n_ok}/{n_total} tests passed")
-    print(f"{'?€' * 60}")
+    print(f"{'?Â€' * 60}")
     for name, ok in results.items():
         status = "?? if ok else "??
         print(f"  {status} {name}")

@@ -10,8 +10,8 @@ We formulate commitment floor discovery as a constrained optimization:
   maximize  welfare(???
   subject to  P(survival | ??? ??target_survival
 
-Using Lagrangian relaxation with dual variable μ:
-  L(??? μ) = welfare(??? + μ * (P(survival) - target)
+Using Lagrangian relaxation with dual variable Î¼:
+  L(??? Î¼) = welfare(??? + Î¼ * (P(survival) - target)
 
 The agent DISCOVERS that ?????1.0 is optimal through gradient-based search,
 rather than having it hard-coded.
@@ -33,16 +33,16 @@ sys.path.insert(0, os.path.join(SCRIPT_DIR, "envs"))
 from nonlinear_pgg_env import NonlinearPGGEnv
 
 
-# ?�?�?� Commitment Function g(θ, R) ?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�
+# ??? Commitment Function g(Î¸, R) ??????????????????????????????
 def commitment_function(theta_i: float, R: float, phi: np.ndarray) -> float:
     """
-    Parameterized commitment function g(θ, R; ?).
+    Parameterized commitment function g(Î¸, R; ?).
     
     phi = [svo_scale, base_crisis, slope_crisis, 
            crisis_threshold, base_abundance, slope_abundance]
     
-    In crisis (R < threshold): λ = max(phi[1], sin(θ)*phi[2])
-    In abundance:              λ = sin(θ) * phi[4] * (1 + phi[5]*R)
+    In crisis (R < threshold): Î» = max(phi[1], sin(Î¸)*phi[2])
+    In abundance:              Î» = sin(Î¸) * phi[4] * (1 + phi[5]*R)
     """
     crisis_threshold = phi[3]
     
@@ -58,7 +58,7 @@ def evaluate_phi1(phi1: float, env_kwargs: dict, n_episodes: int = 10,
                   n_agents: int = 20, svo_mean: float = 0.6) -> Dict:
     """
     Evaluate a commitment floor ???across multiple episodes.
-    Returns welfare, survival rate, mean λ.
+    Returns welfare, survival rate, mean Î».
     """
     phi = np.array([1.0, phi1, 0.3, 0.2, 1.5, 0.4])  # Default params, only vary phi1
     
@@ -117,9 +117,9 @@ def lagrangian_search(target_survival: float = 0.95,
     maximize  welfare(???
     s.t.      survival(??? ??target_survival
     
-    Dual: L = welfare + μ * (survival - target)
-    Primal update: ???+= lr * dL/d?????lr * (d_welfare/d_phi + μ * d_survival/d_phi)
-    Dual update:   μ = max(0, μ - lr_mu * (survival - target))
+    Dual: L = welfare + Î¼ * (survival - target)
+    Primal update: ???+= lr * dL/d?????lr * (d_welfare/d_phi + Î¼ * d_survival/d_phi)
+    Dual update:   Î¼ = max(0, Î¼ - lr_mu * (survival - target))
     """
     if env_kwargs is None:
         env_kwargs = {}
@@ -132,7 +132,7 @@ def lagrangian_search(target_survival: float = 0.95,
     print(f"\n{'='*70}")
     print(f"Lagrangian Search for ???(target survival ??{target_survival*100:.0f}%)")
     print(f"{'='*70}")
-    print(f"{'Step':>4} | {'???:>6} | {'μ':>6} | {'Survival':>8} | {'Welfare':>8} | {'λ_mean':>6}")
+    print(f"{'Step':>4} | {'???:>6} | {'Î¼':>6} | {'Survival':>8} | {'Welfare':>8} | {'Î»_mean':>6}")
     print(f"{'-'*4:>4}-+-{'-'*6:>6}-+-{'-'*6:>6}-+-{'-'*8:>8}-+-{'-'*8:>8}-+-{'-'*6:>6}")
     
     for step in range(n_steps):

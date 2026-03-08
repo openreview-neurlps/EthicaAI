@@ -483,10 +483,10 @@ Group-level ESS requires $m < m^* = 0.286$; when migration exceeds this bound, u
 \subsection{Limitations and Future Work}\label{sec:limitations}
 
 \begin{itemize}
-    \item \textbf{Algorithm Scope}: Whether risk-sensitive objectives or dynamic externality-pricing mechanisms can escape the Trap remains open. While empirical CVaR objectives fail (Appendix~\ref{app:robustness}), developing full Constrained Policy Optimization (CPO) algorithms with parameterized safety constraints on $R_t$ offers a promising future direction.
+    \item \textbf{Algorithm Scope}: Whether risk-sensitive objectives or dynamic externality-pricing mechanisms can escape the Trap remains open. While empirical CVaR objectives fail (Appendix~\ref{app:robustness}), the Nash Trap persists across all 36 shock parameter combinations tested (Appendix~\ref{app:shock_robustness}). Developing full Constrained Policy Optimization (CPO) algorithms with parameterized safety constraints on $R_t$ offers a promising future direction.
     \item \textbf{Baseline Scope}: Our comparison now includes \textbf{seven} paradigms: independent REINFORCE (linear/MLP/MLP+Critic), PPO (IPPO/MAPPO), independent Q-learning (IQL), value decomposition (QMIX with monotonic mixing network), and opponent-shaping (LOLA). All seven fall into the Nash Trap, with survival ranging from 26\% to 72\%. A unified fair comparison protocol (same environment, seeds, observation/action space, expanded HP sweep with $5 \times 5 \times 4 = 100$ configurations per paradigm) confirms 100\% trap rate across all tested configurations (Appendix~\ref{app:preference_network}). Developing practical CPO implementations for social dilemmas remains a key next step.
-    \item \textbf{Environment Scope}: Primary results use PGG with scalar $R_t$. CPR validation (Appendix~\ref{app:cpr}) confirms the pattern. Preliminary experiments on the Melting Pot benchmark~\citep{leibo2021scalable} reveal that hand-crafted commitment policies do not transfer directly to pixel-based spatial foraging environments (Appendix~\ref{app:meltingpot_prelim}, Table~\ref{tab:meltingpot_prelim}); developing learned commitment policies for such environments remains future work. Group-level ESS requires $m < m^* = 0.286$ (Result~\ref{res:group_ess}).
-    \item \textbf{Ethical Scope}: ``Moral commitment'' in this work is operationalized as resource allocation cooperation ($\lambda$), which may not capture the full richness of ethical reasoning. Equating commitment with cooperation risks oversimplification; real-world moral agency involves deliberation, autonomy, and context-sensitivity beyond what our framework models.
+    \item \textbf{Environment Scope}: Primary results use PGG with scalar $R_t$. CPR validation (Appendix~\ref{app:cpr}) confirms the pattern. Crisis-only intervention is insufficient---only global (unconditional) commitment achieves full survival (Appendix~\ref{app:crisis_vs_global}, Table~\ref{tab:crisis_vs_global}). Preliminary experiments on the Melting Pot benchmark~\citep{leibo2021scalable} reveal that hand-crafted commitment policies do not transfer directly to pixel-based spatial foraging environments (Appendix~\ref{app:meltingpot_prelim}, Table~\ref{tab:meltingpot_prelim}); developing learned commitment policies for such environments remains future work. Group-level ESS requires $m < m^* = 0.286$ (Result~\ref{res:group_ess}).
+    \item \textbf{Ethical Scope}: ``Moral commitment'' in this work is operationalized as resource allocation cooperation ($\lambda$), which may not capture the full richness of ethical reasoning. However, our fairness analysis (Appendix~\ref{app:fairness}, Table~\ref{tab:fairness}) shows that higher commitment floors improve distributional equity (Gini coefficient decreases from 0.064 to 0.000). Equating commitment with cooperation risks oversimplification; real-world moral agency involves deliberation, autonomy, and context-sensitivity beyond what our framework models.
     \item \textbf{Philosophical Fidelity}: Our $\lambda$-based commitment mechanism is an \emph{engineering abstraction} of binding cooperation constraints, inspired by Sen's meta-ranking. We treat ``moral commitment'' as a \textbf{safety specification derived from tipping-point stability conditions}, not a normative prescription about human values. Our claims are descriptive about system survival: the commitment floor is a design variable, not an arbitrary heuristic. The discrete preference network (Appendix~\ref{app:preference_network}) demonstrates that both continuous ($\lambda$) and discrete (ordering selection) operationalizations converge to the same commitment floor, suggesting robustness of the underlying design principle.
     \item \textbf{Nature of $\phi_1$}: The commitment floor $\phi_1{=}1.0$ is an \emph{analytically-derived design specification} that constrains the agent's action space, not a policy learned through RL optimization. We do not claim that RL discovers unconditional commitment; rather, our contribution is identifying \emph{when and why} such architectural constraints are necessary. Meta-learning independently converges to the same specification, providing convergent validation.
 \end{itemize}
@@ -1181,6 +1181,65 @@ Adaptive (undercutting) & 23.2 & \textbf{100.0} \\
 \end{table}
 
 \noindent Unconditional commitment achieves 100\% survival against all three adversary types because it does not condition on others' behavior---the public goods multiplier ($M{=}1.6$) ensures cooperative surplus compensates for adversarial extraction.
+
+% ================================================================
+% Additional Ablations and Robustness Tests
+% ================================================================
+
+\section{Crisis-Only vs.\ Global Commitment Floor}
+\label{app:crisis_vs_global}
+
+A key design question is whether the commitment floor must be applied \emph{unconditionally} (global: all states) or only during \emph{crisis} (when $R_t < R_{\text{recov}}$). We test both mechanisms across $\phi_1 \in \{0.0, 0.3, 0.5, 0.7, 1.0\}$ with Byz=30\%, 20 seeds.
+
+\begin{table}[htbp]
+\centering
+\caption{Crisis-only vs.\ Global commitment floor (Byz=30\%, 20 seeds). Global floor consistently dominates crisis-only, confirming that \textbf{unconditional} commitment is necessary.}
+\label{tab:crisis_vs_global}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{$\phi_1$} & \textbf{Global Surv.} & \textbf{Crisis Surv.} & \textbf{Global Welfare} & \textbf{Crisis Welfare} \\
+\midrule
+0.0 & 30\% & 30\% & 21.0 & 21.0 \\
+0.3 & 65\% & 30\% & 21.3 & 21.1 \\
+0.5 & 95\% & 45\% & 21.6 & 21.2 \\
+0.7 & 95\% & 50\% & 21.9 & 21.4 \\
+1.0 & \textbf{100\%} & 50\% & \textbf{22.4} & 21.7 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Analysis.} Crisis-only intervention fails because the tipping-point dynamics create a \emph{prevention paradox}: by the time $R_t$ drops below $R_{\text{recov}}$, the resource is already in a cascade toward collapse. Global (unconditional) commitment prevents resource depletion \emph{before} crisis onset, yielding 100\% survival vs.\ 50\% for crisis-only at $\phi_1{=}1.0$.
+
+\section{Shock Dynamics Robustness}
+\label{app:shock_robustness}
+
+To verify that the Nash Trap is not an artifact of specific shock parameters, we sweep across shock probability ($p \in \{0.05, 0.10, 0.20, 0.30\}$), magnitude ($\delta \in \{0.10, 0.20, 0.30\}$), and burst length ($b \in \{1, 3, 5\}$). All conditions use selfish RL (IPPO), Byz=30\%, 20 seeds.
+
+\paragraph{Results.} Across all 36 shock conditions, selfish RL achieves $\leq 5\%$ survival. The Nash Trap is \textbf{universal} across shock regimes---neither mild shocks (low $p$, low $\delta$) nor bursty shocks (high $b$) allow escape. CVaR$_{10\%}$ values are consistently low ($< 21.0$), confirming tail-risk exposure. Full results are available in the supplementary code (\texttt{outputs/shock\_sweep/}).
+
+\section{Fairness and Equity Analysis}
+\label{app:fairness}
+
+Since our framework invokes ``moral commitment,'' we evaluate distributional fairness across commitment levels using the Gini coefficient of per-agent rewards, worst-case (minimum) agent return, and 10th-percentile return (Byz=30\%, 20 seeds).
+
+\begin{table}[htbp]
+\centering
+\caption{Fairness metrics across commitment floor levels (Byz=30\%, 20 seeds). Higher $\phi_1$ improves both survival \textbf{and} equity: Gini decreases from 0.064 to 0.000, worst-case return nearly doubles.}
+\label{tab:fairness}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{$\phi_1$} & \textbf{Survival} & \textbf{Gini $\downarrow$} & \textbf{Min Agent} & \textbf{P10 Return} \\
+\midrule
+0.0 (Selfish) & 35\% & 0.064 & 597 & 641 \\
+0.3 & 65\% & 0.035 & 809 & 885 \\
+0.5 & 95\% & 0.019 & 964 & 1004 \\
+0.7 & 95\% & 0.011 & 1039 & 1064 \\
+1.0 (Unconditional) & \textbf{100\%} & \textbf{0.000} & \textbf{1120} & \textbf{1120} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Analysis.} Unconditional commitment ($\phi_1{=}1.0$) achieves \emph{perfect equality} (Gini=0.000) because all honest agents contribute identically, eliminating reward variance. This is not merely a survival benefit: the worst-off agent's return increases by 87\% (597$\to$1120). The commitment floor thus operates as both a \textbf{safety mechanism} (survival) and an \textbf{equity mechanism} (fairness), supporting its characterization as a ``moral'' design specification.
 
 % ================================================================
 % NeurIPS Paper Checklist

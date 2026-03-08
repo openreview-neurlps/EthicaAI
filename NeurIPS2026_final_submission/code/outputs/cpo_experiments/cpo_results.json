@@ -1,0 +1,58 @@
+[
+  {
+    "seed": 0,
+    "phi_trajectory": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "return_trajectory": [
+      30.200000000000074,
+      50.0,
+      50.0,
+      50.0
+    ],
+    "cost_trajectory": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "lambda_trajectory": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "final_phi": 0.0
+  },
+  {
+    "seed": 1,
+    "phi_trajectory": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "return_trajectory": [
+      30.200000000000074,
+      50.0,
+      50.0,
+      50.0
+    ],
+    "cost_trajectory": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "lambda_trajectory": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "final_phi": 0.0
+  }
+]

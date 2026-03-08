@@ -8,16 +8,16 @@ because it jointly optimizes all agents.
 
 This script implements INDEPENDENT policy gradient:
   - Each agent has its own policy parameters
-  - Each agent maximizes its own payoff r_i = (E - c_i) + M·sum(c)/N
-  - The individually rational strategy is to free-ride (low λ)
+  - Each agent maximizes its own payoff r_i = (E - c_i) + M쨌sum(c)/N
+  - The individually rational strategy is to free-ride (low 貫)
   - But collective free-riding leads to resource collapse
 
 We test THREE architectures:
-  1. Linear (sigmoid(w·obs + b)) ??5 params per agent
+  1. Linear (sigmoid(w쨌obs + b)) ??5 params per agent
   2. MLP (2-layer 32-unit) ??~161 params per agent
   3. MLP + Value baseline ??~322 params per agent
 
-All should converge to λ??.3~0.6 (Nash equilibrium).
+All should converge to 貫??.3~0.6 (Nash equilibrium).
 
 Dependencies: NumPy only.
 """
@@ -259,8 +259,8 @@ def train_independent(agent_class, label, n_ep=N_EPISODES, n_seeds=N_SEEDS):
                 if isinstance(agents[i], LinearAgent):
                     agents[i].update_reinforce(agent_obs[i], agent_acts[i], returns)
                 elif isinstance(agents[i], (MLPAgent, MLPCriticAgent)):
-                    # Gaussian REINFORCE for MLP: ?��?log N(a|μ(s),?) · G_t
-                    # μ = sigmoid(MLP(obs)), ? fixed = 0.15
+                    # Gaussian REINFORCE for MLP: ?눸?log N(a|關(s),?) 쨌 G_t
+                    # 關 = sigmoid(MLP(obs)), ? fixed = 0.15
                     sigma = 0.15
                     lr = agents[i].lr
                     
@@ -273,7 +273,7 @@ def train_independent(agent_class, label, n_ep=N_EPISODES, n_seeds=N_SEEDS):
                         if isinstance(agents[i], MLPCriticAgent):
                             v_t = agents[i].value(obs_t)
                             advantage = G_t - v_t
-                            # Update critic: V ??V + lr_v · (G - V) · ?�V
+                            # Update critic: V ??V + lr_v 쨌 (G - V) 쨌 ?놴
                             h_v = np.tanh(obs_t @ agents[i].V_W1 + agents[i].V_b1)
                             v_pred = (h_v @ agents[i].V_W2 + agents[i].V_b2).item()
                             delta_v = agents[i].lr_v * (G_t - v_pred)
@@ -285,26 +285,26 @@ def train_independent(agent_class, label, n_ep=N_EPISODES, n_seeds=N_SEEDS):
                         else:
                             advantage = G_t
                         
-                        # Forward: μ = sigmoid(W2 · tanh(W1·obs + b1) + b2)
+                        # Forward: 關 = sigmoid(W2 쨌 tanh(W1쨌obs + b1) + b2)
                         h = np.tanh(obs_t @ agents[i].W1 + agents[i].b1)
                         logit = float((h @ agents[i].W2 + agents[i].b2).item())
                         mu = sigmoid(logit)
                         
-                        # ?�log N(a|μ,?) / ?��?= (a - μ) / ?²
+                        # ?굃og N(a|關,?) / ?궽?= (a - 關) / ?짼
                         d_logp_d_mu = (act_t - mu) / (sigma**2)
                         
-                        # ?��??�logit = μ(1-μ) (sigmoid derivative)
+                        # ?궽??굃ogit = 關(1-關) (sigmoid derivative)
                         d_mu_d_logit = mu * (1 - mu)
                         
                         # Signal to backprop
                         delta = advantage * d_logp_d_mu * d_mu_d_logit
                         
-                        # ?�logit/?�W2 = h, ?�logit/?�b2 = 1
+                        # ?굃ogit/?괰2 = h, ?굃ogit/?괷2 = 1
                         agents[i].W2 += lr * delta * h.reshape(-1, 1)
                         agents[i].b2 += lr * delta
                         
-                        # ?�logit/?�h = W2.flatten()
-                        # ?�h/?�z1 = 1 - tanh²(z1) (tanh derivative)
+                        # ?굃ogit/?괿 = W2.flatten()
+                        # ?괿/?굗1 = 1 - tanh짼(z1) (tanh derivative)
                         d_h = delta * agents[i].W2.flatten() * (1 - h**2)
                         agents[i].W1 += lr * np.outer(obs_t, d_h)
                         agents[i].b1 += lr * d_h

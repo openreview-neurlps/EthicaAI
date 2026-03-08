@@ -1,6 +1,6 @@
 """
-Track C: Meta-Learning g(θ, R)
-Optimize the moral commitment function g_?(θ, R) via MAML-style meta-learning.
+Track C: Meta-Learning g(Î¸, R)
+Optimize the moral commitment function g_?(Î¸, R) via MAML-style meta-learning.
 
 Goal: Replace hand-crafted piecewise g with learned parameters ?
       that maximize group fitness + resource sustainability.
@@ -26,7 +26,7 @@ T_ROUNDS = 200
 N_SEEDS = 20
 MULTIPLIER = 1.6          # PGG multiplier
 ENDOWMENT = 20.0
-ALPHA_EMA = 0.6           # EMA smoothing for λ_t
+ALPHA_EMA = 0.6           # EMA smoothing for Î»_t
 SVO_THETA = np.radians(45)  # Prosocial default
 
 # Meta-learning
@@ -37,14 +37,14 @@ PERTURBATION_SCALE = 0.02 # For finite-difference gradient estimation
 
 
 # ============================================================
-# Parameterized g_?(θ, R) ??Learnable Moral Function
+# Parameterized g_?(Î¸, R) ??Learnable Moral Function
 # ============================================================
 class LearnableG:
     """Parameterized g function with 6 learnable parameters.
 
-    g_?(θ, R) = sigmoid(??�·sin(θ)) · clamp(???+ ??�·R, 0, 1)   if R < ???(crisis)
-              = sigmoid(??�·sin(θ)) · clamp(???+ ??�·R, 0, 1)   if R > 1-???(abundance)
-              = sigmoid(??�·sin(θ)) · (???+ ??�·R)               otherwise
+    g_?(Î¸, R) = sigmoid(??Â·sin(Î¸)) Â· clamp(???+ ??Â·R, 0, 1)   if R < ???(crisis)
+              = sigmoid(??Â·sin(Î¸)) Â· clamp(???+ ??Â·R, 0, 1)   if R > 1-???(abundance)
+              = sigmoid(??Â·sin(Î¸)) Â· (???+ ??Â·R)               otherwise
 
     ? = [svo_scale, base_low, slope_low, crisis_threshold, base_high, slope_high]
     """
@@ -53,11 +53,11 @@ class LearnableG:
         if phi is None:
             # Initialize near hand-crafted values
             self.phi = np.array([
-                1.0,    # ??�: SVO scale (hand-crafted: implicit 1.0)
-                0.21,   # ??? base commitment in crisis (??0.3·sin(45°))
+                1.0,    # ??: SVO scale (hand-crafted: implicit 1.0)
+                0.21,   # ??? base commitment in crisis (??0.3Â·sin(45Â°))
                 0.0,    # ??? slope in crisis (hand-crafted: 0)
                 0.2,    # ??? crisis threshold R_crisis
-                0.75,   # ??? base in abundance (??1.5·sin(45°))
+                0.75,   # ??? base in abundance (??1.5Â·sin(45Â°))
                 0.0,    # ??? slope in abundance (hand-crafted: 0)
             ], dtype=np.float64)
         else:
@@ -143,7 +143,7 @@ def run_pgg(g_func, n_agents=N_AGENTS, t_rounds=T_ROUNDS,
         R_t = np.clip(R_t + 0.1 * (coop_ratio - 0.4), 0.0, 1.0)
         resource_history.append(R_t)
 
-        # Update λ_t with EMA
+        # Update Î»_t with EMA
         for i in range(n_byz, n_agents):
             target = g_func(svo_angles[i], R_t)
             lambdas[i] = ALPHA_EMA * lambdas[i] + (1 - ALPHA_EMA) * target
@@ -162,9 +162,9 @@ def run_pgg(g_func, n_agents=N_AGENTS, t_rounds=T_ROUNDS,
 # Outer Loss: What we optimize ? for
 # ============================================================
 def outer_loss(g_func, seeds, byz_fracs=None):
-    """Compute outer loss across multiple tasks (seeds × byz_fracs).
+    """Compute outer loss across multiple tasks (seeds Ã byz_fracs).
 
-    Loss = -mean(welfare) + 2·mean(resource_variance)
+    Loss = -mean(welfare) + 2Â·mean(resource_variance)
     Lower is better.
     """
     if byz_fracs is None:
@@ -202,7 +202,7 @@ def meta_learn(n_steps=N_META_STEPS, lr=META_LR, verbose=True):
 
     if verbose:
         print("=" * 60)
-        print("  Track C: Meta-Learning g_?(θ, R)")
+        print("  Track C: Meta-Learning g_?(Î¸, R)")
         print(f"  Params: {n_params}, Meta-steps: {n_steps}, LR: {lr}")
         print("=" * 60)
 
@@ -291,7 +291,7 @@ def ablation_comparison(learned_g):
             results["handcrafted"][bf_key][metric] = float(h_mean)
             results["handcrafted"][bf_key][f"{metric}_std"] = float(np.std(h_vals))
 
-            print(f"  {bf*100:5.0f}% | {metric:>12} | {l_mean:10.3f}±{np.std(l_vals):.2f} | {h_mean:10.3f}±{np.std(h_vals):.2f} | {delta:+8.3f}")
+            print(f"  {bf*100:5.0f}% | {metric:>12} | {l_mean:10.3f}Â±{np.std(l_vals):.2f} | {h_mean:10.3f}Â±{np.std(h_vals):.2f} | {delta:+8.3f}")
 
         print("  " + "-" * 55)
 
