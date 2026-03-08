@@ -81,7 +81,7 @@ All experiments: N=20 agents, E=20.0, 30% Byzantine, 20 seeds.
 |:---|:---|:---|:---|
 | REINFORCE (3 arch.) | `ppo_nash_trap.py` | Table 3 | λ=0.37–0.49, 26–53% surv |
 | IPPO / MAPPO | `cleanrl_mappo_pgg.py` | Table 3 | λ=0.39–0.41, 37–39% surv |
-| IQL | `cleanrl_qmix_pgg.py` | Table 3 | λ=0.58, 72% surv |
+| IQL | `cleanrl_iql_pgg.py` | Table 3 | λ=0.58, 72% surv |
 | QMIX | `cleanrl_qmix_real.py` | Table 3, App. F | λ=0.52, 67% surv |
 | LOLA | `lola_experiment.py` | Table 3, App. F | λ=0.49, 51% surv |
 | φ₁ Floor | `phi1_with_learning.py` | Table 5 | 39%→100% (monotonic) |

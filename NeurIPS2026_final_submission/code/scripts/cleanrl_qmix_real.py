@@ -5,10 +5,10 @@ Proper QMIX with monotonic mixing network (Rashid et al., 2018).
 
 Architecture:
   - Per-agent Q-networks: 2-layer MLP ??Q(s_i, a) for 11 discrete actions
-  - Mixing network: Q_tot = f(Q_1, ..., Q_n, s) where ?俀_tot/?俀_i ??0
+  - Mixing network: Q_tot = f(Q_1, ..., Q_n, s) where ??_tot/??_i ??0
   - Hypernetwork: generates mixing weights from global state s
 
-Key difference from IQL (`cleanrl_qmix_pgg.py`):
+Key difference from IQL (`cleanrl_iql_pgg.py`):
   IQL: Q_tot = sum(Q_i)  (no interaction)
   QMIX: Q_tot = MixingNet(Q_1,...,Q_n; s)  (monotonic interaction)
 
@@ -227,7 +227,7 @@ def run_qmix(seed):
         episode_transitions = []
         
         for t in range(50):
-            # Each agent selects action (蔚-greedy)
+            # Each agent selects action (?-greedy)
             actions = []
             for i in range(n_honest):
                 if rng.random() < eps:
@@ -287,16 +287,16 @@ def run_qmix(seed):
                     dq[acts_b[i]] = td_error / n_honest  # equal share of TD error
                     
                     # Backprop through Q-network
-                    # Layer 3: dW3 = h2^T 路 dq, db3 = dq
+                    # Layer 3: dW3 = h2^T ? dq, db3 = dq
                     dW3 = np.outer(q_nets[i]._h2, dq)
                     db3 = dq.copy()
                     
-                    # Layer 2: d_h2 = dq 路 W3^T, masked by relu
+                    # Layer 2: d_h2 = dq ? W3^T, masked by relu
                     d_h2 = (dq @ q_nets[i].W3.T) * relu_grad(q_nets[i]._z2)
                     dW2 = np.outer(q_nets[i]._h1, d_h2)
                     db2 = d_h2.copy()
                     
-                    # Layer 1: d_h1 = d_h2 路 W2^T, masked by relu
+                    # Layer 1: d_h1 = d_h2 ? W2^T, masked by relu
                     d_h1 = (d_h2 @ q_nets[i].W2.T) * relu_grad(q_nets[i]._z1)
                     dW1 = np.outer(obs_b, d_h1)
                     db1 = d_h1.copy()
@@ -322,7 +322,7 @@ def run_qmix(seed):
             w = np.mean(ep_rewards[r])
             l = np.mean(ep_lambdas[r])
             s = np.mean(ep_survivals[r]) * 100
-            print(f"    ep {ep+1}: W={w:.1f}, 位={l:.3f}, Surv={s:.0f}%")
+            print(f"    ep {ep+1}: W={w:.1f}, ?={l:.3f}, Surv={s:.0f}%")
     
     # Eval: last N_EVAL episodes
     eval_w = ep_rewards[-N_EVAL:]
@@ -352,7 +352,7 @@ def main():
         print(f"\n  Seed {s+1}/{N_SEEDS}")
         r = run_qmix(s)
         all_results.append(r)
-        print(f"    ??位={r['lambda']:.3f}, Surv={r['survival']:.0f}%, W={r['welfare']:.1f}")
+        print(f"    ???={r['lambda']:.3f}, Surv={r['survival']:.0f}%, W={r['welfare']:.1f}")
     
     lams = [r["lambda"] for r in all_results]
     survs = [r["survival"] for r in all_results]
@@ -388,9 +388,9 @@ def main():
     elapsed = time.time() - t0
     print(f"\n{'=' * 65}")
     print(f"  QMIX COMPLETE in {elapsed:.0f}s")
-    print(f"  位={np.mean(lams):.3f}卤{np.std(lams):.3f}")
-    print(f"  Survival={np.mean(survs):.0f}卤{np.std(survs):.0f}%")
-    print(f"  Welfare={np.mean(welfs):.1f}卤{np.std(welfs):.1f}")
+    print(f"  ?={np.mean(lams):.3f}?{np.std(lams):.3f}")
+    print(f"  Survival={np.mean(survs):.0f}?{np.std(survs):.0f}%")
+    print(f"  Welfare={np.mean(welfs):.1f}?{np.std(welfs):.1f}")
     print(f"{'=' * 65}")
 
 

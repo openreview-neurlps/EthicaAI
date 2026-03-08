@@ -1,21 +1,21 @@
 """
-Phase B-v2 (Table 5): Crisis Commitment ???with Learning Agents
+Phase B-v2 (Table 5): Unconditional Commitment Floor with Learning Agents
 ================================================================
-Tests whether crisis commitment override ???can rescue IPPO agents
+Tests whether an unconditional commitment floor can rescue IPPO agents
 from the Nash Trap.
 
 Design:
-  1. Train IPPO agents for N_EPISODES (they fall into Nash Trap: λ??.4)
-  2. During both training and evaluation, apply crisis override:
-     when R < R_crit: effective_λ = max(learned_λ, ???
-  3. ???0 ??no override ??Nash Trap persists (survival??7%)
-  4. ???1 ??crisis override ??survival should dramatically increase
+  1. Train IPPO agents for N_EPISODES (they fall into Nash Trap: lambda~0.4)
+  2. During both training and evaluation, apply commitment floor:
+     effective_lambda = max(learned_lambda, phi1)  [UNCONDITIONAL, all states]
+  3. phi1=0: no floor (pure learning) -> Nash Trap persists (survival~7%)
+  4. phi1=1: full floor (always cooperate) -> maximum survival
 
 This directly supports C4: "unconditional commitment is a design requirement"
-by showing that learning alone is insufficient, but learning + ???override
+by showing that learning alone is insufficient, but learning + commitment floor
 rescues the system.
 
-Grid: ?????{0.0, 0.21, 0.50, 1.0} × Byz ??{0%, 30%} × 20 seeds
+Grid: phi1 in {0.0, 0.21, 0.50, 1.0} x Byz in {0%, 30%} x 20 seeds
 """
 import numpy as np
 import json

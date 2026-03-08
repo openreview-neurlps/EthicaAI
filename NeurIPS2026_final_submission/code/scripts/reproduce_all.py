@@ -55,7 +55,7 @@ EXPERIMENTS = [
 OPTIONAL = [
     {
         "name": "IQL Baseline",
-        "script": "cleanrl_qmix_pgg.py",
+        "script": "cleanrl_iql_pgg.py",
         "output": "cleanrl_baselines/iql_baseline_results.json",
     },
 ]
@@ -70,10 +70,10 @@ def run_experiment(exp):
         print(f"  ??Script not found: {exp['script']}")
         return False
     
-    print(f"\n{'?€' * 60}")
+    print(f"\n{'??' * 60}")
     print(f"  Running: {exp['name']}")
     print(f"  Script: {exp['script']}")
-    print(f"{'?€' * 60}")
+    print(f"{'??' * 60}")
     
     t0 = time.time()
     result = subprocess.run(
@@ -130,7 +130,7 @@ def main():
     print(f"\n{'=' * 60}")
     print(f"  REPRODUCTION COMPLETE in {elapsed_total/60:.1f} minutes")
     print(f"  {n_ok}/{n_total} experiments passed")
-    print(f"{'?€' * 60}")
+    print(f"{'??' * 60}")
     for name, ok in results.items():
         status = "?? if ok else "??
         print(f"  {status} {name}")
