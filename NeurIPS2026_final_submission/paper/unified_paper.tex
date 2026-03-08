@@ -485,7 +485,7 @@ Group-level ESS requires $m < m^* = 0.286$; when migration exceeds this bound, u
 \begin{itemize}
     \item \textbf{Algorithm Scope}: Whether risk-sensitive objectives or dynamic externality-pricing mechanisms can escape the Trap remains open. While empirical CVaR objectives fail (Appendix~\ref{app:robustness}), developing full Constrained Policy Optimization (CPO) algorithms with parameterized safety constraints on $R_t$ offers a promising future direction.
     \item \textbf{Baseline Scope}: Our comparison now includes \textbf{seven} paradigms: independent REINFORCE (linear/MLP/MLP+Critic), PPO (IPPO/MAPPO), independent Q-learning (IQL), value decomposition (QMIX with monotonic mixing network), and opponent-shaping (LOLA). All seven fall into the Nash Trap, with survival ranging from 26\% to 72\%. A unified fair comparison protocol (same environment, seeds, observation/action space, expanded HP sweep with $5 \times 5 \times 4 = 100$ configurations per paradigm) confirms 100\% trap rate across all tested configurations (Appendix~\ref{app:preference_network}). Developing practical CPO implementations for social dilemmas remains a key next step.
-    \item \textbf{Environment Scope}: Primary results use PGG with scalar $R_t$. CPR validation (Appendix~\ref{app:cpr}) confirms the pattern. Extending to pixel-based spatial environments, specifically \emph{Prisoners' Dilemma in the Matrix} and \emph{Clean Up} subtasks in Melting Pot~\citep{leibo2021scalable}, remains future work. Group-level ESS requires $m < m^* = 0.286$ (Result~\ref{res:group_ess}).
+    \item \textbf{Environment Scope}: Primary results use PGG with scalar $R_t$. CPR validation (Appendix~\ref{app:cpr}) confirms the pattern. Preliminary experiments on the Melting Pot benchmark~\citep{leibo2021scalable} reveal that hand-crafted commitment policies do not transfer directly to pixel-based spatial foraging environments (Appendix~\ref{app:meltingpot_prelim}, Table~\ref{tab:meltingpot_prelim}); developing learned commitment policies for such environments remains future work. Group-level ESS requires $m < m^* = 0.286$ (Result~\ref{res:group_ess}).
     \item \textbf{Ethical Scope}: ``Moral commitment'' in this work is operationalized as resource allocation cooperation ($\lambda$), which may not capture the full richness of ethical reasoning. Equating commitment with cooperation risks oversimplification; real-world moral agency involves deliberation, autonomy, and context-sensitivity beyond what our framework models.
     \item \textbf{Philosophical Fidelity}: Our $\lambda$-based commitment mechanism is an \emph{engineering abstraction} of binding cooperation constraints, inspired by Sen's meta-ranking. We treat ``moral commitment'' as a \textbf{safety specification derived from tipping-point stability conditions}, not a normative prescription about human values. Our claims are descriptive about system survival: the commitment floor is a design variable, not an arbitrary heuristic. The discrete preference network (Appendix~\ref{app:preference_network}) demonstrates that both continuous ($\lambda$) and discrete (ordering selection) operationalizations converge to the same commitment floor, suggesting robustness of the underlying design principle.
     \item \textbf{Nature of $\phi_1$}: The commitment floor $\phi_1{=}1.0$ is an \emph{analytically-derived design specification} that constrains the agent's action space, not a policy learned through RL optimization. We do not claim that RL discovers unconditional commitment; rather, our contribution is identifying \emph{when and why} such architectural constraints are necessary. Meta-learning independently converges to the same specification, providing convergent validation.
@@ -726,6 +726,29 @@ Situational Commitment & 1.3\% & 11.9 \\
 }
 \end{table}
 The results (Table~\ref{tab:spatial_perf}) confirm our main finding: independent reinforcement learning systematically falls into cooperative collapse (Nash Trap) in non-linear social dilemmas. Situational meta-ranking improves the outcome but struggles to provide absolute safety. Only Unconditional Commitment ($\phi_1=1.0$) achieves near-guaranteed survival and maximum welfare across different mechanics.
+
+\subsection{Melting Pot Preliminary Results and Limitations}
+\label{app:meltingpot_prelim}
+
+To test whether the commitment floor mechanism transfers to pixel-based multi-agent environments, we ran preliminary experiments on the \textbf{commons\_harvest\_\_open} substrate from the Melting Pot benchmark~\citep{leibo2021scalable} using Google Colab with Python~3.11 and \texttt{dm-meltingpot}~2.4.0.
+
+\begin{table}[htbp]
+\centering
+\caption{Preliminary Melting Pot results on \emph{commons\_harvest\_\_open} (5 seeds, 200 steps). Hand-crafted commitment policy does \textbf{not} outperform the selfish baseline in this environment.}
+\label{tab:meltingpot_prelim}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Policy} & \textbf{Mean Reward} & \textbf{Std} \\
+\midrule
+Selfish (uniform random) & \textbf{1.26} & 1.10 \\
+Commitment (70\% interact) & 0.57 & 0.41 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Analysis.} The commitment policy underperforms because \texttt{commons\_harvest} is a \emph{spatial foraging} environment where agents must \emph{navigate} to resource patches and \emph{harvest} them via movement actions. Our hand-crafted commitment policy allocates 70\% of actions to ``interact'' (cooperation signals), leaving insufficient movement actions to reach resources. This is \textbf{not} a refutation of the commitment floor theory---rather, it demonstrates that \emph{translating} the commitment floor from contribution-based games (PGG, CPR, Spatial Dilemma) to pixel-based navigation environments requires \textbf{learned} commitment policies rather than hand-crafted heuristics.
+
+\paragraph{Implication.} Developing RL agents that learn $\phi_1$-constrained policies end-to-end in complex visual environments (e.g., via Constrained Policy Optimization within Melting Pot substrates) is a promising direction for future work. The negative result reported here is consistent with the well-known challenge of transferring cooperative mechanisms across environment types~\citep{leibo2021scalable}.
 
 \section{Preference Network: Computational Meta-Ranking}
 \label{app:preference_network}

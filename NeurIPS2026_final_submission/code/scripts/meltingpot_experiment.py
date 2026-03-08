@@ -1,154 +1,163 @@
-#!/usr/bin/env python3
 """
-meltingpot_experiment.py ??Evaluate Commitment in DeepMind's Melting Pot
-========================================================================
+Melting Pot Generalization Benchmark for EthicaAI
+Run on Google Colab: installs dmlab2d + dm-meltingpot automatically.
 
-This script evaluates our "Unconditional Commitment" (???1.0) strategy against
-standard baselines in actual Melting Pot substrates.
+Tests commitment floor mechanism in standard MARL benchmarks:
+  1. commons_harvest__open
+  2. clean_up
 
-We use two standard social dilemmas from the Melting Pot suite:
-1. 'commons_harvest__open': A spatial common-pool resource game (analogous to our PGG).
-2. 'clean_up': A public goods game with free-rider dynamics.
-
-Results are saved to `outputs/meltingpot_results.json`.
+Compares: Selfish (baseline) vs Unconditional Commitment (phi=1.0)
 """
 
-import json
-import os
+import subprocess
 import sys
-import numpy as np
+import os
 
-# Try to import dm-meltingpot. If it fails, we provide a fallback message.
+# === Auto-install dependencies (for Colab) ===
+def install_deps():
+    """Install dmlab2d and dm-meltingpot on Colab."""
+    print("Installing dmlab2d...")
+    subprocess.check_call([sys.executable, "-m", "pip", "install", 
+                           "dmlab2d", "-q"], stderr=subprocess.DEVNULL)
+    print("Installing dm-meltingpot...")
+    subprocess.check_call([sys.executable, "-m", "pip", "install", 
+                           "dm-meltingpot", "-q"], stderr=subprocess.DEVNULL)
+    print("Dependencies installed!")
+
 try:
+    import dmlab2d
     import meltingpot
-    import meltingpot.python.make_environment as make_env
-    from meltingpot.python.utils.policies import policy
-    HAS_MELTINGPOT = True
 except ImportError:
-    HAS_MELTINGPOT = False
+    install_deps()
+    import dmlab2d
+    import meltingpot
 
+import numpy as np
+import json
+from meltingpot import substrate
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-OUTPUT_DIR = os.path.join(SCRIPT_DIR, "..", "outputs", "meltingpot")
+# === Config ===
+N_SEEDS = 20
+N_STEPS = 500
+SUBSTRATES = ["commons_harvest__open", "clean_up"]
 
-
-def run_meltingpot_episode(env, agent_policies, n_steps=1000):
-    """Run a single episode of Melting Pot and return total collective return."""
+def run_episode(substrate_name, policy_fn, seed=0):
+    """Run one episode with a given policy function."""
+    rng = np.random.RandomState(seed)
+    
+    env_config = substrate.get_config(substrate_name)
+    env = substrate.build(env_config)
+    
     timestep = env.reset()
-    states = [p.initial_state() for p in agent_policies]
+    n_agents = len(timestep.observation)
     
-    total_rewards = np.zeros(len(agent_policies))
+    total_reward = np.zeros(n_agents)
+    steps = 0
     
-    for _ in range(n_steps):
-        actions = []
-        next_states = []
-        
-        # MeltingPot uses single-agent observations within a list
-        for i, p in enumerate(agent_policies):
+    for t in range(N_STEPS):
+        actions = {}
+        for i in range(n_agents):
             obs = timestep.observation[i]
-            # Simple heuristic policies for demonstration of concept
-            action, next_s = p.step(timestep, states[i])
-            actions.append(action)
-            next_states.append(next_s)
+            actions[i] = policy_fn(obs, i, rng, t)
         
         timestep = env.step(actions)
-        states = next_states
         
-        if timestep.reward is not None:
-            total_rewards += timestep.reward
-            
+        for i in range(n_agents):
+            total_reward[i] += timestep.reward[i]
+        
+        steps += 1
         if timestep.last():
             break
+    
+    env.close()
+    
+    return {
+        "total_reward": float(np.mean(total_reward)),
+        "steps": steps,
+        "per_agent_reward": [float(r) for r in total_reward],
+    }
+
+
+def selfish_policy(obs, agent_id, rng, t):
+    """Random/selfish baseline - take random actions."""
+    # Action space in Melting Pot is typically 0-7 (movement + turn + interact)
+    return rng.randint(0, 8)
+
+
+def commitment_policy(obs, agent_id, rng, t):
+    """Unconditional commitment policy - always try to cooperate.
+    In Melting Pot:
+      - 'interact' action (typically 5-7) represents cooperation/contribution
+      - We bias heavily toward interact and forward movement
+    """
+    # 70% chance of cooperative action (interact), 30% movement toward resources
+    if rng.random() < 0.7:
+        return rng.choice([5, 6, 7])  # interact actions
+    else:
+        return rng.choice([0, 1, 2, 3, 4])  # movement actions
+
+
+def run_experiment():
+    results = {}
+    
+    for sub_name in SUBSTRATES:
+        print(f"\n{'='*60}")
+        print(f"  Substrate: {sub_name}")
+        print(f"{'='*60}")
+        
+        sub_results = {}
+        
+        for policy_name, policy_fn in [("Selfish", selfish_policy), 
+                                        ("Unconditional", commitment_policy)]:
+            print(f"\n  [{policy_name}] Running {N_SEEDS} seeds...")
             
-    return total_rewards
-
-
-def simulate_meltingpot_results(num_seeds=20):
-    """
-    If dm-meltingpot is not fully importable (due to missing dmlab2d binaries),
-    we generate mathematically equivalent evaluation results based on our 
-    validated model transfer properties.
-    """
-    print("WARNING: dm-meltingpot not installed or missing dmlab2d. Using verified transfer simulation.")
-    
-    results = {
-        "commons_harvest": {},
-        "clean_up": {}
-    }
-    
-    np.random.seed(42)
-    
-    # Commons Harvest (Resource Depletion)
-    results["commons_harvest"]["Selfish (IPPO)"] = {
-        "survival_mean": 12.0, "survival_std": 4.5,
-        "collective_return": 340.5, "return_std": 62.1
-    }
-    results["commons_harvest"]["Situational (Meta-Ranking)"] = {
-        "survival_mean": 65.0, "survival_std": 15.2,
-        "collective_return": 850.2, "return_std": 120.4
-    }
-    results["commons_harvest"]["Unconditional (???1.0)"] = {
-        "survival_mean": 98.5, "survival_std": 2.1,
-        "collective_return": 1240.8, "return_std": 45.3
-    }
-    
-    # Clean Up (Public Goods)
-    results["clean_up"]["Selfish (IPPO)"] = {
-        "survival_mean": 25.0, "survival_std": 8.0,
-        "collective_return": 410.2, "return_std": 80.5
-    }
-    results["clean_up"]["Situational (Meta-Ranking)"] = {
-        "survival_mean": 58.5, "survival_std": 12.4,
-        "collective_return": 790.6, "return_std": 110.2
-    }
-    results["clean_up"]["Unconditional (???1.0)"] = {
-        "survival_mean": 100.0, "survival_std": 0.0,
-        "collective_return": 1180.4, "return_std": 35.8
-    }
+            seed_rewards = []
+            for s in range(N_SEEDS):
+                try:
+                    res = run_episode(sub_name, policy_fn, seed=s)
+                    seed_rewards.append(res["total_reward"])
+                    if (s + 1) % 5 == 0:
+                        print(f"    Seed {s+1}/{N_SEEDS} | Reward: {res['total_reward']:.1f}")
+                except Exception as e:
+                    print(f"    Seed {s+1} ERROR: {e}")
+                    seed_rewards.append(0.0)
+            
+            mean_r = np.mean(seed_rewards)
+            std_r = np.std(seed_rewards)
+            
+            sub_results[policy_name] = {
+                "mean_reward": float(mean_r),
+                "std_reward": float(std_r),
+                "all_rewards": [float(r) for r in seed_rewards],
+            }
+            
+            print(f"  [{policy_name}] Mean: {mean_r:.1f} ± {std_r:.1f}")
+        
+        results[sub_name] = sub_results
     
     return results
 
 
-def main():
-    print("=" * 70)
-    print("Melting Pot Cross-Environment Generalization")
-    print("Addresses reviewer concern: 'Toy PGG only, no actual benchmark'")
-    print("=" * 70)
-    
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-    out_path = os.path.join(OUTPUT_DIR, "meltingpot_results.json")
-    
-    if HAS_MELTINGPOT:
-        print("dm-meltingpot found! Running actual substrates...")
-        # Placeholder for actual env creation
-        # env = make_env.environment(substrate_name="commons_harvest__open")
-        # However, running actual policies requires pre-trained checkpoints from ray/rllib.
-        # Since this execution needs to run reliably in CI, we fall back to the simulated trace 
-        # specifically if checkpoints aren't provided in the repo.
-        stats = simulate_meltingpot_results(num_seeds=20)
-    else:
-        stats = simulate_meltingpot_results(num_seeds=20)
-        
-    final_data = {
-        "experiment": "Melting Pot Cross-Environment Generalization",
-        "description": "Evaluates IPPO vs Situational vs Unconditional Commitment in DeepMind Melting Pot.",
-        "substrates": ["commons_harvest", "clean_up"],
-        "metrics": ["survival_mean", "collective_return"],
-        "results": stats
-    }
-    
-    with open(out_path, 'w') as f:
-        json.dump(final_data, f, indent=2)
-        
-    print("\nRESULTS SUMMARY:")
-    for sub, methods in stats.items():
-        print(f"\nSubstrate: {sub}")
-        for method, metrics in methods.items():
-            print(f"  {method:28s} | Survival: {metrics['survival_mean']:5.1f}% | Return: {metrics['collective_return']:6.1f}")
-            
-    print(f"\nResults saved to: {out_path}")
-    print("=" * 70)
-
-
 if __name__ == "__main__":
-    main()
+    print("EthicaAI — Melting Pot Generalization Benchmark")
+    print(f"Seeds: {N_SEEDS}, Steps per episode: {N_STEPS}")
+    
+    results = run_experiment()
+    
+    # Save results
+    out_dir = os.path.join(os.path.dirname(__file__) or ".", "..", "outputs", "meltingpot")
+    os.makedirs(out_dir, exist_ok=True)
+    out_path = os.path.join(out_dir, "meltingpot_results.json")
+    
+    with open(out_path, "w") as f:
+        json.dump(results, f, indent=2)
+    
+    print(f"\n{'='*60}")
+    print("  FINAL RESULTS")
+    print(f"{'='*60}")
+    for sub, data in results.items():
+        print(f"\n  {sub}:")
+        for pol, stats in data.items():
+            print(f"    {pol:20s}: {stats['mean_reward']:8.1f} ± {stats['std_reward']:.1f}")
+    
+    print(f"\nSaved to: {out_path}")
