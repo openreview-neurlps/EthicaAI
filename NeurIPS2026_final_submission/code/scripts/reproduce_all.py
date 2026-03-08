@@ -67,7 +67,7 @@ CORE_EXPERIMENTS = [
 EXTENSION_EXPERIMENTS = [
     {
         "name": "IQL Baseline",
-        "script": "cleanrl_qmix_pgg.py",
+        "script": "cleanrl_iql_pgg.py",
         "output": "cleanrl_baselines/iql_baseline_results.json",
         "paper_ref": "Table 3",
     },

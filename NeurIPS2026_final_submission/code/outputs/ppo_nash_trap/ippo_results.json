@@ -8,44 +8,44 @@
     "R_crit": 0.15,
     "M_over_N": 0.08,
     "T_horizon": 50,
-    "episodes": 300,
-    "seeds": 20
+    "episodes": 10,
+    "seeds": 2
   },
   "algorithms": {
     "ippo_linear": {
       "label": "IPPO Linear",
-      "welfare": "24.1+/-0.1",
-      "lambda": "0.483+/-0.011",
-      "survival": "51.3+/-8.7%",
-      "lambda_mean": 0.48297318088050956,
-      "lambda_std": 0.01069005203864625,
-      "welfare_mean": 24.05697471939628,
-      "survival_mean": 51.333333333333336,
-      "survival_std": 8.717797887081346
+      "welfare": "24.2+/-0.0",
+      "lambda": "0.500+/-0.000",
+      "survival": "55.0+/-15.0%",
+      "lambda_mean": 0.5000356254067302,
+      "lambda_std": 8.151765467137584e-05,
+      "welfare_mean": 24.20029925341653,
+      "survival_mean": 55.0,
+      "survival_std": 15.0
     },
     "ippo_mlp": {
       "label": "IPPO MLP",
-      "welfare": "22.9+/-0.6",
-      "lambda": "0.351+/-0.068",
-      "survival": "23.2+/-13.5%",
-      "lambda_mean": 0.35100146454181996,
-      "lambda_std": 0.06842461359582146,
-      "welfare_mean": 22.948412302151286,
-      "survival_mean": 23.166666666666664,
-      "survival_std": 13.518505834595775
+      "welfare": "24.2+/-0.1",
+      "lambda": "0.503+/-0.007",
+      "survival": "55.0+/-15.0%",
+      "lambda_mean": 0.5034544952947999,
+      "lambda_std": 0.006766012857670478,
+      "welfare_mean": 24.22901776047632,
+      "survival_mean": 55.0,
+      "survival_std": 15.0
     },
     "ippo_mlp_critic": {
       "label": "IPPO MLP+Critic",
-      "welfare": "23.0+/-0.4",
-      "lambda": "0.358+/-0.042",
-      "survival": "23.3+/-7.7%",
-      "lambda_mean": 0.3575247673352705,
-      "lambda_std": 0.0423405554275604,
-      "welfare_mean": 23.003208045616276,
-      "survival_mean": 23.333333333333332,
-      "survival_std": 7.745966692414833
+      "welfare": "24.2+/-0.0",
+      "lambda": "0.502+/-0.000",
+      "survival": "55.0+/-15.0%",
+      "lambda_mean": 0.5024751393288247,
+      "lambda_std": 0.00041811746740311184,
+      "welfare_mean": 24.220791170362126,
+      "survival_mean": 55.0,
+      "survival_std": 15.0
     }
   },
   "conclusion": "See lambda values",
-  "time_seconds": 323.63401770591736
+  "time_seconds": 1.0650842189788818
 }

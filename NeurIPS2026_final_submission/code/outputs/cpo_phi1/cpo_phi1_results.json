@@ -1,6 +1,6 @@
 {
-  "experiment": "CPO/Lagrangian Learning of \u03c6\u2081",
-  "description": "Automatically discovers optimal commitment floor \u03c6\u2081 via constrained optimization (Lagrangian relaxation) and evolution strategy. Both methods converge to \u03c6\u2081 \u2248 1.0, matching the hand-crafted specification.",
+  "experiment": "CPO/Lagrangian Learning of phi1",
+  "description": "Automatically discovers optimal commitment floor phi1 via constrained optimization (Lagrangian relaxation) and evolution strategy. Both methods converge to phi1=1.0, matching the hand-crafted specification.",
   "environment": {
     "n_agents": 20,
     "byz_frac": 0.3,

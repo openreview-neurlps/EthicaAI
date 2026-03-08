@@ -8,8 +8,8 @@
   ],
   "state_bins": [
     "Crisis (R < 0.15)",
-    "Warning (0.15 \u2264 R < 0.25)",
-    "Normal (R \u2265 0.25)"
+    "Warning (0.15 ??R < 0.25)",
+    "Normal (R ??0.25)"
   ],
   "summary": {
     "welfare_mean": 961.23,
@@ -19,7 +19,7 @@
     "crisis_egalitarian_prob": 0.186,
     "normal_selfish_prob": 0.45,
     "warning_utilitarian_prob": 0.282,
-    "convergence_pattern": "Crisis\u2192Egalitarian, Warning\u2192Utilitarian, Normal\u2192Selfish"
+    "convergence_pattern": "Crisis?\u0092Egalitarian, Warning?\u0092Utilitarian, Normal?\u0092Selfish"
   },
   "per_seed": [
     {

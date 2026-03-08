@@ -17,12 +17,12 @@
       "welfare_std": 0.14580385849882171
     },
     "ippo": {
-      "lambda_mean": 0.4398448088150544,
-      "lambda_std": 0.03618137506768278,
-      "survival_mean": 41.666666666666664,
-      "survival_std": 2.357022603955158,
-      "welfare_mean": 23.694696394046456,
-      "welfare_std": 0.30392355056853587
+      "lambda_mean": 0.3932411871613854,
+      "lambda_std": 0.07051853663481004,
+      "survival_mean": 35.0,
+      "survival_std": 10.801234497346433,
+      "welfare_mean": 23.303225972155644,
+      "welfare_std": 0.5923557077324058
     }
   },
   "noisy_std0.1_dly0": {
@@ -43,12 +43,12 @@
       "welfare_std": 0.056152032456683286
     },
     "ippo": {
-      "lambda_mean": 0.434352019197983,
-      "lambda_std": 0.038612118975593135,
-      "survival_mean": 40.0,
-      "survival_std": 4.08248290463863,
-      "welfare_mean": 23.648556961263058,
-      "welfare_std": 0.32434179939498436
+      "lambda_mean": 0.3777185645749112,
+      "lambda_std": 0.0639151904459525,
+      "survival_mean": 33.333333333333336,
+      "survival_std": 8.498365855987975,
+      "welfare_mean": 23.172835942429256,
+      "welfare_std": 0.5368875997459998
     }
   },
   "noisy_std0.2_dly0": {
@@ -69,12 +69,12 @@
       "welfare_std": 0.04751728116104305
     },
     "ippo": {
-      "lambda_mean": 0.41554867638916865,
-      "lambda_std": 0.03914391110196564,
-      "survival_mean": 36.666666666666664,
-      "survival_std": 4.714045207910317,
-      "welfare_mean": 23.49060888166902,
-      "welfare_std": 0.3288088532565133
+      "lambda_mean": 0.3902520436145518,
+      "lambda_std": 0.020061342962156094,
+      "survival_mean": 33.333333333333336,
+      "survival_std": 9.428090415820632,
+      "welfare_mean": 23.278117166362232,
+      "welfare_std": 0.16851528088211173
     }
   },
   "delayed_std0.0_dly1": {
@@ -95,12 +95,12 @@
       "welfare_std": 0.19826302105859583
     },
     "ippo": {
-      "lambda_mean": 0.43841840908782675,
-      "lambda_std": 0.038380742838987764,
-      "survival_mean": 43.333333333333336,
-      "survival_std": 2.357022603955158,
-      "welfare_mean": 23.682714636337746,
-      "welfare_std": 0.3223982398474966
+      "lambda_mean": 0.4278064451353749,
+      "lambda_std": 0.09078795647228746,
+      "survival_mean": 40.0,
+      "survival_std": 7.0710678118654755,
+      "welfare_mean": 23.59357413913715,
+      "welfare_std": 0.7626188343672174
     }
   },
   "delayed_std0.0_dly2": {
@@ -121,12 +121,12 @@
       "welfare_std": 0.2276078787360185
     },
     "ippo": {
-      "lambda_mean": 0.4509812047214399,
-      "lambda_std": 0.04533869637575947,
-      "survival_mean": 43.333333333333336,
+      "lambda_mean": 0.42140456528840725,
+      "lambda_std": 0.07703819386216577,
+      "survival_mean": 41.666666666666664,
       "survival_std": 6.236095644623236,
-      "welfare_mean": 23.788242119660094,
-      "welfare_std": 0.38084504955638004
+      "welfare_mean": 23.539798348422618,
+      "welfare_std": 0.647120828442196
     }
   },
   "delayed_std0.0_dly5": {
@@ -147,12 +147,12 @@
       "welfare_std": 0.2395295550431375
     },
     "ippo": {
-      "lambda_mean": 0.44029618946431553,
-      "lambda_std": 0.04657267731327605,
-      "survival_mean": 43.333333333333336,
-      "survival_std": 2.357022603955158,
-      "welfare_mean": 23.698487991500247,
-      "welfare_std": 0.39121048943151765
+      "lambda_mean": 0.40447588613075575,
+      "lambda_std": 0.06663627363593197,
+      "survival_mean": 40.0,
+      "survival_std": 4.08248290463863,
+      "welfare_mean": 23.397597443498345,
+      "welfare_std": 0.5597446985418301
     }
   },
   "local_std0.0_dly0": {
@@ -173,12 +173,12 @@
       "welfare_std": 0.00910698845885419
     },
     "ippo": {
-      "lambda_mean": 0.398542116253821,
-      "lambda_std": 0.00992989150071184,
-      "survival_mean": 33.333333333333336,
-      "survival_std": 4.714045207910317,
-      "welfare_mean": 23.347753776532098,
-      "welfare_std": 0.0834110886059795
+      "lambda_mean": 0.3659828934854778,
+      "lambda_std": 0.0965640933008125,
+      "survival_mean": 36.666666666666664,
+      "survival_std": 10.274023338281626,
+      "welfare_mean": 23.074256305278013,
+      "welfare_std": 0.8111383837268236
     }
   }
 }
