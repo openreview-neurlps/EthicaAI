@@ -74,7 +74,7 @@ EXTENSION_EXPERIMENTS = [
     {
         "name": "Phase Diagram (phi1 x beta)",
         "script": "phase_diagram.py",
-        "output": "phase_diagram/phase_diagram_results.json",
+        "output": "phase_diagram/phase_diagram.json",
         "paper_ref": "App. G",
     },
     {
