@@ -1,0 +1,38 @@
+{
+  "experiment": "Canonical QMIX Cross-Validation (EPyMARL-style)",
+  "method": {
+    "type": "QMIX with hypernetwork-based monotonic mixing (Rashid et al. 2018)",
+    "implementation": "EPyMARL-faithful: hypernetwork weights, abs() monotonicity, epsilon-greedy",
+    "reference": "Papoudakis et al. 2021 (Benchmarking MARL)",
+    "hidden_dim": 64,
+    "mixing_embed_dim": 32,
+    "n_actions": 11,
+    "epsilon_schedule": "1.0 -> 0.05 (decay=0.995)",
+    "lr": 0.0001,
+    "buffer_size": 5000,
+    "batch_size": 32
+  },
+  "environment": {
+    "type": "Non-linear PGG with tipping point",
+    "N": 5,
+    "T": 50,
+    "byzantine_fraction": 0.3,
+    "seeds": 20
+  },
+  "result": {
+    "label": "Canonical QMIX (Byz=30%)",
+    "welfare_mean": 22.82,
+    "welfare_std": 0.81,
+    "lambda_mean": 0.504,
+    "lambda_std": 0.144,
+    "survival_mean": 68.6,
+    "survival_std": 27.4
+  },
+  "comparison_with_custom": {
+    "custom_qmix_lambda": 0.524,
+    "custom_qmix_survival": 66.5,
+    "note": "Custom and canonical QMIX produce qualitatively identical results: Nash Trap convergence"
+  },
+  "time_seconds": 1010.8,
+  "key_finding": "Canonical QMIX (\u03bb=0.504, surv=68.6%) confirms Nash Trap"
+}
