@@ -319,7 +319,7 @@ Ind.\ REINFORCE MLP + Critic & 322 & 0.358 $\pm$ 0.042 & 23.3 & 23.0 \\
 IPPO~\citep{schulman2017proximal} & 4,546 & 0.393 $\pm$ 0.062 & 19.0 & 23.3 \\
 MAPPO~\citep{yu2022surprising} & 4,546$^\dagger$ & 0.223 $\pm$ 0.027 & 12.2 & 22.8 \\
 IQL$^\ddagger$ & 5,195 & 0.584 $\pm$ 0.021 & 71.8 & 24.9 \\
-QMIX$^\S$~\citep{rashid2018qmix} & 7,948$^\|$ & 0.504 $\pm$ 0.144 & 68.6 & 22.8 \\
+QMIX$^\S$~\citep{rashid2018qmix} & 7,948$^\|$ & 0.511 $\pm$ 0.005 & 80.0 & 24.3 \\
 LOLA$^{\#}$~\citep{foerster2018learning} & 5 & 0.498 $\pm$ 0.001 & 55.0 & 21.2 \\
 \midrule
 Fixed $\lambda=0.0$ & --- & 0.000 & 0.0 & 20.0 \\
@@ -328,10 +328,10 @@ Fixed $\lambda=1.0$ (oracle) & --- & 1.000 & \textbf{100.0} & \textbf{32.0} \\
 \multicolumn{5}{l}{\small All learned baselines follow CleanRL~\citep{huang2022cleanrl} single-file conventions (lightweight NumPy; no PyTorch).} \\
 \multicolumn{5}{l}{\small HP sweep (20 combos $\times$ 10 seeds, Appendix~\ref{app:hp_sweep}) confirms the Nash Trap persists across all 200 tested configurations.} \\
 \multicolumn{5}{l}{\small $^\dagger$Plus shared critic. $^\ddagger$IQL = no mixing network. $^\S$Monotonic mixing via hypernetwork-generated $|W|$.} \\
-\multicolumn{5}{l}{\small $^\|$Per-agent Q + mixing net. Canonical PyTorch QMIX (20 seeds) confirms results (Appendix~\ref{app:canonical_qmix}).} \\
-\multicolumn{5}{l}{\small $^{\#}$LOLA: 2 seeds; LOLA's $O(N^2)$ cross-derivative computation limits scaling. All other baselines: 20 seeds.} \\
+\multicolumn{5}{l}{\small $^\|$Per-agent Q + mixing net. Canonical PyTorch QMIX at $N{=}5$ (20 seeds) confirms Nash Trap (Appendix~\ref{app:canonical_qmix}).} \\
+\multicolumn{5}{l}{\small $^{\#}$QMIX \& LOLA: 2 seeds each; QMIX's per-agent Q-learning and LOLA's $O(N^2)$ cross-derivative limit large-seed runs.} \\
 \end{tabular}}
-\footnotetext{$E{=}20$. Mann-Whitney $U$ with Holm--Bonferroni correction ($K{=}5$ vs.\ oracle): Cliff's $|\delta|{=}1.0$ for all pairs (maximum separation). 95\% CIs (20 seeds): IPPO $\lambda$ [0.368, 0.422]; MAPPO [0.213, 0.236]; IQL [0.575, 0.593]; QMIX [0.360, 0.648]. Wall-clock: 18--198s/seed (CPU). Full output: \texttt{cleanrl\_baseline\_results.json}.}
+\footnotetext{$E{=}20$. Mann-Whitney $U$ with Holm--Bonferroni correction ($K{=}5$ vs.\ oracle): Cliff's $|\delta|{=}1.0$ for all pairs (maximum separation). 95\% CIs (20 seeds): IPPO $\lambda$ [0.368, 0.422]; MAPPO [0.213, 0.236]; IQL [0.575, 0.593]. QMIX/LOLA: 2 seeds (CI not reported). Source: \texttt{cleanrl\_baseline\_results.json}, \texttt{iql\_baseline\_results.json}, \texttt{qmix\_baseline\_results.json}, \texttt{lola\_results.json}.}
 \end{table}
 
 \textbf{Result}: Across \textbf{five algorithm families} (seven implementations; Table~\ref{tab:emergence}), all tested algorithms converge to suboptimal cooperation levels in our non-linear PGG.
@@ -339,7 +339,7 @@ Among the independent REINFORCE variants, linear agents converge to $\lambda \ap
 Standard MARL implementations spanning five paradigms---independent policy gradient (IPPO), centralized critic (MAPPO), independent Q-learning (IQL), value decomposition with monotonic mixing (QMIX~\citep{rashid2018qmix}), and opponent-shaping (LOLA~\citep{foerster2018learning})---all converge to suboptimal equilibria.
 Crucially, this is not a failure of learning per se: the algorithms \emph{successfully} converge to a local optimum of their individual reward landscapes. We interpret this as a \textbf{consistent pattern} of individually-rational optimization in a game where the collective benefit of cooperation is not captured by individual payoffs.
 IPPO converges to $\lambda = 0.393 \pm 0.062$ (19.0\% survival, 20 seeds), MAPPO to $\lambda = 0.223 \pm 0.027$ (12.2\%), and IQL achieves the highest $\lambda = 0.584 \pm 0.021$ (71.8\% survival) due to its discrete action space and $\varepsilon$-greedy exploration.
-Notably, \textbf{QMIX with a monotonic mixing network} ($\lambda = 0.504 \pm 0.144$, 68.6\% survival, canonical cross-validation with 20 seeds) does not outperform IQL, indicating that value decomposition does not help escape the Nash Trap.
+Notably, \textbf{QMIX with a monotonic mixing network} ($\lambda = 0.511 \pm 0.005$, 80.0\% survival, 2 seeds; canonical cross-validation at $N{=}5$ with 20 seeds yields $\lambda{=}0.504$, $68.6\%$ survival; Appendix~\ref{app:canonical_qmix}) does not outperform IQL, indicating that value decomposition does not help escape the Nash Trap.
 Similarly, \textbf{LOLA} ($\lambda = 0.498 \pm 0.001$, 55.0\% survival, 2 seeds due to $O(N^2)$ scaling) shows that anticipating opponent learning steps is insufficient when the underlying game structure traps all agents in a local equilibrium. Our $N$-agent LOLA uses a simplified 1-step approximation where each agent $i$ estimates the effect of opponents' parameter updates on its own policy gradient using the same trajectory (fixed returns); this implies the LOLA correction captures policy-space effects but not environment-dynamics effects, providing a conservative test.
 All five algorithm families fall substantially short of the oracle ($\lambda = 1.0$, 100\% survival). We formalize this observation:
 
@@ -1243,7 +1243,7 @@ We implement independent Q-learning (IQL) with per-agent Q-networks (same 2-laye
     \item \textbf{Wall-clock}: $\sim$19 seconds/seed (single CPU core)
 \end{itemize}
 
-\noindent All three paradigms---independent PG (IPPO, $\lambda{=}0.412$), centralized critic (MAPPO, $\lambda{=}0.392$), and independent Q-learning (IQL, $\lambda{=}0.584$)---converge below the oracle.
+\noindent All three paradigms---independent PG (IPPO, $\lambda{=}0.393$), centralized critic (MAPPO, $\lambda{=}0.223$), and independent Q-learning (IQL, $\lambda{=}0.584$)---converge below the oracle.
 IQL's higher $\lambda$ likely reflects the discrete action space and $\varepsilon$-greedy exploration that helps avoid the local optima trapping policy gradient methods. However, the gap to the oracle ($\lambda{=}1.0$, 100\% survival) remains substantial, and IQL's advantage does not stem from centralized value decomposition (no mixing network is used).
 
 % ================================================================

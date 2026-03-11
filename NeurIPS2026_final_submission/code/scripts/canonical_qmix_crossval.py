@@ -28,7 +28,7 @@ import time
 # ============================================================
 # Config
 # ============================================================
-N_AGENTS = 5
+N_AGENTS = 20  # Must match Table tab:emergence (N=20)
 ENDOWMENT = 20.0
 MULTIPLIER = 1.6
 T_HORIZON = 50
