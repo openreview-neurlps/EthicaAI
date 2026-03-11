@@ -264,9 +264,26 @@ Having established that situational commitment succeeds in linear environments (
 
 We deploy the same meta-ranking agents in the non-linear PGG (Equations~\ref{eq:resource}--\ref{eq:tipping}) with $R_{\text{crit}} = 0.15$, stochastic shocks ($p_{\text{shock}} = 0.05$, $\delta_{\text{shock}} = 0.15$), and 30\% Byzantine adversaries.\footnote{We select 30\% as it exceeds the standard Byzantine fault tolerance threshold ($f < n/3$). Our ``Byzantine'' model is deterministic worst-case (always-defect, $\lambda{=}0$), not arbitrary-failure Byzantine in the distributed systems sense. Sensitivity analysis across $\{0\%, 10\%, 30\%, 50\%\}$ confirms qualitative robustness (Appendix~\ref{app:sensitivity}).}
 
-\textbf{Result: Situational commitment fails catastrophically.}
+\textbf{Result: Situational commitment is structurally brittle in severe TPSDs.}
 When resources drop below $R_{\text{crit}}$, the commitment function $g(\theta, R)$ reduces $\lambda$ to $\max(0, \sin\theta \cdot 0.3)$---precisely when maximum commitment is needed to overcome the near-irreversible recovery dynamics ($f(R_t) = 0.01$).
-The very survival mechanism that was adaptive in linear environments becomes suicidal in non-linear ones: reducing commitment during crises \emph{accelerates} passage through the tipping point.
+The very survival mechanism that was adaptive in linear environments becomes dangerous in severe non-linear ones: reducing commitment during crises \emph{accelerates} passage through the tipping point.
+Situational policies can still achieve high \emph{average} survival when trajectories rarely enter the crisis region (e.g., Table~\ref{tab:scale}), but their crisis response is structurally misaligned with worst-case safety.
+
+\begin{table}[t]
+\centering
+\caption{Situational brittleness under stress conditions (non-linear PGG, 20 seeds, 200 episodes). Under combined worst-case conditions, situational survival drops to $16.6\%$ while unconditional floors still achieve $47.2\%$---a $2.8{\times}$ gap. Tail-risk (5th percentile) shows even sharper divergence.}
+\label{tab:stress_test}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Stress Condition} & \textbf{Selfish RL} & \textbf{Situational} & \textbf{Unconditional} \\
+\midrule
+Baseline severe & 100.0\% & 100.0\% & 100.0\% \\
+Near-tipping ($R_0{=}0.17$) & 83.9\% & 88.9\% & \textbf{98.6\%} \\
+Shock burst ($p{=}0.15$) & 60.4\% & 89.4\% & \textbf{95.9\%} \\
+Combined worst & 0.4\% & 16.6\% & \textbf{47.2\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 This discovery motivates two questions: (1) Can pure RL find a better strategy without any pre-specified commitment? (2) What level of crisis commitment is actually required?
 
@@ -340,19 +357,21 @@ The $\lambda \approx 0.5$ fixed point arises because the policy gradient balance
 
 \begin{table}[t]
 \centering
-\caption{Scale test: Nash Trap persists at $N{=}100$ (non-linear PGG, 20 seeds, 50 episodes).}
+\caption{Scale test: Nash Trap persists at $N{=}100$ (non-linear PGG without stochastic shocks, 20 seeds, 50 episodes). ``Selfish RL'' uses the $\lambda{\approx}0.5$ policy-level baseline consistent with the Nash Trap fixed point (Section~\ref{sec:nash_trap}). Note: without shocks, situational commitment achieves high average survival because trajectories rarely enter the crisis region; this is consistent with the Spectrum prediction that moderate conditions permit situational commitment.}
 \label{tab:scale}
 \begin{tabular}{lccc}
 \toprule
 \textbf{Method ($N{=}100$)} & \textbf{Welfare} & $\boldsymbol{\bar{\lambda}}$ & \textbf{Survival \%} \\
 \midrule
-Selfish RL (Byz=0\%) & 26.0 & 0.497 & 95.0 \\
-Selfish RL (Byz=30\%) & 24.2 & 0.497 & \textbf{53.7} \\
+Selfish RL$^\dagger$ (Byz=0\%) & 26.0 & 0.497 & 95.0 \\
+Selfish RL$^\dagger$ (Byz=30\%) & 24.2 & 0.497 & \textbf{53.7} \\
 \midrule
 Situational (Byz=30\%) & 26.0 & 0.713 & 95.3 \\
 Unconditional (Byz=30\%) & 28.4 & 1.000 & 99.8 \\
 \bottomrule
 \end{tabular}
+\\[2pt]
+{\small $^\dagger$Policy-level baseline: $\lambda{\approx}0.5{+}\mathcal{N}(0,0.02)$ matching the learned Nash Trap fixed point. Learned IPPO at $N{=}5$ confirms qualitative agreement (Table~\ref{tab:emergence}).}
 \end{table}
 
 \begin{figure}[t]
@@ -805,7 +824,7 @@ Table~\ref{tab:partial_obs_extended} shows that the Nash Trap persists across al
 
 \begin{table}[htbp]
 \centering
-\caption{Survival under Partial Observability conditions (non-linear PGG, Byz=30\%).}
+\caption{Survival under Partial Observability conditions (non-linear PGG without stochastic shocks, Byz=30\%). This is a \emph{moderate} severity regime; situational commitment's relatively high survival here is consistent with the Spectrum prediction.}
 \label{tab:partial_obs_extended}
 \begin{tabular}{lccc}
 \toprule
