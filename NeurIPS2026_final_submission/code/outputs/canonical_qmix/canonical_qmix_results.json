@@ -14,25 +14,25 @@
   },
   "environment": {
     "type": "Non-linear PGG with tipping point",
-    "N": 5,
+    "N": 20,
     "T": 50,
     "byzantine_fraction": 0.3,
     "seeds": 20
   },
   "result": {
     "label": "Canonical QMIX (Byz=30%)",
-    "welfare_mean": 22.82,
-    "welfare_std": 0.81,
-    "lambda_mean": 0.504,
-    "lambda_std": 0.144,
-    "survival_mean": 68.6,
-    "survival_std": 27.4
+    "welfare_mean": 21.37,
+    "welfare_std": 0.33,
+    "lambda_mean": 0.573,
+    "lambda_std": 0.136,
+    "survival_mean": 68.5,
+    "survival_std": 27.0
   },
   "comparison_with_custom": {
     "custom_qmix_lambda": 0.524,
     "custom_qmix_survival": 66.5,
     "note": "Custom and canonical QMIX produce qualitatively identical results: Nash Trap convergence"
   },
-  "time_seconds": 1010.8,
-  "key_finding": "Canonical QMIX (\u03bb=0.504, surv=68.6%) confirms Nash Trap"
+  "time_seconds": 2894.5,
+  "key_finding": "Canonical QMIX (\u03bb=0.573, surv=68.5%) confirms Nash Trap"
 }
