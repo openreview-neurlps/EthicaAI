@@ -268,6 +268,7 @@ We deploy the same meta-ranking agents in the non-linear PGG (Equations~\ref{eq:
 When resources drop below $R_{\text{crit}}$, the commitment function $g(\theta, R)$ reduces $\lambda$ to $\max(0, \sin\theta \cdot 0.3)$---precisely when maximum commitment is needed to overcome the near-irreversible recovery dynamics ($f(R_t) = 0.01$).
 The very survival mechanism that was adaptive in linear environments becomes dangerous in severe non-linear ones: reducing commitment during crises \emph{accelerates} passage through the tipping point.
 Situational policies can still achieve high \emph{average} survival when trajectories rarely enter the crisis region (e.g., Table~\ref{tab:scale}), but their crisis response is structurally misaligned with worst-case safety.
+Lemma~\ref{lem:adaptive_latency} formalizes this: the exponential smoothing parameter $\alpha$ creates an effective response time $\tau_\alpha = \lceil 1/(1-\alpha) \rceil$ during which burst shocks accumulate unopposed, yielding an exponentially higher collapse probability than unconditional commitment ($\tau_0 = 1$).
 
 \begin{table}[t]
 \centering
@@ -756,6 +757,34 @@ P(\text{collapse} \mid \mu < 0) \geq 1 - \exp\!\left(-\frac{T|\mu|^2}{2\sigma_R^
 
 \begin{proof}
 Apply the Azuma--Hoeffding inequality to the cumulative resource process $S_T = \sum_{t=0}^{T-1} \Delta R_t$. Each increment $\Delta R_t$ is bounded ($|\Delta R_t| \leq c$ for some constant $c$ determined by the clipping and shock magnitude). $S_T = R_T - R_0$; collapse occurs when $S_T \leq -R_0$. For $\mu > 0$: $P(S_T \leq -R_0) = P(S_T - T\mu \leq -(R_0 + T\mu)) \leq \exp(-2(R_0 + T\mu)^2 / (Tc^2))$, where $\sigma_R^2 \leq c^2$. The negative-drift bound follows symmetrically.
+\end{proof}
+
+\begin{lemma}[Adaptive Latency under Burst Shocks]
+\label{lem:adaptive_latency}
+Consider a situational commitment policy with exponential smoothing $\lambda_{t+1} = \alpha \lambda_t + (1 - \alpha)\lambda^*_t$, where $\lambda^*_t$ is the target commitment (e.g., $\lambda^*_t = 1$ in crisis, $\lambda^*_t = \theta$ otherwise) and $\alpha \in [0,1)$ controls adaptation speed. Let $\tau_\alpha \triangleq \lceil 1/(1-\alpha) \rceil$ be the \emph{effective response time} (number of steps to reach $(1-1/e)$ of target).
+
+Under a burst-shock regime with shock probability $p_s$ and magnitude $\sigma_s$, if a shock pushes $R_t$ below $R_{\text{crit}}$ at time $t_0$, the cumulative resource deficit during the adaptation window $[t_0, t_0 + \tau_\alpha]$ is bounded below by:
+\begin{equation}
+\Delta_{\text{deficit}} \geq \tau_\alpha \left(\bar{\sigma} - f_{\text{crit}}\!\left((1-\beta)\bar{\lambda}_{\text{pre}} - \delta\right)\right)
+\label{eq:adaptive_deficit}
+\end{equation}
+where $\bar{\lambda}_{\text{pre}}$ is the pre-crisis cooperation level and $f_{\text{crit}} = f(R)$ for $R < R_{\text{crit}}$ (the slow-recovery regime). The probability that $R$ reaches zero during this window satisfies:
+\begin{equation}
+P(\text{collapse in } [t_0, t_0 + \tau_\alpha]) \geq 1 - \exp\!\left(-\frac{\tau_\alpha^2(\bar{\sigma} - f_{\text{crit}}((1-\beta)\bar{\lambda}_{\text{pre}} - \delta))^2}{2\tau_\alpha \sigma_R^2}\right)
+\label{eq:latency_collapse}
+\end{equation}
+In contrast, an unconditional policy ($\alpha = 0$, $\lambda \equiv 1$) has $\tau_0 = 1$, eliminating the adaptation window and reducing $\Delta_{\text{deficit}}$ to at most one step of negative drift.
+\end{lemma}
+
+\begin{proof}
+At time $t_0$, the situational agent's commitment is $\lambda_{t_0} = \bar{\lambda}_{\text{pre}} < 1$. It takes $\tau_\alpha = \lceil 1/(1-\alpha) \rceil$ steps for the exponential average to reach $(1-1/e)$ of the target $\lambda^* = 1$. During each step $t \in [t_0, t_0 + \tau_\alpha]$, the cooperation remains at $\lambda_t \approx \bar{\lambda}_{\text{pre}} + (1-\bar{\lambda}_{\text{pre}})(1 - \alpha^{t-t_0})$, which is strictly below the unconditional level $\lambda = 1$.
+
+In the crisis zone ($R < R_{\text{crit}}$), recovery is governed by a slow rate $f_{\text{crit}} \ll f_{\text{norm}}$. The expected per-step drift from Lemma~\ref{lem:drift} with the sub-maximal cooperation is:
+$\mathbb{E}[\Delta R_t] = f_{\text{crit}}((1-\beta)\lambda_t - \delta) - \bar{\sigma}$.
+
+Since $\lambda_t < 1$ throughout $[t_0, t_0 + \tau_\alpha]$ while $\bar{\sigma}$ remains high (burst regime: $p_s = 0.15$, $\sigma_s = 0.20$), the drift stays negative, accumulating a deficit of at least $\Delta_{\text{deficit}}$. Applying Azuma--Hoeffding as in Lemma~\ref{lem:survival} over the $\tau_\alpha$-step window yields the collapse bound (\ref{eq:latency_collapse}). For $\alpha = 0.9$ (paper default), $\tau_{0.9} = 10$ steps---a substantial window in which burst shocks can push $R \to 0$.
+
+The unconditional policy with $\alpha = 0$ has $\tau_0 = 1$ by construction: it commits $\lambda = 1$ \emph{before} observing the crisis (no adaptation needed), so the deficit window shrinks to a single step, yielding exponentially lower collapse probability.
 \end{proof}
 
 \begin{proposition}[Nash Trap Fixed Point and Basin of Attraction]
