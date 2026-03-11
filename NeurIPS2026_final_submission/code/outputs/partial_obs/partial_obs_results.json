@@ -180,5 +180,31 @@
       "welfare_mean": 23.074256305278013,
       "welfare_std": 0.8111383837268236
     }
+  },
+  "full_obs": {
+    "situational": {
+      "lambda_mean": 0.6323561543972033,
+      "lambda_std": 0.03205403543118582,
+      "survival_mean": 82.0,
+      "survival_std": 6.0,
+      "welfare_mean": 25.31179169693651,
+      "welfare_std": 0.269253897621962
+    },
+    "unconditional": {
+      "lambda_mean": 0.7490652674948848,
+      "lambda_std": 0.022444005445350013,
+      "survival_mean": 84.0,
+      "survival_std": 6.6332495807108,
+      "welfare_mean": 26.292148246957037,
+      "welfare_std": 0.1885296457409399
+    },
+    "ippo": {
+      "lambda_mean": 0.45143385344658843,
+      "lambda_std": 0.07240926144244082,
+      "survival_mean": 41.666666666666664,
+      "survival_std": 6.236095644623236,
+      "welfare_mean": 23.79204436895134,
+      "welfare_std": 0.6082377961165067
+    }
   }
 }

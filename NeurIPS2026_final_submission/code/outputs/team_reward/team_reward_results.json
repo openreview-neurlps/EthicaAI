@@ -1,0 +1,503 @@
+{
+  "experiment": "MAPPO + Team Reward Baseline",
+  "purpose": "Test whether team-level reward shaping escapes the Nash Trap",
+  "results": {
+    "individual": {
+      "description": "Standard individual payoff (baseline, same as cleanrl_mappo_pgg.py)",
+      "lambda": {
+        "mean": 0.2233500758451706,
+        "std": 0.026744634536823696,
+        "ci95": [
+          0.21239702483207012,
+          0.23572698874314799
+        ]
+      },
+      "survival": {
+        "mean": 12.166666666666664,
+        "std": 6.435578192102608,
+        "ci95": [
+          9.333333333333334,
+          15.0
+        ]
+      },
+      "welfare": {
+        "mean": 21.876140637099432,
+        "std": 0.224654930109319
+      },
+      "per_seed": [
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.22941520045863437,
+          "std_lambda": 0.08293435340049156,
+          "mean_survival": 23.333333333333332,
+          "mean_welfare": 21.92708768385253
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.2117126040905481,
+          "std_lambda": 0.07184787797175679,
+          "mean_survival": 16.666666666666664,
+          "mean_welfare": 21.778385874360602
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.21500352769980488,
+          "std_lambda": 0.08770147070247866,
+          "mean_survival": 10.0,
+          "mean_welfare": 21.80602963267836
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.18435447509227038,
+          "std_lambda": 0.05153744845599658,
+          "mean_survival": 6.666666666666667,
+          "mean_welfare": 21.54857759077507
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.21792292568428193,
+          "std_lambda": 0.08926121763667705,
+          "mean_survival": 23.333333333333332,
+          "mean_welfare": 21.83055257574797
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.21242095310617648,
+          "std_lambda": 0.06333035794659607,
+          "mean_survival": 10.0,
+          "mean_welfare": 21.78433600609188
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.2572405492111416,
+          "std_lambda": 0.08007166042896265,
+          "mean_survival": 16.666666666666664,
+          "mean_welfare": 22.160820613373588
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.20903073128262523,
+          "std_lambda": 0.0691048393611599,
+          "mean_survival": 20.0,
+          "mean_welfare": 21.755858142774052
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.20057074271073255,
+          "std_lambda": 0.08935340244456101,
+          "mean_survival": 0.0,
+          "mean_welfare": 21.684794238770152
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.24992913866591424,
+          "std_lambda": 0.0725810185367425,
+          "mean_survival": 3.3333333333333335,
+          "mean_welfare": 22.099404764793686
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.2112381415166467,
+          "std_lambda": 0.10543666303826395,
+          "mean_survival": 3.3333333333333335,
+          "mean_welfare": 21.77440038873983
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.3050078462068738,
+          "std_lambda": 0.09563988833284483,
+          "mean_survival": 13.333333333333334,
+          "mean_welfare": 22.56206590813774
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.2317048661241443,
+          "std_lambda": 0.07227425072318018,
+          "mean_survival": 10.0,
+          "mean_welfare": 21.946320875442815
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.24186684653710946,
+          "std_lambda": 0.06172443987521138,
+          "mean_survival": 10.0,
+          "mean_welfare": 22.031681510911724
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.2009272534402188,
+          "std_lambda": 0.08148939396432096,
+          "mean_survival": 16.666666666666664,
+          "mean_welfare": 21.687788928897838
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.22739483024149945,
+          "std_lambda": 0.08251566247883621,
+          "mean_survival": 13.333333333333334,
+          "mean_welfare": 21.91011657402859
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.1910364169474726,
+          "std_lambda": 0.08733288077694001,
+          "mean_survival": 10.0,
+          "mean_welfare": 21.604705902358774
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.20366430042149838,
+          "std_lambda": 0.07166760668297346,
+          "mean_survival": 10.0,
+          "mean_welfare": 21.710780123540584
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.21845274322023087,
+          "std_lambda": 0.08588130867618383,
+          "mean_survival": 6.666666666666667,
+          "mean_welfare": 21.835003043049937
+        },
+        {
+          "reward_mode": "individual",
+          "mean_lambda": 0.2481074242455877,
+          "std_lambda": 0.10753961321633226,
+          "mean_survival": 20.0,
+          "mean_welfare": 22.08410236366293
+        }
+      ]
+    },
+    "team_mean": {
+      "description": "Team reward = mean of all agent rewards (honest + Byzantine)",
+      "lambda": {
+        "mean": 0.5971575831740267,
+        "std": 0.09798421734753623,
+        "ci95": [
+          0.5519721918728954,
+          0.6393692367081275
+        ]
+      },
+      "survival": {
+        "mean": 71.99999999999999,
+        "std": 18.05547008526779,
+        "ci95": [
+          64.16666666666667,
+          80.0
+        ]
+      },
+      "welfare": {
+        "mean": 25.016123698661826,
+        "std": 0.8230674257193031
+      },
+      "per_seed": [
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.43644761708524005,
+          "std_lambda": 0.10292130198346791,
+          "mean_survival": 40.0,
+          "mean_welfare": 23.66615998351602
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.5008875672906655,
+          "std_lambda": 0.0817973290147665,
+          "mean_survival": 70.0,
+          "mean_welfare": 24.20745556524159
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.4588797305062292,
+          "std_lambda": 0.0644040412760862,
+          "mean_survival": 46.666666666666664,
+          "mean_welfare": 23.85458973625233
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.6552780800731804,
+          "std_lambda": 0.09530507663233491,
+          "mean_survival": 90.0,
+          "mean_welfare": 25.504335872614714
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.6525859566460467,
+          "std_lambda": 0.10157526745959171,
+          "mean_survival": 93.33333333333333,
+          "mean_welfare": 25.48172203582679
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.5033015024370895,
+          "std_lambda": 0.09124809315630994,
+          "mean_survival": 50.0,
+          "mean_welfare": 24.227732620471556
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.6297861376534155,
+          "std_lambda": 0.09297668137235293,
+          "mean_survival": 80.0,
+          "mean_welfare": 25.2902035562887
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.5971358814573411,
+          "std_lambda": 0.07171867199528174,
+          "mean_survival": 70.0,
+          "mean_welfare": 25.01594140424167
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.7405636260571467,
+          "std_lambda": 0.09439659370217444,
+          "mean_survival": 86.66666666666667,
+          "mean_welfare": 26.22073445888003
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.7739870210672951,
+          "std_lambda": 0.10137867857189006,
+          "mean_survival": 90.0,
+          "mean_welfare": 26.50149097696528
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.5679336886224058,
+          "std_lambda": 0.10090723377298508,
+          "mean_survival": 70.0,
+          "mean_welfare": 24.77064298442821
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.6363475343002112,
+          "std_lambda": 0.07680948830496792,
+          "mean_survival": 86.66666666666667,
+          "mean_welfare": 25.345319288121775
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.6904598934395014,
+          "std_lambda": 0.08342526520961313,
+          "mean_survival": 93.33333333333333,
+          "mean_welfare": 25.799863104891813
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.6212963131114752,
+          "std_lambda": 0.07526947616222857,
+          "mean_survival": 60.0,
+          "mean_welfare": 25.21888903013639
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.5635303812035776,
+          "std_lambda": 0.09729040002640017,
+          "mean_survival": 83.33333333333334,
+          "mean_welfare": 24.73365520211005
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.4097168739425731,
+          "std_lambda": 0.09217101466763693,
+          "mean_survival": 50.0,
+          "mean_welfare": 23.44162174111762
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.5941174776267745,
+          "std_lambda": 0.10310169887304546,
+          "mean_survival": 60.0,
+          "mean_welfare": 24.99058681206491
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.6976686715303815,
+          "std_lambda": 0.139003798156715,
+          "mean_survival": 83.33333333333334,
+          "mean_welfare": 25.860416840855205
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.5310801627346623,
+          "std_lambda": 0.07953892442431691,
+          "mean_survival": 43.333333333333336,
+          "mean_welfare": 24.461073366971164
+        },
+        {
+          "reward_mode": "team_mean",
+          "mean_lambda": 0.6821475466953211,
+          "std_lambda": 0.08420478492449425,
+          "mean_survival": 93.33333333333333,
+          "mean_welfare": 25.7300393922407
+        }
+      ]
+    },
+    "team_honest": {
+      "description": "Team reward = mean of honest agent rewards only (oracle access)",
+      "lambda": {
+        "mean": 0.5196128072053429,
+        "std": 0.04465519399660462,
+        "ci95": [
+          0.49929344600748665,
+          0.5386022891115642
+        ]
+      },
+      "survival": {
+        "mean": 56.333333333333336,
+        "std": 16.69663971515759,
+        "ci95": [
+          49.0,
+          63.5
+        ]
+      },
+      "welfare": {
+        "mean": 24.36474758052488,
+        "std": 0.3751036295714789
+      },
+      "per_seed": [
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.5234454202445026,
+          "std_lambda": 0.09529381407554406,
+          "mean_survival": 63.33333333333333,
+          "mean_welfare": 24.396941530053823
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.5069141599144267,
+          "std_lambda": 0.10614473833497658,
+          "mean_survival": 73.33333333333333,
+          "mean_welfare": 24.258078943281184
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.5084108271961025,
+          "std_lambda": 0.0688699559240726,
+          "mean_survival": 30.0,
+          "mean_welfare": 24.270650948447262
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.5359232252178974,
+          "std_lambda": 0.11346890255520914,
+          "mean_survival": 76.66666666666667,
+          "mean_welfare": 24.50175509183034
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.5340222592597531,
+          "std_lambda": 0.09404405613728438,
+          "mean_survival": 70.0,
+          "mean_welfare": 24.48578697778192
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.6212797644325067,
+          "std_lambda": 0.07626916663180737,
+          "mean_survival": 80.0,
+          "mean_welfare": 25.218750021233056
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.560417202557521,
+          "std_lambda": 0.10569474655504787,
+          "mean_survival": 66.66666666666666,
+          "mean_welfare": 24.70750450148318
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.3887531102483681,
+          "std_lambda": 0.08653424986718032,
+          "mean_survival": 43.333333333333336,
+          "mean_welfare": 23.26552612608629
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.5005275743905466,
+          "std_lambda": 0.10241899605507737,
+          "mean_survival": 30.0,
+          "mean_welfare": 24.204431624880595
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.5078930567729917,
+          "std_lambda": 0.087848147895374,
+          "mean_survival": 20.0,
+          "mean_welfare": 24.26630167689313
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.4957811416641562,
+          "std_lambda": 0.09419272028643443,
+          "mean_survival": 46.666666666666664,
+          "mean_welfare": 24.164561589978916
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.5290689706854127,
+          "std_lambda": 0.09185196477080745,
+          "mean_survival": 53.333333333333336,
+          "mean_welfare": 24.444179353757463
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.5520771429546368,
+          "std_lambda": 0.07615096581605509,
+          "mean_survival": 46.666666666666664,
+          "mean_welfare": 24.63744800081895
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.5563525194070369,
+          "std_lambda": 0.09020893905241963,
+          "mean_survival": 63.33333333333333,
+          "mean_welfare": 24.673361163019113
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.5081987382930208,
+          "std_lambda": 0.09075436172048928,
+          "mean_survival": 83.33333333333334,
+          "mean_welfare": 24.268869401661373
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.488008990836874,
+          "std_lambda": 0.08199926934531754,
+          "mean_survival": 53.333333333333336,
+          "mean_welfare": 24.099275523029746
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.4719564522750316,
+          "std_lambda": 0.08372317814398657,
+          "mean_survival": 50.0,
+          "mean_welfare": 23.96443419911027
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.5413732307374229,
+          "std_lambda": 0.07246557549106951,
+          "mean_survival": 63.33333333333333,
+          "mean_welfare": 24.54753513819435
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.49709726886648953,
+          "std_lambda": 0.09602214347213649,
+          "mean_survival": 60.0,
+          "mean_welfare": 24.175617058478515
+        },
+        {
+          "reward_mode": "team_honest",
+          "mean_lambda": 0.5647550881521598,
+          "std_lambda": 0.0906531918763953,
+          "mean_survival": 53.333333333333336,
+          "mean_welfare": 24.743942740478147
+        }
+      ]
+    }
+  },
+  "time_seconds": 13593.4,
+  "conclusion": "Team reward (mean) shifts \u03bb by +0.374 relative to individual reward. Partial improvement \u2014 reward shaping alone is insufficient for survival in TPSDs."
+}

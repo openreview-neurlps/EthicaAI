@@ -1,0 +1,42 @@
+{
+  "experiment": "Long Horizon Nash Trap Persistence",
+  "results": {
+    "T=50": {
+      "horizon": 50,
+      "lambda_mean": 0.39514667918277857,
+      "lambda_std": 0.08065688257800431,
+      "lambda_ci95": [
+        0.3509862130293379,
+        0.450182412660253
+      ],
+      "survival_mean": 17.666666666666664,
+      "survival_std": 8.306623862918075,
+      "nash_trap": true
+    },
+    "T=100": {
+      "horizon": 100,
+      "lambda_mean": 0.5464808711683181,
+      "lambda_std": 0.06514553676209603,
+      "lambda_ci95": [
+        0.5038641792103331,
+        0.5850670290540569
+      ],
+      "survival_mean": 0.6666666666666667,
+      "survival_std": 1.9999999999999998,
+      "nash_trap": true
+    },
+    "T=200": {
+      "horizon": 200,
+      "lambda_mean": 0.42412821776088394,
+      "lambda_std": 0.07828496542691757,
+      "lambda_ci95": [
+        0.3766537730731456,
+        0.4731100377982935
+      ],
+      "survival_mean": 0.0,
+      "survival_std": 0.0,
+      "nash_trap": true
+    }
+  },
+  "time_seconds": 6128.7
+}

@@ -228,6 +228,39 @@ def ppo_update_actor(actor, obs_list, act_list, old_lps, advantages, entropy_coe
         actor.log_std -= LR_ACTOR * 0.1 * log_std_grad
 
 
+def ppo_update_critic(critic, obs_list, returns):
+    """Critic value function update via MSE loss backpropagation."""
+    for obs, ret in zip(obs_list, returns):
+        # Forward pass (recompute intermediates)
+        z1 = critic.fc1.forward(obs)
+        h1 = relu(z1)
+        z2 = critic.fc2.forward(h1)
+        h2 = relu(z2)
+        v_pred = critic.value_head.forward(h2).flatten()[0]
+        
+        # MSE loss gradient: d(loss)/d(v) = 2*(v_pred - ret) / 2 = (v_pred - ret)
+        delta_out = (v_pred - ret) * VALUE_COEF
+        
+        # --- value_head gradient ---
+        grad_W_vh = np.outer(h2, [delta_out])
+        grad_b_vh = np.array([delta_out])
+        critic.value_head.adam_update(-grad_W_vh, -grad_b_vh)
+        
+        # --- fc2 gradient ---
+        delta_h2 = delta_out * critic.value_head.W.flatten()
+        delta_z2 = delta_h2 * (z2 > 0).astype(np.float32)
+        grad_W_fc2 = np.outer(h1, delta_z2)
+        grad_b_fc2 = delta_z2
+        critic.fc2.adam_update(-grad_W_fc2, -grad_b_fc2)
+        
+        # --- fc1 gradient ---
+        delta_h1 = delta_z2 @ critic.fc2.W.T
+        delta_z1 = delta_h1 * (z1 > 0).astype(np.float32)
+        grad_W_fc1 = np.outer(obs, delta_z1)
+        grad_b_fc1 = delta_z1
+        critic.fc1.adam_update(-grad_W_fc1, -grad_b_fc1)
+
+
 def run_mappo_experiment(seed, use_shared_critic=True, label="MAPPO"):
     """Run CleanRL-style MAPPO/IPPO for N_EPISODES."""
     rng = np.random.RandomState(seed)
@@ -252,6 +285,7 @@ def run_mappo_experiment(seed, use_shared_critic=True, label="MAPPO"):
         lp_buf = [[] for _ in range(n_agents)]
         rew_buf = [[] for _ in range(n_agents)]
         val_buf = [[] for _ in range(n_agents)]
+        gs_buf = []  # global state buffer for shared critic
         
         for t in range(env.T):
             actions = np.zeros(n_agents)
@@ -265,6 +299,8 @@ def run_mappo_experiment(seed, use_shared_critic=True, label="MAPPO"):
                 if use_shared_critic:
                     gs = env.get_global_state()
                     val_buf[i].append(critic.forward(gs))
+                    if i == 0:
+                        gs_buf.append(gs.copy())
                 else:
                     val_buf[i].append(critics[i].forward(obs))
             
@@ -276,7 +312,7 @@ def run_mappo_experiment(seed, use_shared_critic=True, label="MAPPO"):
             if terminated:
                 break
         
-        # PPO update for each agent
+        # PPO update for each agent (multiple epochs)
         for i in range(n_agents):
             if len(rew_buf[i]) < 2:
                 continue
@@ -287,10 +323,18 @@ def run_mappo_experiment(seed, use_shared_critic=True, label="MAPPO"):
             if np.std(advantages) > 1e-8:
                 advantages = (advantages - np.mean(advantages)) / (np.std(advantages) + 1e-8)
             
-            # Actor update
-            ppo_update_actor(
-                actors[i], obs_buf[i], act_buf[i], lp_buf[i], advantages
-            )
+            # Multiple PPO epochs per rollout
+            for _ppo_epoch in range(PPO_EPOCHS):
+                # Actor update
+                ppo_update_actor(
+                    actors[i], obs_buf[i], act_buf[i], lp_buf[i], advantages
+                )
+                
+                # Critic update
+                if use_shared_critic:
+                    ppo_update_critic(critic, gs_buf[:len(returns)], returns)
+                else:
+                    ppo_update_critic(critics[i], obs_buf[i], returns)
         
         per_episode.append({
             "welfare": info.get("welfare", 0),

@@ -136,27 +136,101 @@ class MixingNetwork:
     
     def forward(self, agent_qs, state):
         """
-        agent_qs: (n_agents,) ??individual Q-values
-        state: (state_dim,) ??global state
+        agent_qs: (n_agents,) individual Q-values
+        state: (state_dim,) global state
         returns: scalar Q_tot
         """
+        # Cache for backward pass
+        self._state = state.copy()
+        self._agent_qs = agent_qs.copy()
+        
         # Generate mixing weights from state via hypernetworks
-        W1 = (state @ self.hw1_W + self.hw1_b).reshape(self.n_agents, self.mixing_dim)
-        W1 = np.abs(W1)  # MONOTONICITY CONSTRAINT: |W| ??0
+        self._W1_raw = (state @ self.hw1_W + self.hw1_b).reshape(self.n_agents, self.mixing_dim)
+        W1 = np.abs(self._W1_raw)  # MONOTONICITY CONSTRAINT
+        self._W1 = W1
         b1 = state @ self.hb1_W + self.hb1_b
+        self._b1 = b1
         
-        W2 = (state @ self.hw2_W + self.hw2_b).reshape(self.mixing_dim, 1)
-        W2 = np.abs(W2)  # MONOTONICITY CONSTRAINT
+        self._W2_raw = (state @ self.hw2_W + self.hw2_b).reshape(self.mixing_dim, 1)
+        W2 = np.abs(self._W2_raw)  # MONOTONICITY CONSTRAINT
+        self._W2 = W2
         
-        # b2 from 2-layer hypernetwork (no abs ??bias can be negative)
-        h_b2 = relu(state @ self.hb2_W1 + self.hb2_b1)
-        b2 = (h_b2 @ self.hb2_W2 + self.hb2_b2).flatten()
+        # b2 from 2-layer hypernetwork
+        self._h_b2_pre = state @ self.hb2_W1 + self.hb2_b1
+        self._h_b2 = relu(self._h_b2_pre)
+        b2 = (self._h_b2 @ self.hb2_W2 + self.hb2_b2).flatten()
+        self._b2 = b2
         
-        # Forward: agent_qs ??hidden ??Q_tot
-        hidden = relu(agent_qs @ W1 + b1)
-        q_tot = (hidden @ W2 + b2).item()
+        # Forward: agent_qs -> hidden -> Q_tot
+        self._z_hidden = agent_qs @ W1 + b1
+        self._hidden = relu(self._z_hidden)
+        q_tot = (self._hidden @ W2 + b2).item()
         
         return q_tot
+    
+    def backward(self, td_error):
+        """Backprop through mixer. Returns dQ_tot/dQ_i for each agent."""
+        state = self._state
+        
+        # dL/dQ_tot = td_error
+        # Q_tot = hidden @ W2 + b2
+        # dQ_tot/dhidden = W2.flatten() , shape (mixing_dim,)
+        d_hidden = td_error * self._W2.flatten()
+        
+        # Through relu
+        d_z_hidden = d_hidden * (self._z_hidden > 0).astype(np.float32)
+        
+        # dQ_tot/dQ_i = d_z_hidden @ W1[i,:] => shape (n_agents,)
+        d_agent_qs = d_z_hidden @ self._W1.T  # (n_agents,)
+        
+        # --- Gradients for hypernetwork parameters ---
+        # W2 gradient: dL/dW2 = hidden^T * td_error, through abs
+        d_W2 = td_error * self._hidden.reshape(-1, 1)
+        d_W2_raw = d_W2 * np.sign(self._W2_raw)  # through |.|
+        # hw2: W2_raw = state @ hw2_W + hw2_b
+        d_hw2_W = np.outer(state, d_W2_raw.flatten())
+        d_hw2_b = d_W2_raw.flatten()
+        
+        # W1 gradient: dL/dW1 = agent_qs^T @ d_z_hidden, through abs
+        d_W1 = np.outer(self._agent_qs, d_z_hidden)  # (n_agents, mixing_dim)
+        d_W1_raw = d_W1 * np.sign(self._W1_raw)
+        d_W1_flat = d_W1_raw.flatten()
+        d_hw1_W = np.outer(state, d_W1_flat)
+        d_hw1_b = d_W1_flat
+        
+        # b1 gradient: dL/db1 = d_z_hidden
+        d_hb1_W = np.outer(state, d_z_hidden)
+        d_hb1_b = d_z_hidden.copy()
+        
+        # b2 gradient (through 2-layer hypernetwork)
+        d_b2 = td_error  # scalar
+        d_hb2_W2 = np.outer(self._h_b2, [d_b2])
+        d_hb2_b2 = np.array([d_b2])
+        d_h_b2 = d_b2 * self.hb2_W2.flatten()
+        d_h_b2_pre = d_h_b2 * (self._h_b2_pre > 0).astype(np.float32)
+        d_hb2_W1 = np.outer(state, d_h_b2_pre)
+        d_hb2_b1 = d_h_b2_pre.copy()
+        
+        # Collect all gradients
+        grads = {
+            'hw1_W': d_hw1_W, 'hw1_b': d_hw1_b,
+            'hb1_W': d_hb1_W, 'hb1_b': d_hb1_b,
+            'hw2_W': d_hw2_W, 'hw2_b': d_hw2_b,
+            'hb2_W1': d_hb2_W1, 'hb2_b1': d_hb2_b1,
+            'hb2_W2': d_hb2_W2, 'hb2_b2': d_hb2_b2,
+        }
+        
+        # Adam update for mixer
+        self._t += 1
+        for k in self._params:
+            g = grads[k]
+            self._m[k] = 0.9 * self._m[k] + 0.1 * g
+            self._v[k] = 0.999 * self._v[k] + 0.001 * g**2
+            m_hat = self._m[k] / (1 - 0.9**self._t)
+            v_hat = self._v[k] / (1 - 0.999**self._t)
+            setattr(self, k, getattr(self, k) - LR * m_hat / (np.sqrt(v_hat) + 1e-8))
+        
+        return d_agent_qs
     
     def param_count(self):
         return sum(getattr(self, k).size for k in self._params)
@@ -164,6 +238,9 @@ class MixingNetwork:
     def copy_from(self, other):
         for k in self._params:
             setattr(self, k, getattr(other, k).copy())
+        self._m = {k: np.zeros_like(getattr(self, k)) for k in self._params}
+        self._v = {k: np.zeros_like(getattr(self, k)) for k in self._params}
+        self._t = 0
 
 
 class ReplayBuffer:
@@ -279,29 +356,28 @@ def run_qmix(seed):
                 # TD error
                 td_error = q_tot - y
                 
-                # Backprop through mixing network ??per-agent Q-networks
-                # Simplified: update each Q-network with td_error / n_honest
+                # Backprop through mixing network -> per-agent Q-networks
+                # mixer.backward() updates mixer weights AND returns dQ_tot/dQ_i
+                d_agent_qs = mixer.backward(td_error)
+                d_agent_qs = np.clip(d_agent_qs, -10.0, 10.0)  # gradient clipping
+                
                 for i in range(n_honest):
                     q_vals = q_nets[i].forward(obs_b)
                     dq = np.zeros(N_ACTIONS, dtype=np.float32)
-                    dq[acts_b[i]] = td_error / n_honest  # equal share of TD error
+                    dq[acts_b[i]] = d_agent_qs[i]  # weighted by mixer gradient
                     
                     # Backprop through Q-network
-                    # Layer 3: dW3 = h2^T ? dq, db3 = dq
                     dW3 = np.outer(q_nets[i]._h2, dq)
                     db3 = dq.copy()
                     
-                    # Layer 2: d_h2 = dq ? W3^T, masked by relu
                     d_h2 = (dq @ q_nets[i].W3.T) * relu_grad(q_nets[i]._z2)
                     dW2 = np.outer(q_nets[i]._h1, d_h2)
                     db2 = d_h2.copy()
                     
-                    # Layer 1: d_h1 = d_h2 ? W2^T, masked by relu
                     d_h1 = (d_h2 @ q_nets[i].W2.T) * relu_grad(q_nets[i]._z1)
                     dW1 = np.outer(obs_b, d_h1)
                     db1 = d_h1.copy()
                     
-                    # Adam update
                     grads = {'W1': dW1, 'b1': db1, 'W2': dW2, 'b2': db2, 'W3': dW3, 'b3': db3}
                     for k, g in grads.items():
                         param = getattr(q_nets[i], k)

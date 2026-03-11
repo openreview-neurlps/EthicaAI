@@ -36,11 +36,11 @@ GRID = 5
 N_AGENTS = 2
 N_COINS = 2
 T_HORIZON = 100
-R_INIT = 0.5
+R_INIT = 0.4
 R_CRIT = 0.20
-DRAIN_OWN = 0.04    # Picking own coin drains resource
-DRAIN_OTHER = 0.10  # Picking other's coin drains MORE (selfish penalty)
-REGEN_RATE = 0.01   # Slow regeneration
+DRAIN_OWN = 0.06    # Picking own coin drains resource
+DRAIN_OTHER = 0.15  # Picking other's coin drains MORE (selfish penalty)
+REGEN_RATE = 0.005  # Very slow regeneration
 SPAWN_PROB_NORMAL = 0.4
 SPAWN_PROB_CRISIS = 0.0  # NO spawning below R_crit → collapse
 
@@ -280,7 +280,7 @@ def train_acl_coin(seed):
         floor = AdaptiveFloor([0, 0, np.log(mid / (1 - mid + 1e-8))])
         policy = lambda obs, aid, r, f=floor: acl_policy(obs, aid, r, f)
         _, S = evaluate_policy(policy, N_EVAL, seed * 1000)
-        if S >= 0.95:
+        if S >= 0.90:
             hi = mid
         else:
             lo = mid
