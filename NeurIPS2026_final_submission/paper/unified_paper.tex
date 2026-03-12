@@ -274,17 +274,8 @@ Lemma~\ref{lem:adaptive_latency} formalizes this: the exponential smoothing para
 \centering
 \caption{Situational brittleness under stress conditions (identical \texttt{NonlinearPGGEnv.step()}, $N{=}20$, Byz=30\%, 20 seeds $\times$ 200 episodes). Under near-tipping and shock-burst conditions, unconditional floors achieve $1.4{-}1.6{\times}$ higher survival than situational commitment; selfish RL collapses entirely.}
 \label{tab:stress_test}
-\begin{tabular}{lcccc}
-\toprule
-\textbf{Stress Condition} & \textbf{Selfish RL} & \textbf{Situational} & \textbf{Unconditional} & \textbf{Tail$_5$} \\
-\midrule
-Baseline severe & 51.7\% & 99.5\% & 99.8\% & 99.5\% \\
-Near-tipping ($R_0{=}0.17$) & 7.1\% & 46.4\% & \textbf{65.2\%} & 61.4\% \\
-Long horizon ($T{=}200$) & 0.0\% & 99.4\% & 99.8\% & 99.5\% \\
-Shock burst ($p{=}0.15$) & 0.4\% & 34.6\% & \textbf{56.0\%} & 50.8\% \\
-Combined worst & 0.0\% & 0.1\% & \textbf{1.3\%} & 0.0\% \\
-\bottomrule
-\end{tabular}
+% SSOT: auto-generated from code/outputs/stress_test/stress_test_results.json
+\input{tables/tab_stress_test}
 \\[2pt]
 {\small Tail$_5$: 5th percentile of unconditional survival across seeds.}
 \end{table}
@@ -306,31 +297,8 @@ where $f_\theta$ is one of: (1) \textbf{Linear}: $w^\top s + b$ (5 params); (2) 
 \centering
 \caption{Cooperation failure across evaluated algorithms: all tested approaches converge to suboptimal equilibria in the non-linear PGG ($N{=}20$, Byz=30\%, $T$=50 rounds, $R_{\text{crit}}$=0.15, last 30 episodes, 5--20 seeds).\protect\footnotemark}
 \label{tab:emergence}
-\resizebox{\textwidth}{!}{\begin{tabular}{lcccc}
-\toprule
-\textbf{Method} & \textbf{Params/agent} & $\boldsymbol{\bar{\lambda}}$ & \textbf{Survival \%} & \textbf{Welfare} \\
-\midrule
-Ind.\ REINFORCE Linear & 5 & 0.483 $\pm$ 0.011 & 51.3 & 24.1 \\
-Ind.\ REINFORCE MLP & 161 & 0.351 $\pm$ 0.068 & 23.2 & 22.9 \\
-Ind.\ REINFORCE MLP + Critic & 322 & 0.358 $\pm$ 0.042 & 23.3 & 23.0 \\
-\midrule
-\multicolumn{5}{c}{\textit{PPO / Value Decomposition / Opponent-Shaping (20 seeds)}} \\
-\midrule
-IPPO~\citep{schulman2017proximal} & 4,546 & 0.393 $\pm$ 0.062 & 19.0 & 23.3 \\
-MAPPO~\citep{yu2022surprising} & 4,546$^\dagger$ & 0.223 $\pm$ 0.027 & 12.2 & 22.8 \\
-IQL$^\ddagger$ & 5,195 & 0.584 $\pm$ 0.021 & 71.8 & 24.9 \\
-QMIX$^\S$~\citep{rashid2018qmix} & 7,948$^\|$ & 0.511 $\pm$ 0.005 & 80.0 & 24.3 \\
-LOLA$^{\#}$~\citep{foerster2018learning} & 5 & 0.498 $\pm$ 0.001 & 55.0 & 21.2 \\
-\midrule
-Fixed $\lambda=0.0$ & --- & 0.000 & 0.0 & 20.0 \\
-Fixed $\lambda=1.0$ (oracle) & --- & 1.000 & \textbf{100.0} & \textbf{32.0} \\
-\bottomrule
-\multicolumn{5}{l}{\small All learned baselines follow CleanRL~\citep{huang2022cleanrl} single-file conventions (lightweight NumPy; no PyTorch).} \\
-\multicolumn{5}{l}{\small HP sweep (20 combos $\times$ 10 seeds, Appendix~\ref{app:hp_sweep}) confirms the Nash Trap persists across all 200 tested configurations.} \\
-\multicolumn{5}{l}{\small $^\dagger$Plus shared critic. $^\ddagger$IQL = no mixing network. $^\S$Monotonic mixing via hypernetwork-generated $|W|$.} \\
-\multicolumn{5}{l}{\small $^\|$Per-agent Q + mixing net. Canonical PyTorch QMIX at $N{=}5$ (20 seeds) confirms Nash Trap (Appendix~\ref{app:canonical_qmix}).} \\
-\multicolumn{5}{l}{\small $^{\#}$QMIX \& LOLA: 2 seeds each; QMIX's per-agent Q-learning and LOLA's $O(N^2)$ cross-derivative limit large-seed runs.} \\
-\end{tabular}}
+% SSOT: auto-generated from code/outputs/cleanrl_baselines/*.json
+\resizebox{\textwidth}{!}{\input{tables/tab_emergence}}
 \footnotetext{$E{=}20$. Mann-Whitney $U$ with Holm--Bonferroni correction ($K{=}5$ vs.\ oracle): Cliff's $|\delta|{=}1.0$ for all pairs (maximum separation). 95\% CIs (20 seeds): IPPO $\lambda$ [0.368, 0.422]; MAPPO [0.213, 0.236]; IQL [0.575, 0.593]. QMIX/LOLA: 2 seeds (CI not reported). Source: \texttt{cleanrl\_baseline\_results.json}, \texttt{iql\_baseline\_results.json}, \texttt{qmix\_baseline\_results.json}, \texttt{lola\_results.json}.}
 \end{table}
 
@@ -364,17 +332,8 @@ The $\lambda \approx 0.5$ fixed point arises because the policy gradient balance
 \centering
 \caption{Scale test: Nash Trap persists at $N{=}100$ (non-linear PGG without stochastic shocks, 20 seeds, 50 episodes). ``Selfish RL'' uses the $\lambda{\approx}0.5$ policy-level baseline consistent with the Nash Trap fixed point (Section~\ref{sec:nash_trap}). Note: without shocks, situational commitment achieves high average survival because trajectories rarely enter the crisis region; this is consistent with the Spectrum prediction that moderate conditions permit situational commitment.}
 \label{tab:scale}
-\begin{tabular}{lccc}
-\toprule
-\textbf{Method ($N{=}100$)} & \textbf{Welfare} & $\boldsymbol{\bar{\lambda}}$ & \textbf{Survival \%} \\
-\midrule
-Selfish RL$^\dagger$ (Byz=0\%) & 26.0 & 0.497 & 95.0 \\
-Selfish RL$^\dagger$ (Byz=30\%) & 24.2 & 0.497 & \textbf{53.7} \\
-\midrule
-Situational (Byz=30\%) & 26.0 & 0.713 & 95.3 \\
-Unconditional (Byz=30\%) & 28.4 & 1.000 & 99.8 \\
-\bottomrule
-\end{tabular}
+% SSOT: auto-generated from code/outputs/scale_n100/scale_n100_results.json
+\input{tables/tab_scale}
 \\[2pt]
 {\small $^\dagger$Policy-level baseline: $\lambda{\approx}0.5{+}\mathcal{N}(0,0.02)$ matching the learned Nash Trap fixed point. Learned IPPO at $N{=}5$ confirms qualitative agreement (Table~\ref{tab:emergence}).}
 \end{table}

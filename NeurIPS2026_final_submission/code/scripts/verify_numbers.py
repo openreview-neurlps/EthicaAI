@@ -210,6 +210,66 @@ def verify_meta_learn(tex):
         check("meta_learn phi1*", round(phi_vals[1], 3), round(phi_vals[1], 3))
 
 
+def strip_latex_comments(text):
+    """Remove LaTeX comments (% to end of line, but not escaped \\%)."""
+    return re.sub(r"(?<!\\)%.*", "", text)
+
+
+def extract_table_block(src, label_str):
+    r"""Extract \begin{table}...\end{table} block containing the given label."""
+    idx = src.find(label_str)
+    if idx < 0:
+        return None
+    begin = src.rfind(r"\begin{table", 0, idx)
+    end = src.find(r"\end{table}", idx)
+    if begin < 0 or end < 0:
+        return None
+    return src[begin:end + len(r"\end{table}")]
+
+
+def verify_ssot_connectivity(tex):
+    """Verify SSOT tables use \\input and have no inline tabular bypass."""
+    global PASS_COUNT, FAIL_COUNT
+    print("\n=== SSOT Connectivity (structural invariant) ===")
+
+    src = strip_latex_comments(tex)
+
+    ssot_tables = [
+        ("tab:emergence", "tab_emergence"),
+        ("tab:stress_test", "tab_stress_test"),
+        ("tab:scale", "tab_scale"),
+    ]
+
+    for label, fname_base in ssot_tables:
+        label_str = r"\label{" + label + "}"
+        block = extract_table_block(src, label_str)
+        if block is None:
+            FAIL_COUNT += 1
+            print(f"  FAIL [{label} \\input link]: table block not found")
+            FAIL_COUNT += 1
+            print(f"  FAIL [{label} no inline]: table block not found")
+            continue
+
+        # Check 1: \input{tables/tab_*} present
+        input_pat = re.compile(
+            r"\\input\{tables/" + re.escape(fname_base) + r"(\.tex)?\}"
+        )
+        if input_pat.search(block):
+            PASS_COUNT += 1
+            print(f"  PASS [{label} \\input link]: \\input{{tables/{fname_base}}} found")
+        else:
+            FAIL_COUNT += 1
+            print(f"  FAIL [{label} \\input link]: missing \\input{{tables/{fname_base}}}")
+
+        # Check 2: No inline \begin{tabular} in the SSOT table block
+        if r"\begin{tabular" not in block:
+            PASS_COUNT += 1
+            print(f"  PASS [{label} no inline]: no inline tabular (SSOT enforced)")
+        else:
+            FAIL_COUNT += 1
+            print(f"  FAIL [{label} no inline]: inline \\begin{{tabular}} found (SSOT bypass)")
+
+
 def main():
     if not os.path.exists(PAPER):
         print(f"ERROR: Paper not found at {PAPER}")
@@ -230,6 +290,7 @@ def main():
     verify_scale(tex)
     verify_phi1(tex)
     verify_meta_learn(tex)
+    verify_ssot_connectivity(tex)
 
     print("\n" + "=" * 60)
     print(f"RESULTS: PASS={PASS_COUNT}  FAIL={FAIL_COUNT}  WARN={WARN_COUNT}")
