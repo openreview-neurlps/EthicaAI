@@ -20,13 +20,13 @@ import time
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-OUTPUT_DIR = SCRIPT_DIR.parent / "outputs"
+OUTPUT_DIR = SCRIPT_DIR.parent / os.environ.get("ETHICAAI_OUTDIR", "outputs")
 
 # Core experiments for smoke testing
 SMOKE_TESTS = [
     {
         "name": "REINFORCE Nash Trap (3 architectures)",
-        "script": "ppo_nash_trap.py",
+        "script": "reinforce_nash_trap.py",
         "output": "ppo_nash_trap/ippo_results.json",
     },
     {

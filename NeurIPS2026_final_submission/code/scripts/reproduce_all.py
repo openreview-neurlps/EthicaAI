@@ -21,7 +21,7 @@ import time
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-OUTPUT_DIR = SCRIPT_DIR.parent / "outputs"
+OUTPUT_DIR = SCRIPT_DIR.parent / os.environ.get("ETHICAAI_OUTDIR", "outputs")
 
 # ===================================================================
 # Core experiments (MUST pass for paper claims)
@@ -106,6 +106,12 @@ def run_experiment(exp):
     if not script_path.exists():
         print(f"  [SKIP] Script not found: {exp['script']}")
         return None  # Skip, not fail
+
+    if output_path.exists():
+        # Check if output is newer than script
+        if output_path.stat().st_mtime > script_path.stat().st_mtime:
+            print(f"  [SKIP] Output is up-to-date: {exp['output']}")
+            return True
 
     print(f"\n{'=' * 60}")
     print(f"  Running: {exp['name']}")

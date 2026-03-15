@@ -12,7 +12,7 @@ even with reasonable hyperparameter tuning.
 
 Grid: lr ??{1e-4, 2.5e-4, 5e-4, 1e-3} × entropy ??{0.0, 0.01, 0.05, 0.1, 0.5}
 
-= 20 combinations × 10 seeds = 200 runs
+= 20 combinations × N_SEEDS=20 = 400 runs
 
 """
 
@@ -44,7 +44,7 @@ from cleanrl_mappo_pgg import (
 
 
 
-OUTPUT_DIR = Path(__file__).resolve().parent.parent / "outputs" / "cleanrl_baselines"
+OUTPUT_DIR = Path(__file__).resolve().parent.parent / os.environ.get("ETHICAAI_OUTDIR", "outputs") / "cleanrl_baselines"
 
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 

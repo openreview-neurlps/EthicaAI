@@ -32,7 +32,7 @@ from cleanrl_mappo_pgg import (
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-OUTPUT_DIR = PROJECT_ROOT / "outputs" / "phase_diagram_learned"
+OUTPUT_DIR = PROJECT_ROOT / os.environ.get("ETHICAAI_OUTDIR", "outputs") / "phase_diagram_learned"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # --- Grid (coarse for tractability, fine enough to show boundary) ---
@@ -160,6 +160,7 @@ def main():
             mean_surv = float(np.mean(survivals))
             mean_floor = float(np.mean(seed_floor_rates))
             heatmap[str(phi1)][str(beta)] = mean_surv
+            heatmap[str(phi1)].setdefault("surv_per_seed", {})[str(beta)] = survivals
             floor_rates[str(beta)] = {
                 "mean": mean_floor,
                 "per_seed": seed_floor_rates,
@@ -175,20 +176,35 @@ def main():
     # Build matrices
     matrix = []
     floor_matrix = []
+    survival_per_seed_matrix = []
+    floor_per_seed_matrix = []
     for phi1 in PHI1_GRID:
         row = []
         f_row = []
+        surv_ps_row = []
+        floor_ps_row = []
         for beta in BETA_GRID:
             row.append(heatmap[str(phi1)][str(beta)])
             f_row.append(heatmap[str(phi1)]["floor_rates"][str(beta)]["mean"])
+            surv_ps_row.append(heatmap[str(phi1)]["surv_per_seed"][str(beta)])
+            floor_ps_row.append(heatmap[str(phi1)]["floor_rates"][str(beta)]["per_seed"])
         matrix.append(row)
         floor_matrix.append(f_row)
+        survival_per_seed_matrix.append(surv_ps_row)
+        floor_per_seed_matrix.append(floor_ps_row)
 
     output = {
         "phi1_grid": PHI1_GRID,
         "beta_grid": BETA_GRID,
         "survival_matrix": matrix,
         "floor_activation_matrix": floor_matrix,
+        "survival_per_seed": survival_per_seed_matrix,
+        "floor_activation_per_seed": floor_per_seed_matrix,
+        "run_meta": {
+            "timestamp": time.time(),
+            "git_sha": os.popen("git rev-parse HEAD").read().strip(),
+            "mode": "FAST" if os.environ.get("ETHICAAI_FAST") == "1" else "FULL",
+        },
         "n_seeds": N_SEEDS,
         "n_episodes": N_EPISODES,
         "n_eval": N_EVAL,

@@ -10,5 +10,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Default: run full reproduction pipeline (all 7 experiments)
-# For quick smoke test: docker run ... python scripts/reproduce_all.py --fast
+# For quick smoke test: docker run -e ETHICAAI_FAST=1 ethicaai python scripts/reproduce_fast.py
 CMD ["python", "scripts/reproduce_all.py"]

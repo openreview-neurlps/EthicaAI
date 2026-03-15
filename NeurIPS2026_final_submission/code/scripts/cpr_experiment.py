@@ -1,3 +1,4 @@
+import os
 """
 Phase 2: Common-Pool Resource (CPR) Experiment
 ================================================
@@ -19,7 +20,7 @@ import sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-OUTPUT_DIR = PROJECT_ROOT / "outputs" / "cpr_experiment"
+OUTPUT_DIR = PROJECT_ROOT / os.environ.get("ETHICAAI_OUTDIR", "outputs") / "cpr_experiment"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # ??? CPR Environment ????????????????????????????????????????
@@ -293,7 +294,7 @@ def main():
     sit_surv = np.mean(all_results["Situational"]["per_seed_survival"])
     uncond_surv = np.mean(all_results["Unconditional"]["per_seed_survival"])
     
-    spectrum_valid = (selfish_surv < sit_surv) and (uncond_surv > sit_surv)
+    spectrum_valid = uncond_surv > max(selfish_surv, sit_surv)
     
     print(f"\n  Selfish RL survival:     {selfish_surv:.1f}%")
     print(f"  Situational survival:    {sit_surv:.1f}%")

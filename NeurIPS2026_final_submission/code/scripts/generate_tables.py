@@ -135,7 +135,7 @@ def generate_tab_emergence():
     lines.append("Fixed $\\lambda=1.0$ (oracle) & --- & 1.000 & \\textbf{100.0} & \\textbf{32.0} \\\\")
     lines.append("\\bottomrule")
     lines.append("\\multicolumn{5}{l}{\\small All learned baselines follow CleanRL~\\citep{huang2022cleanrl} single-file conventions (lightweight NumPy; no PyTorch).} \\\\")
-    lines.append("\\multicolumn{5}{l}{\\small HP sweep (20 combos $\\times$ 10 seeds, Appendix~\\ref{app:hp_sweep}) confirms the Nash Trap persists across all 200 tested configurations.} \\\\")
+    lines.append("\\multicolumn{5}{l}{\\small HP sweep (20 combos $\\times$ 20 seeds, Appendix~\\ref{app:hp_sweep}) confirms the Nash Trap persists across all 400 tested configurations.} \\\\")
     lines.append("\\multicolumn{5}{l}{\\small $^\\dagger$Plus shared critic. $^\\ddagger$IQL = no mixing network. $^\\S$Monotonic mixing via hypernetwork-generated $|W|$.} \\\\")
     lines.append("\\multicolumn{5}{l}{\\small $^\\|$Per-agent Q + mixing net. Canonical PyTorch QMIX at $N{=}5$ (20 seeds) confirms Nash Trap (Appendix~\\ref{app:canonical_qmix}).} \\\\")
     lines.append("\\multicolumn{5}{l}{\\small $^{\\#}$QMIX \\& LOLA: 2 seeds each; QMIX's per-agent Q-learning and LOLA's $O(N^2)$ cross-derivative limit large-seed runs.} \\\\")

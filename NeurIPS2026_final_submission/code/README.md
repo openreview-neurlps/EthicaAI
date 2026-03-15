@@ -35,7 +35,7 @@ code/
 │   ├── cleanrl_iql_pgg.py             # IQL baseline (no mixing network)
 │   ├── cleanrl_qmix_real.py           # QMIX (real mixing network)
 │   ├── lola_experiment.py             # LOLA (opponent-shaping)
-│   ├── ppo_nash_trap.py               # Ind. REINFORCE (Linear/MLP/Critic)
+│   ├── reinforce_nash_trap.py         # Ind. REINFORCE (Linear/MLP/Critic)
 │   ├── phi1_with_learning.py          # phi1 commitment floor + learning
 │   ├── phase_diagram.py               # Phase diagram (phi1 x beta heatmap)
 │   ├── cpr_experiment.py              # CPR cross-environment validation
@@ -63,7 +63,7 @@ All experiments: N=20 agents, E=20.0, 30% Byzantine, 20 seeds (unless noted).
 | Experiment | Script | Seeds | Paper Reference |
 |---|---|---|---|
 | IPPO/MAPPO | `cleanrl_mappo_pgg.py` | 20 | Table 3 |
-| REINFORCE (Linear/MLP/Critic) | `ppo_nash_trap.py` | 20 | Table 3 |
+| REINFORCE (Linear/MLP/Critic) | `reinforce_nash_trap.py` | 20 | Table 3 |
 | QMIX (mixing network) | `cleanrl_qmix_real.py` | 20 | Table 3, App. F |
 | LOLA (opponent-shaping) | `lola_experiment.py` | 20 | Table 3, App. F |
 | phi1 Commitment Floor | `phi1_with_learning.py` | 20 | Table 5 |

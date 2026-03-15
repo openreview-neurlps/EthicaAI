@@ -66,9 +66,9 @@ Building on this decomposition, we make four contributions:
 \begin{enumerate}
     \item[(C1)] \textbf{Nash Trap Analysis}: We define the class of Tipping-Point Social Dilemmas (Definition~\ref{def:tpsd}), prove a drift condition on resource dynamics (Lemma~\ref{lem:drift}), derive finite-horizon survival bounds (Lemma~\ref{lem:survival}), and establish the Nash Trap as a locally stable fixed point (Proposition~\ref{prop:nash_trap}). The mechanism has three layers: (i)~$M/N < 1$ creates a persistent local anti-commitment incentive (Proposition~\ref{prop:gradient_impossibility}); (ii)~tipping-point dynamics convert this under-commitment into irreversible collapse; (iii)~recovery asymmetry $\rho$ determines the commitment floor required for escape.
     We demonstrate that this failure is \emph{consistent across five algorithm families} (REINFORCE, PPO, IQL, QMIX~\citep{rashid2018qmix}, and LOLA~\citep{foerster2018learning}; seven implementations)---all converging to $\lambda \approx 0.5$ ($\leq$72\% survival) under a unified fair comparison protocol with $400{+}$ HP configurations (Section~\ref{sec:nash_trap}). A canonical QMIX re-implementation following EPyMARL~\citep{papoudakis2021benchmarking} conventions confirms these results (Appendix~\ref{app:canonical_qmix}).
-    \item[(C2)] \textbf{Commitment Floor as Safety Specification}: The required commitment floor is derived from the environment's recovery function near its tipping point (Theorem~\ref{thm:critical}). In severe regimes the required floor exceeds the feasible range and saturates at $\phi_1 = 1.0$; this is independently confirmed via Lagrangian dual CPO convergence (Appendix~\ref{app:cpo_lagrangian}) and grid search across 110 conditions (Section~\ref{sec:unconditional}). Phase diagrams visualize the Moral Commitment Spectrum.
-    \item[(C3)] \textbf{Adaptive Commitment Learning (ACL)}: While $\phi_1{=}1.0$ is \emph{survival-optimal}, it can be \emph{welfare-suboptimal}. We introduce ACL, a two-phase algorithm that learns a state-dependent floor $\phi_1(R_t; \omega) = \sigma(\omega_1 R_t + \omega_2 R_t^2 + \omega_3)$ via safety-constrained welfare optimization. In Cleanup-style environments, ACL improves welfare by $241\%$ over fixed $\phi_1{=}1.0$ while maintaining $100\%$ survival; in severe TPSDs, it automatically recovers $\phi_1 \approx 1.0$ (Appendix~\ref{app:acl}).
-    \item[(C4)] \textbf{Cross-Environment Validation and Boundary Tests}: We validate the Nash Trap and commitment floor across five environment classes sharing incentive misalignment and thresholded collapse---PGG, CPR (Appendix~\ref{app:cpr}), spatial grids (Appendix~\ref{app:spatial_dilemma}), Cleanup-style commons (Appendix~\ref{app:cleanup}), and the Coin Game~\citep{lerer2017maintaining} (Appendix~\ref{app:coin_game})---under adversarial conditions (30\% Byzantine), scale ($N{=}100$, Table~\ref{tab:scale}), and 36 shock regimes. Environments lacking these ingredients do not show a commitment-floor advantage in our tests (Section~\ref{sec:linear}; Appendix~\ref{app:meltingpot_prelim}). A parameter sweep across 60 configurations confirms $\hat{\lambda} < 0.95$ universally (Appendix~\ref{app:nash_bound}).
+    \item[(C2)] \textbf{Commitment Floor as Safety Specification}: The required commitment floor is derived from the environment's recovery function near its tipping point (Theorem~\ref{thm:critical}). In severe regimes the required floor exceeds the feasible range and saturates at $\phi_1 = 1.0$; this is independently confirmed via Lagrangian dual CPO convergence (Appendix~\ref{app:cpo_lagrangian}, Table~\ref{tab:cpo_lagrangian}) and grid search across 110 conditions (Section~\ref{sec:unconditional}). Phase diagrams visualize the Moral Commitment Spectrum.
+    \item[(C3)] \textbf{Adaptive Commitment Learning (ACL)}: While $\phi_1{=}1.0$ is \emph{survival-optimal}, it can be \emph{welfare-suboptimal}. We introduce ACL, a two-phase algorithm that learns a state-dependent floor $\phi_1(R_t; \omega) = \sigma(\omega_1 R_t + \omega_2 R_t^2 + \omega_3)$ via safety-constrained welfare optimization. In Cleanup-style environments, ACL improves welfare by $241\%$ over fixed $\phi_1{=}1.0$ while maintaining $100\%$ survival (Table~\ref{tab:acl}); in severe TPSDs, it automatically recovers $\phi_1 \approx 1.0$ (Appendix~\ref{app:acl}).
+    \item[(C4)] \textbf{Cross-Environment Validation and Boundary Tests}: We validate the Nash Trap and commitment floor across five environment classes sharing incentive misalignment and thresholded collapse---PGG, CPR (Appendix~\ref{app:cpr}), spatial grids (Appendix~\ref{app:spatial_dilemma}), Cleanup-style commons (Appendix~\ref{app:cleanup}, Table~\ref{tab:cleanup}), and the Coin Game~\citep{lerer2017maintaining} (Appendix~\ref{app:coin_game}, Table~\ref{tab:coin_game})---under adversarial conditions (30\% Byzantine), scale ($N{=}100$, Table~\ref{tab:scale}), and 36 shock regimes. Environments lacking these ingredients do not show a commitment-floor advantage in our tests (Section~\ref{sec:linear}; Appendix~\ref{app:meltingpot_prelim}). A parameter sweep across 60 configurations confirms $\hat{\lambda} < 0.95$ universally (Appendix~\ref{app:nash_bound}).
 \end{enumerate}
 
 Together, these results establish a \textbf{Moral Commitment Spectrum}---a diagnostic mapping from environmental severity to the minimum commitment floor required for collective survival. Local incentive misalignment explains \emph{why} commitment is disfavored, tipping-point dynamics explain \emph{when} under-commitment becomes catastrophic, and recovery severity determines \emph{how much} commitment is required for escape. The Spectrum classifies crisis-response profiles rather than ranking them monotonically: in collapse-dominated regimes (e.g., CPR), a context-sensitive profile may underperform selfish baselines because its crisis response reduces restraint exactly when maximal restraint is required (Appendix~\ref{app:cpr}).
@@ -94,11 +94,11 @@ While common-pool resource games have been studied~\citep{ostrom1990governing} a
 The interaction between non-linear collapse dynamics and multi-agent cooperation remains largely unexplored---a gap our work directly addresses.
 
 \paragraph{Relationship to Folk Theorem.}
-Classical Folk Theorems guarantee cooperative equilibria exist in infinitely repeated games with sufficient patience ($\delta \to 1$). Our Nash Trap does not contradict this: the Folk Theorem guarantees \emph{existence} but not \emph{discoverability} by gradient-based learners. The Nash Trap is a \emph{computational} phenomenon---gradient ascent on individual returns converges to a locally stable fixed point ($\lambda \approx 0.5$) that is Pareto-dominated. The critical distinction is that our game has \emph{non-stationary} dynamics: the resource state $R_t$ creates history-dependent payoffs absent in standard repeated games, and tipping-point collapse makes the effective horizon finite and stochastic.
+Classical Folk Theorems guarantee cooperative equilibria exist in infinitely repeated games with sufficient patience ($\delta \to 1$) (see Remark~\ref{rem:folk_theorem}). Our Nash Trap does not contradict this: the Folk Theorem guarantees \emph{existence} but not \emph{discoverability} by gradient-based learners. The Nash Trap is a \emph{computational} phenomenon---gradient ascent on individual returns converges to a locally stable fixed point ($\lambda \approx 0.5$) that is Pareto-dominated. The critical distinction is that our game has \emph{non-stationary} dynamics: the resource state $R_t$ creates history-dependent payoffs absent in standard repeated games, and tipping-point collapse makes the effective horizon finite and stochastic.
 
 \paragraph{Safe RL and Constrained Optimization.}
 The constrained MDP framework~\citep{altman1999constrained} underpins methods such as CPO~\citep{achiam2017constrained}, safe exploration benchmarks~\citep{ray2019benchmarking}, and risk-sensitive objectives (CVaR) that provide safety guarantees by constraining reward optimization~\citep{garcia2015comprehensive}.
-We formulate the commitment problem through this constrained lens: a Lagrangian dual approach independently recovers $\phi_1^* = 1.0$ as the safety-optimal floor, validating our design specification.
+We formulate the commitment problem through this constrained lens: a Lagrangian dual approach independently recovers $\phi_1^* = 1.0$ as the safety-optimal floor (Eq.~\ref{eq:cpo_formulation}), validating our design specification.
 Our work is complementary: commitment in meta-ranking is not solely a constraint on the optimization objective but a structural property of the agent's moral architecture that determines \emph{how much} prosocial behavior is warranted.
 
 \paragraph{Contract-Based and Norm-Based Approaches.}
@@ -133,11 +133,14 @@ The key innovation is that $\lambda_t$ adapts to resource level $R_t$:
 \lambda_t^{(i)} = \alpha \lambda_{t-1}^{(i)} + (1-\alpha) \cdot g(\theta_i, R_t)
 \label{eq:lambda}
 \end{equation}
-where $g(\theta, R) = \begin{cases}
+where:
+\begin{equation}
+g(\theta, R) = \begin{cases}
 \max(0, \sin\theta \cdot 0.3) & R < R_{\text{crisis}} \\
 \min(1, 1.5\sin\theta) & R > R_{\text{abundance}} \\
 \sin\theta \cdot (0.7 + 1.6R) & \text{otherwise}
-\end{cases}$
+\end{cases}
+\end{equation}
 
 This implements Sen's insight computationally: when resources are scarce, agents reduce commitment---trading restraint cost against short-term individual payoff. We show below (Section~\ref{sec:turning_point}) that in TPSDs this heuristic can be structurally misaligned with collective safety, because reducing commitment during a crisis accelerates passage through the tipping point.
 
@@ -172,7 +175,7 @@ When $R_t \leq 0$, the episode terminates and all future rewards become zero.
 % ================================================================
 \section{Experiments}
 
-Using the environment and agent framework from Section~\ref{sec:method}, we systematically evaluate cooperation across linear (Section~\ref{sec:linear}) and non-linear environments.
+Using the environment (Section~\ref{sec:env}) and agent framework from Section~\ref{sec:method}, we systematically evaluate cooperation across linear (Section~\ref{sec:linear}) and non-linear environments.
 
 \paragraph{Evaluation Protocol and Metric Definitions.}
 All experiments use the following standardized evaluation:
@@ -189,7 +192,7 @@ All reported values are means over the last 30 evaluation episodes unless otherw
 \subsection{Act 2: Situational Commitment in Linear Environments}
 \label{sec:linear}
 
-We first validate the meta-ranking framework across 8 environments ($N=20$--$1000$, 10 seeds).
+We first validate the meta-ranking framework across 8 environments ($N=20$--$1000$, 10 seeds; see Table~\ref{tab:seed_summary}).
 This result establishes a strong baseline: Situational Commitment is empirically optimal across all tested linear environment configurations.
 The subsequent sections demonstrate that this demonstrated optimality \textbf{catastrophically collapses} under non-linear tipping points---a finding that would be impossible to articulate without first establishing the linear baseline.
 
@@ -267,8 +270,8 @@ We deploy the same meta-ranking agents in the non-linear PGG (Equations~\ref{eq:
 \textbf{Result: Situational commitment is structurally brittle in severe TPSDs.}
 When resources drop below $R_{\text{crit}}$, the commitment function $g(\theta, R)$ reduces $\lambda$ to $\max(0, \sin\theta \cdot 0.3)$---precisely when maximum commitment is needed to overcome the near-irreversible recovery dynamics ($f(R_t) = 0.01$).
 The very survival mechanism that was adaptive in linear environments becomes dangerous in severe non-linear ones: reducing commitment during crises \emph{accelerates} passage through the tipping point.
-Situational policies can still achieve high \emph{average} survival when trajectories rarely enter the crisis region (e.g., Table~\ref{tab:scale}), but their crisis response is structurally misaligned with worst-case safety.
-Lemma~\ref{lem:adaptive_latency} formalizes this: the exponential smoothing parameter $\alpha$ creates an effective response time $\tau_\alpha = \lceil 1/(1-\alpha) \rceil$ during which burst shocks accumulate unopposed, yielding an exponentially higher collapse probability than unconditional commitment ($\tau_0 = 1$).
+Situational policies can still achieve high \emph{average} survival when trajectories rarely enter the crisis region (e.g., Table~\ref{tab:scale}), but their crisis response is structurally misaligned with worst-case safety (see Table~\ref{tab:stress_test}).
+Lemma~\ref{lem:adaptive_latency} formalizes this (Eq.~\ref{eq:adaptive_deficit}): the exponential smoothing parameter $\alpha$ creates an effective response time $\tau_\alpha = \lceil 1/(1-\alpha) \rceil$ during which burst shocks accumulate unopposed, yielding an exponentially higher collapse probability than unconditional commitment ($\tau_0 = 1$).
 
 \begin{table}[t]
 \centering
@@ -286,7 +289,7 @@ This discovery motivates two questions: (1) Can pure RL find a better strategy w
 \label{sec:nash_trap}
 
 \paragraph{Independent Policy Gradient (REINFORCE) with Pure Selfish Payoff.}
-To test whether cooperation failure is an artifact of weak algorithms, we evaluate three levels of policy architecture---all trained independently per agent via REINFORCE~\citep{williams1992simple}, maximizing \emph{only} individual payoff $r_i = (E - c_i) + M\sum c_j / N$ with no reward shaping or social priors.
+To test whether cooperation failure is an artifact of weak algorithms, we evaluate three levels of policy architecture (see Appendix~\ref{app:hyperparams})---all trained independently per agent via REINFORCE~\citep{williams1992simple}, maximizing \emph{only} individual payoff $r_i = (E - c_i) + M\sum c_j / N$ with no reward shaping or social priors.
 Each agent observes $s_t^i = (R_t, \bar{c}_{t-1}/E, \lambda_{t-1}^i, \mathbb{1}[R_t < R_{\text{crit}}])$ and outputs:
 \begin{equation}
 \lambda_t^i = \text{clip}\!\left(\sigma(f_\theta(s_t^i)) + \epsilon_t,\; 0,\; 1\right), \quad \epsilon_t \sim \mathcal{N}(0, \sigma_{\text{noise}}^2)
@@ -315,7 +318,7 @@ All five algorithm families fall substantially short of the oracle ($\lambda = 1
 In any TPSD environment with $M/N < 1$, the per-agent stage payoff satisfies $\partial r_i / \partial \lambda_i = E(M/N - 1) < 0$ at every state. That is, the individual reward gradient provides a \emph{consistently negative local signal} against increasing commitment. Any learner that primarily follows the individual payoff gradient is therefore structurally biased toward decreasing $\lambda_i$.
 \end{proposition}
 
-\noindent This does not claim impossibility in general---long-horizon return gradients include survival effects that partially counteract ($\partial p_{\text{surv}}/\partial \lambda > 0$)---but it explains why the Nash Trap is \emph{robust}: the local anti-commitment signal must be overcome at every time step. Our experiments confirm that neither reward shaping (Table~\ref{tab:team_reward}), extended horizons (Table~\ref{tab:long_horizon}), nor opponent-shaping algorithms empirically overcome this barrier.
+\noindent This does not claim impossibility in general---long-horizon return gradients include survival effects that partially counteract ($\partial p_{\text{surv}}/\partial \lambda > 0$)---but it explains why the Nash Trap is \emph{robust}: the local anti-commitment signal must be overcome at every time step. Our experiments confirm that neither reward shaping (Table~\ref{tab:team_reward}), extended horizons (Table~\ref{tab:long_horizon} and Appendix~\ref{app:long_horizon}), nor opponent-shaping algorithms empirically overcome this barrier.
 
 \begin{remark}[Relationship to the Folk Theorem]\label{rem:folk_theorem}
 While the Folk Theorem guarantees that cooperation can be sustained as a Nash equilibrium in \emph{infinitely repeated} games with sufficiently patient agents and credible punishment strategies, three features of our setting limit its applicability: (1)~finite horizon $T{=}50$ precludes backward-induction-proof trigger strategies; (2)~non-stationary resource dynamics $R_t$ violate the stage-game stationarity assumption; and (3)~the search problem grows combinatorially with joint strategy space and history dependence ($\mathcal{O}(N^N)$ joint strategies), making such equilibria implausible to discover under our training regime. The Nash Trap is thus a computational \emph{and} structural phenomenon.
@@ -348,7 +351,7 @@ The $\lambda \approx 0.5$ fixed point arises because the policy gradient balance
 
 This is the \textbf{Nash Trap}\footnote{We use ``Nash Trap'' to denote an \emph{extinction-type} failure mode: a locally stable equilibrium induced by under-commitment in environments with tipping-point collapse dynamics. This is distinct from the one-shot PGG Nash equilibrium ($\lambda=0$); in the dynamic repeated game with survival, the value function includes future survival probability, creating a second gradient force that stabilizes $\lambda \approx 0.5$ rather than $\lambda = 0$.}: the marginal individual cost of increasing $\lambda$ (reduced retained endowment) is certain and immediate, while the collective benefit (resource preservation) is diffuse and delayed.
 Standard RL with discount $\gamma$ cannot bridge this gap because the Critic must learn to value a \emph{collective trajectory} from \emph{individual returns}---a credit assignment problem that compounds with agent count.
-See Appendix~\ref{app:nash_trap} for a Bellman-equation analysis of the gradient vanishing at $\lambda = 0.5$.
+See Appendix~\ref{app:nash_trap} (Eq.~\ref{eq:nash_trap_condition}) for a Bellman-equation analysis of the gradient vanishing at $\lambda = 0.5$.
 
 \begin{figure}[t]
     \centering
@@ -396,8 +399,8 @@ We verify Theorem~\ref{thm:critical} empirically by training IPPO agents with va
 $\boldsymbol{\phi_1}$ & \textbf{W (Byz=0\%)} & \textbf{W (Byz=30\%)} & \textbf{Alive (0\%)} & \textbf{Alive (30\%)} \\
 \midrule
 0.00 & 24.9 $\pm$ 0.2 & 21.0 $\pm$ 0.0 & 75 $\pm$ 5\% & 30 $\pm$ 20\% \\
-0.21 & 26.0 $\pm$ 0.0 & 21.2 $\pm$ 0.0 & 95 $\pm$ 5\% & 60 $\pm$ 0\% \\
-0.50 & 28.3 $\pm$ 0.0 & 21.6 $\pm$ 0.0 & 100 $\pm$ 0\% & 95 $\pm$ 5\% \\
+0.21 & 25.7 $\pm$ 0.0 & 21.2 $\pm$ 0.0 & 95 $\pm$ 5\% & 60 $\pm$ 0\% \\
+0.50 & 27.7 $\pm$ 0.0 & 21.6 $\pm$ 0.0 & 100 $\pm$ 0\% & 95 $\pm$ 5\% \\
 \textbf{1.00} & \textbf{32.0 $\pm$ 0.0} & \textbf{22.4 $\pm$ 0.0} & \textbf{100 $\pm$ 0\%} & \textbf{100 $\pm$ 0\%} \\
 \bottomrule
 \end{tabular}
@@ -577,7 +580,7 @@ Group-level ESS requires $m < m^* = 0.286$; when migration exceeds this bound, u
 \begin{itemize}
     \item \textbf{Algorithm Scope}: Whether risk-sensitive objectives or dynamic externality-pricing mechanisms can escape the Trap remains open. While empirical CVaR objectives fail (Appendix~\ref{app:robustness}), the Nash Trap persists across all 36 shock parameter combinations tested (Appendix~\ref{app:shock_robustness}). We provide a gradient-based Lagrangian CPO formulation (Appendix~\ref{app:cpo_lagrangian}) that independently recovers $\phi_1^*{=}1.0$; extending ACL to richer policy classes (e.g., neural network parametrizations) in high-dimensional observation spaces remains future work.
     \item \textbf{Baseline Scope}: Our comparison includes \textbf{six approaches} spanning five algorithm families (REINFORCE, PPO, IQL, QMIX, LOLA) with seven implementations, team reward shaping (Table~\ref{tab:team_reward}), and a canonical QMIX re-implementation following EPyMARL conventions (Appendix~\ref{app:canonical_qmix}). All fall into the Nash Trap, consistent with Proposition~\ref{prop:gradient_impossibility}. A unified fair comparison protocol ($5{\times}5{\times}4{=}100$ HP configurations per family) confirms 100\% trap rate.
-    \item \textbf{Environment Scope}: Primary results use PGG with scalar $R_t$. CPR validation (Appendix~\ref{app:cpr}), spatial dilemma (Appendix~\ref{app:spatial}), and Coin Game (Appendix~\ref{app:coin_game}) confirm the pattern across environments sharing incentive misalignment ($M/N < 1$) and thresholded collapse dynamics. Environments lacking these ingredients---including the Melting Pot \texttt{commons\_harvest} benchmark ($\rho \approx 1$)---do not show a commitment-floor advantage in our tests, consistent with our boundary conditions (Table~\ref{tab:boundary_tests}; Appendix~\ref{app:meltingpot_prelim}). Crisis-only intervention is insufficient---only global (unconditional) commitment achieves full survival (Appendix~\ref{app:crisis_vs_global}). Group-level ESS requires $m < m^* = 0.286$ (Result~\ref{res:group_ess}).
+    \item \textbf{Environment Scope}: Primary results use PGG with scalar $R_t$. CPR validation (Appendix~\ref{app:cpr}), spatial dilemma (Appendix~\ref{app:spatial}), and Coin Game (Appendix~\ref{app:coin_game}) confirm the pattern across environments sharing incentive misalignment ($M/N < 1$) and thresholded collapse dynamics. Environments lacking these ingredients---including the Melting Pot \texttt{commons\_harvest} benchmark ($\rho \approx 1$)---do not show a commitment-floor advantage in our tests, consistent with our boundary conditions (Table~\ref{tab:boundary_tests}; Appendix~\ref{app:meltingpot_prelim}). Crisis-only intervention is insufficient---only global (unconditional) commitment achieves full survival (Appendix~\ref{app:crisis_vs_global}, Table~\ref{tab:crisis_vs_global}). Group-level ESS requires $m < m^* = 0.286$ (Result~\ref{res:group_ess}).
     \item \textbf{Ethical Scope}: ``Moral commitment'' in this work is operationalized as resource allocation cooperation ($\lambda$), which may not capture the full richness of ethical reasoning. However, our fairness analysis (Appendix~\ref{app:fairness}, Table~\ref{tab:fairness}) shows that higher commitment floors improve distributional equity (Gini coefficient decreases from 0.064 to 0.000). Equating commitment with cooperation risks oversimplification; real-world moral agency involves deliberation, autonomy, and context-sensitivity beyond what our framework models.
     \item \textbf{Philosophical Fidelity}: Our $\lambda$-based commitment mechanism is an \emph{engineering abstraction} of binding cooperation constraints, inspired by Sen's meta-ranking. We treat ``moral commitment'' as a \textbf{safety specification derived from tipping-point stability conditions}, not a normative prescription about human values. Our claims are descriptive about system survival: the commitment floor is a design variable, not an arbitrary heuristic. The discrete preference network (Appendix~\ref{app:preference_network}) demonstrates that both continuous ($\lambda$) and discrete (ordering selection) operationalizations converge to the same commitment floor, suggesting robustness of the underlying design principle.
     \item \textbf{Nature of $\phi_1$}: The commitment floor $\phi_1{=}1.0$ is a \emph{stability-derived design specification} within the TPSD class that constrains the agent's action space, not a policy learned through RL optimization. We do not claim that RL discovers unconditional commitment; rather, our contribution is identifying \emph{when and why} such architectural constraints are sufficient for survival under stated assumptions. Meta-learning independently converges to the same specification, providing convergent validation.
@@ -1214,7 +1217,7 @@ IQL's higher $\lambda$ likely reflects the discrete action space and $\varepsilo
 \subsection{Hyperparameter Sensitivity of Nash Trap}
 \label{app:hp_sweep}
 
-To verify that the Nash Trap is not an artifact of suboptimal hyperparameters, we conduct an expanded grid search over learning rate $\text{lr} \in \{10^{-4}, 2.5{\times}10^{-4}, 5{\times}10^{-4}, 10^{-3}\}$ and entropy coefficient $\in \{0.0, 0.01, 0.05, 0.1, 0.5\}$ (20 combinations, 10 seeds each = 200 total runs).
+To verify that the Nash Trap is not an artifact of suboptimal hyperparameters, we conduct an expanded grid search over learning rate $\text{lr} \in \{10^{-4}, 2.5{\times}10^{-4}, 5{\times}10^{-4}, 10^{-3}\}$ and entropy coefficient $\in \{0.0, 0.01, 0.05, 0.1, 0.5\}$ (20 combinations $\times$ \texttt{N\_SEEDS} runs; see \texttt{hp\_sweep\_ippo.py} metadata and JSON header). We report the exact run count (combinations $\times$ seeds) in the appendix table caption.
 Crucially, we verify that varying \texttt{entropy\_coef} produces measurably different policy entropy $H(\pi)$, confirming that the entropy bonus is correctly integrated into the policy gradient updates (see the $H(\pi)$ column below).
 
 \begin{table}[htbp]
@@ -1518,6 +1521,8 @@ The resulting survival heatmap (Figure~\ref{fig:phase_diagram}) reveals:
 
 To confirm that agent learning does not alter the commitment phase boundary, we train IPPO agents with PPO updates across a $6 \times 6$ grid of $(\phi_1, \beta)$ values (5 seeds, 200 episodes each, last 30 episodes for evaluation). Floor-overridden timesteps are excluded from PPO updates to ensure policy gradient correctness (Section~\ref{sec:unconditional}).
 
+(Reproducibility) The with-learning phase diagram table is generated from: \texttt{code/outputs/phase\_diagram\_learned/phase\_diagram\_learned.json} (FULL run; $6{\times}6$ grid; 5 seeds), including per-seed survival and floor activation rates.
+
 \begin{table}[htbp]
 \centering
 \caption{With-learning phase diagram: survival (\%) as a function of commitment floor $\phi_1$ and Byzantine fraction $\beta$ ($N{=}20$, 5 seeds, 200 episodes with IPPO learning). The phase boundary matches the floor-only structural analysis (Figure~\ref{fig:phase_diagram}), confirming that learning does not escape the Nash Trap.}
@@ -1552,7 +1557,7 @@ To validate that the Moral Commitment Spectrum is not PGG-specific, we implement
 
 \textbf{Result} (20 seeds):
 Selfish RL agents achieve 9.3\% survival (Nash Trap);
-situational commitment achieves 6.5\% (worse than selfish, due to \emph{restraint decay}: the crisis rule reduces restraint exactly when the tipping-point recovery rate is slowest, accelerating depletion faster than pure selfishness);
+situational commitment can be non-monotonic relative to selfish RL in CPR: under severe tipping dynamics, the situational rule \emph{reduces restraint in crisis}, accelerating depletion. We therefore interpret the ``spectrum'' as a classification of crisis-response profiles (not a monotone dominance ordering);
 unconditional commitment achieves \textbf{46.0\%} survival.
 The Moral Commitment Spectrum pattern---unconditional commitment outperforms learned strategies in environments with irreversible tipping points---holds across both environments. Note that the Spectrum classifies crisis-response profiles by their interaction with environment severity, not by a monotonic dominance ordering; situational underperformance in CPR is a structural prediction.
 
