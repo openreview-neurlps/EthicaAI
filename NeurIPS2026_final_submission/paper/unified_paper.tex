@@ -1251,6 +1251,28 @@ Crucially, we verify that varying \texttt{entropy\_coef} produces measurably dif
 \noindent All 20 combinations converge to $\lambda \in [0.404, 0.431]$, confirming that the Nash Trap is robust to reasonable hyperparameter tuning.
 Entropy regularization has no measurable effect, consistent with the gradient-vanishing mechanism described in Appendix~\ref{app:nash_trap}.
 
+\paragraph{Unified Fair Comparison Protocol (``$400{+}$ configurations'').}
+To justify the $400{+}$ HP claim in our abstract, we define a \emph{configuration} as one unique hyperparameter grid point (parameter values, not counting seed replications). The full protocol is:
+
+\begin{table}[htbp]
+\centering
+\caption{Hyperparameter grid summary. ``Configuration'' = one unique (paradigm, lr, entropy, $\gamma$) tuple.}
+\label{tab:hp_evidence}
+\small
+\begin{tabular}{lllccc}
+\toprule
+\textbf{Sweep} & \textbf{Paradigms} & \textbf{Grid} & \textbf{Configs} & \textbf{Seeds} & \textbf{Total Runs} \\
+\midrule
+HP Sweep (IPPO-only) & IPPO & $4\text{lr} \times 5\text{ent}$ & 20 & 10 & 200 \\
+Unified Hardening & IPPO, MAPPO, IQL, LOLA & $5\text{lr} \times 5\text{ent} \times 4\gamma$ & $100 \times 4 = 400$ & 20 & 8000 \\
+\midrule
+\multicolumn{3}{l}{\textbf{Total unique configurations}} & \textbf{420} & & \textbf{8200} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent Grid values: lr $\in \{5{\times}10^{-5}, 10^{-4}, 2.5{\times}10^{-4}, 5{\times}10^{-4}, 10^{-3}\}$; entropy $\in \{0.0, 0.01, 0.05, 0.1, 0.5\}$; $\gamma \in \{0.95, 0.97, 0.99, 0.995\}$. All experiments share the same environment (NonlinearPGG, $N{=}20$, Byz=30\%, $T{=}50$). 100\% of tested configurations remain trapped ($\bar{\lambda} < 0.7$).
+
 \subsection{Commitment Function Ablation}
 \label{app:ablation}
 
