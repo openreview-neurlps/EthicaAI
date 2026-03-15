@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "envs"))
 from pathlib import Path
 from envs.nonlinear_pgg_env import NonlinearPGGEnv
 
-OUTPUT_DIR = Path(__file__).resolve().parent.parent / "outputs" / "round2"
+OUTPUT_DIR = Path(__file__).resolve().parent.parent / os.environ.get("ETHICAAI_OUTDIR", "outputs") / "round2"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # ??? Shared NN components ????????????????????????????????????

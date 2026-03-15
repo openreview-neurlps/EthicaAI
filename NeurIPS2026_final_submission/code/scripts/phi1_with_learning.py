@@ -32,7 +32,7 @@ from cleanrl_mappo_pgg import (
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-OUTPUT_DIR = PROJECT_ROOT / "outputs" / "phi1_ablation"
+OUTPUT_DIR = PROJECT_ROOT / os.environ.get("ETHICAAI_OUTDIR", "outputs") / "phi1_ablation"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # === Hyperparameters (match cleanrl_mappo_pgg.py exactly) ===

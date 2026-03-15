@@ -24,7 +24,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
-OUTPUT_DIR = PROJECT_ROOT / "outputs" / "team_reward"
+OUTPUT_DIR = PROJECT_ROOT / os.environ.get("ETHICAAI_OUTDIR", "outputs") / "team_reward"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 from envs.nonlinear_pgg_env import NonlinearPGGEnv

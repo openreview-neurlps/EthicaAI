@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from pathlib import Path
 from partial_obs_experiment import run_rule, run_ippo
 
-OUTPUT_DIR = Path(__file__).resolve().parent.parent / "outputs" / "partial_obs"
+OUTPUT_DIR = Path(__file__).resolve().parent.parent / os.environ.get("ETHICAAI_OUTDIR", "outputs") / "partial_obs"
 
 
 def main():

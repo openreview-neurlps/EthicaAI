@@ -1,6 +1,6 @@
 # 🧬 EthicaAI — PROJECT SPEC
 
-> **최종 업데이트**: 2026-03-07 | **유형**: NeurIPS 2026 논문 프로젝트
+> **최종 업데이트**: 2026-03-15 | **유형**: NeurIPS 2026 논문 프로젝트
 > **상위 문서**: [PAPER PROJECT_SPEC](../PROJECT_SPEC.md) | [마스터 바이블](file:///d:/00.test/FOLDER_BIBLE.md)
 
 ---
@@ -13,8 +13,9 @@
 | **도메인** | ethica.neogenesis.app |
 | **Vercel Project ID** | `prj_h3GB9PzWwi1AM5pymwrmR8USrL5M` |
 | **브랜치** | main |
-| **커밋** | 83개 |
-| **크기** | ~5.3GB (실험 결과 + figures 포함) |
+| **커밋** | **140개** (📈 +57, 이전: 83) |
+| **최종 커밋일** | 2026-03-15 |
+| **크기** | ~386MB (PAPER/EthicaAI) + ~5,362MB (neo-genesis/src/sbu/ethicaai 데이터) |
 
 ---
 

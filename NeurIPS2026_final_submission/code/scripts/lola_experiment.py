@@ -29,7 +29,7 @@ from pathlib import Path
 from envs.nonlinear_pgg_env import NonlinearPGGEnv
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-OUTPUT_DIR = PROJECT_ROOT / "outputs" / "cleanrl_baselines"
+OUTPUT_DIR = PROJECT_ROOT / os.environ.get("ETHICAAI_OUTDIR", "outputs") / "cleanrl_baselines"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # === Hyperparameters ===

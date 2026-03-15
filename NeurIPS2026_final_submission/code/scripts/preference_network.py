@@ -31,7 +31,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, SCRIPT_DIR)
 from envs.nonlinear_pgg_env import NonlinearPGGEnv
 
-OUTPUT_DIR = os.path.join(SCRIPT_DIR, "..", "outputs", "preference_network")
+OUTPUT_DIR = os.path.join(SCRIPT_DIR, "..", os.environ.get("ETHICAAI_OUTDIR", "outputs"), "preference_network")
 
 # ?? Preference orderings (reward transforms) ??????????????????????
 

@@ -22,7 +22,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
-OUTPUT_DIR = PROJECT_ROOT / "outputs" / "cleanrl_baselines"
+OUTPUT_DIR = PROJECT_ROOT / os.environ.get("ETHICAAI_OUTDIR", "outputs") / "cleanrl_baselines"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Import our standardized environment

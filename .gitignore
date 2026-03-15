@@ -108,3 +108,4 @@ _check_data.py
 **/audit_report.txt
 **/deep_audit_report.txt
 
+.vercel

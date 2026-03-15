@@ -14,7 +14,7 @@ from pathlib import Path
 from envs.nonlinear_pgg_env import NonlinearPGGEnv
 from cleanrl_mappo_pgg import MLPActor, MLPCritic, compute_gae, ppo_update_actor, ppo_update_critic, bootstrap_ci
 
-OUTPUT_DIR = Path(__file__).resolve().parent.parent / "outputs" / "recovery_boundary"
+OUTPUT_DIR = Path(__file__).resolve().parent.parent / os.environ.get("ETHICAAI_OUTDIR", "outputs") / "recovery_boundary"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 FAST = os.environ.get("ETHICAAI_FAST") == "1"

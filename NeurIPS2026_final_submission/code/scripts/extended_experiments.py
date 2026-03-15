@@ -21,7 +21,7 @@ from cleanrl_mappo_pgg import (
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-OUTPUT_DIR = PROJECT_ROOT / "outputs" / "extended"
+OUTPUT_DIR = PROJECT_ROOT / os.environ.get("ETHICAAI_OUTDIR", "outputs") / "extended"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 N_EPISODES = 150

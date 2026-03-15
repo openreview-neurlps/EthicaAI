@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from pathlib import Path
 from cleanrl_mappo_pgg import NonlinearPGGEnv, bootstrap_ci
 
-OUTPUT_DIR = Path(__file__).resolve().parent.parent / "outputs" / "ablation"
+OUTPUT_DIR = Path(__file__).resolve().parent.parent / os.environ.get("ETHICAAI_OUTDIR", "outputs") / "ablation"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 N_EPISODES = 200

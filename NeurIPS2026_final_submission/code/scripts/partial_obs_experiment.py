@@ -15,7 +15,7 @@ from cleanrl_mappo_pgg import (
     NonlinearPGGEnv, MLPActor, MLPCritic, compute_gae, ppo_update_actor, bootstrap_ci
 )
 
-OUTPUT_DIR = Path(__file__).resolve().parent.parent / "outputs" / "partial_obs"
+OUTPUT_DIR = Path(__file__).resolve().parent.parent / os.environ.get("ETHICAAI_OUTDIR", "outputs") / "partial_obs"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 N_EPISODES_IPPO = 150
