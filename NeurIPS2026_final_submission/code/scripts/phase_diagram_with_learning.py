@@ -18,6 +18,35 @@ Design choices:
   - Floor-overridden timesteps are excluded from PPO updates
     (same design as phi1_with_learning.py) for policy gradient correctness
 """
+
+# ================================================================
+# PARAMETER MAP: Paper Equations ↔ Code Constants
+# ================================================================
+# Paper Symbol        | Code Variable        | Value   | Paper Ref
+# --------------------|----------------------|---------|----------
+# N                   | NonlinearPGGEnv.n_agents | 20   | Sec 3.1
+# M                   | NonlinearPGGEnv.M    | 1.6     | Eq. (4)
+# E (endowment)       | NonlinearPGGEnv.E    | 20.0    | Eq. (4)
+# M/N                 | (derived)            | 0.08    | Prop. 1
+# T (horizon)         | NonlinearPGGEnv.T    | 50      | Sec 3.1
+# R_crit              | NonlinearPGGEnv.r_crit | 0.15  | Eq. (5)
+# R_recov             | NonlinearPGGEnv.r_recov | 0.25 | Eq. (5)
+# β (Byzantine frac)  | NonlinearPGGEnv.byz_frac | 0.0–0.5 | Sec 4
+# p_shock             | NonlinearPGGEnv.shock_prob | 0.05 | Eq. (5)
+# δ_shock             | NonlinearPGGEnv.shock_mag  | 0.15 | Eq. (5)
+# R₀ (initial)        | NonlinearPGGEnv.reset() → 0.5  | Sec 3.1
+# φ₁ (commitment floor)| phi1 (sweep variable)| 0.0–1.0| Def. 2
+#
+# Resource dynamics (Eq. 5):
+#   f(R) = { 0.01  if R < R_crit      (crisis: near-zero recovery)
+#          { 0.03  if R_crit ≤ R < R_recov  (fragile recovery)
+#          { 0.10  if R ≥ R_recov      (healthy recovery)
+#   R_{t+1} = clip(R_t + f(R_t)·(c̄/E − 0.4) − shock, 0, 1)
+#
+# Agent reward (Eq. 4):
+#   r_i = (E − c_i) + (M/N)·Σc_j, where c_i = λ_i · E
+# ================================================================
+
 import numpy as np
 import json
 import os

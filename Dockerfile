@@ -1,42 +1,36 @@
-# EthicaAI Docker 재현성 패키지
-# NeurIPS 2026 — 38 모듈, 74 Figure 완전 재현
-# 빌드: docker build -t ethicaai .
-# 실행: docker run -v $(pwd)/output:/ethicaai/simulation/outputs/reproduce ethicaai
+# ================================================================
+# EthicaAI — NeurIPS 2026 Reviewer Reproduction Dockerfile
+# ================================================================
+# This Dockerfile builds a self-contained environment for
+# reproducing the core experiments in the submitted paper.
+#
+# Quick Start (FAST — sanity check, ~5 min, 2 seeds):
+#   docker build -t ethicaai .
+#   docker run -e ETHICAAI_FAST=1 ethicaai
+#
+# Full Reproduction (20 seeds, ~4 hours on i7):
+#   docker run ethicaai
+#
+# NOTE: FAST mode produces fewer seeds than reported in the paper.
+#       Paper tables are generated from FULL (20-seed) runs only.
+# ================================================================
 
 FROM python:3.10-slim
 
-LABEL maintainer="dpfh1537@gmail.com"
-LABEL description="EthicaAI: Computational Verification of Sen's Meta-Ranking Theory"
-LABEL version="2.0"
-LABEL paper="NeurIPS 2026"
+WORKDIR /app
 
-# 시스템 의존성
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    git \
-    && rm -rf /var/lib/apt/lists/*
-
-# 작업 디렉토리
-WORKDIR /ethicaai
-
-# Python 의존성 설치 (캐시 최적화를 위해 먼저 복사)
-COPY requirements.txt .
+# Install dependencies (NumPy-only; no GPU required)
+COPY NeurIPS2026_final_submission/code/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 프로젝트 코드 복사
-COPY . .
+# Copy submission code
+COPY NeurIPS2026_final_submission/code/ ./code/
 
-# 출력 디렉토리 보장
-RUN mkdir -p simulation/outputs/reproduce site/figures
+# Ensure output directories exist
+RUN mkdir -p code/outputs
 
-# 환경 변수
 ENV PYTHONIOENCODING=utf-8
-ENV JAX_PLATFORM_NAME=cpu
-ENV PYTHONPATH=/ethicaai
-ENV ETHICAAI_OUTPUT_DIR=/ethicaai/simulation/outputs/reproduce
 
-# 헬스체크: Python + JAX import 가능 확인
-HEALTHCHECK --interval=30s --timeout=10s \
-    CMD python -c "import jax; print(f'JAX {jax.__version__} OK')" || exit 1
-
-# 기본 실행: 전체 분석 파이프라인
-CMD ["python", "reproduce.py"]
+# Default: Full reproduction (all experiments, 20 seeds)
+# Override with -e ETHICAAI_FAST=1 for quick sanity check
+CMD ["python", "code/scripts/reproduce_all.py"]

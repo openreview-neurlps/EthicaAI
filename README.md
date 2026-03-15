@@ -1,81 +1,101 @@
-# EthicaAI: The Moral Commitment Spectrum
+# EthicaAI: Commitment Floors for Tipping-Point Commons
 
-> **From Situational to Unconditional: The Spectrum of Moral Commitment Required for Multi-Agent Survival in Non-linear Social Dilemmas**
+> **Commitment Floors for Tipping-Point Commons: Escaping Nash Traps in Multi-Agent Reinforcement Learning**
+>
+> NeurIPS 2026 Submission
 
 [![Python](https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python)](https://python.org)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Reproducible](https://img.shields.io/badge/Reproducible-✓-brightgreen?style=for-the-badge)]()
 
 ---
 
-## Abstract
+## ⚠️ Single Source of Truth
 
-When must multi-agent systems move beyond self-interest, and how much moral commitment is enough?
-We investigate this question through a systematic empirical study of cooperation dynamics in Public Goods Games (PGG) of increasing environmental severity, drawing interpretive framing from Amartya Sen's meta-ranking theory.
+The **submission-ready paper and code** live in:
 
-### Key Contributions
+```
+NeurIPS2026_final_submission/
+├── paper/unified_paper.tex    ← Paper LaTeX source
+└── code/                      ← All experiment scripts, outputs, Dockerfile
+```
 
-1. **(C1) Computational Meta-Ranking**: MARL formalization of Sen's theory with dynamic commitment λₜ ∈ [0,1] conditioned on resource state and SVO
-2. **(C2) Situational Commitment in Linear Environments**: Group-level ESS (x̄=0.987) outperforming 8 baselines including M-FOS and POLA
-3. **(C3) Algorithm-Invariant Cooperation Failure**: Independent RL agents (Linear, MLP, Actor-Critic) all converge to suboptimal equilibria (λ≈0.05–0.49, ≤6% survival)
-4. **(C4) Unconditional Commitment + Meta-Learning Validation**: Only φ₁*=1.0 prevents collapse. Meta-learning independently recovers this optimum.
-
-**Central finding: The Moral Commitment Spectrum** — the severity of environmental non-linearity determines the minimum commitment required for collective survival.
+> **Note**: The root `paper/` and `scripts/` directories are legacy (pre-submission) and should NOT be used for review. See `.gitignore` for details.
 
 ---
 
-## Quick Start
+## Quick Start (Reviewer — 5 minutes)
 
 ```bash
-# Install dependencies
-pip install numpy matplotlib
+cd NeurIPS2026_final_submission/code
 
-# Run IPPO Nash Trap experiment (CPU, ~30s)
-python scripts/ppo_nash_trap.py
+# Install dependencies (NumPy only — no GPU required)
+pip install -r requirements.txt
 
-# Run meta-learning validation (~3 min)
-python scripts/meta_learn_g.py
+# FAST smoke test (~5 min, 2 seeds — NOT paper numbers)
+ETHICAAI_FAST=1 python scripts/reproduce_fast.py
+```
 
-# Run extended experiments (N=100, baselines, sensitivity)
-python scripts/extended_experiments.py
+> ⚠️ **FAST mode uses 2 seeds for quick validation. Paper tables report 20-seed results.** To reproduce exact paper numbers, run the full pipeline below.
+
+## Full Reproduction (~4 hours)
+
+```bash
+cd NeurIPS2026_final_submission/code
+
+# Full reproduction (20 seeds, all experiments)
+python scripts/reproduce_all.py
+
+# Verify tables match JSON outputs (SSOT check)
+python scripts/generate_tables.py --check
+
+# Run submission audit (0 FAIL = ready)
+python scripts/audit_submission.py
+```
+
+## Docker Reproduction
+
+```bash
+docker build -t ethicaai .
+
+# Full (20 seeds, ~4 hours)
+docker run ethicaai
+
+# FAST sanity check (~5 min)
+docker run -e ETHICAAI_FAST=1 ethicaai
 ```
 
 ---
 
-## Repository Structure
+## Experiment → Paper Mapping
 
-```
-EthicaAI/
-├── paper/                    # LaTeX source + compiled PDF
-│   ├── unified_paper.tex
-│   └── unified_paper.pdf
-├── scripts/                  # Experiment scripts
-│   ├── ppo_nash_trap.py      # IPPO 3-level Nash Trap (NEW)
-│   ├── meta_learn_g.py       # Meta-learning g(θ,R) validation
-│   ├── mappo_emergence.py    # REINFORCE emergence baseline
-│   ├── extended_experiments.py # Scale/baseline/sensitivity tests
-│   ├── kpg_experiment.py     # K-level anticipation ablation
-│   ├── spatial_dilemma.py    # Spatial social dilemma
-│   ├── phase_diagram.py      # Phase diagram generation
-│   └── reproduce.py          # One-click reproduction
-├── outputs/                  # Experiment results (JSON)
-└── simulation/               # JAX simulation core
-```
+All paper tables are **auto-generated from JSON** via `generate_tables.py` (SSOT enforced).
+
+| Paper Reference | Script | Output JSON |
+|---|---|---|
+| Table 3 (RL Emergence) | `cleanrl_mappo_pgg.py` | `outputs/cleanrl_baselines/` |
+| Table 3 (REINFORCE) | `reinforce_nash_trap.py` | `outputs/ppo_nash_trap/` |
+| Table 3 (QMIX/LOLA) | `cleanrl_qmix_real.py`, `lola_experiment.py` | `outputs/cleanrl_baselines/` |
+| Table 5 (φ₁ Sweep) | `phi1_with_learning.py` | `outputs/phi1_ablation/` |
+| Table 6 (Phase Diagram) | `phase_diagram_with_learning.py` | `outputs/phase_diagram_learned/` |
+| App. D (HP Sweep) | `hp_sweep_ippo.py` | `outputs/ppo_nash_trap/` |
+| App. H (CPR) | `cpr_experiment.py` | `outputs/cpr_experiment/` |
 
 ---
 
-## Reproducing Results
+## Key Results
 
-All paper figures and tables can be reproduced from the scripts:
+- **Nash Trap**: All 7 tested RL implementations converge to λ ≈ 0.37–0.58 (subcritical commitment)
+- **Commitment Floor**: φ₁=1.0 achieves 100% survival under 30% Byzantine adversaries
+- **Phase Transition**: Clear boundary in φ₁ × β space confirmed with and without learning
+- **Cross-Environment**: CPR environment validates the Moral Commitment Spectrum
 
-| Table/Figure | Script | Output |
-|:---|:---|:---|
-| Table 3 (IPPO) | `ppo_nash_trap.py` | `outputs/ppo_nash_trap/ippo_results.json` |
-| Table 6 (Meta-learn) | `meta_learn_g.py` | `outputs/meta_learn_g/meta_learn_results.json` |
-| Fig. Phase Diagram | `phase_diagram.py` | `outputs/phase_diagram/results.json` |
-| Table 4 (Scale) | `extended_experiments.py` | `outputs/extended_experiments/extended_results.json` |
-| Table 5 (Baselines) | `extended_experiments.py` | `outputs/extended_experiments/extended_results.json` |
+## Requirements
 
----
+- Python ≥ 3.8
+- NumPy, SciPy, Matplotlib (see `requirements.txt`)
+- No GPU required; all experiments run on a single CPU core
+- Total compute: ~4 hours on Intel i7 for full reproduction
 
 ## License
 
