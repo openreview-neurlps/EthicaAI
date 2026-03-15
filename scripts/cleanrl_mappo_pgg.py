@@ -85,7 +85,7 @@ class NNLayer:
 
 
 class MLPActor:
-    """2-layer MLP policy with beta distribution output."""
+    """2-layer MLP policy with clipped Gaussian output (mean from sigmoid, fixed log_std)."""
     def __init__(self, rng, obs_dim=4, hidden=HIDDEN_DIM, lr=LR_ACTOR):
         self.fc1 = NNLayer(rng, obs_dim, hidden, lr)
         self.fc2 = NNLayer(rng, hidden, hidden, lr)

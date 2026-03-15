@@ -4,8 +4,8 @@ QMIX (Real) Baseline for Non-linear PGG
 Proper QMIX with monotonic mixing network (Rashid et al., 2018).
 
 Architecture:
-  - Per-agent Q-networks: 2-layer MLP ??Q(s_i, a) for 11 discrete actions
-  - Mixing network: Q_tot = f(Q_1, ..., Q_n, s) where ??_tot/??_i ??0
+  - Per-agent Q-networks: 2-layer MLP -> Q(s_i, a) for 11 discrete actions
+  - Mixing network: Q_tot = f(Q_1, ..., Q_n, s) where dQ_tot/dQ_i >= 0
   - Hypernetwork: generates mixing weights from global state s
 
 Key difference from IQL (`cleanrl_iql_pgg.py`):
@@ -97,30 +97,30 @@ class MixingNetwork:
     and monotonicity is enforced via |W| (absolute value).
     
     Architecture:
-      - hyper_W1(state) ??W1 of shape (n_agents, mixing_dim)
-      - hyper_b1(state) ??b1 of shape (mixing_dim,)
-      - hyper_W2(state) ??W2 of shape (mixing_dim, 1)
-      - hyper_b2(state) ??b2 of shape (1,)        [no abs, allows bias]
+      - hyper_W1(state) -> W1 of shape (n_agents, mixing_dim)
+      - hyper_b1(state) -> b1 of shape (mixing_dim,)
+      - hyper_W2(state) -> W2 of shape (mixing_dim, 1)
+      - hyper_b2(state) -> b2 of shape (1,)        [no abs, allows bias]
     """
     
     def __init__(self, rng, n_agents, state_dim=4, mixing_dim=MIXING_DIM):
         self.n_agents = n_agents
         self.mixing_dim = mixing_dim
         
-        # Hypernetwork for W1: state_dim ??n_agents * mixing_dim
+        # Hypernetwork for W1: state_dim -> n_agents * mixing_dim
         s1 = np.sqrt(2.0 / state_dim)
         self.hw1_W = rng.randn(state_dim, n_agents * mixing_dim).astype(np.float32) * s1
         self.hw1_b = np.zeros(n_agents * mixing_dim, dtype=np.float32)
         
-        # Hypernetwork for b1: state_dim ??mixing_dim
+        # Hypernetwork for b1: state_dim -> mixing_dim
         self.hb1_W = rng.randn(state_dim, mixing_dim).astype(np.float32) * s1
         self.hb1_b = np.zeros(mixing_dim, dtype=np.float32)
         
-        # Hypernetwork for W2: state_dim ??mixing_dim * 1
+        # Hypernetwork for W2: state_dim -> mixing_dim * 1
         self.hw2_W = rng.randn(state_dim, mixing_dim).astype(np.float32) * s1
         self.hw2_b = np.zeros(mixing_dim, dtype=np.float32)
         
-        # Hypernetwork for b2: state_dim ??1 (2-layer for expressivity)
+        # Hypernetwork for b2: state_dim -> 1 (2-layer for expressivity)
         s2 = np.sqrt(2.0 / state_dim)
         self.hb2_W1 = rng.randn(state_dim, mixing_dim).astype(np.float32) * s2
         self.hb2_b1 = np.zeros(mixing_dim, dtype=np.float32)
@@ -304,7 +304,7 @@ def run_qmix(seed):
         episode_transitions = []
         
         for t in range(50):
-            # Each agent selects action (?-greedy)
+            # Each agent selects action (epsilon-greedy)
             actions = []
             for i in range(n_honest):
                 if rng.random() < eps:
@@ -398,7 +398,7 @@ def run_qmix(seed):
             w = np.mean(ep_rewards[r])
             l = np.mean(ep_lambdas[r])
             s = np.mean(ep_survivals[r]) * 100
-            print(f"    ep {ep+1}: W={w:.1f}, ?={l:.3f}, Surv={s:.0f}%")
+            print(f"    ep {ep+1}: W={w:.1f}, lam={l:.3f}, Surv={s:.0f}%")
     
     # Eval: last N_EVAL episodes
     eval_w = ep_rewards[-N_EVAL:]
@@ -428,7 +428,7 @@ def main():
         print(f"\n  Seed {s+1}/{N_SEEDS}")
         r = run_qmix(s)
         all_results.append(r)
-        print(f"    ???={r['lambda']:.3f}, Surv={r['survival']:.0f}%, W={r['welfare']:.1f}")
+        print(f"    lam={r['lambda']:.3f}, Surv={r['survival']:.0f}%, W={r['welfare']:.1f}")
     
     lams = [r["lambda"] for r in all_results]
     survs = [r["survival"] for r in all_results]
@@ -464,9 +464,9 @@ def main():
     elapsed = time.time() - t0
     print(f"\n{'=' * 65}")
     print(f"  QMIX COMPLETE in {elapsed:.0f}s")
-    print(f"  ?={np.mean(lams):.3f}?{np.std(lams):.3f}")
-    print(f"  Survival={np.mean(survs):.0f}?{np.std(survs):.0f}%")
-    print(f"  Welfare={np.mean(welfs):.1f}?{np.std(welfs):.1f}")
+    print(f"  lam={np.mean(lams):.3f}+/-{np.std(lams):.3f}")
+    print(f"  Survival={np.mean(survs):.0f}+/-{np.std(survs):.0f}%")
+    print(f"  Welfare={np.mean(welfs):.1f}+/-{np.std(welfs):.1f}")
     print(f"{'=' * 65}")
 
 

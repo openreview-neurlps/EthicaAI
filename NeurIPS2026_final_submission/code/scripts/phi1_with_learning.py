@@ -55,11 +55,11 @@ if os.environ.get("ETHICAAI_FAST") == "1":
 
 
 def run_ippo_with_phi1(seed, phi1, byz_frac):
-    """Train IPPO agents with ???crisis override.
+    """Train IPPO agents with commitment floor (phi1) override.
     
-    The crisis override is applied DURING training (not just evaluation),
-    meaning agents learn in a world where the override exists.
-    This is the correct design: ???is a system-level design choice,
+    The commitment floor is applied DURING training (not just evaluation),
+    meaning agents learn in a world where the floor exists.
+    This is the correct design: phi1 is a system-level design choice,
     not an agent-level decision.
     """
     rng = np.random.RandomState(seed)
@@ -86,6 +86,8 @@ def run_ippo_with_phi1(seed, phi1, byz_frac):
         lam_sum = 0.0
         steps = 0
         survived = True
+        # Track whether floor was activated per agent per timestep
+        floor_active = [[] for _ in range(n_honest)]
         
         for t in range(T_HORIZON):
             lambdas = np.zeros(n_honest)
@@ -97,21 +99,25 @@ def run_ippo_with_phi1(seed, phi1, byz_frac):
                 learned_lambda = float(np.clip(mean[0] + rng.randn() * std, 0.01, 0.99))
                 
                 # === UNCONDITIONAL COMMITMENT FLOOR ===
-                # ???acts as a policy floor: effective_λ = max(learned_λ, ???
+                # phi1 acts as a policy floor: effective_lambda = max(learned_lambda, phi1)
                 # This is the precise operationalization of "unconditional commitment":
-                # the agent's cooperation level never drops below ???
+                # the agent's cooperation level never drops below phi1
                 # regardless of the environment state.
-                # ???0: no floor (pure learning) ??Nash Trap
-                # ???1: full floor (always cooperate) ??maximum survival
+                # phi1=0: no floor (pure learning) -> Nash Trap
+                # phi1=1: full floor (always cooperate) -> maximum survival
+                is_floor_active = learned_lambda < phi1
                 effective_lambda = max(learned_lambda, phi1)
                 
                 lambdas[i] = effective_lambda
+                floor_active[i].append(is_floor_active)
                 
-                # Store trajectory (log_prob is for learned_lambda, training
-                # signal comes from effective_lambda's outcome)
+                # Store trajectory using LEARNED action for log_prob consistency.
+                # When floor is active, the action stored is still the learned one
+                # (for correct log_prob), but environment sees effective_lambda.
+                # Floor-overridden timesteps are skipped during PPO update (below).
                 all_obs[i].append(obs.copy())
-                all_acts[i].append(effective_lambda)
-                all_log_probs[i].append(actors[i].log_prob(obs, effective_lambda))
+                all_acts[i].append(learned_lambda)
+                all_log_probs[i].append(actors[i].log_prob(obs, learned_lambda))
                 val = critic.forward(obs)
                 all_values[i].append(float(val))
             
@@ -131,21 +137,38 @@ def run_ippo_with_phi1(seed, phi1, byz_frac):
                 break
         
         # PPO update for each agent
+        # DESIGN CHOICE: Skip timesteps where floor was active.
+        # Rationale: When phi1 overrides the agent's action, the observed
+        # outcome reflects the specification (floor), not the policy.
+        # Updating the policy on floor-imposed actions would conflate
+        # "what the agent learned" with "what the system enforced."
+        # This cleanly separates learning (above floor) from specification (at floor).
         for i in range(n_honest):
             if len(all_rewards[i]) < 2:
                 continue
             
-            advantages, returns = compute_gae(all_rewards[i], all_values[i])
+            # Filter out floor-overridden timesteps
+            mask = [not fa for fa in floor_active[i]]
+            if sum(mask) < 2:
+                continue  # Not enough non-floor samples to learn from
+            
+            obs_filtered = [o for o, m in zip(all_obs[i], mask) if m]
+            act_filtered = [a for a, m in zip(all_acts[i], mask) if m]
+            lp_filtered = [lp for lp, m in zip(all_log_probs[i], mask) if m]
+            rew_filtered = [r for r, m in zip(all_rewards[i], mask) if m]
+            val_filtered = [v for v, m in zip(all_values[i], mask) if m]
+            
+            advantages, returns = compute_gae(rew_filtered, val_filtered)
             
             if advantages.std() > 1e-8:
                 advantages = (advantages - advantages.mean()) / advantages.std()
             
-            ppo_update_actor(actors[i], all_obs[i], all_acts[i],
-                           all_log_probs[i], advantages)
+            ppo_update_actor(actors[i], obs_filtered, act_filtered,
+                           lp_filtered, advantages)
             
             # Critic update (simplified: just track, no backprop for now)
             for t_idx in range(len(returns)):
-                pass  # critic not essential for IPPO ??actor is the focus
+                pass  # critic not essential for IPPO -- actor is the focus
         
         episode_data.append({
             "welfare": total_welfare / max(steps, 1),
@@ -164,7 +187,7 @@ def run_ippo_with_phi1(seed, phi1, byz_frac):
 
 def main():
     print("=" * 70)
-    print("  ???Crisis Override with IPPO Learning Agents")
+    print("  Commitment Floor (phi1) with IPPO Learning Agents")
     print(f"  N={N_AGENTS}, R_crit={R_CRIT}, Episodes={N_EPISODES}, Seeds={N_SEEDS}")
     print("=" * 70)
     
@@ -175,7 +198,7 @@ def main():
         results[str(phi1)] = {}
         for byz in BYZ_FRACS:
             byz_key = f"byz_{int(byz*100)}"
-            print(f"\n  ???{phi1:.2f}, Byz={byz*100:.0f}%: Running {N_SEEDS} seeds...")
+            print(f"\n  phi1={phi1:.2f}, Byz={byz*100:.0f}%: Running {N_SEEDS} seeds...")
             
             seed_results = []
             for s in range(N_SEEDS):
@@ -202,9 +225,9 @@ def main():
                 "per_seed_lambda": lam,
             }
             
-            print(f"    -> ???{phi1:.2f} | "
-                  f"W({byz*100:.0f}%)={np.mean(welf):.1f}±{np.std(welf):.1f}  "
-                  f"Alive={np.mean(surv):.0f}±{np.std(surv):.0f}% | ")
+            print(f"    -> phi1={phi1:.2f} | "
+                  f"W({byz*100:.0f}%)={np.mean(welf):.1f}+/-{np.std(welf):.1f}  "
+                  f"Alive={np.mean(surv):.0f}+/-{np.std(surv):.0f}% | ")
     
     # Save
     out_path = OUTPUT_DIR / "phi1_results.json"
@@ -215,10 +238,10 @@ def main():
     elapsed = time.time() - t0
     print(f"\n{'=' * 70}")
     print(f"  COMPLETE in {elapsed:.0f}s")
-    print(f"  ???sweep summary (Byz=30%):")
+    print(f"  phi1 sweep summary (Byz=30%):")
     for phi1 in PHI1_VALUES:
         d = results[str(phi1)]["byz_30"]
-        print(f"    ???{phi1:.2f}: λ={d['lambda_mean']:.3f}, "
+        print(f"    phi1={phi1:.2f}: lambda={d['lambda_mean']:.3f}, "
               f"surv={d['survival_mean']:.0f}%, W={d['welfare_mean']:.1f}")
     print(f"{'=' * 70}")
 

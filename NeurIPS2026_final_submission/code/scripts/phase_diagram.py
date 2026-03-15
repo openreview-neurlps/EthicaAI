@@ -1,10 +1,21 @@
 """
-Phase Diagram: phi1 x beta -> Survival Heatmap
-==========================================
+Phase Diagram: phi1 x beta -> Survival Heatmap (FLOOR-ONLY, No Learning)
+==========================================================================
 Sweeps commitment floor phi1 in [0, 1] x Byzantine fraction beta in [0, 0.5]
-to produce a 2D heatmap showing the "commitment phase transition".
+to produce a 2D heatmap showing the structural effect of the commitment floor
+on group survival, WITHOUT policy learning updates.
 
-This is the visual centerpiece of the paper -- directly maps Theorem 1.
+This diagram shows the STRUCTURAL phase boundary: given randomly initialized
+(untrained) IPPO agents, how does the commitment floor phi1 mechanically
+rescue survival across different adversarial fractions beta?
+
+For the WITH-LEARNING version that validates learned policies follow
+the same boundary, see phase_diagram_with_learning.py.
+
+NOTE: This visualization intentionally omits learning to isolate the
+floor's structural contribution. Theorem 1 states that phi1* is a
+necessary condition regardless of the learning algorithm — this diagram
+confirms the structural (algorithm-independent) aspect of that claim.
 """
 import numpy as np
 import json

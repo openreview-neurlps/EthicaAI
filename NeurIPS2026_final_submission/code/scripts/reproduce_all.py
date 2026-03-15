@@ -36,7 +36,7 @@ CORE_EXPERIMENTS = [
     },
     {
         "name": "REINFORCE Nash Trap (Linear/MLP/Critic)",
-        "script": "ppo_nash_trap.py",
+        "script": "reinforce_nash_trap.py",
         "output": "ppo_nash_trap/ippo_results.json",
         "paper_ref": "Table 3",
     },
@@ -88,6 +88,12 @@ EXTENSION_EXPERIMENTS = [
         "script": "hp_sweep_ippo.py",
         "output": "cleanrl_baselines/hp_sweep_results.json",
         "paper_ref": "App. D",
+    },
+    {
+        "name": "Phase Diagram WITH Learning",
+        "script": "phase_diagram_with_learning.py",
+        "output": "phase_diagram_learned/phase_diagram_learned.json",
+        "paper_ref": "App. G (with-learning companion)",
     },
 ]
 

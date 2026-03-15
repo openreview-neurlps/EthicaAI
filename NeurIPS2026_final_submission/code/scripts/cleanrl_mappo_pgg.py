@@ -28,7 +28,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 # Import our standardized environment
 from envs.nonlinear_pgg_env import NonlinearPGGEnv
 
-# ??? Hyperparameters (CleanRL defaults) ??????????????????????
+# --- Hyperparameters (CleanRL defaults) ---
 HIDDEN_DIM = 64
 LR_ACTOR = 2.5e-4
 LR_CRITIC = 1e-3
@@ -51,7 +51,7 @@ if os.environ.get("ETHICAAI_FAST") == "1":
     N_EPISODES = 10
 
 
-# ??? Neural Network Layers (numpy only, portable) ???????????
+# --- Neural Network Layers (numpy only, portable) ---
 def relu(x):
     return np.maximum(0, x)
 
@@ -91,12 +91,12 @@ class NNLayer:
 
 
 class MLPActor:
-    """2-layer MLP policy with beta distribution output."""
+    """2-layer MLP policy with clipped Gaussian output (mean from sigmoid, fixed log_std)."""
     def __init__(self, rng, obs_dim=4, hidden=HIDDEN_DIM, lr=LR_ACTOR):
         self.fc1 = NNLayer(rng, obs_dim, hidden, lr)
         self.fc2 = NNLayer(rng, hidden, hidden, lr)
         self.mean_head = NNLayer(rng, hidden, 1, lr)
-        self.log_std = np.array([-0.5], dtype=np.float32)  # Initial std ??0.6
+        self.log_std = np.array([-0.5], dtype=np.float32)  # Initial std ~ 0.6
     
     def forward(self, obs):
         h = relu(self.fc1.forward(obs))
@@ -165,8 +165,8 @@ def ppo_update_actor(actor, obs_list, act_list, old_lps, advantages, entropy_coe
     """PPO gradient step with entropy bonus (numerical gradient for portability).
     
     The entropy bonus encourages exploration by increasing log_std when
-    entropy_coef > 0. For Gaussian policy, H(?) = 0.5 + 0.5*ln(2?) + log_std,
-    so ?H/?log_std = 1 (always positive ??entropy bonus pushes std up).
+    entropy_coef > 0. For Gaussian policy, H(pi) = 0.5 + 0.5*ln(2*pi) + log_std,
+    so dH/d(log_std) = 1 (always positive -> entropy bonus pushes std up).
     """
     for obs, act, old_lp, adv in zip(obs_list, act_list, old_lps, advantages):
         new_lp = actor.log_prob(obs, act)

@@ -7,8 +7,8 @@ LOLA key idea: Agent i anticipates how its gradient step affects
 opponents' parameters, and accounts for how opponents' learning
 will change the game.
 
-Standard PG:    罐_i ??罐_i + 慣 쨌 ??{罐_i} V_i(罐)
-LOLA:           罐_i ??罐_i + 慣 쨌 ??{罐_i} V_i(罐 + 慣쨌?놴_{-i})
+Standard PG:    theta_i <- theta_i + alpha * grad_{theta_i} V_i(theta)
+LOLA:           theta_i <- theta_i + alpha * grad_{theta_i} V_i(theta + alpha*grad_{-i})
 
 In N-agent PGG, the LOLA update for agent i considers the
 anticipated policy updates of ALL other honest agents.
@@ -58,7 +58,7 @@ def sigmoid(x):
 class LOLAAgent:
     """Linear policy with LOLA update capability.
     
-    Policy: 貫 = sigmoid(w 쨌 obs + b), with Gaussian exploration.
+    Policy: lambda = sigmoid(w * obs + b), with Gaussian exploration.
     LOLA corrects the gradient by anticipating opponents' updates.
     """
     def __init__(self, rng):
@@ -80,14 +80,14 @@ class LOLAAgent:
         self.b = np.float32(vec[STATE_DIM])
     
     def policy_gradient(self, obs_list, act_list, returns):
-        """Compute ?눸?J = E[?눸?log ?(a|s) 쨌 G_t]"""
+        """Compute grad J = E[grad log pi(a|s) * G_t]"""
         grad_w = np.zeros(STATE_DIM, dtype=np.float32)
         grad_b = np.float32(0.0)
         
         for obs, act, G in zip(obs_list, act_list, returns):
             mu = self.forward(obs)
-            # ?굃og N(a|關,?)/?궽?쨌 ?궽??궽?
-            # = (a-關)/?짼 쨌 關(1-關) 쨌 obs
+            # d(log N(a|mu,sigma))/d(mu) * d(mu)/d(theta)
+            # = (a-mu)/sigma^2 * mu(1-mu) * obs
             sigma = 0.1
             d_logp = (act - mu) / (sigma**2) * mu * (1 - mu)
             grad_w += G * d_logp * obs
@@ -160,8 +160,8 @@ def run_lola(seed):
             grad = agents[i].policy_gradient(all_obs[i], all_acts[i], all_returns[i])
             standard_grads.append(grad)
         
-        # Step 2: LOLA correction ??anticipate opponents' updates
-        # For agent i, imagine all j?쟧 take a gradient step, then compute
+        # Step 2: LOLA correction -- anticipate opponents' updates
+        # For agent i, imagine all j!=i take a gradient step, then compute
         # how agent i's value changes in the updated landscape
         for i in range(N_HONEST):
             original_params = agents[i].get_params().copy()
@@ -173,15 +173,15 @@ def run_lola(seed):
             for j in range(N_HONEST):
                 if j == i:
                     continue
-                # Opponent j would update: 罐_j ??罐_j + LR 쨌 ??j V_j
+                # Opponent j would update: theta_j <- theta_j + LR * grad_j V_j
                 # Effect on agent i's gradient (cross-derivative approximation):
-                # ?G_i ??d짼V_i/(d罐_i쨌d罐_j) 쨌 (LR 쨌 ??j V_j)
+                # dG_i ~ d^2 V_i/(d theta_i * d theta_j) * (LR * grad_j V_j)
                 # Simplified: finite difference of agent i's gradient w.r.t agent j's params
                 old_params_j = agents[j].get_params().copy()
                 agents[j].set_params(old_params_j + LOLA_LR * standard_grads[j])
                 
                 # Recompute agent i's gradient in the world where j has updated
-                # (using same trajectory ??this is the 1-step LOLA approximation)
+                # (using same trajectory -- this is the 1-step LOLA approximation)
                 grad_after = agents[i].policy_gradient(all_obs[i], all_acts[i], all_returns[i])
                 opponent_effect += (grad_after - standard_grads[i])
                 
@@ -202,7 +202,7 @@ def run_lola(seed):
             w = np.mean(ep_data["welfare"][r])
             l = np.mean(ep_data["mean_lam"][r])
             s = np.mean(ep_data["survival"][r]) * 100
-            print(f"    ep {ep+1}: W={w:.1f}, 貫={l:.3f}, Surv={s:.0f}%")
+            print(f"    ep {ep+1}: W={w:.1f}, lam={l:.3f}, Surv={s:.0f}%")
     
     # Eval
     eval_w = ep_data["welfare"][-N_EVAL:]
@@ -239,7 +239,7 @@ def main():
         print(f"\n  Seed {s+1}/{N_SEEDS}")
         r = run_lola(s)
         all_results.append(r)
-        print(f"    ??貫={r['lambda']:.3f}, Surv={r['survival']:.0f}%, W={r['welfare']:.1f}")
+        print(f"    lam={r['lambda']:.3f}, Surv={r['survival']:.0f}%, W={r['welfare']:.1f}")
     
     lams = [r["lambda"] for r in all_results]
     survs = [r["survival"] for r in all_results]
@@ -273,9 +273,9 @@ def main():
     elapsed = time.time() - t0
     print(f"\n{'=' * 65}")
     print(f"  LOLA COMPLETE in {elapsed:.0f}s")
-    print(f"  貫={np.mean(lams):.3f}짹{np.std(lams):.3f}")
-    print(f"  Survival={np.mean(survs):.0f}짹{np.std(survs):.0f}%")
-    print(f"  Welfare={np.mean(welfs):.1f}짹{np.std(welfs):.1f}")
+    print(f"  lam={np.mean(lams):.3f}+/-{np.std(lams):.3f}")
+    print(f"  Survival={np.mean(survs):.0f}+/-{np.std(survs):.0f}%")
+    print(f"  Welfare={np.mean(welfs):.1f}+/-{np.std(welfs):.1f}")
     print(f"{'=' * 65}")
 
 
