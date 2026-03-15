@@ -63,7 +63,8 @@ def run_single_with_learning(seed, phi1, beta):
     actors = [MLPActor(np.random.RandomState(seed * 100 + i)) for i in range(n_honest)]
 
     ep_survived = []
-
+    total_floor_count = 0
+    total_step_count = 0
     for ep in range(N_EPISODES):
         obs, _ = env.reset(seed=seed * 10000 + ep)
         survived = True
@@ -105,6 +106,11 @@ def run_single_with_learning(seed, phi1, beta):
 
         ep_survived.append(float(survived))
 
+        # Track floor activation across all agents/timesteps this episode
+        for i in range(n_honest):
+            total_floor_count += sum(floor_active[i])
+            total_step_count += len(floor_active[i])
+
         # PPO update: skip floor-overridden timesteps
         for i in range(n_honest):
             mask = [not fa for fa in floor_active[i]]
@@ -124,7 +130,8 @@ def run_single_with_learning(seed, phi1, beta):
 
             ppo_update_actor(actors[i], obs_f, act_f, lp_f, advantages)
 
-    return float(np.mean(ep_survived[-N_EVAL:]) * 100)
+    floor_rate = total_floor_count / max(total_step_count, 1)
+    return float(np.mean(ep_survived[-N_EVAL:]) * 100), floor_rate
 
 
 def main():
@@ -141,35 +148,54 @@ def main():
 
     for pi, phi1 in enumerate(PHI1_GRID):
         heatmap[str(phi1)] = {}
+        floor_rates = {}
         for bi, beta in enumerate(BETA_GRID):
             survivals = []
+            seed_floor_rates = []
             for s in range(N_SEEDS):
-                surv = run_single_with_learning(s, phi1, beta)
+                surv, f_rate = run_single_with_learning(s, phi1, beta)
                 survivals.append(surv)
+                seed_floor_rates.append(f_rate)
 
             mean_surv = float(np.mean(survivals))
+            mean_floor = float(np.mean(seed_floor_rates))
             heatmap[str(phi1)][str(beta)] = mean_surv
+            floor_rates[str(beta)] = {
+                "mean": mean_floor,
+                "per_seed": seed_floor_rates,
+            }
 
             done = (pi * len(BETA_GRID) + bi + 1)
             pct = done / (len(PHI1_GRID) * len(BETA_GRID)) * 100
-            print("  phi1=%.2f beta=%.2f: surv=%5.1f%%  [%d%%]" % (phi1, beta, mean_surv, pct))
+            print("  phi1=%.2f beta=%.2f: surv=%5.1f%% floor=%.1f%%  [%d%%]" % (
+                phi1, beta, mean_surv, mean_floor * 100, pct))
 
-    # Build matrix
+        heatmap[str(phi1)]["floor_rates"] = floor_rates
+
+    # Build matrices
     matrix = []
+    floor_matrix = []
     for phi1 in PHI1_GRID:
         row = []
+        f_row = []
         for beta in BETA_GRID:
             row.append(heatmap[str(phi1)][str(beta)])
+            f_row.append(heatmap[str(phi1)]["floor_rates"][str(beta)]["mean"])
         matrix.append(row)
+        floor_matrix.append(f_row)
 
     output = {
         "phi1_grid": PHI1_GRID,
         "beta_grid": BETA_GRID,
         "survival_matrix": matrix,
+        "floor_activation_matrix": floor_matrix,
         "n_seeds": N_SEEDS,
         "n_episodes": N_EPISODES,
+        "n_eval": N_EVAL,
+        "t_horizon": T_HORIZON,
         "learning": True,
         "floor_skip_update": True,
+        "update_rule": "PPO (clipped Gaussian, numerical gradient)",
         "description": "Phase diagram WITH IPPO learning. Floor-overridden timesteps excluded from updates.",
     }
 

@@ -49,7 +49,7 @@ When must multi-agent systems move beyond self-interest, and how much commitment
 
 We make four contributions. (C1)~\textbf{Nash Trap Analysis}: We show that $M/N < 1$ creates a persistent local anti-commitment incentive, and that in environments with tipping-point collapse dynamics this misalignment induces the Nash Trap. Across five algorithm families (REINFORCE, PPO, IQL, QMIX, LOLA; seven implementations), all tested methods converge to subcritical commitment levels under a unified fair-comparison protocol with $400{+}$ hyperparameter configurations and 100\% trap rate. (C2)~\textbf{Commitment Floor as Safety Specification}: We derive the required commitment floor from recovery dynamics near collapse. In severe regimes, the required floor exceeds the feasible range and therefore saturates at unconditional commitment, $\phi_1=1.0$; in milder regimes, partial floors suffice. A Lagrangian dual CPO formulation independently converges to the same specification. (C3)~\textbf{Adaptive Commitment Learning (ACL)}: We introduce a two-phase method that learns a state-dependent floor $\phi_1(R_t;\omega)$, recovering near-unconditional commitment in severe TPSDs while improving welfare by up to 241\% over fixed $\phi_1=1.0$ in milder environments without sacrificing survival. (C4)~\textbf{Cross-Environment Validation and Boundary Tests}: We validate the framework across five environment classes, adversarial conditions (30\% Byzantine), scale ($N=100$), and 36 shock regimes, and show that environments lacking the ingredients of the Trap do not show a commitment-floor advantage in our tests.
 
-Together, these results establish a \textbf{Moral Commitment Spectrum}: local incentive misalignment explains why commitment is disfavored, tipping-point dynamics explain when under-commitment becomes catastrophic, and recovery severity determines how much commitment is required for escape.
+Together, these results establish a \textbf{Moral Commitment Spectrum}---a diagnostic mapping from environmental severity to the minimum commitment floor required for collective survival (\emph{not} a monotonic dominance ordering among strategies). Local incentive misalignment explains why commitment is disfavored, tipping-point dynamics explain when under-commitment becomes catastrophic, and recovery severity determines how much commitment is required for escape.
 \end{abstract}
 
 % ================================================================
@@ -71,7 +71,7 @@ Building on this decomposition, we make four contributions:
     \item[(C4)] \textbf{Cross-Environment Validation and Boundary Tests}: We validate the Nash Trap and commitment floor across five environment classes sharing incentive misalignment and thresholded collapse---PGG, CPR (Appendix~\ref{app:cpr}), spatial grids (Appendix~\ref{app:spatial_dilemma}), Cleanup-style commons (Appendix~\ref{app:cleanup}), and the Coin Game~\citep{lerer2017maintaining} (Appendix~\ref{app:coin_game})---under adversarial conditions (30\% Byzantine), scale ($N{=}100$, Table~\ref{tab:scale}), and 36 shock regimes. Environments lacking these ingredients do not show a commitment-floor advantage in our tests (Section~\ref{sec:linear}; Appendix~\ref{app:meltingpot_prelim}). A parameter sweep across 60 configurations confirms $\hat{\lambda} < 0.95$ universally (Appendix~\ref{app:nash_bound}).
 \end{enumerate}
 
-Together, these results establish a \textbf{Moral Commitment Spectrum}: local incentive misalignment explains \emph{why} commitment is disfavored, tipping-point dynamics explain \emph{when} under-commitment becomes catastrophic, and recovery severity determines \emph{how much} commitment is required for escape.
+Together, these results establish a \textbf{Moral Commitment Spectrum}---a diagnostic mapping from environmental severity to the minimum commitment floor required for collective survival. Local incentive misalignment explains \emph{why} commitment is disfavored, tipping-point dynamics explain \emph{when} under-commitment becomes catastrophic, and recovery severity determines \emph{how much} commitment is required for escape. The Spectrum classifies crisis-response profiles rather than ranking them monotonically: in collapse-dominated regimes (e.g., CPR), a context-sensitive profile may underperform selfish baselines because its crisis response reduces restraint exactly when maximal restraint is required (Appendix~\ref{app:cpr}).
 
 % ================================================================
 % SECTION 2: RELATED WORK
@@ -107,7 +107,7 @@ Meta-ranking differs in that cooperation arises from pre-specified moral structu
 
 \paragraph{Moral Theory in Reward Design.}
 \citet{tennant2023modeling} systematically embed moral theories (utilitarian, deontological, virtue ethics) into MARL reward functions for social dilemma analysis.
-Our contribution extends this line by identifying \emph{when} each moral commitment level is sufficient for survival: the Moral Commitment Spectrum provides a principled mapping from environmental non-linearity to the required degree of commitment.
+Our contribution extends this line by identifying \emph{when} each moral commitment level is sufficient for survival: the Moral Commitment Spectrum provides a diagnostic mapping from environmental severity to the required degree of commitment, classifying crisis-response profiles rather than imposing a monotonic ranking.
 
 % ================================================================
 % SECTION 3: METHOD (Act 1 continued)
@@ -139,7 +139,7 @@ where $g(\theta, R) = \begin{cases}
 \sin\theta \cdot (0.7 + 1.6R) & \text{otherwise}
 \end{cases}$
 
-This implements Sen's insight computationally: when resources are scarce, agents reduce commitment to ensure survival; when abundant, they increase prosocial behavior.
+This implements Sen's insight computationally: when resources are scarce, agents reduce commitment---trading restraint cost against short-term individual payoff. We show below (Section~\ref{sec:turning_point}) that in TPSDs this heuristic can be structurally misaligned with collective safety, because reducing commitment during a crisis accelerates passage through the tipping point.
 
 \subsection{Environment Suite}
 \label{sec:env}
@@ -405,6 +405,7 @@ $\boldsymbol{\phi_1}$ & \textbf{W (Byz=0\%)} & \textbf{W (Byz=30\%)} & \textbf{A
 $\phi_1^* = 1.0$ performs best across all tested conditions (Table~\ref{tab:phi1}), consistent with Theorem~\ref{thm:critical}.
 The commitment floor transforms the learning problem: at $\phi_1 = 0$, IPPO falls into the Nash Trap ($\lambda \approx 0.43$, 30\% survival under 30\% Byzantine adversaries).
 At $\phi_1 = 1.0$, the floor ensures full cooperation, yielding 100\% survival---a \textbf{monotonic increase} that confirms unconditional commitment as a necessary design requirement.
+We note that Theorem~\ref{thm:critical} provides a \emph{necessary} condition: in extreme adversarial regimes ($\beta \geq 0.5$), even $\phi_1{=}1.0$ may not achieve 100\% survival due to stochastic shocks (Table~\ref{tab:phase_learned}); the floor is required for survival but does not eliminate all collapse risk.
 
 \paragraph{Recovery Rate Boundary Analysis.}
 A natural concern is whether the Nash Trap is an artifact of the specific recovery rate $f(R_{\text{crit}}) = 0.01$.
@@ -528,14 +529,15 @@ Melting Pot \texttt{commons\_harvest}
 \end{table}
 
 We visualize this as a \textbf{phase diagram} (Figure~\ref{fig:phase_diagram}; Appendix~\ref{app:phase_diagram}), sweeping $R_{\text{crit}} \in [0.02, 0.30]$ and $\phi_1 \in [0, 1]$ across 110 conditions.
+A companion with-learning phase diagram (Table~\ref{tab:phase_learned}, Appendix~\ref{app:phase_learned}) confirms that IPPO training does not alter the phase boundary: learned policies follow the same survival landscape as the floor-only structural analysis.
 A multi-axis comparison across cooperation, efficiency, fairness, scalability, and robustness dimensions (Appendix~\ref{app:multi_axis}) complements the rigorous grid-based spatial dilemma benchmark results (Appendix~\ref{app:spatial_dilemma}).
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.72\textwidth]{fig_phase_diagram.png}
-    \caption{Phase diagram of the Moral Commitment Spectrum.
+    \caption{Phase diagram of the Moral Commitment Spectrum (floor-only structural analysis; no agent learning).
     Heatmap shows survival rate (\%) as a function of environmental severity ($R_{\text{crit}}$, x-axis) and crisis commitment ($\phi_1$, y-axis) across 110 conditions.
-    As $R_{\text{crit}}$ increases, the minimum $\phi_1$ for viable survival rises monotonically, providing quantitative evidence for the Spectrum.}
+    As $R_{\text{crit}}$ increases, the minimum $\phi_1$ for viable survival rises monotonically, providing quantitative evidence for the Spectrum as a diagnostic mapping from severity to the required commitment floor.}
     \label{fig:phase_diagram}
 \end{figure}
 
@@ -589,7 +591,7 @@ and adaptive adversaries do not break the Nash Trap.
 % ================================================================
 \section{Conclusion}\label{sec:broader_impact}
 
-We establish the \textbf{Moral Commitment Spectrum} as a diagnostic framework for when commitment becomes necessary for collective survival in multi-agent systems. Our results separate three logically distinct layers. First, when $M/N < 1$, each agent faces a persistent local anti-commitment incentive. Second, when such incentive misalignment operates in environments with tipping-point collapse dynamics, under-commitment becomes an extinction-type \emph{Nash Trap}: a locally stable equilibrium that is individually rational yet collectively catastrophic. Third, recovery severity determines the size of the commitment floor required for escape. In severe regimes, the required floor exceeds the feasible range and therefore saturates at unconditional commitment, $\phi_1=1.0$; in milder regimes, partial floors suffice.
+We establish the \textbf{Moral Commitment Spectrum} as a diagnostic framework that maps environmental severity to the minimum commitment floor required for collective survival in multi-agent systems. The Spectrum classifies crisis-response profiles by their interaction with environment structure, rather than imposing a monotonic dominance ordering among strategies. Our results separate three logically distinct layers. First, when $M/N < 1$, each agent faces a persistent local anti-commitment incentive. Second, when such incentive misalignment operates in environments with tipping-point collapse dynamics, under-commitment becomes an extinction-type \emph{Nash Trap}: a locally stable equilibrium that is individually rational yet collectively catastrophic. Third, recovery severity determines the size of the commitment floor required for escape. In severe regimes, the required floor exceeds the feasible range and therefore saturates at unconditional commitment, $\phi_1=1.0$; in milder regimes, partial floors suffice. In collapse-dominated regimes (e.g., CPR), context-sensitive profiles may underperform selfish baselines due to restraint decay---a structural prediction of the Spectrum, not an anomaly.
 
 Empirically, this pattern is robust across five algorithm families, six tested approaches including reward shaping, $400{+}$ hyperparameter configurations, adversarial settings, scale, long horizons, and cross-environment tests. Neither value decomposition, opponent shaping, reward shaping, nor longer horizons reliably escape the Trap under selfish learning. By contrast, commitment floors succeed because they modify the feasible action set rather than relying on misaligned local incentives to discover survival-preserving behavior. ACL further shows that this need not be an all-or-nothing prescription: when environments permit partial commitment, the floor can be learned adaptively to preserve survival while substantially improving welfare.
 
@@ -932,7 +934,7 @@ Fixed $\lambda=0.5$ & 0.500 & 8.5 \\
 \end{tabular}
 \end{table}
 
-\noindent \textbf{Key finding}: The Spectrum's central prediction---that situational commitment fails under crisis dynamics---is \emph{strengthened} in CPR. Situational agents \emph{reduce} restraint during resource crises ($\lambda \to 0.3$ when $R < R_{\text{crit}}$), accelerating depletion. Only unconditional commitment (maximum restraint regardless of resource level) achieves meaningful survival (46.0\%). This confirms that the ``From Situational to Unconditional'' transition is not a PGG-specific artifact but reflects a structural property of non-linear social dilemmas with tipping points.
+\noindent \textbf{Key finding}: The Spectrum's central prediction---that situational commitment fails under crisis dynamics---is \emph{strengthened} in CPR. In this environment, $\lambda$ denotes \emph{restraint}: lower $\lambda$ means higher extraction. Situational agents \emph{reduce} restraint during resource crises ($\lambda \to 0.3$ when $R < R_{\text{crit}}$), accelerating depletion---a phenomenon we term \emph{restraint decay}. This explains why situational commitment (6.5\% survival) underperforms even selfish RL (9.3\%): the crisis response is structurally counter-productive in collapse-dominated regimes. Only unconditional commitment (maximum restraint regardless of resource level) achieves meaningful survival (46.0\%). We emphasize that the Spectrum is a classification over crisis-response profiles and the environment-implied minimum floor, \emph{not} a monotonic ranking of strategies---the CPR result is a structural prediction, not an anomaly.
 
 \section{DNN Ablation: Network Depth vs.\ Nash Trap}
 \label{app:dnn_ablation}
@@ -1488,6 +1490,35 @@ The resulting survival heatmap (Figure~\ref{fig:phase_diagram}) reveals:
     \item \textbf{$\phi_1 = 1.0$}: Achieves 100\% survival for \emph{all} tested Byzantine fractions up to $\beta = 0.50$, the maximum tested.
 \end{enumerate}
 
+\subsection{With-Learning Phase Diagram}
+\label{app:phase_learned}
+
+To confirm that agent learning does not alter the commitment phase boundary, we train IPPO agents with PPO updates across a $6 \times 6$ grid of $(\phi_1, \beta)$ values (5 seeds, 200 episodes each, last 30 episodes for evaluation). Floor-overridden timesteps are excluded from PPO updates to ensure policy gradient correctness (Section~\ref{sec:unconditional}).
+
+\begin{table}[htbp]
+\centering
+\caption{With-learning phase diagram: survival (\%) as a function of commitment floor $\phi_1$ and Byzantine fraction $\beta$ ($N{=}20$, 5 seeds, 200 episodes with IPPO learning). The phase boundary matches the floor-only structural analysis (Figure~\ref{fig:phase_diagram}), confirming that learning does not escape the Nash Trap.}
+\label{tab:phase_learned}
+\small
+\begin{tabular}{c|cccccc}
+\toprule
+$\phi_1 \backslash \beta$ & 0.0 & 0.1 & 0.2 & 0.3 & 0.4 & 0.5 \\
+\midrule
+0.0 & 90 & 68 & 56 & 34 & 22 & 11 \\
+0.2 & 96 & 85 & 68 & 48 & 31 & 21 \\
+0.4 & 100 & 98 & 93 & 75 & 53 & 32 \\
+0.6 & 100 & 100 & 99 & 95 & 76 & 53 \\
+0.8 & 100 & 100 & 100 & 100 & 95 & 76 \\
+\textbf{1.0} & \textbf{100} & \textbf{100} & \textbf{100} & \textbf{100} & \textbf{100} & \textbf{95} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent \textbf{Key observations}: (i)~The survival landscape under learning matches the floor-only phase diagram: $\phi_1$ increase monotonically raises survival, while $\beta$ increase monotonically lowers it. (ii)~At $\phi_1{=}0$, even with 200 episodes of training, IPPO agents do not escape the Nash Trap ($\leq 90\%$ survival at $\beta{=}0$, $\leq 11\%$ at $\beta{=}0.5$). (iii)~At $\beta{=}0.5$ with $\phi_1{=}1.0$, survival is 95\%---not 100\%---confirming that Theorem~\ref{thm:critical} provides a \emph{necessary} condition: the floor is required for survival, but does not eliminate all stochastic collapse risk in extreme adversarial conditions.
+
+\paragraph{Floor Activation Rate.}
+We also track the fraction of timesteps where the commitment floor overrides the agent's learned action ($\lambda_{\text{learned}} < \phi_1$). At $\phi_1{=}0$, activation is 0\% (no floor). At $\phi_1{=}1.0$, activation is 100\% (every timestep is overridden, because the learned $\lambda$ never reaches 1.0 on its own---confirming that learning does not discover unconditional commitment). At intermediate floors ($\phi_1{=}0.4{\text{--}}0.8$), activation ranges from 45\% to 80\%, indicating that the floor \emph{supplements} rather than replaces the learned policy. We interpret this as evidence that the commitment floor functions as a safety specification, not a substitute for learning.
+
 \section{Cross-Environment Validation: Common-Pool Resource}
 \label{app:cpr_detail}
 
@@ -1498,9 +1529,9 @@ To validate that the Moral Commitment Spectrum is not PGG-specific, we implement
 
 \textbf{Result} (20 seeds):
 Selfish RL agents achieve 9.3\% survival (Nash Trap);
-situational commitment achieves 6.5\% (worse, due to crisis overcommitment enabling exploitation);
+situational commitment achieves 6.5\% (worse than selfish, due to \emph{restraint decay}: the crisis rule reduces restraint exactly when the tipping-point recovery rate is slowest, accelerating depletion faster than pure selfishness);
 unconditional commitment achieves \textbf{46.0\%} survival.
-The Moral Commitment Spectrum pattern---unconditional commitment outperforms learned strategies in environments with irreversible tipping points---holds across both environments.
+The Moral Commitment Spectrum pattern---unconditional commitment outperforms learned strategies in environments with irreversible tipping points---holds across both environments. Note that the Spectrum classifies crisis-response profiles by their interaction with environment severity, not by a monotonic dominance ordering; situational underperformance in CPR is a structural prediction.
 
 % ================================================================
 % APPENDIX: Cleanup-Style Commons Dilemma (External Benchmark)
