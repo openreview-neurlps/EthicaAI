@@ -6,7 +6,7 @@ audit_submission.py  --  NeurIPS 제출물 종합 무결성 검수 스크립트
 
   Module 1: TeX ↔ JSON 수치 교차 검증
   Module 2: BibTeX 무결성 (미참조 엔트리, TeX 내 미정의 cite)
-  Module 3: 그림 파일 존재 여부 (\includegraphics 경로 전수 점검)
+  Module 3: 그림 파일 존재 여부 (includegraphics 경로 전수 점검)
   Module 4: 플레이스홀더 잔류 검출 (X%, TODO, FIXME, TBD, ???)
   Module 5: LaTeX 빌드 경고/에러 분석 (.log 파일)
   Module 6: README 팩트체크 (주장된 파일·경로가 실존하는지)
