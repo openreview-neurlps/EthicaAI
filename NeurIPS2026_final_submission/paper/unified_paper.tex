@@ -597,7 +597,7 @@ Group-level ESS requires $m < m^* = 0.286$; when migration exceeds this bound, u
 \subsection{Limitations and Future Work}\label{sec:limitations}
 
 \begin{itemize}
-    \item \textbf{Algorithm Scope}: Whether risk-sensitive objectives or dynamic externality-pricing mechanisms can escape the Trap remains open. While empirical CVaR objectives fail (Appendix~\ref{app:robustness}), the Nash Trap persists across all 36 shock parameter combinations tested (Appendix~\ref{app:shock_robustness}). We provide a gradient-based Lagrangian CPO formulation (Appendix~\ref{app:cpo_lagrangian}) that independently recovers $\phi_1^*{=}1.0$; extending ACL to richer policy classes (e.g., neural network parametrizations) in high-dimensional observation spaces remains future work. In particular, centralized-training decentralized-execution (CTDE) methods with global-state critics and communication channels (cheap talk) represent promising directions that may partially overcome the local incentive gradient identified in Proposition~\ref{prop:gradient_impossibility}; we do not claim impossibility for these architectures.
+    \item \textbf{Algorithm Scope}: Whether risk-sensitive objectives or dynamic externality-pricing mechanisms can escape the Trap remains open. While empirical CVaR objectives fail (Appendix~\ref{app:robustness}), the Nash Trap persists across all 36 shock parameter combinations tested (Appendix~\ref{app:shock_robustness}). We provide a gradient-based Lagrangian CPO formulation (Appendix~\ref{app:cpo_lagrangian}) that independently recovers $\phi_1^*{=}1.0$; extending MACCL to richer policy classes (e.g., neural network parametrizations) in high-dimensional observation spaces remains future work. In particular, centralized-training decentralized-execution (CTDE) methods with global-state critics and communication channels (cheap talk) represent promising directions that may partially overcome the local incentive gradient identified in Proposition~\ref{prop:gradient_impossibility}; we do not claim impossibility for these architectures.
     \item \textbf{Baseline Scope}: Our comparison includes \textbf{nine implementations} spanning five algorithm families (REINFORCE, PPO, IQL, QMIX, LOLA) with nine distinct configurations, team reward shaping (Table~\ref{tab:team_reward}), and a canonical QMIX re-implementation following EPyMARL conventions (Appendix~\ref{app:canonical_qmix}, Table~\ref{tab:canonical_qmix}). All fall into the Nash Trap in our tests, consistent with Proposition~\ref{prop:gradient_impossibility}. A unified fair comparison protocol ($5{\times}5{\times}4{=}100$ HP configurations per family) confirms 100\% trap rate \emph{across all tested configurations}.
     \item \textbf{Environment Scope}: Primary results use PGG with scalar $R_t$. CPR validation (Appendix~\ref{app:cpr}), spatial dilemma (Appendix~\ref{app:spatial}), and Coin Game (Appendix~\ref{app:coin_game}) confirm the pattern across environments sharing incentive misalignment ($M/N < 1$) and thresholded collapse dynamics. Environments lacking these ingredients---including the Melting Pot \texttt{commons\_harvest} benchmark ($\rho \approx 1$)---do not show a commitment-floor advantage in our tests, consistent with our boundary conditions (Table~\ref{tab:boundary_tests}; Appendix~\ref{app:meltingpot_prelim}). Crisis-only intervention is insufficient---only global (unconditional) commitment achieves full survival (Appendix~\ref{app:crisis_vs_global}, Table~\ref{tab:crisis_vs_global}). Group-level ESS requires $m < m^* = 0.286$ (Result~\ref{res:group_ess}).
     \item \textbf{Ethical Scope}: ``Moral commitment'' in this work is operationalized as resource allocation cooperation ($\lambda$), which may not capture the full richness of ethical reasoning. However, our fairness analysis (Appendix~\ref{app:fairness}, Table~\ref{tab:fairness}) shows that higher commitment floors improve distributional equity (Gini coefficient decreases from 0.064 to 0.000). Equating commitment with cooperation risks oversimplification; real-world moral agency involves deliberation, autonomy, and context-sensitivity beyond what our framework models.
@@ -1681,12 +1681,12 @@ Canonical QMIX (EPyMARL-style) & $0.504 \pm 0.144$ & $68.6 \pm 27.4$ & YES \\
 % ================================================================
 % APPENDIX: Adaptive Commitment Learning (ACL)
 % ================================================================
-\section{Adaptive Commitment Learning (ACL)}
+\section{Multi-Agent Constrained Commitment Learning (MACCL)}
 \label{app:acl}
 
-Fixed $\phi_1 = 1.0$ is \emph{survival-optimal} but \emph{welfare-suboptimal}: in the Cleanup environment (Appendix~\ref{app:cleanup}), $\phi_1=0.7$ achieves welfare $0.370$ while $\phi_1=1.0$ yields $-0.300$, yet both achieve 100\% survival. This motivates \textbf{Adaptive Commitment Learning (ACL)}: learning a state-dependent floor $\phi_1(R_t; \omega) = \sigma(\omega_1 R_t + \omega_2 R_t^2 + \omega_3)$ that simultaneously guarantees survival and maximizes welfare.
+Fixed $\phi_1 = 1.0$ is \emph{survival-optimal} but \emph{welfare-suboptimal}: in the Cleanup environment (Appendix~\ref{app:cleanup}), $\phi_1=0.7$ achieves welfare $0.370$ while $\phi_1=1.0$ yields $-0.300$, yet both achieve 100\% survival. This motivates \textbf{Multi-Agent Constrained Commitment Learning (MACCL)}: learning a state-dependent floor $\phi_1(R_t; \omega) = \sigma(\omega_1 R_t + \omega_2 R_t^2 + \omega_3)$ that simultaneously guarantees survival and maximizes welfare.
 
-\paragraph{Algorithm.} ACL uses two-phase optimization:
+\paragraph{Algorithm.} MACCL uses two-phase optimization:
 \begin{itemize}
     \item \textbf{Phase A (Safety)}: Binary search for the minimum constant $\phi_1$ satisfying $P(\text{survival}) \geq 1 - \delta$ ($\delta = 0.05$).
     \item \textbf{Phase B (Welfare)}: Fine-tune $\omega = (\omega_1, \omega_2, \omega_3)$ via finite-difference gradient ascent on welfare, with \emph{safe projection}: candidate updates that violate the survival constraint are rejected.
@@ -1694,7 +1694,7 @@ Fixed $\phi_1 = 1.0$ is \emph{survival-optimal} but \emph{welfare-suboptimal}: i
 
 \begin{table}[h]
 \centering
-\caption{ACL vs.\ fixed commitment floors (20 seeds). ACL matches survival of $\phi_1{=}1.0$ while dramatically improving welfare in environments where partial commitment is viable.}
+\caption{MACCL vs.\ fixed commitment floors (20 seeds). MACCL matches survival of $\phi_1{=}1.0$ while dramatically improving welfare in environments where partial commitment is viable.}
 \label{tab:acl}
 \begin{tabular}{llcc}
 \toprule
@@ -1715,7 +1715,7 @@ Fixed $\phi_1 = 1.0$ is \emph{survival-optimal} but \emph{welfare-suboptimal}: i
 \end{tabular}
 \end{table}
 
-\textbf{Key finding}: In the PGG, ACL converges to $\phi_1(R) \approx 0.95$--$1.00$ across all $R$ (matching fixed $\phi_1{=}1.0$), confirming that in severe TPSDs with tipping points, unconditional commitment is indeed the unique safety-optimal solution. In the Cleanup environment, ACL discovers a \emph{state-dependent} floor: $\phi_1(R{=}0) = 0.83$ (high cleaning effort when polluted), decreasing to $\phi_1(R{=}1.0) = 0.67$ (more harvesting when clean). This achieves welfare $0.424$---a $241\%$ improvement over fixed $\phi_1{=}1.0$ ($-0.300$)---while maintaining $100\%$ survival.
+\textbf{Key finding}: In the PGG, MACCL converges to $\phi_1(R) \approx 0.95$--$1.00$ across all $R$ (matching fixed $\phi_1{=}1.0$), confirming that in severe TPSDs with tipping points, unconditional commitment is indeed the unique safety-optimal solution. In the Cleanup environment, MACCL discovers a \emph{state-dependent} floor: $\phi_1(R{=}0) = 0.83$ (high cleaning effort when polluted), decreasing to $\phi_1(R{=}1.0) = 0.67$ (more harvesting when clean). This achieves welfare $0.424$---a $241\%$ improvement over fixed $\phi_1{=}1.0$ ($-0.300$)---while maintaining $100\%$ survival.
 
 % ================================================================
 % APPENDIX: Tipping-Point Coin Game
@@ -1741,7 +1741,7 @@ ACL $\phi_1(R)$ & $4.27$ & $89.2$ \\
 \end{tabular}
 \end{table}
 
-\textbf{Key finding}: The Coin Game---a standard MARL cooperation benchmark not designed by the authors---exhibits the same qualitative pattern as our PGG environments: selfish agents achieve dramatically lower survival ($39.3\%$) than committed agents ($90.0\%$), and committed policies achieve $17{\times}$ higher welfare ($4.59$ vs.\ $0.27$, 20 seeds). The tipping-point dynamics create an irreversible collapse channel: greedy coin collection depletes the shared resource below $R_{\text{crit}}$, after which coin spawning ceases and the episode terminates. ACL achieves $89.2\%$ survival with welfare $4.27$---comparable to the fixed floor---confirming that near-unconditional commitment is the safety-optimal policy in this environment.
+\textbf{Key finding}: The Coin Game---a standard MARL cooperation benchmark not designed by the authors---exhibits the same qualitative pattern as our PGG environments: selfish agents achieve dramatically lower survival ($39.3\%$) than committed agents ($90.0\%$), and committed policies achieve $17{\times}$ higher welfare ($4.59$ vs.\ $0.27$, 20 seeds). The tipping-point dynamics create an irreversible collapse channel: greedy coin collection depletes the shared resource below $R_{\text{crit}}$, after which coin spawning ceases and the episode terminates. MACCL achieves $89.2\%$ survival with welfare $4.27$---comparable to the fixed floor---confirming that near-unconditional commitment is the safety-optimal policy in this environment.
 
 % ================================================================
 % APPENDIX: Nash Trap Upper Bound
