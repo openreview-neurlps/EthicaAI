@@ -1,5 +1,0 @@
-Can artificial agents develop genuine moral commitment beyond self-interest? We formalize Amartya Sen's Meta-Ranking theory—preferences over preferences implementing moral commitment—within a Multi-Agent Reinforcement Learning (MARL) framework. Our dynamic commitment mechanism λ_t, conditioned on resource availability and Social Value Orientation (SVO), is tested across 8 environments with up to 1,000 agents.
-
-Three key findings: (1) Dynamic meta-ranking significantly enhances collective welfare (p<0.001 via LMM), while static SVO injection fails. (2) Non-significant cooperation rates mask emergent role specialization. (3) Situational Commitment—conditional altruism with survival instincts—is the only ESS, outperforming Utilitarian, Deontological, Virtue, and Selfish.
-
-We further demonstrate scale invariance (SII≈1.0 from 20 to 1,000 agents), Byzantine robustness (cooperation at 50% adversarial population), and policy implications for AI regulation and carbon taxation. 38 reproduction modules generate all 74 figures.
