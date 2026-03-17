@@ -495,10 +495,20 @@ The Moral Commitment Spectrum holds in spatially-extended environments.
 
 \textbf{The Moral Commitment Spectrum}: Our results decompose into three logically distinct layers:
 \begin{enumerate}
-    \item \textbf{Tipping-point dynamics as the primary driver}: The Nash Trap persists \emph{independently of the $M/N$ ratio}---even when $M/N \geq 1$ (cooperation is individually rational in expectation), gradient learners converge to $\lambda \approx 0.5$ with 100\% trap rate across all 24 tested $(N, M/N)$ conditions (Section~\ref{sec:mn_sweep}, Figure~\ref{fig:phase_diagram}). The non-linear collapse dynamics, not the payoff structure, are the root cause.
+    \item \textbf{Tipping-point dynamics as the primary driver}: The Nash Trap persists \emph{independently of the $M/N$ ratio}---even when $M/N \geq 1$ (cooperation is individually rational in expectation), gradient learners converge to $\lambda \approx 0.5$ with 100\% trap rate across all 24 tested $(N, M/N)$ conditions (Section~\ref{sec:mn_sweep}, Figure~\ref{fig:phase_diagram_2d}). The non-linear collapse dynamics, not the payoff structure, are the root cause.
     \item \textbf{Computational intractability} (Theorem~\ref{thm:impossibility}): Escaping the Nash Trap requires $\Omega(e^{cN})$ gradient evaluations due to signal dilution ($O(\epsilon/N)$), exponential basin dominance, and exponential escape time. This transforms the problem from ``hard to solve'' to ``provably intractable without structural intervention.''
     \item \textbf{Commitment floor as computational bypass}: The floor transforms an exponentially hard unconstrained problem into a polynomial-time constrained one by excluding the trap basin from the feasible action space. MACCL learns the \emph{minimum sufficient} floor for each environment, recovering $\phi_1 \approx 1.0$ in severe TPSDs while improving welfare by 203\% over fixed $\phi_1 = 1.0$ in milder environments (Section~\ref{sec:maccl}).
 \end{enumerate}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{figures/phase_diagram_2d.png}
+    \caption{Nash Trap phase diagram across agent count $N \in \{5, 10, 20, 50\}$ and $M/N$ ratio $\in \{0.05, 0.15, 0.30, 0.50, 0.75, 1.00\}$ (24 conditions, 10 seeds $\times$ 200 episodes, Byz=30\%).
+    \textbf{(a)} Converged commitment $\lambda$: all conditions converge to $\lambda \approx 0.50$, confirming the Nash Trap is $M/N$-independent.
+    \textbf{(b)} Survival rate: higher at $N{=}5$ (70--75\%) due to reduced free-rider impact, but no condition achieves the oracle survival of 100\%.
+    Together, these results establish a 100\% trap rate across the entire $(N, M/N)$ parameter space.}
+    \label{fig:phase_diagram_2d}
+\end{figure}
 
 Table~\ref{tab:boundary_tests} summarizes the diagnostic logic. The key insight is that tipping-point dynamics---not $M/N$ payoff structure---determine whether the Nash Trap manifests, and the commitment floor provides a principled bypass for the resulting computational barrier.
 
