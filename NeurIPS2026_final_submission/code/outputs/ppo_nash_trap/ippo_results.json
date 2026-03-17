@@ -1,0 +1,51 @@
+{
+  "experiment": "IPPO Nash Trap (Independent Agents)",
+  "key_insight": "Each agent independently maximizes its OWN reward. M/N = 0.08 < 1, so free-riding is individually rational. This creates Nash Trap regardless of policy architecture.",
+  "environment": {
+    "type": "Non-linear PGG with tipping point",
+    "N": 20,
+    "Byzantine": 0.3,
+    "R_crit": 0.15,
+    "M_over_N": 0.08,
+    "T_horizon": 50,
+    "episodes": 10,
+    "seeds": 2
+  },
+  "algorithms": {
+    "ippo_linear": {
+      "label": "IPPO Linear",
+      "welfare": "24.2+/-0.0",
+      "lambda": "0.500+/-0.000",
+      "survival": "55.0+/-15.0%",
+      "lambda_mean": 0.5000356254067302,
+      "lambda_std": 8.151765467137584e-05,
+      "welfare_mean": 24.20029925341653,
+      "survival_mean": 55.0,
+      "survival_std": 15.0
+    },
+    "ippo_mlp": {
+      "label": "IPPO MLP",
+      "welfare": "24.2+/-0.1",
+      "lambda": "0.503+/-0.007",
+      "survival": "55.0+/-15.0%",
+      "lambda_mean": 0.5034544952947999,
+      "lambda_std": 0.006766012857670478,
+      "welfare_mean": 24.22901776047632,
+      "survival_mean": 55.0,
+      "survival_std": 15.0
+    },
+    "ippo_mlp_critic": {
+      "label": "IPPO MLP+Critic",
+      "welfare": "24.2+/-0.0",
+      "lambda": "0.502+/-0.000",
+      "survival": "55.0+/-15.0%",
+      "lambda_mean": 0.5024751393288247,
+      "lambda_std": 0.00041811746740311184,
+      "welfare_mean": 24.220791170362126,
+      "survival_mean": 55.0,
+      "survival_std": 15.0
+    }
+  },
+  "conclusion": "See lambda values",
+  "time_seconds": 1.0815393924713135
+}

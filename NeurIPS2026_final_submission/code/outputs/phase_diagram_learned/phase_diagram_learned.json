@@ -1,0 +1,116 @@
+{
+  "phi1_grid": [
+    0.0,
+    0.5,
+    1.0
+  ],
+  "beta_grid": [
+    0.0,
+    0.3
+  ],
+  "survival_matrix": [
+    [
+      90.0,
+      40.0
+    ],
+    [
+      100.0,
+      90.0
+    ],
+    [
+      100.0,
+      100.0
+    ]
+  ],
+  "floor_activation_matrix": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.59379,
+      0.6206039735034155
+    ],
+    [
+      1.0,
+      1.0
+    ]
+  ],
+  "survival_per_seed": [
+    [
+      [
+        90.0,
+        90.0
+      ],
+      [
+        30.0,
+        50.0
+      ]
+    ],
+    [
+      [
+        100.0,
+        100.0
+      ],
+      [
+        90.0,
+        90.0
+      ]
+    ],
+    [
+      [
+        100.0,
+        100.0
+      ],
+      [
+        100.0,
+        100.0
+      ]
+    ]
+  ],
+  "floor_activation_per_seed": [
+    [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    [
+      [
+        0.59186,
+        0.59572
+      ],
+      [
+        0.6155952380952381,
+        0.6256127089115927
+      ]
+    ],
+    [
+      [
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0
+      ]
+    ]
+  ],
+  "run_meta": {
+    "timestamp": 1773740184.3230102,
+    "git_sha": "32945de9ebaf354d39a0cd32c70c56ea096fd4c1",
+    "mode": "FAST"
+  },
+  "n_seeds": 2,
+  "n_episodes": 50,
+  "n_eval": 10,
+  "t_horizon": 50,
+  "learning": true,
+  "floor_skip_update": true,
+  "update_rule": "PPO (clipped Gaussian, numerical gradient)",
+  "description": "Phase diagram WITH IPPO learning. Floor-overridden timesteps excluded from updates."
+}
