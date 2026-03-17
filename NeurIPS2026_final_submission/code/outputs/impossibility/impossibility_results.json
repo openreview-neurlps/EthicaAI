@@ -1,0 +1,105 @@
+{
+  "experiment": "Impossibility Theorem Verification",
+  "signal_dilution": [
+    {
+      "N": 5,
+      "gradient_mean": 0.0,
+      "gradient_std": 0.0,
+      "expected_1_over_N": 0.2
+    },
+    {
+      "N": 10,
+      "gradient_mean": 0.15999999999999992,
+      "gradient_std": 0.19595917942265415,
+      "expected_1_over_N": 0.1
+    },
+    {
+      "N": 20,
+      "gradient_mean": 0.08000000000000007,
+      "gradient_std": 0.16000000000000014,
+      "expected_1_over_N": 0.05
+    },
+    {
+      "N": 50,
+      "gradient_mean": 0.0,
+      "gradient_std": 0.0,
+      "expected_1_over_N": 0.02
+    },
+    {
+      "N": 100,
+      "gradient_mean": 0.0,
+      "gradient_std": 0.0,
+      "expected_1_over_N": 0.01
+    }
+  ],
+  "basin_dominance": [
+    {
+      "N": 5,
+      "trap_rate": 1.0,
+      "expected_lower_bound": 0.3934693402873666,
+      "final_lambda_mean": 0.4913008329456665,
+      "final_lambda_std": 0.07763725630638547
+    },
+    {
+      "N": 10,
+      "trap_rate": 1.0,
+      "expected_lower_bound": 0.6321205588285577,
+      "final_lambda_mean": 0.47327582385147904,
+      "final_lambda_std": 0.04597637531842998
+    },
+    {
+      "N": 20,
+      "trap_rate": 1.0,
+      "expected_lower_bound": 0.8646647167633873,
+      "final_lambda_mean": 0.490768549472649,
+      "final_lambda_std": 0.03130466480800497
+    },
+    {
+      "N": 50,
+      "trap_rate": 1.0,
+      "expected_lower_bound": 0.9932620530009145,
+      "final_lambda_mean": 0.48428852876976203,
+      "final_lambda_std": 0.017216757544864097
+    },
+    {
+      "N": 100,
+      "trap_rate": 1.0,
+      "expected_lower_bound": 0.9999546000702375,
+      "final_lambda_mean": 0.48887738905976175,
+      "final_lambda_std": 0.01567053169853498
+    }
+  ],
+  "escape_time": [
+    {
+      "N": 5,
+      "escape_rate": 0.0,
+      "mean_escape_time": 500.0,
+      "max_episodes_tested": 500
+    },
+    {
+      "N": 10,
+      "escape_rate": 0.0,
+      "mean_escape_time": 500.0,
+      "max_episodes_tested": 500
+    },
+    {
+      "N": 20,
+      "escape_rate": 0.0,
+      "mean_escape_time": 500.0,
+      "max_episodes_tested": 500
+    },
+    {
+      "N": 50,
+      "escape_rate": 0.0,
+      "mean_escape_time": 500.0,
+      "max_episodes_tested": 500
+    },
+    {
+      "N": 100,
+      "escape_rate": 0.0,
+      "mean_escape_time": 500.0,
+      "max_episodes_tested": 500
+    }
+  ],
+  "time_seconds": 845.7994689941406
+}

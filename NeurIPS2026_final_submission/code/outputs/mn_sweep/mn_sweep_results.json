@@ -1,0 +1,1483 @@
+{
+  "experiment": "M/N Phase Transition (v2 - NonlinearPGGEnv)",
+  "config": {
+    "N_AGENTS": 20,
+    "BYZ_FRAC": 0.3,
+    "N_EPISODES": 300,
+    "N_SEEDS": 20,
+    "MN_RATIOS": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.75,
+      0.9,
+      1.0
+    ]
+  },
+  "results": [
+    {
+      "mn_ratio": 0.05,
+      "M": 1.0,
+      "N": 20,
+      "lambda_mean": 0.4751787572179234,
+      "lambda_std": 0.010382742376148614,
+      "lambda_ci95": [
+        0.47062831973971997,
+        0.47972919469612685
+      ],
+      "survival_mean": 48.33333333333333,
+      "survival_std": 9.746794344808963,
+      "welfare_mean": 20.0,
+      "welfare_std": 0.0,
+      "trapped": true,
+      "n_seeds": 20,
+      "seed_results": [
+        {
+          "mean_lambda": 0.48078706827614937,
+          "survival_pct": 33.33333333333333,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.46540557260260335,
+          "survival_pct": 46.666666666666664,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.47254326926959844,
+          "survival_pct": 50.0,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.4770566165656893,
+          "survival_pct": 53.333333333333336,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.4779413198670012,
+          "survival_pct": 63.33333333333333,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.474760688027397,
+          "survival_pct": 40.0,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.4887818472325564,
+          "survival_pct": 50.0,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.4802902157153979,
+          "survival_pct": 43.333333333333336,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.4683155445285952,
+          "survival_pct": 33.33333333333333,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.47551730581791596,
+          "survival_pct": 46.666666666666664,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.47123516917639174,
+          "survival_pct": 33.33333333333333,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.49098926427395523,
+          "survival_pct": 53.333333333333336,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.47881332207423843,
+          "survival_pct": 60.0,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.4765154685536087,
+          "survival_pct": 40.0,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.46795671020817403,
+          "survival_pct": 56.666666666666664,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.4565640511204582,
+          "survival_pct": 43.333333333333336,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.4671298056799687,
+          "survival_pct": 56.666666666666664,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.46691713903756316,
+          "survival_pct": 40.0,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.5032383022317417,
+          "survival_pct": 66.66666666666666,
+          "welfare": 20.0
+        },
+        {
+          "mean_lambda": 0.4628164640994653,
+          "survival_pct": 56.666666666666664,
+          "welfare": 20.0
+        }
+      ],
+      "oracle_survival": 99.8,
+      "oracle_welfare": 20.0
+    },
+    {
+      "mn_ratio": 0.1,
+      "M": 2.0,
+      "N": 20,
+      "lambda_mean": 0.4821209670225753,
+      "lambda_std": 0.010057147897281142,
+      "lambda_ci95": [
+        0.4777132276163897,
+        0.4865287064287609
+      ],
+      "survival_mean": 49.66666666666667,
+      "survival_std": 9.655165571973493,
+      "welfare_mean": 26.70649275627472,
+      "welfare_std": 0.1760022432528844,
+      "trapped": true,
+      "n_seeds": 20,
+      "seed_results": [
+        {
+          "mean_lambda": 0.48633662253540977,
+          "survival_pct": 36.666666666666664,
+          "welfare": 26.741990615348232
+        },
+        {
+          "mean_lambda": 0.47275650777743633,
+          "survival_pct": 46.666666666666664,
+          "welfare": 26.574264080293208
+        },
+        {
+          "mean_lambda": 0.47475513279504966,
+          "survival_pct": 50.0,
+          "welfare": 26.5823432468866
+        },
+        {
+          "mean_lambda": 0.48945246100679174,
+          "survival_pct": 60.0,
+          "welfare": 26.80364007259373
+        },
+        {
+          "mean_lambda": 0.4828531058112268,
+          "survival_pct": 66.66666666666666,
+          "welfare": 26.706633330235366
+        },
+        {
+          "mean_lambda": 0.4866126480544598,
+          "survival_pct": 46.666666666666664,
+          "welfare": 26.740375016311265
+        },
+        {
+          "mean_lambda": 0.48347683641544026,
+          "survival_pct": 50.0,
+          "welfare": 26.815250825267597
+        },
+        {
+          "mean_lambda": 0.4965895603507512,
+          "survival_pct": 46.666666666666664,
+          "welfare": 26.922518951232917
+        },
+        {
+          "mean_lambda": 0.4721061574055207,
+          "survival_pct": 33.33333333333333,
+          "welfare": 26.5153694228563
+        },
+        {
+          "mean_lambda": 0.5065534449886974,
+          "survival_pct": 46.666666666666664,
+          "welfare": 27.121158520506928
+        },
+        {
+          "mean_lambda": 0.47021169495054793,
+          "survival_pct": 33.33333333333333,
+          "welfare": 26.50884929924366
+        },
+        {
+          "mean_lambda": 0.47804234774824855,
+          "survival_pct": 50.0,
+          "welfare": 26.59652922708975
+        },
+        {
+          "mean_lambda": 0.47185635627196587,
+          "survival_pct": 60.0,
+          "welfare": 26.54001294669036
+        },
+        {
+          "mean_lambda": 0.4896941547320454,
+          "survival_pct": 40.0,
+          "welfare": 26.808356047963557
+        },
+        {
+          "mean_lambda": 0.4787417928964696,
+          "survival_pct": 56.666666666666664,
+          "welfare": 26.644189285995605
+        },
+        {
+          "mean_lambda": 0.46237903812312553,
+          "survival_pct": 43.333333333333336,
+          "welfare": 26.355564053230335
+        },
+        {
+          "mean_lambda": 0.48568158758422064,
+          "survival_pct": 60.0,
+          "welfare": 26.85224300602747
+        },
+        {
+          "mean_lambda": 0.48183402180272716,
+          "survival_pct": 43.333333333333336,
+          "welfare": 26.713042152527702
+        },
+        {
+          "mean_lambda": 0.4937006705849459,
+          "survival_pct": 63.33333333333333,
+          "welfare": 26.959629605476835
+        },
+        {
+          "mean_lambda": 0.47878519861642427,
+          "survival_pct": 60.0,
+          "welfare": 26.62789541971698
+        }
+      ],
+      "oracle_survival": 99.8,
+      "oracle_welfare": 34.0
+    },
+    {
+      "mn_ratio": 0.15,
+      "M": 3.0,
+      "N": 20,
+      "lambda_mean": 0.4887490336302004,
+      "lambda_std": 0.009715384149698551,
+      "lambda_ci95": [
+        0.4844910787904954,
+        0.49300698846990537
+      ],
+      "survival_mean": 51.166666666666664,
+      "survival_std": 8.961336705846707,
+      "welfare_mean": 33.623688494218065,
+      "welfare_std": 0.35513709883247774,
+      "trapped": true,
+      "n_seeds": 20,
+      "seed_results": [
+        {
+          "mean_lambda": 0.5023687677537125,
+          "survival_pct": 43.333333333333336,
+          "welfare": 33.97653917698721
+        },
+        {
+          "mean_lambda": 0.4764607398602616,
+          "survival_pct": 46.666666666666664,
+          "welfare": 33.273286670070746
+        },
+        {
+          "mean_lambda": 0.4833542928575238,
+          "survival_pct": 53.333333333333336,
+          "welfare": 33.42947830990353
+        },
+        {
+          "mean_lambda": 0.4869908257877968,
+          "survival_pct": 56.666666666666664,
+          "welfare": 33.50419242961764
+        },
+        {
+          "mean_lambda": 0.4990484953560145,
+          "survival_pct": 66.66666666666666,
+          "welfare": 33.87013724414224
+        },
+        {
+          "mean_lambda": 0.4818023006193139,
+          "survival_pct": 46.666666666666664,
+          "welfare": 33.28185909471951
+        },
+        {
+          "mean_lambda": 0.5022144298588074,
+          "survival_pct": 56.666666666666664,
+          "welfare": 34.12953703002954
+        },
+        {
+          "mean_lambda": 0.494173202269124,
+          "survival_pct": 43.333333333333336,
+          "welfare": 33.80215786568117
+        },
+        {
+          "mean_lambda": 0.48414350659224126,
+          "survival_pct": 36.666666666666664,
+          "welfare": 33.417666165880654
+        },
+        {
+          "mean_lambda": 0.5002301556242866,
+          "survival_pct": 46.666666666666664,
+          "welfare": 33.93390670550511
+        },
+        {
+          "mean_lambda": 0.49125034066474677,
+          "survival_pct": 40.0,
+          "welfare": 33.74534686578482
+        },
+        {
+          "mean_lambda": 0.46387195060826514,
+          "survival_pct": 50.0,
+          "welfare": 32.683484474930445
+        },
+        {
+          "mean_lambda": 0.4884851995779956,
+          "survival_pct": 63.33333333333333,
+          "welfare": 33.696164310607905
+        },
+        {
+          "mean_lambda": 0.48914408141845617,
+          "survival_pct": 40.0,
+          "welfare": 33.61671560265268
+        },
+        {
+          "mean_lambda": 0.481684156876941,
+          "survival_pct": 56.666666666666664,
+          "welfare": 33.40490910759344
+        },
+        {
+          "mean_lambda": 0.4830347837977682,
+          "survival_pct": 46.666666666666664,
+          "welfare": 33.48825604125448
+        },
+        {
+          "mean_lambda": 0.49567840918989525,
+          "survival_pct": 60.0,
+          "welfare": 34.048686075903255
+        },
+        {
+          "mean_lambda": 0.49642499181907934,
+          "survival_pct": 43.333333333333336,
+          "welfare": 33.93762187173788
+        },
+        {
+          "mean_lambda": 0.49684898556932766,
+          "survival_pct": 66.66666666666666,
+          "welfare": 34.04679919566314
+        },
+        {
+          "mean_lambda": 0.47777105650244905,
+          "survival_pct": 60.0,
+          "welfare": 33.18702564569601
+        }
+      ],
+      "oracle_survival": 99.8,
+      "oracle_welfare": 48.0
+    },
+    {
+      "mn_ratio": 0.2,
+      "M": 4.0,
+      "N": 20,
+      "lambda_mean": 0.4906741423477041,
+      "lambda_std": 0.006290913676052691,
+      "lambda_ci95": [
+        0.48791702786613766,
+        0.4934312568292706
+      ],
+      "survival_mean": 51.83333333333333,
+      "survival_std": 8.722576072086348,
+      "welfare_mean": 40.551991805779224,
+      "welfare_std": 0.3783712494554181,
+      "trapped": true,
+      "n_seeds": 20,
+      "seed_results": [
+        {
+          "mean_lambda": 0.49955423625342593,
+          "survival_pct": 43.333333333333336,
+          "welfare": 40.85523906766147
+        },
+        {
+          "mean_lambda": 0.4942817860099183,
+          "survival_pct": 50.0,
+          "welfare": 40.93661716469061
+        },
+        {
+          "mean_lambda": 0.480123527008762,
+          "survival_pct": 50.0,
+          "welfare": 40.08429352118351
+        },
+        {
+          "mean_lambda": 0.48492513973221707,
+          "survival_pct": 56.666666666666664,
+          "welfare": 40.17339689064968
+        },
+        {
+          "mean_lambda": 0.4891814398336735,
+          "survival_pct": 66.66666666666666,
+          "welfare": 40.31707253819753
+        },
+        {
+          "mean_lambda": 0.4879049880232477,
+          "survival_pct": 46.666666666666664,
+          "welfare": 40.250542840099236
+        },
+        {
+          "mean_lambda": 0.5028639100196547,
+          "survival_pct": 56.666666666666664,
+          "welfare": 41.40579412306593
+        },
+        {
+          "mean_lambda": 0.49294189122703985,
+          "survival_pct": 46.666666666666664,
+          "welfare": 40.84653472354224
+        },
+        {
+          "mean_lambda": 0.4887467108405231,
+          "survival_pct": 36.666666666666664,
+          "welfare": 40.286151087985964
+        },
+        {
+          "mean_lambda": 0.4926462706152688,
+          "survival_pct": 46.666666666666664,
+          "welfare": 40.62484105849989
+        },
+        {
+          "mean_lambda": 0.4966236599140102,
+          "survival_pct": 43.333333333333336,
+          "welfare": 40.84197197673693
+        },
+        {
+          "mean_lambda": 0.4834616270793532,
+          "survival_pct": 53.333333333333336,
+          "welfare": 40.1650889423539
+        },
+        {
+          "mean_lambda": 0.49110778527444354,
+          "survival_pct": 63.33333333333333,
+          "welfare": 40.673400136099765
+        },
+        {
+          "mean_lambda": 0.5022374752372831,
+          "survival_pct": 40.0,
+          "welfare": 41.22989484489204
+        },
+        {
+          "mean_lambda": 0.4874640099126348,
+          "survival_pct": 60.0,
+          "welfare": 40.36008458330666
+        },
+        {
+          "mean_lambda": 0.4839253305424644,
+          "survival_pct": 46.666666666666664,
+          "welfare": 40.17068770133484
+        },
+        {
+          "mean_lambda": 0.4849473918500802,
+          "survival_pct": 60.0,
+          "welfare": 40.31462104844752
+        },
+        {
+          "mean_lambda": 0.48875897673419105,
+          "survival_pct": 43.333333333333336,
+          "welfare": 40.361117124422954
+        },
+        {
+          "mean_lambda": 0.49682266036597816,
+          "survival_pct": 66.66666666666666,
+          "welfare": 40.91746483836952
+        },
+        {
+          "mean_lambda": 0.48496403047991393,
+          "survival_pct": 60.0,
+          "welfare": 40.22502190404432
+        }
+      ],
+      "oracle_survival": 99.8,
+      "oracle_welfare": 62.0
+    },
+    {
+      "mn_ratio": 0.25,
+      "M": 5.0,
+      "N": 20,
+      "lambda_mean": 0.4940759997907147,
+      "lambda_std": 0.008434116108831576,
+      "lambda_ci95": [
+        0.4903795854286179,
+        0.4977724141528115
+      ],
+      "survival_mean": 52.166666666666664,
+      "survival_std": 8.516324194027476,
+      "welfare_mean": 47.64401488097625,
+      "welfare_std": 0.6397770853259453,
+      "trapped": true,
+      "n_seeds": 20,
+      "seed_results": [
+        {
+          "mean_lambda": 0.49997571872013796,
+          "survival_pct": 43.333333333333336,
+          "welfare": 47.87007746820896
+        },
+        {
+          "mean_lambda": 0.49001654440759396,
+          "survival_pct": 50.0,
+          "welfare": 47.38321221045887
+        },
+        {
+          "mean_lambda": 0.4936068832059884,
+          "survival_pct": 56.666666666666664,
+          "welfare": 47.764667798383556
+        },
+        {
+          "mean_lambda": 0.4869773804242302,
+          "survival_pct": 56.666666666666664,
+          "welfare": 47.00239976048052
+        },
+        {
+          "mean_lambda": 0.4891255558641012,
+          "survival_pct": 66.66666666666666,
+          "welfare": 47.19925730954082
+        },
+        {
+          "mean_lambda": 0.4921101243739154,
+          "survival_pct": 46.666666666666664,
+          "welfare": 47.278696207126146
+        },
+        {
+          "mean_lambda": 0.5040908559387668,
+          "survival_pct": 56.666666666666664,
+          "welfare": 48.58005865934131
+        },
+        {
+          "mean_lambda": 0.49469104735137787,
+          "survival_pct": 46.666666666666664,
+          "welfare": 47.90555362900223
+        },
+        {
+          "mean_lambda": 0.49234233433599256,
+          "survival_pct": 40.0,
+          "welfare": 47.34128151471914
+        },
+        {
+          "mean_lambda": 0.49924879458746807,
+          "survival_pct": 46.666666666666664,
+          "welfare": 47.875053723646126
+        },
+        {
+          "mean_lambda": 0.4966986922366585,
+          "survival_pct": 43.333333333333336,
+          "welfare": 47.806713416268366
+        },
+        {
+          "mean_lambda": 0.48004219286276373,
+          "survival_pct": 50.0,
+          "welfare": 46.787660967637535
+        },
+        {
+          "mean_lambda": 0.4878400735288409,
+          "survival_pct": 63.33333333333333,
+          "welfare": 47.29956136831013
+        },
+        {
+          "mean_lambda": 0.5087105471838538,
+          "survival_pct": 40.0,
+          "welfare": 48.76292684494775
+        },
+        {
+          "mean_lambda": 0.5022261975269976,
+          "survival_pct": 60.0,
+          "welfare": 48.24934543451591
+        },
+        {
+          "mean_lambda": 0.4841201376418181,
+          "survival_pct": 46.666666666666664,
+          "welfare": 46.88326846682541
+        },
+        {
+          "mean_lambda": 0.49146747469932095,
+          "survival_pct": 60.0,
+          "welfare": 47.59382204873054
+        },
+        {
+          "mean_lambda": 0.4918433643086372,
+          "survival_pct": 43.333333333333336,
+          "welfare": 47.424172288731285
+        },
+        {
+          "mean_lambda": 0.5139070825753277,
+          "survival_pct": 66.66666666666666,
+          "welfare": 49.14516657338711
+        },
+        {
+          "mean_lambda": 0.48247899404050215,
+          "survival_pct": 60.0,
+          "welfare": 46.72740192926334
+        }
+      ],
+      "oracle_survival": 99.8,
+      "oracle_welfare": 76.0
+    },
+    {
+      "mn_ratio": 0.3,
+      "M": 6.0,
+      "N": 20,
+      "lambda_mean": 0.49548069163376435,
+      "lambda_std": 0.0070174838747708,
+      "lambda_ci95": [
+        0.4924051437226651,
+        0.4985562395448636
+      ],
+      "survival_mean": 52.33333333333333,
+      "survival_std": 8.69865890046659,
+      "welfare_mean": 54.659786203434706,
+      "welfare_std": 0.6934152326517763,
+      "trapped": true,
+      "n_seeds": 20,
+      "seed_results": [
+        {
+          "mean_lambda": 0.5010976504795247,
+          "survival_pct": 43.333333333333336,
+          "welfare": 54.72603187655734
+        },
+        {
+          "mean_lambda": 0.4808512389396757,
+          "survival_pct": 46.666666666666664,
+          "welfare": 53.38716161587054
+        },
+        {
+          "mean_lambda": 0.4921877618086291,
+          "survival_pct": 56.666666666666664,
+          "welfare": 54.647068203390425
+        },
+        {
+          "mean_lambda": 0.5008439079525503,
+          "survival_pct": 60.0,
+          "welfare": 55.13422344877069
+        },
+        {
+          "mean_lambda": 0.4913298583590372,
+          "survival_pct": 66.66666666666666,
+          "welfare": 54.21460284360498
+        },
+        {
+          "mean_lambda": 0.49084823384335774,
+          "survival_pct": 46.666666666666664,
+          "welfare": 54.01543800486379
+        },
+        {
+          "mean_lambda": 0.5093052644438597,
+          "survival_pct": 56.666666666666664,
+          "welfare": 56.04754558393852
+        },
+        {
+          "mean_lambda": 0.4959242030405144,
+          "survival_pct": 46.666666666666664,
+          "welfare": 54.95740834714365
+        },
+        {
+          "mean_lambda": 0.4936787788493131,
+          "survival_pct": 40.0,
+          "welfare": 54.31336256716524
+        },
+        {
+          "mean_lambda": 0.4961328781251104,
+          "survival_pct": 46.666666666666664,
+          "welfare": 54.42102922668379
+        },
+        {
+          "mean_lambda": 0.49901093387734624,
+          "survival_pct": 43.333333333333336,
+          "welfare": 54.953984177381514
+        },
+        {
+          "mean_lambda": 0.49025178161263455,
+          "survival_pct": 53.333333333333336,
+          "welfare": 54.42955787757811
+        },
+        {
+          "mean_lambda": 0.49166745332500755,
+          "survival_pct": 63.33333333333333,
+          "welfare": 54.20550036304506
+        },
+        {
+          "mean_lambda": 0.49740975886534267,
+          "survival_pct": 40.0,
+          "welfare": 54.89932819415985
+        },
+        {
+          "mean_lambda": 0.5050997907636314,
+          "survival_pct": 60.0,
+          "welfare": 55.636262088091804
+        },
+        {
+          "mean_lambda": 0.49048021174037726,
+          "survival_pct": 46.666666666666664,
+          "welfare": 54.20506509432281
+        },
+        {
+          "mean_lambda": 0.4984756495179244,
+          "survival_pct": 60.0,
+          "welfare": 55.207652061649455
+        },
+        {
+          "mean_lambda": 0.49379869246751334,
+          "survival_pct": 43.333333333333336,
+          "welfare": 54.32623427243054
+        },
+        {
+          "mean_lambda": 0.5074127697595082,
+          "survival_pct": 66.66666666666666,
+          "welfare": 55.95404768470919
+        },
+        {
+          "mean_lambda": 0.48380701490442934,
+          "survival_pct": 60.0,
+          "welfare": 53.51422053733672
+        }
+      ],
+      "oracle_survival": 99.8,
+      "oracle_welfare": 90.0
+    },
+    {
+      "mn_ratio": 0.4,
+      "M": 8.0,
+      "N": 20,
+      "lambda_mean": 0.49709595083192176,
+      "lambda_std": 0.009606821548471183,
+      "lambda_ci95": [
+        0.49288557565002383,
+        0.5013063260138196
+      ],
+      "survival_mean": 52.5,
+      "survival_std": 8.55537517847373,
+      "welfare_mean": 68.63472632436095,
+      "welfare_std": 1.2273102789530013,
+      "trapped": true,
+      "n_seeds": 20,
+      "seed_results": [
+        {
+          "mean_lambda": 0.5008679346839364,
+          "survival_pct": 43.333333333333336,
+          "welfare": 68.61497120415451
+        },
+        {
+          "mean_lambda": 0.49061888253784774,
+          "survival_pct": 50.0,
+          "welfare": 68.20566068598264
+        },
+        {
+          "mean_lambda": 0.4919999180486278,
+          "survival_pct": 56.666666666666664,
+          "welfare": 67.76717277317204
+        },
+        {
+          "mean_lambda": 0.5032856794482077,
+          "survival_pct": 60.0,
+          "welfare": 69.32575210285002
+        },
+        {
+          "mean_lambda": 0.48642353309491415,
+          "survival_pct": 66.66666666666666,
+          "welfare": 67.15697568286599
+        },
+        {
+          "mean_lambda": 0.49268397846962997,
+          "survival_pct": 46.666666666666664,
+          "welfare": 67.77186387488682
+        },
+        {
+          "mean_lambda": 0.5110071219691993,
+          "survival_pct": 56.666666666666664,
+          "welfare": 70.6788136164341
+        },
+        {
+          "mean_lambda": 0.49800632225995745,
+          "survival_pct": 50.0,
+          "welfare": 69.08241221534246
+        },
+        {
+          "mean_lambda": 0.4954582471931187,
+          "survival_pct": 40.0,
+          "welfare": 68.31623167320058
+        },
+        {
+          "mean_lambda": 0.5047572917173662,
+          "survival_pct": 46.666666666666664,
+          "welfare": 69.46141056005143
+        },
+        {
+          "mean_lambda": 0.5000443217571896,
+          "survival_pct": 43.333333333333336,
+          "welfare": 68.9260234083127
+        },
+        {
+          "mean_lambda": 0.48016514067264787,
+          "survival_pct": 50.0,
+          "welfare": 66.67558469825941
+        },
+        {
+          "mean_lambda": 0.48950484843953357,
+          "survival_pct": 63.33333333333333,
+          "welfare": 67.66446218382193
+        },
+        {
+          "mean_lambda": 0.4972111477014367,
+          "survival_pct": 40.0,
+          "welfare": 68.69102374608202
+        },
+        {
+          "mean_lambda": 0.5048487272405476,
+          "survival_pct": 60.0,
+          "welfare": 69.65045982655964
+        },
+        {
+          "mean_lambda": 0.481601467693989,
+          "survival_pct": 46.666666666666664,
+          "welfare": 66.92666971243949
+        },
+        {
+          "mean_lambda": 0.5125190574795824,
+          "survival_pct": 60.0,
+          "welfare": 70.63810667753651
+        },
+        {
+          "mean_lambda": 0.5027455544592436,
+          "survival_pct": 43.333333333333336,
+          "welfare": 69.02548631919892
+        },
+        {
+          "mean_lambda": 0.5133220912439909,
+          "survival_pct": 66.66666666666666,
+          "welfare": 70.96539088958976
+        },
+        {
+          "mean_lambda": 0.4848477505274674,
+          "survival_pct": 60.0,
+          "welfare": 67.15005463647793
+        }
+      ],
+      "oracle_survival": 99.8,
+      "oracle_welfare": 118.0
+    },
+    {
+      "mn_ratio": 0.5,
+      "M": 10.0,
+      "N": 20,
+      "lambda_mean": 0.4982955249473954,
+      "lambda_std": 0.009325536864419283,
+      "lambda_ci95": [
+        0.49420842821371314,
+        0.5023826216810776
+      ],
+      "survival_mean": 52.5,
+      "survival_std": 8.620067027323833,
+      "welfare_mean": 82.69731878859389,
+      "welfare_std": 1.6025719338886275,
+      "trapped": true,
+      "n_seeds": 20,
+      "seed_results": [
+        {
+          "mean_lambda": 0.5018086218836317,
+          "survival_pct": 43.333333333333336,
+          "welfare": 82.81338769751927
+        },
+        {
+          "mean_lambda": 0.48087175388126996,
+          "survival_pct": 46.666666666666664,
+          "welfare": 79.98965052149889
+        },
+        {
+          "mean_lambda": 0.5015928294278956,
+          "survival_pct": 56.666666666666664,
+          "welfare": 83.22461031197743
+        },
+        {
+          "mean_lambda": 0.4980625323102259,
+          "survival_pct": 60.0,
+          "welfare": 82.88099901501931
+        },
+        {
+          "mean_lambda": 0.48195881069348945,
+          "survival_pct": 66.66666666666666,
+          "welfare": 79.59481105597071
+        },
+        {
+          "mean_lambda": 0.49481030734587234,
+          "survival_pct": 46.666666666666664,
+          "welfare": 82.20670722907175
+        },
+        {
+          "mean_lambda": 0.515125740346988,
+          "survival_pct": 56.666666666666664,
+          "welfare": 85.58372609244559
+        },
+        {
+          "mean_lambda": 0.49929547223209114,
+          "survival_pct": 50.0,
+          "welfare": 83.34126460435593
+        },
+        {
+          "mean_lambda": 0.5016354041273553,
+          "survival_pct": 40.0,
+          "welfare": 82.75446034255222
+        },
+        {
+          "mean_lambda": 0.5033415160587428,
+          "survival_pct": 46.666666666666664,
+          "welfare": 83.53353830787115
+        },
+        {
+          "mean_lambda": 0.501926098584282,
+          "survival_pct": 43.333333333333336,
+          "welfare": 83.18883649820224
+        },
+        {
+          "mean_lambda": 0.49285101407056964,
+          "survival_pct": 53.333333333333336,
+          "welfare": 81.8653502595473
+        },
+        {
+          "mean_lambda": 0.49494976741977403,
+          "survival_pct": 63.33333333333333,
+          "welfare": 82.30688908946959
+        },
+        {
+          "mean_lambda": 0.4929282334221354,
+          "survival_pct": 40.0,
+          "welfare": 82.09951502443283
+        },
+        {
+          "mean_lambda": 0.5060754620118909,
+          "survival_pct": 60.0,
+          "welfare": 84.02666640187049
+        },
+        {
+          "mean_lambda": 0.48934624814445354,
+          "survival_pct": 46.666666666666664,
+          "welfare": 81.04089932819822
+        },
+        {
+          "mean_lambda": 0.5063739862220101,
+          "survival_pct": 60.0,
+          "welfare": 83.94916722960112
+        },
+        {
+          "mean_lambda": 0.5032148568092686,
+          "survival_pct": 43.333333333333336,
+          "welfare": 83.03824473569156
+        },
+        {
+          "mean_lambda": 0.5155979846639721,
+          "survival_pct": 66.66666666666666,
+          "welfare": 86.09424977126842
+        },
+        {
+          "mean_lambda": 0.4841438592919905,
+          "survival_pct": 60.0,
+          "welfare": 80.4134022553139
+        }
+      ],
+      "oracle_survival": 99.8,
+      "oracle_welfare": 146.0
+    },
+    {
+      "mn_ratio": 0.6,
+      "M": 12.0,
+      "N": 20,
+      "lambda_mean": 0.49966493354811464,
+      "lambda_std": 0.007354390536062169,
+      "lambda_ci95": [
+        0.49644172978245826,
+        0.502888137313771
+      ],
+      "survival_mean": 52.66666666666667,
+      "survival_std": 8.537498983243795,
+      "welfare_mean": 96.96360683996143,
+      "welfare_std": 1.6322188869444711,
+      "trapped": true,
+      "n_seeds": 20,
+      "seed_results": [
+        {
+          "mean_lambda": 0.5002348556363956,
+          "survival_pct": 43.333333333333336,
+          "welfare": 96.65286603124618
+        },
+        {
+          "mean_lambda": 0.5011534085792875,
+          "survival_pct": 50.0,
+          "welfare": 97.48406076845312
+        },
+        {
+          "mean_lambda": 0.4933735725314607,
+          "survival_pct": 56.666666666666664,
+          "welfare": 95.60841217645624
+        },
+        {
+          "mean_lambda": 0.49392849579304954,
+          "survival_pct": 60.0,
+          "welfare": 96.04951709063704
+        },
+        {
+          "mean_lambda": 0.4915268367374664,
+          "survival_pct": 66.66666666666666,
+          "welfare": 95.33975847144997
+        },
+        {
+          "mean_lambda": 0.4961796272495928,
+          "survival_pct": 46.666666666666664,
+          "welfare": 95.51603197721276
+        },
+        {
+          "mean_lambda": 0.5149240896404377,
+          "survival_pct": 56.666666666666664,
+          "welfare": 100.7159981731145
+        },
+        {
+          "mean_lambda": 0.5001003715749485,
+          "survival_pct": 50.0,
+          "welfare": 97.55756614352374
+        },
+        {
+          "mean_lambda": 0.5005405931234334,
+          "survival_pct": 40.0,
+          "welfare": 96.56990318449701
+        },
+        {
+          "mean_lambda": 0.5037297717408847,
+          "survival_pct": 46.666666666666664,
+          "welfare": 97.82661019252737
+        },
+        {
+          "mean_lambda": 0.5015618509379358,
+          "survival_pct": 43.333333333333336,
+          "welfare": 97.74569993592796
+        },
+        {
+          "mean_lambda": 0.4929589124728234,
+          "survival_pct": 53.333333333333336,
+          "welfare": 95.68339097700952
+        },
+        {
+          "mean_lambda": 0.49143756586635196,
+          "survival_pct": 63.33333333333333,
+          "welfare": 95.10220810364204
+        },
+        {
+          "mean_lambda": 0.5011743179737931,
+          "survival_pct": 40.0,
+          "welfare": 96.94931524606201
+        },
+        {
+          "mean_lambda": 0.5069260618252268,
+          "survival_pct": 60.0,
+          "welfare": 98.41144058484673
+        },
+        {
+          "mean_lambda": 0.49190007162618643,
+          "survival_pct": 46.666666666666664,
+          "welfare": 95.4036195318623
+        },
+        {
+          "mean_lambda": 0.5062899645238244,
+          "survival_pct": 60.0,
+          "welfare": 98.2091469884331
+        },
+        {
+          "mean_lambda": 0.5027711591610798,
+          "survival_pct": 43.333333333333336,
+          "welfare": 96.94561152445685
+        },
+        {
+          "mean_lambda": 0.5152150890394425,
+          "survival_pct": 66.66666666666666,
+          "welfare": 100.67814969242416
+        },
+        {
+          "mean_lambda": 0.4873720549286714,
+          "survival_pct": 60.0,
+          "welfare": 94.82283000544615
+        }
+      ],
+      "oracle_survival": 99.8,
+      "oracle_welfare": 174.0
+    },
+    {
+      "mn_ratio": 0.75,
+      "M": 15.0,
+      "N": 20,
+      "lambda_mean": 0.49916093472574286,
+      "lambda_std": 0.009292582655894523,
+      "lambda_ci95": [
+        0.4950882808107402,
+        0.5032335886407455
+      ],
+      "survival_mean": 52.5,
+      "survival_std": 8.490190417966684,
+      "welfare_mean": 117.65229690222884,
+      "welfare_std": 2.5608967444331356,
+      "trapped": true,
+      "n_seeds": 20,
+      "seed_results": [
+        {
+          "mean_lambda": 0.5034070592871794,
+          "survival_pct": 43.333333333333336,
+          "welfare": 118.11556611713277
+        },
+        {
+          "mean_lambda": 0.500458292842509,
+          "survival_pct": 50.0,
+          "welfare": 118.55276900066809
+        },
+        {
+          "mean_lambda": 0.4833964662815832,
+          "survival_pct": 53.333333333333336,
+          "welfare": 113.76444231596356
+        },
+        {
+          "mean_lambda": 0.49679180689531577,
+          "survival_pct": 60.0,
+          "welfare": 116.93380407883355
+        },
+        {
+          "mean_lambda": 0.4815868603720276,
+          "survival_pct": 66.66666666666666,
+          "welfare": 112.54881403840986
+        },
+        {
+          "mean_lambda": 0.49752270756058015,
+          "survival_pct": 46.666666666666664,
+          "welfare": 116.20088464995662
+        },
+        {
+          "mean_lambda": 0.5172571960533985,
+          "survival_pct": 56.666666666666664,
+          "welfare": 122.9690672727238
+        },
+        {
+          "mean_lambda": 0.5009205550679515,
+          "survival_pct": 50.0,
+          "welfare": 118.88579774677788
+        },
+        {
+          "mean_lambda": 0.5014992778352417,
+          "survival_pct": 40.0,
+          "welfare": 117.46796129237434
+        },
+        {
+          "mean_lambda": 0.5031046147481454,
+          "survival_pct": 46.666666666666664,
+          "welfare": 118.49317139854416
+        },
+        {
+          "mean_lambda": 0.5021051978419165,
+          "survival_pct": 43.333333333333336,
+          "welfare": 118.52267400937139
+        },
+        {
+          "mean_lambda": 0.487406485418671,
+          "survival_pct": 53.333333333333336,
+          "welfare": 115.00399772443757
+        },
+        {
+          "mean_lambda": 0.49530754197028426,
+          "survival_pct": 63.33333333333333,
+          "welfare": 117.01103165423135
+        },
+        {
+          "mean_lambda": 0.5003097702390943,
+          "survival_pct": 40.0,
+          "welfare": 117.64746760140146
+        },
+        {
+          "mean_lambda": 0.5077901255375216,
+          "survival_pct": 60.0,
+          "welfare": 119.9912930605348
+        },
+        {
+          "mean_lambda": 0.49766411811337347,
+          "survival_pct": 46.666666666666664,
+          "welfare": 117.29329069293536
+        },
+        {
+          "mean_lambda": 0.5103726298214222,
+          "survival_pct": 60.0,
+          "welfare": 121.03500568407473
+        },
+        {
+          "mean_lambda": 0.4988935947493049,
+          "survival_pct": 43.333333333333336,
+          "welfare": 117.51973689691724
+        },
+        {
+          "mean_lambda": 0.5132756907344488,
+          "survival_pct": 66.66666666666666,
+          "welfare": 121.45344308878592
+        },
+        {
+          "mean_lambda": 0.4841487031448875,
+          "survival_pct": 60.0,
+          "welfare": 113.63571972050224
+        }
+      ],
+      "oracle_survival": 99.8,
+      "oracle_welfare": 216.0
+    },
+    {
+      "mn_ratio": 0.9,
+      "M": 18.0,
+      "N": 20,
+      "lambda_mean": 0.5004796323057056,
+      "lambda_std": 0.009609048147337353,
+      "lambda_ci95": [
+        0.4962682812738287,
+        0.5046909833375824
+      ],
+      "survival_mean": 52.5,
+      "survival_std": 8.490190417966684,
+      "welfare_mean": 138.91873559438872,
+      "welfare_std": 3.1681716455626416,
+      "trapped": true,
+      "n_seeds": 20,
+      "seed_results": [
+        {
+          "mean_lambda": 0.5039834100478877,
+          "survival_pct": 43.333333333333336,
+          "welfare": 139.29242322750923
+        },
+        {
+          "mean_lambda": 0.5015090860447199,
+          "survival_pct": 50.0,
+          "welfare": 139.746698685842
+        },
+        {
+          "mean_lambda": 0.4868391469363681,
+          "survival_pct": 53.333333333333336,
+          "welfare": 134.44635199953711
+        },
+        {
+          "mean_lambda": 0.4980870106356784,
+          "survival_pct": 60.0,
+          "welfare": 138.5162143000259
+        },
+        {
+          "mean_lambda": 0.483239774067104,
+          "survival_pct": 66.66666666666666,
+          "welfare": 133.33982377260423
+        },
+        {
+          "mean_lambda": 0.49932562609283343,
+          "survival_pct": 46.666666666666664,
+          "welfare": 137.77075112691708
+        },
+        {
+          "mean_lambda": 0.5247313847419656,
+          "survival_pct": 56.666666666666664,
+          "welfare": 146.61491286195667
+        },
+        {
+          "mean_lambda": 0.5014929834508725,
+          "survival_pct": 50.0,
+          "welfare": 140.19866969220467
+        },
+        {
+          "mean_lambda": 0.5012768678443777,
+          "survival_pct": 40.0,
+          "welfare": 138.6845323089618
+        },
+        {
+          "mean_lambda": 0.49744575030542654,
+          "survival_pct": 46.666666666666664,
+          "welfare": 137.61888631138234
+        },
+        {
+          "mean_lambda": 0.5054915075552608,
+          "survival_pct": 43.333333333333336,
+          "welfare": 140.9356015180057
+        },
+        {
+          "mean_lambda": 0.4874894760667873,
+          "survival_pct": 53.333333333333336,
+          "welfare": 134.64764357160038
+        },
+        {
+          "mean_lambda": 0.4958987213973528,
+          "survival_pct": 63.33333333333333,
+          "welfare": 137.96028549373688
+        },
+        {
+          "mean_lambda": 0.5030712880079077,
+          "survival_pct": 40.0,
+          "welfare": 139.70968007013872
+        },
+        {
+          "mean_lambda": 0.5084274357166488,
+          "survival_pct": 60.0,
+          "welfare": 141.61515670482083
+        },
+        {
+          "mean_lambda": 0.5013839872077026,
+          "survival_pct": 46.666666666666664,
+          "welfare": 138.71478430409596
+        },
+        {
+          "mean_lambda": 0.5110382590705411,
+          "survival_pct": 60.0,
+          "welfare": 142.77246619388734
+        },
+        {
+          "mean_lambda": 0.5013227881149317,
+          "survival_pct": 43.333333333333336,
+          "welfare": 138.51940484868447
+        },
+        {
+          "mean_lambda": 0.511815069022021,
+          "survival_pct": 66.66666666666666,
+          "welfare": 143.01487647131256
+        },
+        {
+          "mean_lambda": 0.48572307378772356,
+          "survival_pct": 60.0,
+          "welfare": 134.25554842455097
+        }
+      ],
+      "oracle_survival": 99.8,
+      "oracle_welfare": 258.0
+    },
+    {
+      "mn_ratio": 1.0,
+      "M": 20.0,
+      "N": 20,
+      "lambda_mean": 0.502745859206519,
+      "lambda_std": 0.007218289457034622,
+      "lambda_ci95": [
+        0.49958230436870793,
+        0.5059094140443301
+      ],
+      "survival_mean": 52.833333333333336,
+      "survival_std": 8.70982842030261,
+      "welfare_mean": 153.76387486671175,
+      "welfare_std": 2.764439974157013,
+      "trapped": true,
+      "n_seeds": 20,
+      "seed_results": [
+        {
+          "mean_lambda": 0.5042767207451101,
+          "survival_pct": 43.333333333333336,
+          "welfare": 153.4142290329225
+        },
+        {
+          "mean_lambda": 0.5035258351867126,
+          "survival_pct": 50.0,
+          "welfare": 153.72225846946444
+        },
+        {
+          "mean_lambda": 0.4905188463125042,
+          "survival_pct": 56.666666666666664,
+          "welfare": 149.611430488509
+        },
+        {
+          "mean_lambda": 0.49835361832553127,
+          "survival_pct": 60.0,
+          "welfare": 152.51996744209544
+        },
+        {
+          "mean_lambda": 0.5042551624336084,
+          "survival_pct": 66.66666666666666,
+          "welfare": 153.9276374694138
+        },
+        {
+          "mean_lambda": 0.4995770928655929,
+          "survival_pct": 46.666666666666664,
+          "welfare": 151.56566030064894
+        },
+        {
+          "mean_lambda": 0.5247240832148982,
+          "survival_pct": 56.666666666666664,
+          "welfare": 162.09351090163142
+        },
+        {
+          "mean_lambda": 0.501832345341245,
+          "survival_pct": 50.0,
+          "welfare": 154.4756789148666
+        },
+        {
+          "mean_lambda": 0.49945820584474326,
+          "survival_pct": 40.0,
+          "welfare": 152.17477700788277
+        },
+        {
+          "mean_lambda": 0.5046159168280511,
+          "survival_pct": 46.666666666666664,
+          "welfare": 154.2269383425365
+        },
+        {
+          "mean_lambda": 0.50492136229425,
+          "survival_pct": 43.333333333333336,
+          "welfare": 154.66260548678306
+        },
+        {
+          "mean_lambda": 0.4973439731373171,
+          "survival_pct": 53.333333333333336,
+          "welfare": 152.87815066088933
+        },
+        {
+          "mean_lambda": 0.4962117940725071,
+          "survival_pct": 63.33333333333333,
+          "welfare": 151.94208073309755
+        },
+        {
+          "mean_lambda": 0.4982235647163091,
+          "survival_pct": 40.0,
+          "welfare": 152.0483468984703
+        },
+        {
+          "mean_lambda": 0.508734632601302,
+          "survival_pct": 60.0,
+          "welfare": 156.0175334495017
+        },
+        {
+          "mean_lambda": 0.4976759779630903,
+          "survival_pct": 46.666666666666664,
+          "welfare": 151.4279402313934
+        },
+        {
+          "mean_lambda": 0.5112453954605051,
+          "survival_pct": 60.0,
+          "welfare": 157.60837009050834
+        },
+        {
+          "mean_lambda": 0.5006519325356508,
+          "survival_pct": 43.333333333333336,
+          "welfare": 152.01618467342553
+        },
+        {
+          "mean_lambda": 0.5121054270908626,
+          "survival_pct": 66.66666666666666,
+          "welfare": 157.57152324850594
+        },
+        {
+          "mean_lambda": 0.49666529716058894,
+          "survival_pct": 63.33333333333333,
+          "welfare": 151.3726734916888
+        }
+      ],
+      "oracle_survival": 99.8,
+      "oracle_welfare": 286.0
+    }
+  ],
+  "summary": {
+    "trapped_count": 12,
+    "total_conditions": 12,
+    "boundary_mn": null
+  },
+  "time_seconds": 949.8060786724091
+}

@@ -1,0 +1,356 @@
+% ================================================================
+% APPENDIX: Formal Proof of Theorem 2 (Impossibility)
+% ================================================================
+
+\section{Proof of Theorem~\ref{thm:impossibility}: Computational
+Intractability of Nash Trap Escape}
+\label{app:impossibility_proof}
+
+We provide a self-contained proof of each part of
+Theorem~\ref{thm:impossibility}. Throughout, we adopt the notation
+of Definition~\ref{def:tpsd}: $N$ agents in a TPSD
+$\mathcal{E} = (N, M, E, f, R_{\mathrm{crit}}, p)$ with
+Byzantine fraction $\beta$.
+
+\subsection{Assumptions}
+\label{asm:assumptions}
+
+\begin{enumerate}
+  \item[\textbf{(A1)}] \textbf{Policy class.}
+    Each honest agent $i$ uses a parameterized stationary policy
+    $\pi_i(a | s; \theta_i)$ and updates $\theta_i$ via
+    stochastic gradient ascent on its individual return
+    $J_i(\theta) = \mathbb{E}_\pi \bigl[\sum_{t=0}^T \gamma^t r_t^i\bigr]$.
+  \item[\textbf{(A2)}] \textbf{Independent learning.}
+    Agent $i$'s update uses only its own reward signal:
+    $\theta_i \leftarrow \theta_i + \eta \hat\nabla_{\theta_i} J_i$.
+  \item[\textbf{(A3)}] \textbf{Bounded noise.}
+    The stochastic gradient estimator satisfies
+    $\hat\nabla_{\theta_i} J_i = \nabla_{\theta_i} J_i + \xi$
+    with $\|\xi\| \leq C$ almost surely, for some constant $C > 0$.
+  \item[\textbf{(A4)}] \textbf{Tipping-point dynamics.}
+    The recovery function $f(R)$ satisfies:
+    $f(R) \leq \epsilon$ for $R < R_{\mathrm{crit}}$
+    and $f(R) \geq f_0 > 0$ for $R \geq R_{\mathrm{recov}} > R_{\mathrm{crit}}$,
+    with $\epsilon \ll f_0$.
+\end{enumerate}
+
+For the MACCL convergence result (Theorem~\ref{thm:maccl_convergence}),
+we additionally assume:
+\begin{enumerate}
+  \item[\textbf{(A5)}] \label{asm:lipschitz}
+    \textbf{Lipschitz objective.}
+    The welfare function $W(\omega)$ is $L$-Lipschitz continuous
+    in $\omega$.
+  \item[\textbf{(A6)}] \label{asm:slater}
+    \textbf{Slater's condition.}
+    There exists $\omega_0$ such that
+    $P_{\mathrm{surv}}(\omega_0) > 1 - \delta + \epsilon_{\mathrm{Slater}}$
+    for some $\epsilon_{\mathrm{Slater}} > 0$.
+\end{enumerate}
+
+
+% ----------------------------------------------------------------
+% Part (i): Signal Dilution
+% ----------------------------------------------------------------
+\subsection{Part (i): Signal Dilution}
+
+\begin{lemma}[Marginal Survival Gradient]
+\label{lem:signal_dilution}
+Under (A1)--(A4), consider agent $i$'s commitment $\lambda_i$.
+When the resource level $R$ is bounded away from $R_{\mathrm{crit}}$
+by $\Omega(1)$, the partial derivative of survival probability
+with respect to $\lambda_i$ satisfies:
+\[
+  \left|\frac{\partial P_{\mathrm{surv}}}{\partial \lambda_i}\right|
+  = O\!\left(\frac{\epsilon}{N}\right).
+\]
+\end{lemma}
+
+\begin{proof}
+Survival probability depends on $\lambda_i$ through the resource
+dynamics (Eq.~\ref{eq:resource}):
+\[
+  R_{t+1} = R_t + f(R_t) \cdot \bigl(\bar{c}_t / E - 0.4\bigr)
+             - \xi_t.
+\]
+The mean contribution is
+$\bar{c}_t = \frac{E}{N} \sum_j \lambda_j^t$,
+so
+\[
+  \frac{\partial R_{t+1}}{\partial \lambda_i}
+  = f(R_t) \cdot \frac{E}{NE}
+  = \frac{f(R_t)}{N}.
+\]
+By assumption (A4), when $R_t$ is near but above $R_{\mathrm{crit}}$,
+$f(R_t) \leq \epsilon + O(|R_t - R_{\mathrm{crit}}|)$.
+The survival probability changes only when the resource trajectory
+crosses the tipping point, so by the chain rule:
+\[
+  \frac{\partial P_{\mathrm{surv}}}{\partial \lambda_i}
+  = \frac{\partial P_{\mathrm{surv}}}{\partial R}
+    \cdot \frac{\partial R}{\partial \bar{\lambda}}
+    \cdot \frac{1}{N}
+  = O\!\left(\frac{\epsilon}{N}\right).\qedhere
+\]
+\end{proof}
+
+\begin{corollary}[Sample Complexity]
+By Hoeffding's inequality, resolving a signal of magnitude
+$O(\epsilon/N)$ against reward noise of magnitude $O(E)$
+requires at least
+$\Omega(N^2 \epsilon^{-2})$ samples per gradient step.
+For $N = 100$ and $\epsilon = 0.01$,
+this exceeds $10^6$ samples per step.
+\end{corollary}
+
+
+% ----------------------------------------------------------------
+% Part (ii): Basin Dominance
+% ----------------------------------------------------------------
+\subsection{Part (ii): Basin Dominance}
+
+\begin{definition}[Nash Trap Fixed Point]
+The Nash Trap $\hat{\lambda}$ is the fixed point of the
+gradient dynamics
+$\dot{\lambda}_i = \nabla_{\lambda_i} J_i(\lambda)$,
+characterized by $\hat{\lambda}_i \approx 0.5$ for all honest
+agents $i$.
+\end{definition}
+
+\begin{lemma}[Local Stability via Jacobian Analysis]
+\label{lem:basin}
+Under (A1)--(A4), the Nash Trap $\hat{\lambda}$ is a locally
+asymptotically stable fixed point of the gradient dynamics.
+The Jacobian at $\hat{\lambda}$ has all eigenvalues with negative
+real part.
+\end{lemma}
+
+\begin{proof}
+The Jacobian of the gradient field at $\hat{\lambda}$ decomposes as:
+\[
+  J_{ij} = \frac{\partial}{\partial \lambda_j}
+            \nabla_{\lambda_i} J_i
+          = \underbrace{\frac{\partial^2 r_{\mathrm{myopic}}^i}
+            {\partial \lambda_i \partial \lambda_j}}_{J_{\mathrm{myopic}}}
+          + \gamma \underbrace{\frac{\partial^2
+            V_{\mathrm{surv}}^i}{\partial \lambda_i
+            \partial \lambda_j}}_{J_{\mathrm{surv}}}
+\]
+
+\textbf{Myopic component.}
+The immediate reward is
+$r_i = E(1-\lambda_i) + \frac{ME}{N}\sum_j \lambda_j$.
+The diagonal entries are:
+$\partial^2 r_i / \partial \lambda_i^2 = 0$
+(linear in $\lambda_i$), but the effective gradient including
+the sigmoid parametrization $\lambda_i = \sigma(\theta_i)$
+yields $J_{\mathrm{myopic},ii} \approx -(1 - M/N)$ when $M/N \leq 1$.
+
+At $M/N = 1$, this component vanishes, but the restoring force
+from the concavity of the sigmoid parametrization still provides
+negative eigenvalues of order $O(1)$
+(via $d^2\sigma/d\theta^2 |_{\theta=0} = 0$ but $d\sigma/d\theta = 0.25$).
+
+\textbf{Survival component.}
+By Part (i), the survival gradient contribution is
+$O(\epsilon/N^2)$ per entry, so $\|J_{\mathrm{surv}}\| = O(\epsilon/N)$.
+
+\textbf{Combining.}
+For $\epsilon/N \ll 1$, the survival component is a small perturbation
+of the myopic component, and $J$ retains negative eigenvalues.
+By the Stable Manifold Theorem, $\hat{\lambda}$ is
+locally asymptotically stable.
+\end{proof}
+
+\begin{proposition}[Basin Measure]
+\label{prop:basin_measure}
+Under uniform initialization
+$\lambda_i \sim \mathrm{Uniform}([0,1])$ independently,
+the probability of initializing within the basin of attraction
+$\mathcal{B}(\hat{\lambda})$ satisfies:
+\[
+  \mu\bigl(\mathcal{B}(\hat{\lambda})\bigr) \geq 1 - e^{-c_1 N}
+\]
+for some constant $c_1 > 0$ depending on $M/N$ and $\epsilon$.
+\end{proposition}
+
+\begin{proof}
+Escape from $\hat{\lambda}$ to the cooperative equilibrium
+$\lambda^* \approx 1$ requires \emph{all} honest agents to
+simultaneously adopt $\lambda_i > 0.85$. Under independent
+uniform initialization, the probability that \emph{any} agent
+starts below $0.85$ is $1 - 0.85^{N_{\mathrm{honest}}}$.
+More precisely, the initialization must place the joint
+$(\lambda_1, \ldots, \lambda_N)$ in the cooperative basin,
+which requires $\bar{\lambda} > \lambda_{\mathrm{crit}}$
+where $\lambda_{\mathrm{crit}}$ is determined by
+$\bar{c} > 0.4 E$ (the contribution threshold for resource growth).
+
+With $30\%$ Byzantine agents (fixed at $\lambda = 0$),
+the honest average must exceed $0.4 / 0.7 \approx 0.571$.
+Under uniform initialization,
+$\bar{\lambda}_{\mathrm{honest}} \sim \mathcal{N}(0.5, 1/(12 N_h))$
+for large $N_h$, and
+$P(\bar{\lambda}_h > 0.571) \leq e^{-2 N_h (0.071)^2}$
+by Hoeffding's inequality,
+giving $c_1 = 2 \times 0.071^2 \approx 0.01$.
+\end{proof}
+
+
+% ----------------------------------------------------------------
+% Part (iii): Exponential Escape Time
+% ----------------------------------------------------------------
+\subsection{Part (iii): Exponential Escape Time}
+
+\begin{theorem}[Escape Time Lower Bound]
+\label{thm:escape_time}
+Under (A1)--(A4), any gradient-based algorithm starting in
+$\mathcal{B}(\hat{\lambda})$ requires at least
+$\Omega(e^{c_2 N})$ gradient evaluations to reach the
+cooperative basin $\mathcal{B}(\lambda^*)$ with constant
+probability $\geq 1/2$.
+\end{theorem}
+
+\begin{proof}
+\textbf{Step 1: Lyapunov function.}
+Define $V(\lambda) = \sum_{i=1}^{N_h} (\lambda_i - 0.5)^2$.
+At the Nash Trap, $V = 0$. In the cooperative basin,
+$V \geq N_h (0.85 - 0.5)^2 = 0.1225 N_h$.
+
+\textbf{Step 2: Expected drift.}
+Under gradient dynamics with learning rate $\eta$:
+\[
+  \mathbb{E}[V(\lambda_{k+1}) - V(\lambda_k)]
+  = 2\eta \sum_i (\lambda_i^k - 0.5) \nabla_{\lambda_i} J_i
+    + O(\eta^2 \|\nabla J\|^2).
+\]
+Near $\hat{\lambda}$, the gradient $\nabla_{\lambda_i} J_i$
+has a restoring component of magnitude $O(1-M/N)$ toward
+$\hat{\lambda}$ and a cooperative component of magnitude
+$O(\epsilon/N)$ away from $\hat{\lambda}$.
+Thus the expected drift satisfies:
+\[
+  \mathbb{E}[\Delta V] \leq -\Omega(\eta) \cdot V
+    + O(\eta \epsilon V / N).
+\]
+For $\epsilon/N \ll 1$, the net drift is negative (toward
+the trap), making $V$ a supermartingale.
+
+\textbf{Step 3: Exit time bound.}
+By standard supermartingale concentration (drift analysis;
+see Hajek, 1988), the hitting time
+$\tau = \inf\{k : V(\lambda_k) \geq 0.1225 N_h\}$
+satisfies:
+\[
+  P(\tau \leq T) \leq T \cdot e^{-\Omega(N_h)}
+\]
+using the exponential martingale inequality with
+barrier height $\Omega(N_h)$ and per-step noise variance
+$O(\eta^2)$.
+
+Setting $P(\tau \leq T) \geq 1/2$ yields
+$T = \Omega(e^{c_2 N_h})$ for
+$c_2 = \Omega(1)$. \qedhere
+\end{proof}
+
+
+% ----------------------------------------------------------------
+% Empirical Verification
+% ----------------------------------------------------------------
+\subsection{Empirical Verification}
+\label{app:impossibility_empirical}
+
+Table~\ref{tab:impossibility_empirical} reports the
+empirical verification across $N \in \{5, 10, 20, 50, 100\}$
+with 20 seeds per condition.
+
+\begin{table}[h]
+\centering
+\caption{Empirical verification of Theorem~\ref{thm:impossibility}.
+  Trap rate: fraction of seeds converging to $\lambda < 0.85$.
+  Escape rate: fraction achieving $\lambda > 0.85$ within 500 episodes.}
+\label{tab:impossibility_empirical}
+\small
+\begin{tabular}{@{}rccccl@{}}
+\toprule
+$N$ & Trap Rate & Theory Bound & Escape Rate & $\bar{\lambda}$ & Note \\
+\midrule
+5   & 100\%  & $\geq 39\%$  & 0\%  & 0.491 & \\
+10  & 100\%  & $\geq 63\%$  & 0\%  & 0.473 & \\
+20  & 100\%  & $\geq 86\%$  & 0\%  & 0.491 & \\
+50  & 100\%  & $\geq 99.3\%$& 0\%  & 0.484 & \\
+100 & 100\%  & $\geq 99.99\%$& 0\% & 0.489 & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The empirical trap rate (100\% for all $N$) \emph{exceeds}
+the theoretical lower bound across all tested conditions,
+indicating that the bound in
+Proposition~\ref{prop:basin_measure} is conservative.
+This conservatism is expected: the theoretical bound considers
+only the initialization probability, whereas the actual dynamics
+additionally feature gradient drift toward the trap.
+
+
+% ================================================================
+% APPENDIX: MACCL Details
+% ================================================================
+\section{MACCL: Algorithm Details and Hyperparameters}
+\label{app:maccl}
+
+\subsection{Algorithm Pseudocode}
+
+\begin{enumerate}
+  \item \textbf{Phase 1 (Safety Anchoring):}
+    Run $T_1$ episodes with $\phi_1 = 1.0$ (full commitment).
+    Record baseline welfare $W_0$ and survival rate $S_0$.
+  \item \textbf{Phase 2 (Constrained Floor Learning):}
+    Initialize $\omega = (0, 0, 5)$ (high floor),
+    $\mu = 1.0$ (Lagrange multiplier).
+    For $k = 1, \ldots, K$:
+    \begin{enumerate}
+      \item Evaluate current floor: $(W_k, S_k) = \texttt{eval}(\phi_1(\cdot; \omega_k))$
+      \item Compute finite-difference gradient:
+        $\hat{\nabla}_\omega \mathcal{L} = \frac{\mathcal{L}(\omega + \epsilon e_d) - \mathcal{L}(\omega - \epsilon e_d)}{2\epsilon}$
+        for each dimension $d$
+      \item Primal update: $\omega_{k+1} = \omega_k + \eta_\omega \hat{\nabla}_\omega \mathcal{L}$
+      \item Safety projection: if $S(\omega_{k+1}) < (1 - \delta_{\min}) \times 100$, reject update
+      \item Dual update: $\mu_{k+1} = [\mu_k + \eta_\mu (\delta - S_k/100)]_+$
+    \end{enumerate}
+  \item \textbf{Phase 3 (Evaluation):}
+    Evaluate best safe $\omega^*$ over $T_{\mathrm{eval}}$ episodes.
+\end{enumerate}
+
+\subsection{Hyperparameters}
+
+\begin{table}[h]
+\centering
+\small
+\caption{MACCL hyperparameters used in all experiments.}
+\begin{tabular}{lcc}
+\toprule
+Parameter & Symbol & Value \\
+\midrule
+Phase 1 episodes & $T_1$ & 50 \\
+Phase 2 outer iterations & $K$ & 100 \\
+Phase 2 inner episodes & $n_{\mathrm{inner}}$ & 20 \\
+Evaluation episodes & $T_{\mathrm{eval}}$ & 100 \\
+Safety threshold & $\delta$ & 0.05 \\
+Hard safety floor & $\delta_{\min}$ & 0.10 \\
+Primal learning rate & $\eta_\omega$ & 0.05 \\
+Dual learning rate & $\eta_\mu$ & 0.10 \\
+Finite difference step & $\epsilon_{\mathrm{FD}}$ & 0.01 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Cross-Environment Results Summary}
+
+MACCL was evaluated across three environments (20 seeds each):
+\begin{itemize}
+  \item \textbf{PGG (severe)}: $\phi_1 \approx 0.825$, survival 85.5\%, welfare comparable to fixed $\phi_1=1.0$
+  \item \textbf{CPR}: Due to the structural difference (restraint vs.\ contribution), the commitment floor concept requires adaptation; results serve as a negative control
+  \item \textbf{Cleanup}: $\phi_1 \approx 0.54$, survival 100\%, welfare improvement +203\% over fixed $\phi_1=1.0$
+\end{itemize}

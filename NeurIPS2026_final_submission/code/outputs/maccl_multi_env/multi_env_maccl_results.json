@@ -1,0 +1,73 @@
+{
+  "experiment": "MACCL Cross-Environment Validation",
+  "config": {
+    "N_SEEDS": 20,
+    "N_EPISODES": 200
+  },
+  "results": {
+    "PGG": {
+      "selfish": {
+        "welfare": 21.199010514069453,
+        "welfare_std": 0.017791475945471716,
+        "survival": 52.333333333333336,
+        "survival_std": 9.374907406950156
+      },
+      "fixed_1.0": {
+        "welfare": 22.39999771118164,
+        "welfare_std": 0.0,
+        "survival": 100.0,
+        "survival_std": 0.0
+      },
+      "maccl": {
+        "welfare": 21.984503683222663,
+        "welfare_std": 0.8236291547680549,
+        "survival": 85.5,
+        "survival_std": 34.09586159312854,
+        "floor_mean": 0.8253765160529977
+      }
+    },
+    "CPR": {
+      "selfish": {
+        "welfare": 0.0019302001838388222,
+        "welfare_std": 0.00023405936044169605,
+        "survival": 8.166666666666664,
+        "survival_std": 5.320296566504123
+      },
+      "fixed_1.0": {
+        "welfare": 0.0,
+        "welfare_std": 0.0,
+        "survival": 44.333333333333336,
+        "survival_std": 10.54619467970425
+      },
+      "maccl": {
+        "welfare": 0.0007191299280694759,
+        "welfare_std": 5.504439188981557e-05,
+        "survival": 12.333333333333332,
+        "survival_std": 7.156970184527962,
+        "floor_mean": 0.880434594697903
+      }
+    },
+    "Cleanup": {
+      "selfish": {
+        "welfare": 0.4577690348421438,
+        "welfare_std": 0.15880245974962484,
+        "survival": 85.0,
+        "survival_std": 35.70714214271425
+      },
+      "fixed_1.0": {
+        "welfare": -0.29999999999999954,
+        "welfare_std": 5.551115123125783e-17,
+        "survival": 100.0,
+        "survival_std": 0.0
+      },
+      "maccl": {
+        "welfare": 0.6111421358566833,
+        "welfare_std": 0.0,
+        "survival": 100.0,
+        "survival_std": 0.0,
+        "floor_mean": 0.5439150595839449
+      }
+    }
+  },
+  "time_seconds": 173.27909016609192
+}

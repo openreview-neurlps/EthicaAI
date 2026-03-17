@@ -67,6 +67,15 @@ docker run -e ETHICAAI_FAST=1 ethicaai
 
 ---
 
+## Output Directory Structure
+
+```text
+code/outputs/          ← FULL 20-seed results (PAPER DATA — committed)
+code/outputs_fast/     ← FAST 2-seed smoke-test results (gitignored)
+```
+
+> **Important**: `outputs/` contains the official 20-seed results used in all paper tables. `outputs_fast/` is for quick validation only and is excluded from version control. Running `reproduce_all.py` without `ETHICAAI_FAST=1` writes to `outputs/`.
+
 ## Experiment → Paper Mapping
 
 All paper tables are **auto-generated from JSON** via `generate_tables.py` (SSOT enforced).

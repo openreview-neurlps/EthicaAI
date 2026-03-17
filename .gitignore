@@ -109,3 +109,6 @@ _check_data.py
 **/deep_audit_report.txt
 
 .vercel
+
+# ===== FAST smoke-test outputs (not paper data) =====
+NeurIPS2026_final_submission/code/outputs_fast/
