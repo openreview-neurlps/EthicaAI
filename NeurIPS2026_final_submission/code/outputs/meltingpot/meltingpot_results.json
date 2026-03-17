@@ -1,0 +1,20 @@
+{
+  "commons_harvest__open": {
+    "Selfish": {
+      "mean": 1.257142857142857,
+      "std": 1.0969345040259551
+    },
+    "Commitment": {
+      "mean": 0.5714285714285714,
+      "std": 0.41409933560541260
+    }
+  },
+  "metadata": {
+    "n_seeds": 5,
+    "n_steps": 200,
+    "platform": "Google Colab (Python 3.11 venv, dm-meltingpot 2.4.0)",
+    "date": "2026-03-08",
+    "commitment_policy": "70% interact (actions 5-7), 30% movement (actions 0-4)",
+    "selfish_policy": "uniform random across all 8 actions"
+  }
+}

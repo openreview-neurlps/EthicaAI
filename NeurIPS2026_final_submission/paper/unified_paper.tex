@@ -1819,6 +1819,43 @@ For our default parameters ($M/N{=}0.32$, $\gamma{=}0.99$, $f_{\text{crit}}{=}0.
 % ================================================================
 \input{appendix_impossibility_proof}
 
+% ================================================================
+% APPENDIX: Melting Pot Generalization
+% ================================================================
+\section{Melting Pot Generalization (Preliminary)}
+\label{app:meltingpot}
+
+To test generalization beyond our custom environments, we evaluate the commitment
+mechanism on Google DeepMind's \textbf{Melting Pot} benchmark~\citep{agapiou2022melting},
+specifically the \texttt{commons\_harvest\_open} substrate---a spatially extended
+commons dilemma where agents harvest apples from a shared resource that regenerates
+based on local density (a spatial tipping-point dynamic).
+
+\begin{table}[h]
+\centering
+\caption{Preliminary Melting Pot results on \texttt{commons\_harvest\_open}.
+  Commitment policy biases 70\% of actions toward cooperative interactions.
+  5 seeds $\times$ 200 steps per episode.}
+\label{tab:meltingpot}
+\small
+\begin{tabular}{lcc}
+\toprule
+\textbf{Policy} & \textbf{Mean Reward} & \textbf{Std} \\
+\midrule
+Selfish (random) & 1.26 & 1.10 \\
+Commitment ($\phi_1{=}0.7$) & 0.57 & 0.41 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The preliminary results show that na\"ive commitment (biasing toward interaction
+actions) does not directly improve reward in Melting Pot's spatially complex
+environment, where strategic movement is essential for harvest. This motivates
+MACCL's \emph{learned} commitment floor: rather than fixing a universal $\phi_1$,
+MACCL adapts $\phi_1(R_t; \omega)$ to the environment's specific cooperation
+requirements. Full 20-seed experiments with trained MACCL agents on Melting Pot
+are planned for the camera-ready version.
+
 \end{document}
 
 
