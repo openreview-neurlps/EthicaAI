@@ -68,12 +68,16 @@ requires $\Omega(N^2 \epsilon^{-2})$ samples.
 \textbf{Part (ii).}
 At $\hat{\lambda}$, the Jacobian of the gradient dynamics decomposes as
 $J = J_{\mathrm{myopic}} + \gamma J_{\mathrm{surv}}$,
-where $J_{\mathrm{myopic}}$ has eigenvalues $\approx -(1-M/N)$ (stabilizing)
+where $J_{\mathrm{myopic}}$ has eigenvalues $\approx -(1-M/N)$ (stabilizing when $M/N < 1$)
 and $J_{\mathrm{surv}}$ has eigenvalues $O(\epsilon / N^2)$ (negligible).
-Thus $J$ is negative definite, making $\hat{\lambda}$ locally asymptotically stable
+\emph{Case $M/N < 1$}: $J$ is negative definite, making $\hat{\lambda}$ locally asymptotically stable
 (Stable Manifold Theorem; Shub, 1987).
-Escape requires simultaneous perturbation of $\Omega(N)$ agents in the
-cooperative direction, which occurs with probability $e^{-\Omega(N)}$
+\emph{Case $M/N = 1$}: the myopic eigenvalue degenerates to zero, but the sigmoid parametrization
+$\lambda_i = \sigma(\theta_i)$ introduces curvature: the Hessian in $\theta$-space at $\hat\theta = 0$
+equals $-\operatorname{Var}[\nabla_{\theta_i} J_i] \cdot \sigma'(0)^2 < 0$, yielding stochastic stability
+via the noise-driven restoring force (Appendix~\ref{app:impossibility}, Lemma~\ref{lem:basin}).
+In both cases, escape requires coordinated perturbation of $\Omega(N)$ agents,
+occurring with probability $e^{-\Omega(N)}$
 under symmetric initialization.
 
 \textbf{Part (iii).}

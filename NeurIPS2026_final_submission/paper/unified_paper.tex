@@ -104,6 +104,7 @@ In the multi-agent setting, MACPO and MAPPO-Lagrangian~\citep{gu2023safe} extend
 These methods assume the constraint (e.g., collision avoidance) is \emph{exogenous and differentiable}.
 In contrast, our constraint---the commitment floor---is \emph{derived from the environment's tipping-point structure} and addresses an \emph{endogenous} failure mode (the Nash Trap) that no unconstrained method escapes in our tests.
 We formulate the commitment problem through the constrained lens: a Lagrangian dual approach independently recovers $\phi_1^* = 1.0$ as the safety-optimal floor (Eq.~\ref{eq:cpo_formulation}), and MACCL extends this with formal convergence guarantees (Theorem~\ref{thm:maccl_convergence}).
+Crucially, while CPO constrains a single agent's cost to remain below a threshold, MACCL constrains all agents' \emph{minimum contribution} via a collective floor---transforming the exponentially hard coordination problem (Theorem~\ref{thm:impossibility}) into a tractable constrained optimization.
 
 \paragraph{Contract-Based and Norm-Based Approaches.}
 Recent work explores mechanisms where agents propose, negotiate, and accept binding contracts to mitigate social dilemmas~\citep{christoffersen2023get}.

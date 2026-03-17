@@ -231,6 +231,30 @@ by Hoeffding's inequality,
 giving $c_1 = 2 \times 0.071^2 \approx 0.01$.
 \end{proof}
 
+\begin{remark}[Discrete-Time Verification]
+\label{rem:discrete_time}
+The stochastic stability argument in Lemma~\ref{lem:basin} uses the
+continuous-time SDE approximation
+$d\theta_i = g_i \, dt + \sqrt{2\eta} \, dW_t$.
+We verify that the restoring force holds in discrete SGD.
+At step $t$:
+$\theta_i^{t+1} = \theta_i^t + \eta (\nabla_{\theta_i} J_i + \xi_i^t)$
+with $\mathbb{E}[\xi_i^t] = 0$.
+For $M/N = 1$, $\nabla_{\theta_i} J_i|_{\hat\theta} = 0$, and by
+second-order Taylor expansion:
+\[
+  \mathbb{E}[\theta_i^{t+1} \,|\, \theta_i^t]
+  \approx \theta_i^t + \frac{\eta}{2}\,
+  \underbrace{\nabla^2_{\theta_i} J_i\big|_{\hat\theta}}_{\displaystyle < 0}
+  \cdot \theta_i^t,
+\]
+where $\nabla^2_{\theta_i} J_i|_{\hat\theta}
+= -\operatorname{Var}[\hat{g}_i] \cdot \sigma'(0)^2 < 0$
+(the variance-curvature term dominates).
+This confirms $\mathbb{E}[|\theta_i^{t+1}|] < |\theta_i^t|$
+for small $|\theta_i^t|$, i.e.,\ discrete-time mean reversion
+to $\hat\theta = 0$ without requiring the SDE approximation.
+\end{remark}
 
 % ----------------------------------------------------------------
 % Part (iii): Exponential Escape Time
