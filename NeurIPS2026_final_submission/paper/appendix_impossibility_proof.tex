@@ -147,10 +147,44 @@ $\partial^2 r_i / \partial \lambda_i^2 = 0$
 the sigmoid parametrization $\lambda_i = \sigma(\theta_i)$
 yields $J_{\mathrm{myopic},ii} \approx -(1 - M/N)$ when $M/N \leq 1$.
 
-At $M/N = 1$, this component vanishes, but the restoring force
-from the concavity of the sigmoid parametrization still provides
-negative eigenvalues of order $O(1)$
-(via $d^2\sigma/d\theta^2 |_{\theta=0} = 0$ but $d\sigma/d\theta = 0.25$).
+At $M/N = 1$, the first-order myopic gradient vanishes:
+$\partial r_i / \partial \lambda_i = E(M/N - 1) = 0$.
+However, agents parametrize $\lambda_i = \sigma(\theta_i)$
+(sigmoid), so the effective gradient in $\theta$-space is:
+\[
+  \frac{\partial J_i}{\partial \theta_i}
+  = \underbrace{E\!\left(\frac{M}{N} - 1\right)}_{\text{= 0 at }M/N{=}1}
+    \!\cdot \sigma'(\theta_i)
+  + \underbrace{\frac{\partial V_{\mathrm{surv}}}
+    {\partial \lambda_i} \cdot \sigma'(\theta_i)}_{O(\epsilon/N)}.
+\]
+Critically, the \emph{second-order} dynamics in $\theta$-space
+introduce a stabilizing term. At $\hat\theta_i = 0$
+(corresponding to $\hat\lambda_i = 0.5$),
+the Hessian of $J_i$ contains the curvature contribution:
+\[
+  \frac{\partial^2 J_i}{\partial \theta_i^2}\bigg|_{\hat\theta}
+  = \underbrace{E\!\left(\frac{M}{N} - 1\right)
+    \cdot \sigma''(\hat\theta_i)}_{= 0}
+  - \underbrace{\operatorname{Var}[\nabla_{\theta_i} J_i]
+    \cdot \sigma'(\hat\theta_i)^2}_{> 0}
+  + O(\epsilon/N).
+\]
+The gradient variance term induces a \emph{noise-driven
+restoring force}: stochastic gradient updates at the flat
+point $\theta = 0$ experience symmetric perturbations that,
+combined with the concavity of $\sigma$ on $(0, \infty)$
+($\sigma''(\theta) < 0$ for $\theta > 0$), create net drift
+back toward $\hat\theta = 0$. Formally, by It\^o's lemma
+applied to the stochastic gradient flow:
+$d\theta_i = \nabla_{\theta_i} J_i \, dt + \sqrt{2\eta} \, dW_t$,
+the expected drift of $|\theta_i|$ satisfies
+$\mathbb{E}[d|\theta_i|] \leq -c_\sigma |\theta_i| \, dt$
+for $c_\sigma = \frac{1}{8}\sigma'(0)^2 \operatorname{Var}[r_i] > 0$,
+making $\hat\theta = 0$ stochastically stable
+(Has'minski\u\i{}, 1980).
+This holds \emph{independently of $M/N$}, explaining why
+the trap persists even at $M/N = 1.0$ in our experiments.
 
 \textbf{Survival component.}
 By Part (i), the survival gradient contribution is
