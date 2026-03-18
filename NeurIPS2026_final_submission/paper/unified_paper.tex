@@ -82,7 +82,7 @@ We identify three mechanisms underlying the Nash Trap (Theorem~\ref{thm:impossib
 (iii)~\emph{exponential drift}---escape requires $\Omega(e^{cN})$ gradient evaluations.
 These results are confirmed empirically across $N \in \{5, 10, 20, 50, 100\}$ (Section~\ref{sec:impossibility}).
 We also show that Lagrangian relaxation baselines---which impose survival constraints exogenously---converge to $\bar\lambda \approx 0.5$ in the same trap (Table~\ref{tab:cpo_comparison}), demonstrating that the problem is not merely unconstrained optimization but a structural property of the gradient landscape.
-Furthermore, neither cheap-talk communication, centralized critics (CTDE), nor neural network policies (97-parameter MLPs) escape the trap (Appendix~\ref{app:comm_ctde_neural}): all three achieve 100\% trap rate across 20 seeds.
+Furthermore, neither cheap-talk communication, centralized critics (CTDE), nor neural network policies escape the trap (Appendix~\ref{app:comm_ctde_neural}): CleanRL-style IPPO/MAPPO with 4{,}546-parameter MLPs achieve \emph{even lower} $\bar\lambda \approx 0.40$ than simple REINFORCE ($\approx 0.50$), with 100\% trap rate across 20 seeds each.
 
 \paragraph{3.~Prescription: Commitment Floors.}
 Since the trap cannot be escaped by gradient methods, we derive a structural bypass: \emph{commitment floors} that exclude the trap basin from the feasible action space (Corollary~\ref{cor:bypass}).
@@ -1957,11 +1957,17 @@ Independent REINFORCE (baseline) & $0.503$ & 50.3\% & 100\% \\
 Cheap Talk (1D message) & $0.494$ & 50.0\% & 100\% \\
 Shared Critic (CTDE) & $0.494$ & 50.2\% & 100\% \\
 2-layer MLP (97 params/agent) & $0.497$ & 50.8\% & 100\% \\
+\midrule
+\multicolumn{4}{c}{\textit{Full CleanRL-style implementations (64-hidden MLP, GAE, PPO clip, Adam)}} \\
+\midrule
+CleanRL IPPO (4,546 params/agent) & $0.409$ & 37.5\% & 100\% \\
+CleanRL MAPPO (4,546 + shared critic) & $0.394$ & 37.0\% & 100\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\noindent \textbf{Key finding}: the Nash Trap persists under (1)~cheap-talk communication, where agents broadcast a 1D message before acting; (2)~a shared centralized critic that observes the global state $[R_t, \bar\lambda_t]$; and (3)~2-layer MLP policies with 97 learned parameters per agent. In all cases, $\bar\lambda \approx 0.5$ with 100\% trap rate. These results are consistent with our theoretical analysis (Proposition~\ref{prop:gradient_impossibility}): the trap arises from the gradient landscape structure, not from limited agent capacity or information.
+\noindent \textbf{Key finding}: the Nash Trap persists under all six extensions tested: (1)~cheap-talk communication; (2)~a shared centralized critic (CTDE); (3)~2-layer MLP policies with 97 learned parameters; (4)~CleanRL-style IPPO with 4,546 parameters per agent, GAE, and PPO clipping; (5)~CleanRL-style MAPPO with a shared critic and identical neural architecture; and (6)~simultaneous use of both neural capacity and centralized information.
+\textbf{Remarkably, CleanRL IPPO/MAPPO achieve \emph{lower} $\bar\lambda$ ($\approx 0.40$) than simple REINFORCE ($\approx 0.50$)}, suggesting that stronger optimization capacity drives agents \emph{deeper} into the trap by more effectively exploiting the myopic gradient signal.
 
 % ================================================================
 % APPENDIX: Phase Transition Remark
