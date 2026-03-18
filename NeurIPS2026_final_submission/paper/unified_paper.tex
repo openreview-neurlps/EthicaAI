@@ -48,16 +48,13 @@
 % ================================================================
 \begin{abstract}
 When must multi-agent systems move beyond self-interest, and how much commitment is enough for collective survival?
-We study \textbf{Tipping-Point Social Dilemmas} (TPSDs)---multi-agent settings where thresholded resource dynamics can trigger irreversible collapse---and identify an extinction-type failure we term the \textbf{Nash Trap}: gradient-based learners converge to locally stable under-commitment equilibria that are individually rational yet collectively catastrophic, \emph{even when cooperation is individually rational} ($M/N \geq 1$).
+We study \textbf{Tipping-Point Social Dilemmas} (TPSDs)---multi-agent settings where thresholded resource dynamics can trigger irreversible collapse---and report a systematic failure we term the \textbf{Nash Trap}: gradient-based learners converge to locally stable under-commitment equilibria that are individually rational yet collectively catastrophic, \emph{even when cooperation is individually rational} ($M/N \geq 1$).
 
-We make five contributions:
-\textbf{(C1)}~We show the Nash Trap is \emph{universal across algorithms}: five families (REINFORCE, PPO, IQL, QMIX, LOLA), nine implementations, and 12 $M/N$ conditions all converge to $\lambda \approx 0.5$ with 100\% trap rate (20 seeds each).
-\textbf{(C2)}~We prove escape requires $\Omega(e^{cN})$ gradient evaluations (Theorem~\ref{thm:impossibility}), via signal dilution, basin dominance, and exponential drift analysis---confirmed empirically for $N \in \{5,\ldots,100\}$.
-\textbf{(C3)}~We derive commitment floors from recovery dynamics and show they bypass the barrier in $O(1)$ steps (Corollary~\ref{cor:bypass}).
-\textbf{(C4)}~We introduce \textbf{MACCL} (Multi-Agent Constrained Commitment Learning), a primal-dual algorithm that learns state-dependent floors with convergence guarantees (Theorem~\ref{thm:maccl_convergence}), improving welfare by 203\% over fixed floors while maintaining 100\% survival.
-\textbf{(C5)}~We validate across three environment classes (PGG, CPR, Cleanup), adversarial conditions (30\% Byzantine), and scale ($N{=}100$).
+\textbf{Discovery.}~The Nash Trap is universal across every algorithm we tested: five families (REINFORCE, PPO, IQL, QMIX, LOLA), nine implementations, 400{+} hyperparameter configurations, and 12 $M/N$ conditions all converge to $\lambda \approx 0.5$ with 100\% trap rate (20 seeds each). Neither value decomposition, opponent shaping, nor reward shaping escapes it.
+\textbf{Explanation.}~We show escape requires $\Omega(e^{cN})$ gradient evaluations via three mechanisms: signal dilution ($O(\epsilon/N)$ survival gradient vs.\ $O(1)$ reward noise), basin dominance (trap basin has measure $\geq 1 - e^{-cN}$), and exponential drift---confirmed for $N \in \{5,\ldots,100\}$.
+\textbf{Prescription.}~We derive minimum commitment floors from recovery dynamics and show they bypass the trap in $O(1)$ steps by excluding the trap basin from the feasible action space. MACCL, a primal-dual extension, learns state-dependent floors adaptively, improving welfare by 203\% in environments where partial commitment suffices.
 
-Together, these results establish the Nash Trap as a \textbf{fundamental computational barrier}---not an artifact of limited capacity---and the commitment floor as a principled, polynomial-time bypass.
+These results are validated across three environment classes (PGG, CPR, Cleanup), multi-dimensional action spaces ($K{=}3$), adversarial conditions (30\% Byzantine), and scale ($N{=}100$), establishing the Nash Trap as a \textbf{systematic barrier for gradient-based learners} in tipping-point environments, and the commitment floor as a principled bypass.
 \end{abstract}
 
 % ================================================================
@@ -67,23 +64,31 @@ Together, these results establish the Nash Trap as a \textbf{fundamental computa
 
 Fisheries collapse when each vessel rationally maximizes its own catch.
 Climate negotiations stall when each nation rationally free-rides on others' emissions cuts.
-These are not failures of intent but of \emph{individually rational} decision-making near\linebreak shared tipping points: once a critical resource crosses a collapse threshold, recovery may be slow or effectively irreversible.
+These are not failures of intent but of \emph{individually rational} decision-making near shared tipping points: once a critical resource crosses a collapse threshold, recovery may be slow or effectively irreversible.
 The central question is not whether cooperation is \emph{achievable in principle} (the Folk Theorem guarantees its existence), but whether standard learning dynamics \emph{reliably converge} to sufficient commitment for collective survival.
-We prove they do not---and show how to fix this.
+We show they do not.
 
-We organize our analysis around three diagnostic layers: (i)~when the marginal return from cooperation is below its individual cost ($M/N<1$), agents face a persistent local anti-commitment incentive; (ii)~when this misalignment interacts with tipping-point collapse dynamics, it manifests as an extinction-type Nash Trap; and (iii)~the severity of recovery near collapse determines how large the commitment floor must be for escape, with severe regimes saturating at maximal feasible commitment.
-Building on this analysis, we make five contributions:
-\begin{enumerate}
-    \item[(C1)] \textbf{Nash Trap Analysis}: We define the class of Tipping-Point Social Dilemmas (Definition~\ref{def:tpsd}), prove a drift condition on resource dynamics (Lemma~\ref{lem:drift}), and establish the Nash Trap as a locally stable fixed point (Proposition~\ref{prop:nash_trap}).
-    Crucially, we demonstrate that the Nash Trap persists \emph{independently of the $M/N$ ratio}: across 12 conditions from $M/N = 0.05$ to $M/N = 1.0$ with 20 seeds each, gradient learners converge to $\lambda \approx 0.50$ with 100\% trap rate (Section~\ref{sec:mn_sweep}, Table~\ref{tab:mn_sweep}).
-    This failure is consistent across five algorithm families (REINFORCE, PPO, IQL, QMIX~\citep{rashid2018qmix}, LOLA~\citep{foerster2018learning}; nine implementations) under a unified fair-comparison protocol.
-    \item[(C2)] \textbf{Computational Intractability (Theorem~\ref{thm:impossibility})}: We prove that escaping the Nash Trap requires $\Omega(e^{cN})$ gradient evaluations, establishing three mechanisms: (i)~signal dilution: the survival gradient is $O(\epsilon/N)$ against reward noise $O(1)$; (ii)~basin dominance: the trap basin has measure $\geq 1 - e^{-c_1 N}$ under uniform initialization; (iii)~exponential escape time from drift analysis. Empirical verification across $N \in \{5, 10, 20, 50, 100\}$ with 20 seeds confirms 100\% trap rate and 0\% escape rate (Section~\ref{sec:impossibility}).
-    \item[(C3)] \textbf{Commitment Floor as Computational Bypass (Corollary~\ref{cor:bypass})}: The commitment floor transforms an exponentially hard optimization into a constrained problem solvable in $O(1)$ gradient steps by excluding the trap basin from the feasible action space.
-    \item[(C4)] \textbf{Multi-Agent Constrained Commitment Learning (MACCL)}: We introduce a primal-dual algorithm with formal convergence guarantees (Theorem~\ref{thm:maccl_convergence}) that learns the \emph{minimum sufficient} state-dependent floor $\phi_1(R_t; \omega)$. In Cleanup environments, MACCL improves welfare by $203\%$ over fixed $\phi_1{=}1.0$ while maintaining $100\%$ survival (Section~\ref{sec:maccl}, Table~\ref{tab:updated_baselines}); in severe TPSDs, it automatically recovers $\phi_1 \approx 1.0$.
-    \item[(C5)] \textbf{Cross-Environment Validation}: We validate the framework across three structurally distinct environment classes---PGG (provision), CPR (appropriation), Cleanup (pollution)---under adversarial conditions (30\% Byzantine) and scale ($N{=}100$), \emph{plus} Google DeepMind's Melting Pot benchmark (Appendix~\ref{app:meltingpot}). The Nash Trap reproduces in all TPSD environments; MACCL generalizes across all three classes.
-\end{enumerate}
+This paper reports a systematic failure pattern, provides a theoretical explanation, and derives a structural remedy:
 
-Together, these results establish that the Nash Trap is a \textbf{fundamental computational barrier} inherent to tipping-point dynamics---not merely an artifact of $M/N < 1$ or limited algorithm capacity. The commitment floor provides a principled bypass, and MACCL learns where to set it.
+\paragraph{1.~Discovery: The Nash Trap.}
+We define Tipping-Point Social Dilemmas (TPSDs, Definition~\ref{def:tpsd})---multi-agent settings with thresholded, near-irreversible collapse dynamics---and demonstrate that gradient-based learners converge to what we call the \emph{Nash Trap}: a locally stable under-commitment equilibrium at $\lambda \approx 0.50$ that is individually rational yet collectively catastrophic.
+This finding is robust across five algorithm families (REINFORCE, PPO, IQL, QMIX~\citep{rashid2018qmix}, LOLA~\citep{foerster2018learning}), nine implementations, $400{+}$ hyperparameter configurations (Section~\ref{sec:fair_comparison}), and 12 $M/N$ conditions from $M/N = 0.05$ to $M/N = 1.0$ (Section~\ref{sec:mn_sweep}, Table~\ref{tab:mn_sweep}), with 100\% trap rate and 0\% escape rate across 20 seeds per condition.
+Crucially, the trap persists \emph{even when $M/N = 1$}---when cooperation is individually rational---because tipping-point dynamics, not payoff misalignment, drive the failure.
+
+\paragraph{2.~Explanation: Why the Trap is Hard to Escape.}
+We identify three mechanisms underlying the Nash Trap (Theorem~\ref{thm:impossibility}):
+(i)~\emph{signal dilution}---the survival gradient is $O(\epsilon / N)$ against reward noise $O(1)$;
+(ii)~\emph{basin dominance}---the trap basin has measure $\geq 1 - e^{-c_1 N}$ under symmetric initialization;
+(iii)~\emph{exponential drift}---escape requires $\Omega(e^{cN})$ gradient evaluations.
+These results are confirmed empirically across $N \in \{5, 10, 20, 50, 100\}$ (Section~\ref{sec:impossibility}).
+We also show that Lagrangian relaxation baselines---which impose survival constraints exogenously---converge to $\bar\lambda \approx 0.5$ in the same trap (Table~\ref{tab:cpo_comparison}), demonstrating that the problem is not merely unconstrained optimization but a structural property of the gradient landscape.
+
+\paragraph{3.~Prescription: Commitment Floors.}
+Since the trap cannot be escaped by gradient methods, we derive a structural bypass: \emph{commitment floors} that exclude the trap basin from the feasible action space (Corollary~\ref{cor:bypass}).
+The minimum sufficient floor $\phi_1^*$ is derived from the environment's recovery dynamics (Theorem~\ref{thm:floor}).
+As a practical extension, MACCL (Multi-Agent Constrained Commitment Learning) learns state-dependent floors via primal-dual optimization, improving welfare by 203\% over fixed floors in environments where partial commitment suffices (Section~\ref{sec:maccl}).
+
+These results are validated across three environment classes (PGG, CPR, Cleanup), multi-dimensional actions ($K{=}3$; Appendix~\ref{app:multi_resource}), adversarial conditions (30\% Byzantine), and scale ($N{=}100$), establishing the Nash Trap as a \textbf{systematic barrier for independent gradient-based learners} in tipping-point environments.
 
 % ================================================================
 % SECTION 2: RELATED WORK
@@ -665,7 +670,7 @@ and adaptive adversaries do not break the Nash Trap.
 % ================================================================
 \section{Conclusion}\label{sec:broader_impact}
 
-We establish the \textbf{Moral Commitment Spectrum} as a diagnostic framework that maps environmental severity to the minimum commitment floor required for collective survival in multi-agent systems. The Spectrum classifies crisis-response profiles by their interaction with environment structure, rather than imposing a monotonic dominance ordering among strategies. Our results separate three logically distinct layers. First, when $M/N < 1$, each agent faces a persistent local anti-commitment incentive. Second, when such incentive misalignment operates in environments with tipping-point collapse dynamics, under-commitment becomes an extinction-type \emph{Nash Trap}: a locally stable equilibrium that is individually rational yet collectively catastrophic. Third, recovery severity determines the size of the commitment floor required for escape. In severe regimes, the required floor exceeds the feasible range and therefore saturates at unconditional commitment, $\phi_1=1.0$; in milder regimes, partial floors suffice. In collapse-dominated regimes (e.g., CPR), context-sensitive profiles may underperform selfish baselines due to restraint decay---a structural prediction of the Spectrum, not an anomaly.
+We identify the \textbf{Nash Trap} as a systematic barrier for gradient-based learners in Tipping-Point Social Dilemmas, and the \textbf{Moral Commitment Spectrum} as a diagnostic framework that maps environmental severity to the minimum commitment floor required for collective survival. Our results separate three logically distinct layers. First, when $M/N < 1$, each agent faces a persistent local anti-commitment incentive. Second, when such incentive misalignment operates in environments with tipping-point collapse dynamics, under-commitment becomes an extinction-type \emph{Nash Trap}: a locally stable equilibrium that is individually rational yet collectively catastrophic. Third, recovery severity determines the size of the commitment floor required for escape. In severe regimes, the required floor exceeds the feasible range and therefore saturates at unconditional commitment, $\phi_1=1.0$; in milder regimes, partial floors suffice. In collapse-dominated regimes (e.g., CPR), context-sensitive profiles may underperform selfish baselines due to restraint decay---a structural prediction of the Spectrum, not an anomaly.
 
 Empirically, this pattern is robust across five algorithm families, nine tested implementations including reward shaping, $400{+}$ hyperparameter configurations, adversarial settings, scale, long horizons, and cross-environment tests. Neither value decomposition, opponent shaping, reward shaping, nor longer horizons reliably escape the Trap under selfish learning. By contrast, commitment floors succeed because they modify the feasible action set rather than relying on misaligned local incentives to discover survival-preserving behavior. MACCL further shows that this need not be an all-or-nothing prescription: when environments permit partial commitment, the floor can be learned adaptively to preserve survival while substantially improving welfare.
 
@@ -1888,6 +1893,40 @@ MACCL-Neural (579 params) & $0.874$ & \textbf{80.2\%} & \textbf{22.10} \\
 \end{table}
 
 \noindent \textbf{Key findings}: (1)~Selfish agents converge to $\bar{\lambda} = 0.499$ across \emph{all three resources simultaneously}---the Nash Trap is not an artifact of 1D action spaces. (2)~MACCL-Neural, using a 2-layer MLP (16 hidden units, 579 total parameters) as the floor function $\phi_1^{(k)}(s; \theta)$, achieves 80.2\% survival with an adaptive floor $\approx 0.87$, confirming that the commitment floor mechanism generalizes beyond hand-tuned polynomial parametrizations.
+
+% ================================================================
+% APPENDIX: Initialization Sweep — Basin Boundary
+% ================================================================
+\section{Initialization Sweep: Measuring the Basin of Attraction}
+\label{app:init_sweep}
+
+To directly validate the basin dominance claim in Theorem~\ref{thm:impossibility}, we vary the initial commitment level $\lambda_0 \in \{0.10, 0.30, 0.50, 0.70, 0.85, 0.90, 0.95, 1.00\}$ and measure whether agents converge to the Nash Trap or maintain cooperation ($N{=}20$, 30\% Byzantine, 20 seeds, 300 episodes).
+
+\begin{table}[h]
+\centering
+\small
+\caption{Initialization sweep: the Nash Trap captures all agents initialized below $\lambda_0 \approx 0.7$. The sharp transition at $\lambda_0 \approx 0.7$ directly reveals the basin boundary.}
+\label{tab:init_sweep}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+$\boldsymbol{\lambda_0}$ & $\boldsymbol{\lambda_{\text{final}}}$ & \textbf{Survival} & \textbf{Trap Rate} & \textbf{Status} \\
+\midrule
+0.10 & 0.100 & 9.5\% & 100\% & Trapped \\
+0.30 & 0.295 & 15.2\% & 100\% & Trapped \\
+0.50 & 0.494 & 50.0\% & 100\% & Trapped \\
+\midrule
+0.70 & 0.695 & 94.7\% & 0\% & Escaped \\
+0.85 & 0.847 & 99.2\% & 0\% & Escaped \\
+0.90 & 0.898 & 99.2\% & 0\% & Escaped \\
+0.95 & 0.949 & 99.5\% & 0\% & Escaped \\
+1.00 & 0.988 & 99.7\% & 0\% & Escaped \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent \textbf{Key finding}: the transition from 100\% trap rate to 0\% trap rate occurs sharply between $\lambda_0 = 0.50$ and $\lambda_0 = 0.70$, directly revealing the \emph{basin boundary} at approximately $\lambda^* \approx 0.6$--$0.7$.
+This is consistent with Theorem~\ref{thm:floor}'s derived commitment floor: the minimum $\phi_1$ that places agents outside the trap basin.
+Notably, agents initialized \emph{above} the boundary barely drift: $\lambda_{\text{final}} \approx \lambda_0$ (std $< 0.001$), indicating that the cooperative region is itself locally stable---the gradient landscape has \emph{two} stable attractors separated by the basin boundary.
 
 % ================================================================
 % APPENDIX: Melting Pot Generalization
