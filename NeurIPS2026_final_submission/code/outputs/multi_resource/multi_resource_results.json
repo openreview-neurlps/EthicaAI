@@ -1,0 +1,37 @@
+{
+  "experiment": "Multi-Resource PGG (K=3) + MACCL-Neural",
+  "config": {
+    "N_AGENTS": 20,
+    "K_RESOURCES": 3,
+    "BYZ_FRAC": 0.3,
+    "N_SEEDS": 20,
+    "N_EPISODES": 300
+  },
+  "results": {
+    "Selfish_K3": {
+      "welfare": 21.198367458844732,
+      "welfare_std": 0.014001796830797943,
+      "survival": 12.000000000000002,
+      "lambda_mean": 0.4993197745186381,
+      "lambda_per_resource": "per-agent per-resource mean"
+    },
+    "Fixed_K3": {
+      "welfare": 22.399999999999988,
+      "survival": 98.83333333333334
+    },
+    "MACCL_Neural_K3": {
+      "welfare": 22.09932305750469,
+      "welfare_std": 0.4451222136705189,
+      "survival": 80.16666666666667,
+      "survival_std": 37.00563020226336,
+      "floor_mean": 0.8739006849327253,
+      "total_params": 579
+    }
+  },
+  "time_seconds": 183.8159155845642,
+  "key_findings": {
+    "nash_trap_multidim": "Selfish agents converge to \u03bb\u22480.499 across K=3 resources",
+    "maccl_neural_params": 579,
+    "environment_complexity": "3K+1=10D observation, K=3D action per agent"
+  }
+}

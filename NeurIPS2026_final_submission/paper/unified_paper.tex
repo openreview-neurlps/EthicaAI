@@ -94,6 +94,13 @@ Together, these results establish that the Nash Trap is a \textbf{fundamental co
 The tension between individual and collective rationality has deep roots in evolutionary game theory~\citep{nowak2006evolutionary, santos2008social} and has been studied in matrix games~\citep{leibo2017multi} and sequential social dilemmas~\citep{hughes2018inequity, eccles2019learning}.
 Intrinsic motivation approaches---inequity aversion~\citep{hughes2018inequity}, social influence~\citep{jaques2019social}, prosocial agents~\citep{peysakhovich2018prosocial}, reputation mechanisms~\citep{anastassacos2020cooperation}, and norm enforcement~\citep{koster2022spurious}---promote cooperation but implicitly encode cooperative preferences, making it impossible to distinguish genuine emergence from training conditioning.
 
+\paragraph{Distinction from Known Cooperation Failures.}
+The observation that RL agents fail to cooperate in social dilemmas is well-documented~\citep{leibo2017multi, hughes2018inequity}.
+Our contribution is not this observation itself, but three qualitative departures:
+(1)~\emph{Irreversibility}: prior work studies matrix games and sequential dilemmas that reset each episode; our environments feature \emph{within-episode} resource collapse that is near-irreversible ($f(R_{\mathrm{crit}}) = 0.01$), making failure qualitatively different from low-reward outcomes.
+(2)~\emph{Formal characterization}: prior work reports cooperation failure empirically; we characterize the Nash Trap as a \emph{locally stable fixed point} with quantified location ($\lambda \approx 0.5$), basin measure ($\geq 1 - e^{-cN}$), and escape complexity ($\Omega(e^{cN})$ gradient evaluations).
+(3)~\emph{Structural bypass}: existing solutions modify \emph{rewards} (intrinsic motivation, opponent shaping); we modify the \emph{feasible action space} via commitment floors---a categorically different intervention that is provably polynomial-time (Corollary~\ref{cor:bypass}).
+
 \paragraph{Opponent Shaping.}
 LOLA~\citep{foerster2018learning} differentiates through opponent updates to shape learning in 2-player games.
 M-FOS~\citep{lu2022model} extends this model-free via meta-learning, and POLA~\citep{zhao2022proximal} adds proximal regularization.
@@ -607,21 +614,21 @@ In severe TPSDs (non-linear PGG), MACCL recovers $\phi_1 \approx 0.83$, achievin
 In Cleanup environments, MACCL discovers floor $\phi_1 \approx 0.54$, improving welfare by \textbf{203\%} over fixed $\phi_1{=}1.0$ ($W = 0.61$ vs. $W = -0.30$) while maintaining 100\% survival.
 Full convergence curves and cross-environment results are in Section~\ref{sec:maccl_results} and Appendix~\ref{app:maccl}.
 
-\paragraph{Comparison with Safe RL Baselines.}
-A natural question is whether standard constrained policy optimization methods---which enforce \emph{exogenous} safety constraints---can escape the Nash Trap without a structural commitment floor.
-We compare against CPO-style~\citep{achiam2017constrained} and MACPO-style~\citep{gu2023safe} baselines, both configured with the same survival constraint ($P_{\mathrm{surv}} \geq 95\%$), on our severe TPSD ($N{=}20$, Byz$=$30\%, 20 seeds $\times$ 300 episodes).
+\paragraph{Comparison with Constrained RL Baselines.}
+A natural question is whether standard constrained optimization methods---which enforce \emph{exogenous} safety constraints on the policy---can escape the Nash Trap without a structural commitment floor.
+We implement Lagrangian relaxation baselines in both single-agent and multi-agent variants, configured with the same survival constraint ($P_{\mathrm{surv}} \geq 95\%$), on our severe TPSD ($N{=}20$, Byz$=$30\%, 20 seeds $\times$ 300 episodes).\footnote{We use Lagrangian relaxation rather than the full trust-region CPO~\citep{achiam2017constrained} because our scalar action space ($\lambda \in [0,1]$) makes trust regions unnecessary---the Lagrangian formulation captures the essential constraint-penalized mechanism. Extending to neural-policy CPO in higher-dimensional action spaces is future work (see Phase 2, Appendix~\ref{app:multi_resource}).}
 
 \begin{table}[h]
 \centering
 \small
-\caption{Safe RL comparison: exogenous constraint (CPO/MACPO) vs.\@ endogenous floor (MACCL). Both CPO methods converge to the Nash Trap ($\lambda \approx 0.5$); only the structural floor escapes.}
+\caption{Constrained RL comparison: Lagrangian relaxation (exogenous constraint) vs.\@ commitment floor (endogenous). Both Lagrangian methods converge to the Nash Trap ($\lambda \approx 0.5$); only the structural floor escapes.}
 \label{tab:cpo_comparison}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
 \textbf{Method} & \textbf{Type} & $\boldsymbol{\bar{\lambda}}$ / \textbf{Floor} & \textbf{Survival} & \textbf{Welfare} \\
 \midrule
-CPO (exog.) & Lagrangian RL & $0.526$ & 56.3\% & 21.26 \\
-MACPO (exog.) & Multi-agent Lagrangian & $0.484$ & 50.8\% & 21.16 \\
+Lagrangian RL & Exog.\ constraint & $0.526$ & 56.3\% & 21.26 \\
+Multi-agent Lagrangian & Exog.\ + shared cost & $0.484$ & 50.8\% & 21.16 \\
 \midrule
 MACCL (endog.) & Floor $\phi_1(R;\omega)$ & $0.829$ & \textbf{86.7\%} & \textbf{21.99} \\
 Fixed $\phi_1{=}1.0$ & Unconditional & $1.000$ & 100.0\% & 22.40 \\
@@ -629,9 +636,10 @@ Fixed $\phi_1{=}1.0$ & Unconditional & $1.000$ & 100.0\% & 22.40 \\
 \end{tabular}
 \end{table}
 
-\noindent Both CPO and MACPO converge to $\bar{\lambda} \approx 0.5$---squarely within the Nash Trap---despite the survival constraint.
+\noindent Both Lagrangian methods converge to $\bar{\lambda} \approx 0.5$---squarely within the Nash Trap---despite the survival constraint.
 The constraint violation signal ($P_{\mathrm{surv}} < 95\%$) increases the Lagrange multiplier, which pushes the policy toward higher $\lambda$, but this effect is overwhelmed by the myopic anti-commitment gradient (Proposition~\ref{prop:gradient_impossibility}).
-In contrast, MACCL's structural floor directly excludes the trap basin from the feasible action space, bypassing the local gradient entirely.
+This demonstrates that the Nash Trap is not merely a failure of unconstrained optimization: even when survival is explicitly constrained, the local gradient landscape prevents escape without structural intervention.
+In contrast, MACCL's endogenous floor directly excludes the trap basin from the feasible action space, bypassing the local gradient entirely.
 
 Group-level ESS requires $m < m^* = 0.286$; when migration exceeds this bound, unconditional commitment provides structural immunity (Appendix~\ref{app:migration}).
 
@@ -641,6 +649,8 @@ Group-level ESS requires $m < m^* = 0.286$; when migration exceeds this bound, u
     \item \textbf{Algorithm Scope}: Whether risk-sensitive objectives or dynamic externality-pricing mechanisms can escape the Trap remains open. While empirical CVaR objectives fail (Appendix~\ref{app:robustness}), the Nash Trap persists across all 36 shock parameter combinations tested (Appendix~\ref{app:shock_robustness}). We provide a gradient-based Lagrangian CPO formulation (Appendix~\ref{app:cpo_lagrangian}) that independently recovers $\phi_1^*{=}1.0$; extending MACCL to richer policy classes (e.g., neural network parametrizations) in high-dimensional observation spaces remains future work. In particular, centralized-training decentralized-execution (CTDE) methods with global-state critics and communication channels (cheap talk) represent promising directions that may partially overcome the local incentive gradient identified in Proposition~\ref{prop:gradient_impossibility}; we do not claim impossibility for these architectures.
     \item \textbf{Baseline Scope}: Our comparison includes \textbf{nine implementations} spanning five algorithm families (REINFORCE, PPO, IQL, QMIX, LOLA) with nine distinct configurations, team reward shaping (Table~\ref{tab:team_reward}), and a canonical QMIX re-implementation following EPyMARL conventions (Appendix~\ref{app:canonical_qmix}, Table~\ref{tab:canonical_qmix}). All fall into the Nash Trap in our tests, consistent with Proposition~\ref{prop:gradient_impossibility}. A unified fair comparison protocol ($5{\times}5{\times}4{=}100$ HP configurations per family) confirms 100\% trap rate \emph{across all tested configurations}.
     \item \textbf{Environment Scope}: Primary results use PGG with scalar $R_t$. CPR validation (Appendix~\ref{app:cpr}), spatial dilemma (Appendix~\ref{app:spatial}), and Coin Game (Appendix~\ref{app:coin_game}) confirm the pattern across environments sharing incentive misalignment ($M/N < 1$) and thresholded collapse dynamics. Environments lacking these ingredients---including the Melting Pot \texttt{commons\_harvest} benchmark ($\rho \approx 1$)---do not show a commitment-floor advantage in our tests, consistent with our boundary conditions (Table~\ref{tab:boundary_tests}; Appendix~\ref{app:meltingpot_prelim}). Crisis-only intervention is insufficient---only global (unconditional) commitment achieves full survival (Appendix~\ref{app:crisis_vs_global}, Table~\ref{tab:crisis_vs_global}). Group-level ESS requires $m < m^* = 0.286$ (Result~\ref{res:group_ess}).
+
+    \emph{On environment complexity}: our primary PGG uses scalar $R_t$ and $\lambda_i \in [0,1]$ by design---the minimal environment isolates the Nash Trap mechanism from confounding factors such as partial observability, communication, and spatial structure. We validate that the Nash Trap persists under multi-dimensional action spaces: in a $K{=}3$ Multi-Resource PGG where each agent outputs three commitment levels ($\lambda_i^{(k)} \in [0,1]^3$, 10D observation), selfish agents converge to $\bar{\lambda} = 0.499$ with 12\% survival across 20 seeds---the same trap as in scalar PGG (Appendix~\ref{app:multi_resource}). Additionally, MACCL-Neural, an MLP-parameterized floor with 579 learned parameters, achieves 80.2\% survival in this setting, confirming that the commitment floor mechanism scales beyond hand-tuned parametrizations.
     \item \textbf{Ethical Scope}: ``Moral commitment'' in this work is operationalized as resource allocation cooperation ($\lambda$), which may not capture the full richness of ethical reasoning. However, our fairness analysis (Appendix~\ref{app:fairness}, Table~\ref{tab:fairness}) shows that higher commitment floors improve distributional equity (Gini coefficient decreases from 0.064 to 0.000). Equating commitment with cooperation risks oversimplification; real-world moral agency involves deliberation, autonomy, and context-sensitivity beyond what our framework models.
     \item \textbf{Philosophical Fidelity}: Our $\lambda$-based commitment mechanism is an \emph{engineering abstraction} of binding cooperation constraints, inspired by Sen's meta-ranking. We treat ``moral commitment'' as a \textbf{safety specification derived from tipping-point stability conditions}, not a normative prescription about human values. Our claims are descriptive about system survival: the commitment floor is a design variable, not an arbitrary heuristic. The discrete preference network (Appendix~\ref{app:preference_network}) demonstrates that both continuous ($\lambda$) and discrete (ordering selection) operationalizations converge to the same commitment floor, suggesting robustness of the underlying design principle.
     \item \textbf{Nature of $\phi_1$}: The commitment floor $\phi_1{=}1.0$ is a \emph{stability-derived design specification} within the TPSD class that constrains the agent's action space, not a policy learned through RL optimization. We do not claim that RL discovers unconditional commitment; rather, our contribution is identifying \emph{when and why} such architectural constraints are sufficient for survival under stated assumptions. Meta-learning independently converges to the same specification, providing convergent validation.
@@ -1852,6 +1862,32 @@ For our default parameters ($M/N{=}0.32$, $\gamma{=}0.99$, $f_{\text{crit}}{=}0.
 % APPENDIX: Formal Impossibility Proof
 % ================================================================
 \input{appendix_impossibility_proof}
+
+% ================================================================
+% APPENDIX: Multi-Resource PGG
+% ================================================================
+\section{Multi-Resource PGG: Nash Trap Under Multi-Dimensional Actions}
+\label{app:multi_resource}
+
+To address the concern that our primary PGG uses a scalar action space ($\lambda_i \in [0,1]$), we extend to a $K$-resource PGG where each agent outputs $K{=}3$ independent commitment levels: $\lambda_i^{(k)} \in [0,1]$ for resources $k = 1, \ldots, K$. Each resource has independent tipping-point dynamics with slightly varied parameters (e.g., $R_{\mathrm{crit}} \in \{0.12, 0.15, 0.18\}$). Survival requires all $K$ resources to remain above zero. The observation space is $3K{+}1 = 10$-dimensional.
+
+\begin{table}[h]
+\centering
+\small
+\caption{Multi-Resource PGG ($K{=}3$, $N{=}20$, 30\% Byzantine, 20 seeds $\times$ 300 episodes). The Nash Trap persists identically in multi-dimensional action spaces.}
+\label{tab:multi_resource}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Method} & $\boldsymbol{\bar{\lambda}}$ / \textbf{Floor} & \textbf{Survival} & \textbf{Welfare} \\
+\midrule
+Selfish RL ($K{=}3$) & $0.499$ & 12.0\% & 21.20 \\
+Fixed $\phi_1{=}1.0$ & $1.000$ & 98.8\% & 22.40 \\
+MACCL-Neural (579 params) & $0.874$ & \textbf{80.2\%} & \textbf{22.10} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent \textbf{Key findings}: (1)~Selfish agents converge to $\bar{\lambda} = 0.499$ across \emph{all three resources simultaneously}---the Nash Trap is not an artifact of 1D action spaces. (2)~MACCL-Neural, using a 2-layer MLP (16 hidden units, 579 total parameters) as the floor function $\phi_1^{(k)}(s; \theta)$, achieves 80.2\% survival with an adaptive floor $\approx 0.87$, confirming that the commitment floor mechanism generalizes beyond hand-tuned polynomial parametrizations.
 
 % ================================================================
 % APPENDIX: Melting Pot Generalization
