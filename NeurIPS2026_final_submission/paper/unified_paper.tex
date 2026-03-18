@@ -72,7 +72,7 @@ This paper reports a systematic failure pattern, provides a theoretical explanat
 
 \paragraph{1.~Discovery: The Nash Trap.}
 We define Tipping-Point Social Dilemmas (TPSDs, Definition~\ref{def:tpsd})---multi-agent settings with thresholded, near-irreversible collapse dynamics---and demonstrate that gradient-based learners converge to what we call the \emph{Nash Trap}: a locally stable under-commitment equilibrium at $\lambda \approx 0.50$ that is individually rational yet collectively catastrophic.
-This finding is robust across five algorithm families (REINFORCE, PPO, IQL, QMIX~\citep{rashid2018qmix}, LOLA~\citep{foerster2018learning}), nine implementations, $400{+}$ hyperparameter configurations (Section~\ref{sec:fair_comparison}), and 12 $M/N$ conditions from $M/N = 0.05$ to $M/N = 1.0$ (Section~\ref{sec:mn_sweep}, Table~\ref{tab:mn_sweep}), with 100\% trap rate and 0\% escape rate across 20 seeds per condition.
+This finding is robust across five algorithm families (REINFORCE, PPO, IQL, QMIX~\citep{rashid2018qmix}, LOLA~\citep{foerster2018learning}), nine implementations, $400{+}$ hyperparameter configurations (Section~\ref{sec:experiments}), and 12 $M/N$ conditions from $M/N = 0.05$ to $M/N = 1.0$ (Section~\ref{sec:mn_sweep}, Table~\ref{tab:mn_sweep}), with 100\% trap rate and 0\% escape rate across 20 seeds per condition.
 Crucially, the trap persists \emph{even when $M/N = 1$}---when cooperation is individually rational---because tipping-point dynamics, not payoff misalignment, drive the failure.
 
 \paragraph{2.~Explanation: Why the Trap is Hard to Escape.}
@@ -86,7 +86,7 @@ Furthermore, neither cheap-talk communication, centralized critics (CTDE), nor n
 
 \paragraph{3.~Prescription: Commitment Floors.}
 Since the trap cannot be escaped by gradient methods, we derive a structural bypass: \emph{commitment floors} that exclude the trap basin from the feasible action space (Corollary~\ref{cor:bypass}).
-The minimum sufficient floor $\phi_1^*$ is derived from the environment's recovery dynamics (Theorem~\ref{thm:floor}).
+The minimum sufficient floor $\phi_1^*$ is derived from the environment's recovery dynamics (Theorem~\ref{thm:critical}).
 As a practical extension, MACCL (Multi-Agent Constrained Commitment Learning) learns state-dependent floors via primal-dual optimization, improving welfare by 203\% over fixed floors in environments where partial commitment suffices (Section~\ref{sec:maccl}).
 
 These results are validated across three environment classes (PGG, CPR, Cleanup), multi-dimensional actions ($K{=}3$; Appendix~\ref{app:multi_resource}), adversarial conditions (30\% Byzantine), and scale ($N{=}100$), establishing the Nash Trap as a \textbf{systematic barrier for independent gradient-based learners} in tipping-point environments.
@@ -1926,7 +1926,7 @@ $\boldsymbol{\lambda_0}$ & $\boldsymbol{\lambda_{\text{final}}}$ & \textbf{Survi
 \end{table}
 
 \noindent \textbf{Key finding}: the transition from 100\% trap rate to 0\% trap rate occurs sharply between $\lambda_0 = 0.50$ and $\lambda_0 = 0.70$, directly revealing the \emph{basin boundary} at approximately $\lambda^* \approx 0.6$--$0.7$.
-This is consistent with Theorem~\ref{thm:floor}'s derived commitment floor: the minimum $\phi_1$ that places agents outside the trap basin.
+This is consistent with the derived commitment floor (Theorem~\ref{thm:critical}): the minimum $\phi_1$ that places agents outside the trap basin.
 Notably, agents initialized \emph{above} the boundary barely drift: $\lambda_{\text{final}} \approx \lambda_0$ (std $< 0.001$), indicating that the cooperative region is itself locally stable---the gradient landscape has \emph{two} stable attractors separated by the basin boundary.
 
 % ================================================================
@@ -2008,7 +2008,7 @@ The results confirm that na\"ive commitment (biasing 70\% of actions toward
 interaction) \emph{reduces} mean reward by 47\% compared to uniform random
 exploration in Melting Pot's spatially complex environment, where strategic
 movement is essential for reaching harvestable resources. This is consistent
-with our finding in \S\ref{sec:results} that a fixed commitment floor is
+with our finding in \S\ref{sec:experiments} that a fixed commitment floor is
 suboptimal: the optimal $\phi_1$ depends on the environment's spatial structure
 and cooperation requirements.
 
