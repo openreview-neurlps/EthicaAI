@@ -1929,6 +1929,13 @@ $\boldsymbol{\lambda_0}$ & $\boldsymbol{\lambda_{\text{final}}}$ & \textbf{Survi
 This is consistent with the derived commitment floor (Theorem~\ref{thm:critical}): the minimum $\phi_1$ that places agents outside the trap basin.
 Notably, agents initialized \emph{above} the boundary barely drift: $\lambda_{\text{final}} \approx \lambda_0$ (std $< 0.001$), indicating that the cooperative region is itself locally stable---the gradient landscape has \emph{two} stable attractors separated by the basin boundary.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/basin_boundary.pdf}
+\caption{\textbf{Basin of attraction visualization.} (a)~Final commitment $\lambda_f$ vs.\ initial commitment $\lambda_0$: agents initialized below the basin boundary ($\lambda^* \approx 0.6$) converge to the Nash Trap; those above it maintain cooperation. (b)~Survival rate by initialization: a sharp transition from $\sim$50\% to $>$94\% occurs at the boundary.}
+\label{fig:basin_boundary}
+\end{figure}
+
 % ================================================================
 % APPENDIX: Communication, CTDE, and Neural Policy
 % ================================================================
