@@ -29,6 +29,8 @@
 
 \newtheorem{definition}{Definition}
 \newtheorem{remark}{Remark}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{assumption}{Assumption}
 
 \title{Commitment Floors for Tipping-Point Commons:\\Escaping Nash Traps in Multi-Agent Reinforcement Learning}
 
@@ -203,7 +205,7 @@ All experiments use the following standardized evaluation:
 \end{itemize}
 All reported values are means over the last 30 evaluation episodes unless otherwise specified. Error bars (where shown) indicate $\pm 1$ standard deviation across seeds.
 
-\subsection{Act 2: Situational Commitment in Linear Environments}
+\subsection{Situational Commitment in Linear Environments}
 \label{sec:linear}
 
 We first validate the meta-ranking framework across 8 environments ($N=20$--$1000$, 10 seeds; see Table~\ref{tab:seed_summary}).
@@ -274,7 +276,7 @@ High population convergence with low invasion success indicates robust group-lev
 \noindent The critical constraint $m < m^*$ ensures that inter-group mixing does not erode the between-group selection advantage.
 Full proof with ecological boundary conditions is provided in Appendix~\ref{app:price}.
 
-\subsection{Act 3: The Turning Point---Non-linear Extension}
+\subsection{Tipping-Point Extension}
 \label{sec:turning_point}
 
 Having established that situational commitment succeeds in linear environments (Section~\ref{sec:discussion} provides a full analysis), we now ask: \emph{does it survive when the environment introduces catastrophic tipping points?} We formalize cooperation via Eq.~\ref{eq:reward} and Eq.~\ref{eq:lambda}.
@@ -299,7 +301,7 @@ Lemma~\ref{lem:adaptive_latency} formalizes this (Eq.~\ref{eq:adaptive_deficit})
 
 This discovery motivates two questions: (1) Can pure RL find a better strategy without any pre-specified commitment? (2) What level of crisis commitment is actually required?
 
-\subsection{Act 4: The Nash Trap---Consistent Cooperation Failure Across Tested Algorithms}
+\subsection{The Nash Trap: Cooperation Failure Across Algorithms}
 \label{sec:nash_trap}
 
 \paragraph{Independent Policy Gradient (REINFORCE) with Pure Selfish Payoff.}
@@ -324,8 +326,12 @@ Among the independent REINFORCE variants, linear agents converge to $\lambda \ap
 Standard MARL implementations spanning five paradigms---independent policy gradient (IPPO), centralized critic (MAPPO), independent Q-learning (IQL), value decomposition with monotonic mixing (QMIX~\citep{rashid2018qmix}), and opponent-shaping (LOLA~\citep{foerster2018learning})---all converge to suboptimal equilibria.
 Crucially, this is not a failure of learning per se: the algorithms \emph{successfully} converge to a local optimum of their individual reward landscapes. We interpret this as a \textbf{consistent pattern} of individually-rational optimization in a game where the collective benefit of cooperation is not captured by individual payoffs.
 IPPO converges to $\lambda = 0.393 \pm 0.018$ (12.2\% survival, 20 seeds), MAPPO to $\lambda = 0.223 \pm 0.025$ (12.2\%), and IQL achieves $\lambda = 0.511 \pm 0.005$ (80.0\% survival) due to its discrete action space and $\varepsilon$-greedy exploration.
-Notably, \textbf{QMIX with a monotonic mixing network} ($\lambda = 0.607 \pm 0.117$, 76.0\% survival, 20 seeds; canonical cross-validation at $N{=}5$ yields $\lambda{=}0.504$, $68.6\%$ survival; Appendix~\ref{app:canonical_qmix}) achieves the highest $\lambda$ among non-commitment methods, yet remains firmly within the Nash Trap basin ($\lambda < 0.85$).
-Similarly, \textbf{LOLA} ($\lambda = 0.490 \pm 0.034$, 51.0\% survival, 20 seeds) shows that anticipating opponent learning steps is insufficient when the underlying game structure traps all agents in a local equilibrium. Our $N$-agent LOLA uses a simplified 1-step same-trajectory approximation, as a faithful implementation with full Hessian computation is computationally intractable at $N{=}20$ ($\mathcal{O}(N^2)$ cross-derivatives per step).
+Notably, \textbf{QMIX with a monotonic mixing network} ($\lambda = 0.607 \pm 0.117$, 76.0\% survival, 20 seeds) achieves the highest $\lambda$ among non-commitment methods, yet remains firmly within the Nash Trap basin ($\lambda < 0.85$). A canonical EPyMARL-style cross-validation at $N{=}5$ confirms qualitative agreement ($\lambda{=}0.504$, $68.6\%$ survival; Appendix~\ref{app:canonical_qmix}); $N{=}20$ is our primary result as it is the standard experimental scale throughout this paper.
+Similarly, \textbf{LOLA} ($\lambda = 0.490 \pm 0.034$, 51.0\% survival, 20 seeds) shows that anticipating opponent learning steps is insufficient when the underlying game structure traps all agents in a local equilibrium.
+
+\paragraph{LOLA Implementation Caveat.}
+Our $N$-agent LOLA uses a 1-step same-trajectory approximation that may underestimate LOLA's full opponent-shaping capability.
+However, we note that (i)~a faithful $N$-agent LOLA requires $\mathcal{O}(N^2)$ Hessian computations per step, which is computationally intractable at $N{=}20$; (ii)~this scalability barrier is itself evidence that opponent-shaping methods are impractical for the multi-agent settings where the Nash Trap is most dangerous; and (iii)~at $N{=}2$ where faithful LOLA is feasible, the optimal strategy in our TPSD is still $\lambda{=}1.0$, which LOLA does not discover (Appendix~\ref{app:kpg}).
 All five algorithm families fall substantially short of the oracle ($\lambda = 1.0$, 100\% survival). We formalize this observation:
 
 \begin{proposition}[Local Anti-Commitment Incentive]\label{prop:gradient_impossibility}
@@ -374,7 +380,7 @@ See Appendix~\ref{app:nash_trap} (Eq.~\ref{eq:nash_trap_condition}) for a Bellma
     \label{fig:nash_trap}
 \end{figure}
 
-\subsection{Act 5: Unconditional Commitment as the Solution}
+\subsection{Commitment Floor as Solution}
 \label{sec:unconditional}
 
 \paragraph{Learning the Crisis Commitment Floor.}
@@ -597,9 +603,35 @@ We introduce \textbf{MACCL (Multi-Agent Constrained Commitment Learning)}, a pri
 \noindent MACCL has formal convergence guarantees (Theorem~\ref{thm:maccl_convergence}): under Assumptions (A5)--(A6), the iterates converge to a $(\epsilon_W, \epsilon_S)$-optimal saddle point of the Lagrangian.
 
 \paragraph{Results.}
-In severe TPSDs (non-linear PGG), MACCL recovers $\phi_1 \approx 0.825$, achieving 85.5\% survival with welfare comparable to fixed $\phi_1{=}1.0$.
+In severe TPSDs (non-linear PGG), MACCL recovers $\phi_1 \approx 0.83$, achieving 86.7\% survival with welfare comparable to fixed $\phi_1{=}1.0$.
 In Cleanup environments, MACCL discovers floor $\phi_1 \approx 0.54$, improving welfare by \textbf{203\%} over fixed $\phi_1{=}1.0$ ($W = 0.61$ vs. $W = -0.30$) while maintaining 100\% survival.
 Full convergence curves and cross-environment results are in Section~\ref{sec:maccl_results} and Appendix~\ref{app:maccl}.
+
+\paragraph{Comparison with Safe RL Baselines.}
+A natural question is whether standard constrained policy optimization methods---which enforce \emph{exogenous} safety constraints---can escape the Nash Trap without a structural commitment floor.
+We compare against CPO-style~\citep{achiam2017constrained} and MACPO-style~\citep{gu2023safe} baselines, both configured with the same survival constraint ($P_{\mathrm{surv}} \geq 95\%$), on our severe TPSD ($N{=}20$, Byz$=$30\%, 20 seeds $\times$ 300 episodes).
+
+\begin{table}[h]
+\centering
+\small
+\caption{Safe RL comparison: exogenous constraint (CPO/MACPO) vs.\@ endogenous floor (MACCL). Both CPO methods converge to the Nash Trap ($\lambda \approx 0.5$); only the structural floor escapes.}
+\label{tab:cpo_comparison}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Method} & \textbf{Type} & $\boldsymbol{\bar{\lambda}}$ / \textbf{Floor} & \textbf{Survival} & \textbf{Welfare} \\
+\midrule
+CPO (exog.) & Lagrangian RL & $0.526$ & 56.3\% & 21.26 \\
+MACPO (exog.) & Multi-agent Lagrangian & $0.484$ & 50.8\% & 21.16 \\
+\midrule
+MACCL (endog.) & Floor $\phi_1(R;\omega)$ & $0.829$ & \textbf{86.7\%} & \textbf{21.99} \\
+Fixed $\phi_1{=}1.0$ & Unconditional & $1.000$ & 100.0\% & 22.40 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent Both CPO and MACPO converge to $\bar{\lambda} \approx 0.5$---squarely within the Nash Trap---despite the survival constraint.
+The constraint violation signal ($P_{\mathrm{surv}} < 95\%$) increases the Lagrange multiplier, which pushes the policy toward higher $\lambda$, but this effect is overwhelmed by the myopic anti-commitment gradient (Proposition~\ref{prop:gradient_impossibility}).
+In contrast, MACCL's structural floor directly excludes the trap basin from the feasible action space, bypassing the local gradient entirely.
 
 Group-level ESS requires $m < m^* = 0.286$; when migration exceeds this bound, unconditional commitment provides structural immunity (Appendix~\ref{app:migration}).
 

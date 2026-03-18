@@ -1,0 +1,44 @@
+{
+  "experiment": "CPO vs MACPO vs MACCL Comparison",
+  "config": {
+    "N_AGENTS": 20,
+    "BYZ_FRAC": 0.3,
+    "N_SEEDS": 20,
+    "N_EPISODES": 300
+  },
+  "results": {
+    "CPO": {
+      "welfare": 21.262726892270816,
+      "welfare_std": 0.10789500859073019,
+      "survival": 56.333333333333336,
+      "survival_std": 14.0988573217044,
+      "lambda_mean": 0.5261362052030764
+    },
+    "MACPO": {
+      "welfare": 21.161979251380437,
+      "welfare_std": 0.02165518687264651,
+      "survival": 50.83333333333333,
+      "survival_std": 9.12109886167475,
+      "lambda_mean": 0.4841580276709843
+    },
+    "MACCL": {
+      "welfare": 21.992217547225952,
+      "welfare_std": 0.8268584278996836,
+      "survival": 86.66666666666667,
+      "survival_std": 31.780497164141405,
+      "floor_mean": 0.8285906465060311
+    },
+    "Fixed_1.0": {
+      "welfare": 22.39999771118164,
+      "welfare_std": 0.0,
+      "survival": 100.0
+    }
+  },
+  "time_seconds": 98.96760320663452,
+  "interpretation": {
+    "CPO": "Exogenous constraint: learns lambda(s) subject to P(surv)>=95%. No structural floor.",
+    "MACPO": "Multi-agent CPO with shared cost signal. Per-agent policies, no floor.",
+    "MACCL": "Endogenous floor: learns phi1(R;omega), structural constraint derived from tipping-point.",
+    "Fixed_1.0": "Unconditional commitment baseline."
+  }
+}

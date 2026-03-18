@@ -72,10 +72,22 @@ where $J_{\mathrm{myopic}}$ has eigenvalues $\approx -(1-M/N)$ (stabilizing when
 and $J_{\mathrm{surv}}$ has eigenvalues $O(\epsilon / N^2)$ (negligible).
 \emph{Case $M/N < 1$}: $J$ is negative definite, making $\hat{\lambda}$ locally asymptotically stable
 (Stable Manifold Theorem; Shub, 1987).
-\emph{Case $M/N = 1$}: the myopic eigenvalue degenerates to zero, but the sigmoid parametrization
-$\lambda_i = \sigma(\theta_i)$ introduces curvature: the Hessian in $\theta$-space at $\hat\theta = 0$
-equals $-\operatorname{Var}[\nabla_{\theta_i} J_i] \cdot \sigma'(0)^2 < 0$, yielding stochastic stability
-via the noise-driven restoring force (Appendix~\ref{app:impossibility_proof}, Lemma~\ref{lem:basin}).
+\emph{Case $M/N = 1$}: the myopic eigenvalue degenerates to zero; we state the following:
+
+\begin{conjecture}[Stochastic Stability at $M/N{=}1$]
+\label{conj:mn1_stability}
+When $M/N = 1$, $\hat{\lambda}$ remains stochastically stable
+due to the curvature induced by sigmoid parametrization
+($\partial^2 V_i / \partial \theta_i^2 < 0$ at $\hat\theta = 0$)
+combined with stochastic gradient noise creating a restoring drift.
+\end{conjecture}
+
+\noindent\emph{Numerical evidence}: across 20 seeds at $M/N{=}1.0$,
+$\bar\lambda = 0.503 \pm 0.010$ with 100\% trap rate (Table~\ref{tab:mn_sweep}).
+Formal proof requires Freidlin--Wentzell analysis of the noise-driven
+landscape, which we leave to future work; the $M/N < 1$ case is formally
+proved above.
+
 In both cases, escape requires coordinated perturbation of $\Omega(N)$ agents,
 occurring with probability $e^{-\Omega(N)}$
 under symmetric initialization.
@@ -215,21 +227,44 @@ where $\mathcal{L}(\omega, \mu) = \hat{W}(\omega) + \mu(\hat{P}_{\mathrm{surv}}(
 is the Lagrangian, and $[\cdot]_+$ denotes projection onto $\mathbb{R}_{\geq 0}$.
 A safety projection step rejects any $\omega$ update that violates $P_{\mathrm{surv}} \geq 1 - \delta_{\min}$.
 
+\begin{assumption}[Lipschitz Regularity]
+\label{asm:lipschitz}
+$\hat{W}(\omega)$ and $\hat{P}_{\mathrm{surv}}(\omega)$ are $L$-Lipschitz
+in $\omega$ over the compact parameter set $\Omega \subset \mathbb{R}^3$.
+\end{assumption}
+
+\begin{assumption}[Slater's Condition]
+\label{asm:slater}
+There exists $\omega_0 \in \Omega$ such that
+$P_{\mathrm{surv}}(\omega_0) > 1 - \delta$ (strict feasibility).
+This is satisfied by initialization at $\phi_1{=}1.0$ (Phase~1),
+which achieves 100\% survival.
+\end{assumption}
+
 \begin{theorem}[MACCL Local Convergence]
 \label{thm:maccl_convergence}
-Under Assumptions~\ref{asm:lipschitz}--\ref{asm:slater}
-(Lipschitz objective, bounded constraint set, Slater's condition),
+Under Assumptions~\ref{asm:lipschitz}--\ref{asm:slater},
 the MACCL iterates $(\omega_k, \mu_k)$ converge to a KKT point
 $(\omega^*, \mu^*)$ of the constrained problem at rate
 $O(1/\sqrt{K})$ in the primal-dual gap.
 \end{theorem}
 
 \begin{proof}[Proof sketch]
-This follows from convergence theory for projected subgradient methods
-on saddle-point problems with convex constraints
-(Nedic \& Ozdaglar, 2009).
-The finite-difference gradient estimator introduces bias $O(\epsilon_{\mathrm{FD}}^2)$
-and variance $O(\sigma^2 / n_{\mathrm{inner}})$,
-which are controlled by choosing $\epsilon_{\mathrm{FD}} = O(K^{-1/4})$
-and $n_{\mathrm{inner}} = O(\sqrt{K})$. \hfill $\square$
+The proof has three components.
+\textbf{(1) Standard primal-dual convergence}:
+for Lipschitz objectives with convex constraints satisfying Slater's condition,
+projected subgradient methods converge at $O(1/\sqrt{K})$ in the
+primal-dual gap (Nedi\'{c} \& Ozdaglar, 2009).
+\textbf{(2) Gradient estimation error}:
+the finite-difference estimator introduces bias $O(\epsilon_{\mathrm{FD}}^2)$
+and variance $O(\sigma^2 / n_{\mathrm{inner}})$;
+choosing $\epsilon_{\mathrm{FD}} = O(K^{-1/4})$
+and $n_{\mathrm{inner}} = O(\sqrt{K})$ ensures these do not
+dominate the convergence rate.
+\textbf{(3) Safety projection}:
+the projection $\Pi_{\mathcal{F}}(\omega) = \arg\min_{\omega' \in \mathcal{F}} \|\omega' - \omega\|$
+onto the feasible set $\mathcal{F} = \{\omega : P_{\mathrm{surv}}(\omega) \geq 1 - \delta_{\min}\}$
+is non-expansive (by convexity of $\mathcal{F}$), preserving
+the Lipschitz property and maintaining feasibility
+at every iterate. \hfill $\square$
 \end{proof}
