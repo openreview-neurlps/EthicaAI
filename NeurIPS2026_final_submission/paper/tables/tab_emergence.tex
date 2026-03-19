@@ -18,12 +18,18 @@ IQL$^\ddagger$ & 5,195 & 0.511 $\pm$ 0.005 & 80.0 & 24.3 \\
 QMIX~\citep{rashid2018qmix} & 7,948$^\|$ & 0.607 $\pm$ 0.117 & 76.0 & 21.5 \\
 LOLA~\citep{foerster2018learning} & 5 & 0.490 $\pm$ 0.034 & 51.0 & 21.2 \\
 \midrule
+\multicolumn{5}{c}{\textit{PyTorch REINFORCE Cross-Validation (20 seeds, Beta dist., Adam)}} \\
+\midrule
+PyTorch Linear (Beta) & 10 & 0.497 $\pm$ 0.024 & 48.0 & --- \\
+PyTorch MLP 32h (Beta) & 1,250 & 0.482 $\pm$ 0.011 & 45.2 & --- \\
+PyTorch MLP+Critic 32h & 2,345 & 0.480 $\pm$ 0.013 & 43.8 & --- \\
+\midrule
 \multicolumn{5}{c}{\textit{Commitment-Based (20 seeds)}} \\
 \midrule
 Fixed $\phi_1 = 1.0$ (oracle) & --- & 1.000 & \textbf{100.0} & 22.4 \\
 MACCL $\phi_1(R;\omega)$ & 3 & state-dep. & \textbf{100.0}$^*$ & \textbf{22.0}$^*$ \\
 \bottomrule
-\multicolumn{5}{l}{\small All baselines: 20 seeds, CleanRL~\citep{huang2022cleanrl} single-file NumPy conventions.} \\
+\multicolumn{5}{l}{\small All baselines: 20 seeds. NumPy (CleanRL conventions) + PyTorch (torch.distributions).} \\
 \multicolumn{5}{l}{\small $^\dagger$Plus shared critic. $^\ddagger$IQL = no mixing network. $^\|$Per-agent Q + mixing net. $^*$PGG env.} \\
-\multicolumn{5}{l}{\small Best non-commitment method: QMIX ($\lambda{=}0.607$, 76\% surv)---still within the Nash Trap ($\lambda < 0.85$).} \\
+\multicolumn{5}{l}{\small PyTorch results confirm framework-independent trap: $\bar\lambda < 0.50$ across all architectures.} \\
 \end{tabular}
