@@ -42,6 +42,18 @@
 \renewcommand{\theconjecture}{\arabic{conjecture}}
 \renewcommand{\theassumption}{\arabic{assumption}}
 
+% Safe Alph: redefine internal LaTeX \@Alph to fallback to Arabic for counters > 26
+\makeatletter
+\newcommand{\@safeAlph}[1]{%
+  \ifnum#1>26
+    \number#1%
+  \else
+    \ifcase#1\or A\or B\or C\or D\or E\or F\or G\or H\or I\or J\or K\or L\or M\or N\or O\or P\or Q\or R\or S\or T\or U\or V\or W\or X\or Y\or Z\fi
+  \fi
+}
+\let\@Alph\@safeAlph
+\makeatother
+
 \title{Commitment Floors for Tipping-Point Commons:\\Escaping Nash Traps in Multi-Agent Reinforcement Learning}
 
 \author{
@@ -394,15 +406,27 @@ Extended discussion, policy analogies, and societal considerations are in Append
 \newpage
 \appendix
 
-% Fix "Counter too large" in appendix: force Arabic numbering for all levels
+% Fix "Counter too large" in appendix: use overridden Alph (safe for > 26)
 \renewcommand{\thesection}{\Alph{section}}
 \renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
 \renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
 
-% Redirect labels for body text references
+% Redirect labels for body text references (tables/figures moved from body)
 \label{app:impossibility_theorem}
 \label{app:mn_sweep_detail}
 \label{app:extended_discussion}
+\label{app:comm_ctde_neural}
+\label{app:multi_resource}
+\label{app:phase_transition}
+\label{app:init_sweep}
+% Tables/figures removed from body but still referenced in appendix text
+\phantomsection\label{tab:scale}
+\phantomsection\label{tab:sota}
+\phantomsection\label{tab:meta_learn}
+\phantomsection\label{res:group_ess}
+\phantomsection\label{tab:cpo_comparison}
+\phantomsection\label{tab:boundary_tests}
+\phantomsection\label{fig:phase_diagram}
 
 % Include theoretical results moved from body
 \input{new_sections}
