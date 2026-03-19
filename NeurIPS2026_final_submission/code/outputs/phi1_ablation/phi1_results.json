@@ -1,202 +1,58 @@
 {
   "0.0": {
     "byz_0": {
-      "survival_mean": 75.0,
-      "survival_std": 5.0,
-      "survival_ci95": [
-        70.0,
-        80.0
-      ],
-      "welfare_mean": 24.89892482437572,
-      "welfare_std": 0.18478786358126342,
-      "lambda_mean": 0.4082437304642321,
-      "lambda_std": 0.015398986129366493,
-      "per_seed_survival": [
-        70.0,
-        80.0
-      ],
-      "per_seed_welfare": [
-        24.714136960794455,
-        25.083712687956982
-      ],
-      "per_seed_lambda": [
-        0.3928447443348656,
-        0.4236427165935986
-      ]
+      "survival_mean": 99.5,
+      "survival_std": 1.5,
+      "welfare_mean": 29.502043916521245,
+      "welfare_std": 0.11499015606538601
     },
     "byz_30": {
-      "survival_mean": 30.0,
-      "survival_std": 20.0,
-      "survival_ci95": [
-        10.0,
-        50.0
-      ],
-      "welfare_mean": 21.038248973241522,
-      "welfare_std": 0.03037450417317089,
-      "lambda_mean": 0.43260376344670715,
-      "lambda_std": 0.012656061539671443,
-      "per_seed_survival": [
-        50.0,
-        10.0
-      ],
-      "per_seed_welfare": [
-        21.068623477414693,
-        21.00787446906835
-      ],
-      "per_seed_lambda": [
-        0.44525982498637856,
-        0.4199477019070357
-      ]
+      "survival_mean": 84.5,
+      "survival_std": 7.053367989832942,
+      "welfare_mean": 25.49651599177667,
+      "welfare_std": 0.3628071244794617
     }
   },
   "0.21": {
     "byz_0": {
-      "survival_mean": 95.0,
-      "survival_std": 5.0,
-      "survival_ci95": [
-        90.0,
-        100.0
-      ],
-      "welfare_mean": 25.726493849890574,
-      "welfare_std": 0.07563371576582156,
-      "lambda_mean": 0.47720781824836644,
-      "lambda_std": 0.0063028069081898785,
-      "per_seed_survival": [
-        100.0,
-        90.0
-      ],
-      "per_seed_welfare": [
-        25.650860134124752,
-        25.802127565656395
-      ],
-      "per_seed_lambda": [
-        0.4709050113401766,
-        0.48351062515655635
-      ]
+      "survival_mean": 99.5,
+      "survival_std": 1.5,
+      "welfare_mean": 29.50729698191937,
+      "welfare_std": 0.09905600165413561
     },
     "byz_30": {
-      "survival_mean": 55.0,
-      "survival_std": 5.0,
-      "survival_ci95": [
-        50.0,
-        60.0
-      ],
-      "welfare_mean": 21.129088055919464,
-      "welfare_std": 0.018104939134286013,
-      "lambda_mean": 0.4704533564291983,
-      "lambda_std": 0.007543668816939825,
-      "per_seed_survival": [
-        60.0,
-        50.0
-      ],
-      "per_seed_welfare": [
-        21.14719299505375,
-        21.110983116785178
-      ],
-      "per_seed_lambda": [
-        0.47799702524613813,
-        0.4629096876122585
-      ]
+      "survival_mean": 85.25,
+      "survival_std": 6.015604707757983,
+      "welfare_mean": 25.589710076803765,
+      "welfare_std": 0.32302202864306856
     }
   },
   "0.5": {
     "byz_0": {
-      "survival_mean": 100.0,
-      "survival_std": 0.0,
-      "survival_ci95": [
-        100.0,
-        100.0
-      ],
-      "welfare_mean": 27.693661308288576,
-      "welfare_std": 0.12114264297485455,
-      "lambda_mean": 0.6411384464074648,
-      "lambda_std": 0.010095229545113382,
-      "per_seed_survival": [
-        100.0,
-        100.0
-      ],
-      "per_seed_welfare": [
-        27.81480395126343,
-        27.57251866531372
-      ],
-      "per_seed_lambda": [
-        0.6512336759525781,
-        0.6310432168623513
-      ]
+      "survival_mean": 99.5,
+      "survival_std": 1.5,
+      "welfare_mean": 29.520326137707436,
+      "welfare_std": 0.05981227104166188
     },
     "byz_30": {
-      "survival_mean": 85.0,
-      "survival_std": 5.0,
-      "survival_ci95": [
-        80.0,
-        90.0
-      ],
-      "welfare_mean": 21.484392854362518,
-      "welfare_std": 0.0013863491299286324,
-      "lambda_mean": 0.6184970656494473,
-      "lambda_std": 0.0005776490881170271,
-      "per_seed_survival": [
-        80.0,
-        90.0
-      ],
-      "per_seed_welfare": [
-        21.48577920349245,
-        21.48300650523259
-      ],
-      "per_seed_lambda": [
-        0.6190747147375643,
-        0.6179194165613302
-      ]
+      "survival_mean": 86.5,
+      "survival_std": 5.5,
+      "welfare_mean": 25.82794202652939,
+      "welfare_std": 0.22303087232687507
     }
   },
   "1.0": {
     "byz_0": {
-      "survival_mean": 100.0,
-      "survival_std": 0.0,
-      "survival_ci95": [
-        100.0,
-        100.0
-      ],
-      "welfare_mean": 32.0,
-      "welfare_std": 0.0,
-      "lambda_mean": 1.0,
-      "lambda_std": 0.0,
-      "per_seed_survival": [
-        100.0,
-        100.0
-      ],
-      "per_seed_welfare": [
-        32.0,
-        32.0
-      ],
-      "per_seed_lambda": [
-        1.0,
-        1.0
-      ]
+      "survival_mean": 99.5,
+      "survival_std": 1.5,
+      "welfare_mean": 29.541657341461608,
+      "welfare_std": 0.013653119726619352
     },
     "byz_30": {
-      "survival_mean": 100.0,
-      "survival_std": 0.0,
-      "survival_ci95": [
-        100.0,
-        100.0
-      ],
-      "welfare_mean": 22.39999771118164,
-      "welfare_std": 0.0,
-      "lambda_mean": 1.0,
-      "lambda_std": 0.0,
-      "per_seed_survival": [
-        100.0,
-        100.0
-      ],
-      "per_seed_welfare": [
-        22.39999771118164,
-        22.39999771118164
-      ],
-      "per_seed_lambda": [
-        1.0,
-        1.0
-      ]
+      "survival_mean": 87.25,
+      "survival_std": 5.80409338312195,
+      "welfare_mean": 26.227679654770526,
+      "welfare_std": 0.1605224356360411
     }
   }
 }
