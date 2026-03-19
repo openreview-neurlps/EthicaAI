@@ -38,9 +38,9 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 PHI1_GRID = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 BETA_GRID = [0.0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50]
 
-N_EPISODES = 200
-N_EVAL = 30
-N_SEEDS = 20
+N_EPISODES = 50
+N_EVAL = 20
+N_SEEDS = 10
 T_HORIZON = 50
 N_AGENTS = 20
 
