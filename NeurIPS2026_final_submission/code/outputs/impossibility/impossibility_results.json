@@ -3,32 +3,32 @@
   "signal_dilution": [
     {
       "N": 5,
-      "gradient_mean": 0.0,
-      "gradient_std": 0.0,
+      "gradient_mean": 0.7274999999999998,
+      "gradient_std": 0.2276098635824028,
       "expected_1_over_N": 0.2
     },
     {
       "N": 10,
-      "gradient_mean": 0.15999999999999992,
-      "gradient_std": 0.19595917942265415,
+      "gradient_mean": 0.2874999999999999,
+      "gradient_std": 0.17329526825623376,
       "expected_1_over_N": 0.1
     },
     {
       "N": 20,
-      "gradient_mean": 0.08000000000000007,
-      "gradient_std": 0.16000000000000014,
+      "gradient_mean": 0.22249999999999986,
+      "gradient_std": 0.13344006145082524,
       "expected_1_over_N": 0.05
     },
     {
       "N": 50,
-      "gradient_mean": 0.0,
-      "gradient_std": 0.0,
+      "gradient_mean": 0.18749999999999992,
+      "gradient_std": 0.12808688457449507,
       "expected_1_over_N": 0.02
     },
     {
       "N": 100,
-      "gradient_mean": 0.0,
-      "gradient_std": 0.0,
+      "gradient_mean": 0.18249999999999994,
+      "gradient_std": 0.136037678604128,
       "expected_1_over_N": 0.01
     }
   ],
@@ -101,5 +101,5 @@
       "max_episodes_tested": 500
     }
   ],
-  "time_seconds": 815.5739653110504
+  "time_seconds": 829.3808844089508
 }

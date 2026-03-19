@@ -53,53 +53,42 @@ def sigmoid(x):
 # ============================================================
 def measure_gradient_signal(N, n_seeds=10):
     """
-    Estimate |d P_surv / d lambda_i| empirically via finite difference.
-    For each seed, perturb one agent's lambda by epsilon and measure
+    Estimate |d P_surv / d lambda_i| empirically via central finite difference.
+    For each seed, perturb one agent's lambda by ±epsilon and measure
     the change in survival probability across K rollouts.
     """
     n_honest = N - int(N * BYZ_FRAC)  # Must match NonlinearPGGEnv calculation
     M = 1.6  # Fixed multiplier (as in paper)
-    FD_EPS = 0.05
-    K_ROLLOUTS = 50
+    FD_EPS = 0.10  # Larger epsilon for measurable signal
+    K_ROLLOUTS = 200  # More rollouts for stable survival probability
 
     gradient_magnitudes = []
 
     for seed in range(n_seeds):
-        rng = np.random.RandomState(42 + seed)
-        base_lambda = 0.5  # Evaluate gradient near the Nash Trap
+        rng_base = np.random.RandomState(42 + seed)
 
-        # Baseline survival at base_lambda
-        surv_base = 0
-        for k in range(K_ROLLOUTS):
-            env = NonlinearPGGEnv(n_agents=N, multiplier=M, byz_frac=BYZ_FRAC)
-            obs, _ = env.reset(seed=seed * 1000 + k)
-            survived = True
-            for t in range(50):
-                lambdas = np.full(n_honest, base_lambda)
-                obs, _, terminated, _, info = env.step(lambdas)
-                if terminated:
-                    survived = info.get("survived", False)
-                    break
-            surv_base += int(survived)
-        P_base = surv_base / K_ROLLOUTS
+        def run_survival(lambda_agent0, rng_seed_offset):
+            """Run K rollouts and return survival rate."""
+            surv = 0
+            for k in range(K_ROLLOUTS):
+                env = NonlinearPGGEnv(n_agents=N, multiplier=M, byz_frac=BYZ_FRAC)
+                obs, _ = env.reset(seed=seed * 1000 + k + rng_seed_offset)
+                survived = True
+                for t in range(50):
+                    lambdas = np.full(n_honest, 0.5)
+                    lambdas[0] = lambda_agent0
+                    obs, _, terminated, _, info = env.step(lambdas)
+                    if terminated:
+                        survived = info.get("survived", False)
+                        break
+                surv += int(survived)
+            return surv / K_ROLLOUTS
 
-        # Perturbed survival: increase agent 0's lambda by epsilon
-        surv_plus = 0
-        for k in range(K_ROLLOUTS):
-            env = NonlinearPGGEnv(n_agents=N, multiplier=M, byz_frac=BYZ_FRAC)
-            obs, _ = env.reset(seed=seed * 1000 + k)
-            survived = True
-            for t in range(50):
-                lambdas = np.full(n_honest, base_lambda)
-                lambdas[0] = base_lambda + FD_EPS  # perturb agent 0
-                obs, _, terminated, _, info = env.step(lambdas)
-                if terminated:
-                    survived = info.get("survived", False)
-                    break
-            surv_plus += int(survived)
-        P_plus = surv_plus / K_ROLLOUTS
+        # Central finite difference: (P(λ+ε) - P(λ-ε)) / (2ε)
+        P_plus = run_survival(0.5 + FD_EPS, 0)
+        P_minus = run_survival(0.5 - FD_EPS, K_ROLLOUTS)
 
-        grad_mag = abs(P_plus - P_base) / FD_EPS
+        grad_mag = abs(P_plus - P_minus) / (2 * FD_EPS)
         gradient_magnitudes.append(grad_mag)
 
     return {
