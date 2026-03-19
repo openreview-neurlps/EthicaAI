@@ -104,7 +104,7 @@ We identify three mechanisms underlying the Nash Trap (Theorem~\ref{thm:impossib
 (iii)~\emph{exponential drift}---escape requires $\Omega(e^{cN})$ gradient evaluations.
 These results are confirmed empirically across $N \in \{5, 10, 20, 50, 100\}$ (Section~\ref{sec:impossibility}).
 We also show that Lagrangian relaxation baselines---which impose survival constraints exogenously---converge to $\bar\lambda \approx 0.5$ in the same trap (Table~\ref{tab:cpo_comparison}), demonstrating that the problem is not merely unconstrained optimization but a structural property of the gradient landscape.
-Furthermore, neither cheap-talk communication, centralized critics (CTDE), nor neural network policies escape the trap (Appendix~\ref{app:comm_ctde_neural}): CleanRL-style IPPO/MAPPO with 4{,}546-parameter MLPs achieve \emph{even lower} $\bar\lambda \approx 0.40$ than simple REINFORCE ($\approx 0.50$), with 100\% trap rate across 20 seeds each.
+Furthermore, neither cheap-talk communication, centralized critics (CTDE), nor neural network policies escape the trap (Appendix~\ref{app:comm_ctde_neural}): CleanRL-style IPPO/MAPPO with 4{,}546-parameter MLPs achieve \emph{even lower} $\bar\lambda \approx 0.39$ than simple REINFORCE ($\approx 0.48$), with 100\% trap rate across 20 seeds each. Remarkably, the MLP REINFORCE variants ($\bar\lambda \approx 0.35$) fall \emph{deeper} into the trap than the linear variant ($\bar\lambda \approx 0.48$), confirming that additional network capacity drives agents further into the trap by more effectively exploiting myopic gradient signals.
 
 \paragraph{3.~Prescription: Commitment Floors.}
 Since the trap cannot be escaped by gradient methods, we derive a structural bypass: \emph{commitment floors} that exclude the trap basin from the feasible action space (Corollary~\ref{cor:bypass}).
@@ -677,7 +677,7 @@ To test the \emph{boundary conditions} of our framework, we ran experiments on t
 
 \begin{table}[htbp]
 \centering
-\caption{Melting Pot results on \emph{commons\_harvest\_\_open} (5 seeds, 200 steps). As predicted by our boundary conditions ($\rho \approx 1$, $M/N \approx 1$), commitment provides no advantage in this non-TPSD environment.}
+\caption{Melting Pot results on \emph{commons\_harvest\_\_open} (20 seeds, 500 steps). As predicted by our boundary conditions ($\rho \approx 1$, $M/N \approx 1$), commitment provides no advantage in this non-TPSD environment.}
 \label{tab:meltingpot_prelim}
 \begin{tabular}{lcc}
 \toprule
@@ -1681,14 +1681,14 @@ Shared Critic (CTDE) & $0.494$ & 50.2\% & 100\% \\
 \midrule
 \multicolumn{4}{c}{\textit{Full CleanRL-style implementations (64-hidden MLP, GAE, PPO clip, Adam)}} \\
 \midrule
-CleanRL IPPO (4,546 params/agent) & $0.409$ & 37.5\% & 100\% \\
-CleanRL MAPPO (4,546 + shared critic) & $0.394$ & 37.0\% & 100\% \\
+CleanRL IPPO (4,546 params/agent) & $0.393$ & 19.0\% & 100\% \\
+CleanRL MAPPO (4,546 + shared critic) & $0.223$ & 12.2\% & 100\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \noindent \textbf{Key finding}: the Nash Trap persists under all six extensions tested: (1)~cheap-talk communication; (2)~a shared centralized critic (CTDE); (3)~2-layer MLP policies with 97 learned parameters; (4)~CleanRL-style IPPO with 4,546 parameters per agent, GAE, and PPO clipping; (5)~CleanRL-style MAPPO with a shared critic and identical neural architecture; and (6)~simultaneous use of both neural capacity and centralized information.
-\textbf{Remarkably, CleanRL IPPO/MAPPO achieve \emph{lower} $\bar\lambda$ ($\approx 0.40$) than simple REINFORCE ($\approx 0.50$)}, suggesting that stronger optimization capacity drives agents \emph{deeper} into the trap by more effectively exploiting the myopic gradient signal.
+\textbf{Remarkably, CleanRL IPPO/MAPPO achieve \emph{lower} $\bar\lambda$ ($\approx 0.39$ and $0.22$ respectively) than simple REINFORCE ($\approx 0.48$)}, suggesting that stronger optimization capacity drives agents \emph{deeper} into the trap by more effectively exploiting the myopic gradient signal.
 
 % ================================================================
 % APPENDIX: Phase Transition Remark
