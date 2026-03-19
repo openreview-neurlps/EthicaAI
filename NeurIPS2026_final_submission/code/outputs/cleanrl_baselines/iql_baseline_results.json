@@ -34,5 +34,13 @@
       80.0,
       80.0
     ]
+  },
+  "config": {
+    "N_AGENTS": 20,
+    "BYZ_FRAC": 0.3,
+    "N_SEEDS": 20,
+    "N_EPISODES": 300,
+    "framework": "CleanRL (NumPy reimpl.)",
+    "note": "Independent Q-Learning"
   }
 }

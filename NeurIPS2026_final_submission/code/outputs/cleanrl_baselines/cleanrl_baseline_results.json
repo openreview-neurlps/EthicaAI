@@ -142,5 +142,15 @@
       6.666666666666667,
       20.0
     ]
+  },
+  "config": {
+    "N_AGENTS": 20,
+    "BYZ_FRAC": 0.3,
+    "N_SEEDS": 20,
+    "N_EPISODES": 300,
+    "T_HORIZON": 50,
+    "M_over_N": 0.08,
+    "framework": "CleanRL (NumPy reimpl.)",
+    "note": "Independent PPO/MAPPO with 4546 params/agent"
   }
 }

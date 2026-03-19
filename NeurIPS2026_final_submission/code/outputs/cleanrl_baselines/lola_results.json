@@ -1,4 +1,12 @@
 {
+  "config": {
+    "N_AGENTS": 20,
+    "BYZ_FRAC": 0.3,
+    "N_SEEDS": 20,
+    "N_EPISODES": 300,
+    "algorithm": "LOLA (Learning with Opponent-Learning Awareness)",
+    "note": "Opponent shaping via second-order gradient"
+  },
   "algorithm": "LOLA (N-agent, linear policy)",
   "description": "Learning with Opponent-Learning Awareness (Foerster et al., 2018) adapted for N-agent PGG. 1-step LOLA correction with cross-derivative approximation.",
   "lambda_mean": 0.48970643543700254,

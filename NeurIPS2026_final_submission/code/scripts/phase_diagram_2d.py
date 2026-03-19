@@ -32,8 +32,8 @@ from envs.nonlinear_pgg_env import NonlinearPGGEnv
 # ============================================================
 MN_RATIOS = [0.05, 0.15, 0.30, 0.50, 0.75, 1.00]
 N_VALUES = [5, 10, 20, 50]
-N_SEEDS = 10
-N_EPISODES = 200
+N_SEEDS = 20
+N_EPISODES = 100
 GAMMA = 0.99
 BYZ_FRAC = 0.30
 

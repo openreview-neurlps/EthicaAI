@@ -1,4 +1,13 @@
 {
+  "config": {
+    "N_AGENTS": 20,
+    "BYZ_FRAC": 0.3,
+    "N_SEEDS": 20,
+    "N_EPISODES": 300,
+    "algorithm": "QMIX",
+    "architecture": "2-layer MLP (64 hidden) + hypernetwork mixing",
+    "note": "Centralized training with monotonic mixing network"
+  },
   "algorithm": "QMIX (monotonic mixing network)",
   "architecture": {
     "per_agent_q": "2-layer MLP (64 hidden)",
