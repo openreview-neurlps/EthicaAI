@@ -1,0 +1,24 @@
+% Cross-Environment Nash Trap Validation Table
+% Generated from: phi1_ablation, cpr_experiment, harvest, cleanup results
+\begin{table}[t]
+\centering
+\caption{%
+\textbf{Cross-environment Nash Trap validation.}
+Selfish REINFORCE ($\phi_1 = 0$) converges to $\bar\lambda \approx 0.5$
+across four structurally distinct tipping-point environments.
+All experiments: $N{=}20$ agents, 30\% Byzantine, 20 seeds, 300 episodes.
+}
+\label{tab:cross_env}
+\small
+\begin{tabular}{@{} l c c c c c @{}}
+\toprule
+\textbf{Environment} & \textbf{Dilemma Type} & $\bar\lambda$ & \textbf{Surv. (\%)} & \textbf{Trap?} & \textbf{Failure Mode} \\
+\midrule
+PGG        & Contribution & $0.48 \pm 0.02$  & $\leq 15$  & \cmark & Resource collapse \\
+CPR        & Extraction   & $0.488 \pm 0.01$ & $9.3$      & \cmark & Over-extraction \\
+Harvest    & Resource     & $0.522 \pm 0.01$ & $8.9$      & \cmark & Depletion \\
+Cleanup    & Maintenance  & $0.493 \pm 0.01$ & $99.7$     & \cmark & Welfare degradation \\
+\bottomrule
+\end{tabular}
+\vspace{-2mm}
+\end{table}

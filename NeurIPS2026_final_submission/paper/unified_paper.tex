@@ -21,6 +21,9 @@
 \usepackage{microtype}
 \usepackage{xcolor}
 \usepackage{graphicx}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
@@ -76,7 +79,7 @@ We study \textbf{Tipping-Point Social Dilemmas} (TPSDs)---multi-agent settings w
 \textbf{Explanation.}~We show escape requires $\Omega(e^{cN})$ gradient evaluations via three mechanisms: signal dilution ($O(\epsilon/N)$ survival gradient vs.\ $O(1)$ reward noise), basin dominance (trap basin has measure $\geq 1 - e^{-cN}$), and exponential drift---confirmed for $N \in \{5,\ldots,100\}$.
 \textbf{Prescription.}~We derive minimum commitment floors from recovery dynamics and show they bypass the trap in $O(1)$ steps by excluding the trap basin from the feasible action space. MACCL, a primal-dual extension, learns state-dependent floors adaptively, improving welfare by 203\% in environments where partial commitment suffices.
 
-These results are validated across three environment classes (PGG, CPR, Cleanup), multi-dimensional action spaces ($K{=}3$), adversarial conditions (30\% Byzantine), and scale ($N{=}100$), establishing the Nash Trap as a \textbf{systematic barrier for gradient-based learners} in tipping-point environments, and the commitment floor as a principled bypass.
+These results are validated across four structurally distinct environment classes---Public Goods Game (contribution), Common Pool Resource (extraction), Harvest (resource depletion), and Cleanup (maintenance allocation)---all converging to $\bar\lambda \approx 0.5$ with 100\% trap rate (Table~\ref{tab:cross_env}), as well as multi-dimensional action spaces ($K{=}3$), adversarial conditions (30\% Byzantine), and scale ($N{=}100$), establishing the Nash Trap as a \textbf{systematic barrier for gradient-based learners} in tipping-point environments, and the commitment floor as a principled bypass.
 \end{abstract}
 
 % ================================================================
@@ -374,17 +377,21 @@ Our results decompose into three layers: (i)~\emph{tipping-point dynamics as the
 Both Lagrangian relaxation baselines---which impose survival constraints exogenously---converge to $\bar\lambda \approx 0.5$ in the same trap (Table~\ref{tab:cpo_comparison}), demonstrating that the Nash Trap is not merely a failure of unconstrained optimization.
 
 \paragraph{Cross-environment validation.}
-To confirm that the Nash Trap is not an artifact of the PGG formulation, we replicate key experiments in a \textbf{Common Pool Resource (CPR)} environment (Appendix~\ref{app:cpr_detail}), which features distinct dynamics: agents extract from a shared resource with nonlinear depletion.
-Under selfish RL, CPR agents converge to $\bar\lambda = 0.50$ with survival rate $9.3\%$---closely matching PGG results ($\bar\lambda \approx 0.48$, survival $\leq 15\%$).
-Even with a fixed cooperative strategy ($\lambda = 0.5$), CPR survival remains at $8.5\%$, confirming that the trap is structural rather than algorithm-specific.
-This cross-environment consistency supports the generality of the Nash Trap phenomenon beyond a single game formulation.
+To confirm that the Nash Trap is not an artifact of the PGG formulation, we replicate key experiments across three additional environments with structurally distinct social dilemma dynamics (Table~\ref{tab:cross_env}).
+\textbf{Common Pool Resource (CPR)}: agents extract from a shared resource with nonlinear depletion ($\bar\lambda = 0.488$, survival 9.3\%).
+\textbf{Harvest} (abstracted SSD): agents choose extraction rates from a renewing resource; over-harvesting causes regrowth collapse ($\bar\lambda = 0.522$, survival 8.9\%).
+\textbf{Cleanup} (abstracted SSD): agents allocate effort between harvesting (selfish) and river cleaning (prosocial); free-riding causes pollution accumulation ($\bar\lambda = 0.493$, survival 99.7\% but suboptimal welfare).
+Across all four environments, agents converge to $\bar\lambda \approx 0.5$ regardless of whether the dilemma involves \emph{contribution} (PGG), \emph{extraction} (CPR/Harvest), or \emph{maintenance allocation} (Cleanup).
+Notably, the Cleanup environment exhibits a distinct failure mode: agents survive but remain locked in a welfare-degrading equilibrium, demonstrating that the Nash Trap manifests as either catastrophic collapse \emph{or} persistent suboptimality depending on environment sensitivity.
+
+\input{tables/tab_cross_env}
 
 A diagnostic boundary-test summary, phase diagrams, and multi-axis comparison are provided in the extended discussion (Appendix~\ref{app:extended_discussion}).
 
 \subsection{Limitations}
 \label{sec:limitations}
 \textbf{Algorithm scope}: we test 12 implementations across 5 algorithm families plus CleanRL IPPO/MAPPO (4,546 params) and PyTorch REINFORCE cross-validation (3 architectures, Beta distribution, Adam optimizer); all fall into the Nash Trap. CTDE with global-state critics and communication channels are tested (Appendix~\ref{app:comm_ctde_neural}): 100\% trap rate. PyTorch results ($\bar\lambda \approx 0.48\text{--}0.50$) closely match NumPy baselines ($\bar\lambda \approx 0.48$), confirming framework independence.
-\textbf{Environment scope}: primary results use PGG with scalar $R_t$; CPR, Coin Game, spatial dilemma, and multi-dimensional PGG ($K{=}3$) confirm the pattern (Appendices~\ref{app:cpr_detail}--\ref{app:multi_resource}).
+\textbf{Environment scope}: primary results use PGG with scalar $R_t$; three additional environment classes---CPR (extraction), Harvest (resource depletion), and Cleanup (maintenance allocation)---confirm the pattern across structurally distinct dilemmas (Table~\ref{tab:cross_env}). Multi-dimensional PGG ($K{=}3$) is tested in Appendix~\ref{app:multi_resource}.
 \textbf{Ethical scope}: $\lambda$ operationalizes cooperation, not full moral reasoning; deployment requires normative deliberation.
 The commitment function $g(\theta, R)$ encodes value judgments; determining \emph{whose} values requires interdisciplinary collaboration.
 
