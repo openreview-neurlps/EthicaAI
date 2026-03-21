@@ -70,7 +70,7 @@ BETA_GRID = [0.0, 0.10, 0.20, 0.30, 0.40, 0.50]
 
 N_EPISODES = 200
 N_EVAL = 30
-N_SEEDS = 5       # Coarse sweep: 5 seeds; representative points get 20
+N_SEEDS = 5       # Coarse sweep: 5 seeds for learning-included phase diagram
 T_HORIZON = 50
 N_AGENTS = 20
 

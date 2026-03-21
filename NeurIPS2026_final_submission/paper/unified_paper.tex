@@ -98,7 +98,7 @@ This finding is robust across five algorithm families (REINFORCE, PPO, IQL, QMIX
 Crucially, the trap persists \emph{even when $M/N = 1$}---when cooperation is individually rational---because tipping-point dynamics, not payoff misalignment, drive the failure.
 
 \paragraph{2.~Explanation: Why the Trap is Hard to Escape.}
-We identify three mechanisms underlying the Nash Trap (Theorem~\ref{thm:impossibility}):
+We identify three mechanisms underlying the Nash Trap (Proposition~\ref{thm:impossibility}):
 (i)~\emph{signal dilution}---the survival gradient is $O(\epsilon / N)$ against reward noise $O(1)$;
 (ii)~\emph{basin dominance}---the trap basin has measure $\geq 1 - e^{-c_1 N}$ under symmetric initialization;
 (iii)~\emph{exponential drift}---escape requires $\Omega(e^{cN})$ gradient evaluations.
@@ -361,7 +361,7 @@ We note that Theorem~\ref{thm:critical} provides a \emph{necessary} condition: i
 
 
 % NEW THEORETICAL RESULTS (moved to Appendix)
-We establish that escaping the Nash Trap requires $\Omega(e^{cN})$ gradient evaluations (Theorem~\ref{thm:impossibility}, Appendix~\ref{app:impossibility_theorem}; Part~(i) is proved formally, Parts~(ii)--(iii) are supported by rigorous empirical evidence across $N \in \{5, 10, 20, 50, 100\}$), and that the trap persists across all tested $M/N$ ratios including $M/N = 1.0$ (Appendix~\ref{app:mn_sweep_detail}).
+We establish that escaping the Nash Trap requires $\Omega(e^{cN})$ gradient evaluations (Proposition~\ref{thm:impossibility}, Appendix~\ref{app:impossibility_theorem}; Part~(i) is proved formally, Parts~(ii)--(iii) are supported by rigorous empirical evidence across $N \in \{5, 10, 20, 50, 100\}$), and that the trap persists across all tested $M/N$ ratios including $M/N = 1.0$ (Appendix~\ref{app:mn_sweep_detail}).
 MACCL, a primal-dual algorithm with formal convergence guarantees, learns state-dependent floors that recover welfare while maintaining survival (Appendix~\ref{app:maccl}).
 
 % ================================================================
@@ -370,8 +370,15 @@ MACCL, a primal-dual algorithm with formal convergence guarantees, learns state-
 \section{Discussion}
 \label{sec:discussion}
 
-Our results decompose into three layers: (i)~\emph{tipping-point dynamics as the primary driver}---the Nash Trap persists even when $M/N \geq 1$ across all 24 tested $(N, M/N)$ conditions (Appendix~\ref{app:phase_transition}); (ii)~\emph{computational intractability} (Theorem~\ref{thm:impossibility})---escape requires $\Omega(e^{cN})$ gradient evaluations; (iii)~\emph{commitment floor as bypass}---MACCL learns the minimum sufficient floor for each environment, recovering $\phi_1 \approx 1.0$ in severe TPSDs while improving welfare by 203\% in milder environments (Appendix~\ref{app:maccl}).
+Our results decompose into three layers: (i)~\emph{tipping-point dynamics as the primary driver}---the Nash Trap persists even when $M/N \geq 1$ across all 24 tested $(N, M/N)$ conditions (Appendix~\ref{app:phase_transition}); (ii)~\emph{computational intractability} (Proposition~\ref{thm:impossibility})---escape requires $\Omega(e^{cN})$ gradient evaluations; (iii)~\emph{commitment floor as bypass}---MACCL learns the minimum sufficient floor for each environment, recovering $\phi_1 \approx 1.0$ in severe TPSDs while improving welfare by 203\% in milder environments (Appendix~\ref{app:maccl}).
 Both Lagrangian relaxation baselines---which impose survival constraints exogenously---converge to $\bar\lambda \approx 0.5$ in the same trap (Table~\ref{tab:cpo_comparison}), demonstrating that the Nash Trap is not merely a failure of unconstrained optimization.
+
+\paragraph{Cross-environment validation.}
+To confirm that the Nash Trap is not an artifact of the PGG formulation, we replicate key experiments in a \textbf{Common Pool Resource (CPR)} environment (Appendix~\ref{app:cpr_detail}), which features distinct dynamics: agents extract from a shared resource with nonlinear depletion.
+Under selfish RL, CPR agents converge to $\bar\lambda = 0.50$ with survival rate $9.3\%$---closely matching PGG results ($\bar\lambda \approx 0.48$, survival $\leq 15\%$).
+Even with a fixed cooperative strategy ($\lambda = 0.5$), CPR survival remains at $8.5\%$, confirming that the trap is structural rather than algorithm-specific.
+This cross-environment consistency supports the generality of the Nash Trap phenomenon beyond a single game formulation.
+
 A diagnostic boundary-test summary, phase diagrams, and multi-axis comparison are provided in the extended discussion (Appendix~\ref{app:extended_discussion}).
 
 \subsection{Limitations}
@@ -387,7 +394,7 @@ The commitment function $g(\theta, R)$ encodes value judgments; determining \emp
 \section{Conclusion}\label{sec:broader_impact}
 
 We identify the \textbf{Nash Trap}---a locally stable, collectively catastrophic equilibrium in Tipping-Point Social Dilemmas---that persists across 14 algorithm variants (including CleanRL IPPO/MAPPO with 4,546-parameter MLPs and PyTorch REINFORCE with Beta distributions), $400{+}$ hyperparameter configurations, and multiple environment classes.
-We establish that escape requires $\Omega(e^{cN})$ gradient evaluations (Theorem~\ref{thm:impossibility}: signal dilution proved formally; basin dominance and escape time supported by comprehensive empirical evidence) and introduce \emph{commitment floors} as a structural bypass that transforms the exponentially hard problem into a tractable constrained optimization.
+We establish that escape requires $\Omega(e^{cN})$ gradient evaluations (Proposition~\ref{thm:impossibility}: signal dilution proved formally; basin dominance and escape time supported by comprehensive empirical evidence) and introduce \emph{commitment floors} as a structural bypass that transforms the exponentially hard problem into a tractable constrained optimization.
 MACCL learns the minimum sufficient floor adaptively, improving welfare by up to 203\% over fixed floors in milder environments while preserving survival.
 The broader implication is a design principle: when tipping-point dynamics make selfish learning structurally misaligned with survival, commitment must be imposed as a stability-derived safety specification rather than learned from misaligned gradients.
 Extended discussion, policy analogies, and societal considerations are in Appendix~\ref{app:extended_discussion}.
@@ -1008,7 +1015,7 @@ To address potential concerns about implementation-specific artifacts in our Num
 
 \noindent\textbf{Key finding}: all three PyTorch variants converge within the Nash Trap ($\bar\lambda < 0.50$), confirming \textbf{framework independence}.
 
-\noindent\textbf{Implementation sensitivity}: the NumPy MLP baseline uses sigmoid parameterization ($\lambda = \sigma(w^\top s + b) + \text{noise}$), while PyTorch uses Beta distributions. This difference in policy parameterization shifts the convergent $\bar\lambda$ from $\approx 0.35$ (NumPy MLP) to $\approx 0.48$ (PyTorch MLP), but crucially, \emph{both remain well within the trap} ($\bar\lambda < 0.85$). The gap demonstrates that while the exact equilibrium point depends on policy representation and gradient-estimation method, the \emph{existence} of the trap is invariant to these choices---precisely as predicted by Theorem~\ref{thm:impossibility}, which bounds the trap basin measure independently of the optimization algorithm.
+\noindent\textbf{Implementation sensitivity}: the NumPy MLP baseline uses sigmoid parameterization ($\lambda = \sigma(w^\top s + b) + \text{noise}$), while PyTorch uses Beta distributions. This difference in policy parameterization shifts the convergent $\bar\lambda$ from $\approx 0.35$ (NumPy MLP) to $\approx 0.48$ (PyTorch MLP), but crucially, \emph{both remain well within the trap} ($\bar\lambda < 0.85$). The gap demonstrates that while the exact equilibrium point depends on policy representation and gradient-estimation method, the \emph{existence} of the trap is invariant to these choices---precisely as predicted by Proposition~\ref{thm:impossibility}, which bounds the trap basin measure independently of the optimization algorithm.
 
 \paragraph{IQL (Independent Q-Learning).}
 We implement independent Q-learning (IQL) with per-agent Q-networks (same 2-layer MLP, 5,195 params/agent) and shared team reward. Note: unlike QMIX~\citep{rashid2018qmix}, this implementation does \textbf{not} include a monotonic mixing network; each agent learns its Q-function independently.
@@ -1629,7 +1636,7 @@ MACCL-Neural (579 params) & $0.874$ & \textbf{80.2\%} & \textbf{22.10} \\
 \section{Initialization Sweep: Measuring the Basin of Attraction}
 \label{app:init_sweep}
 
-To directly validate the basin dominance claim in Theorem~\ref{thm:impossibility}, we vary the initial commitment level $\lambda_0 \in \{0.10, 0.30, 0.50, 0.70, 0.85, 0.90, 0.95, 1.00\}$ and measure whether agents converge to the Nash Trap or maintain cooperation ($N{=}20$, 30\% Byzantine, 20 seeds, 300 episodes).
+To directly validate the basin dominance claim in Proposition~\ref{thm:impossibility}, we vary the initial commitment level $\lambda_0 \in \{0.10, 0.30, 0.50, 0.70, 0.85, 0.90, 0.95, 1.00\}$ and measure whether agents converge to the Nash Trap or maintain cooperation ($N{=}20$, 30\% Byzantine, 20 seeds, 300 episodes).
 
 \begin{table}[h]
 \centering
