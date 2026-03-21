@@ -95,6 +95,31 @@ EXTENSION_EXPERIMENTS = [
         "output": "phase_diagram_learned/phase_diagram_learned.json",
         "paper_ref": "App. G (with-learning companion)",
     },
+    # === NEW: Phase A/B experiments ===
+    {
+        "name": "PyTorch REINFORCE (4 architectures)",
+        "script": "pytorch_reinforce_nash_trap.py",
+        "output": "pytorch_reinforce/pytorch_reinforce_results.json",
+        "paper_ref": "Sec. 4.3 (framework independence)",
+    },
+    {
+        "name": "Harvest SSD Nash Trap",
+        "script": "harvest_nash_trap.py",
+        "output": "harvest/harvest_results.json",
+        "paper_ref": "App. (cross-environment)",
+    },
+    {
+        "name": "Cleanup SSD Nash Trap",
+        "script": "cleanup_nash_trap.py",
+        "output": "cleanup/cleanup_results.json",
+        "paper_ref": "App. (cross-environment)",
+    },
+    {
+        "name": "Impossibility Verification (N-scaling)",
+        "script": "impossibility_verification.py",
+        "output": "impossibility/impossibility_results.json",
+        "paper_ref": "Thm 2, App. (empirical verification)",
+    },
 ]
 
 

@@ -101,8 +101,8 @@
     ]
   ],
   "run_meta": {
-    "timestamp": 1773740184.3230102,
-    "git_sha": "32945de9ebaf354d39a0cd32c70c56ea096fd4c1",
+    "timestamp": 1774106491.648107,
+    "git_sha": "600b67d293ae1c1b9c0ed1e7602706075028b4e2",
     "mode": "FAST"
   },
   "n_seeds": 2,
@@ -112,13 +112,5 @@
   "learning": true,
   "floor_skip_update": true,
   "update_rule": "PPO (clipped Gaussian, numerical gradient)",
-  "description": "Phase diagram WITH IPPO learning. Floor-overridden timesteps excluded from updates.",
-  "config": {
-    "N_SEEDS": 10,
-    "N_EPISODES": 200,
-    "N_AGENTS": 20,
-    "BYZ_FRAC": 0.3,
-    "method": "MACCL learned floor",
-    "framework": "NumPy"
-  }
+  "description": "Phase diagram WITH IPPO learning. Floor-overridden timesteps excluded from updates."
 }
