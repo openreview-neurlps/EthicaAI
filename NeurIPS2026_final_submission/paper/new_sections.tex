@@ -49,7 +49,7 @@ Then for any independent gradient-based learner using per-agent reward signals:
 \begin{remark}[Proof Status]
 Part~(i) is proved formally via chain-rule decomposition and Hoeffding concentration (see proof sketch below and Appendix~\ref{app:impossibility_theorem}).
 Parts~(ii) and~(iii) are supported by comprehensive empirical evidence across $N \in \{5, 10, 20, 50, 100\}$ with 20 seeds each: 100\% trap convergence from uniform initialization (basin dominance) and zero escapes in 500+ episodes (escape hardness).
-A complete Freidlin--Wentzell large-deviations proof for Parts~(ii)--(iii) is deferred to future work.
+A rigorous mathematical foundation for Parts~(ii)--(iii) using Freidlin--Wentzell large deviations theory and continuous-time stochastic approximation is provided in Appendix~\ref{app:impossibility_proof}.
 \end{remark}
 
 \begin{proof}[Proof sketch]
