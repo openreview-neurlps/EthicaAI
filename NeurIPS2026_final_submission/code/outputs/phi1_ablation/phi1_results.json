@@ -54,5 +54,18 @@
       "welfare_mean": 26.227679654770526,
       "welfare_std": 0.1605224356360411
     }
+  },
+  "config": {
+    "N_AGENTS": 20,
+    "BYZ_FRAC": 0.3,
+    "N_SEEDS": 20,
+    "N_EPISODES": 300,
+    "phi1_values": [
+      0.0,
+      0.21,
+      0.5,
+      1.0
+    ],
+    "framework": "NumPy REINFORCE"
   }
 }

@@ -47,5 +47,19 @@
     }
   },
   "conclusion": "See lambda values",
-  "time_seconds": 287.24129581451416
+  "time_seconds": 287.24129581451416,
+  "config": {
+    "N_AGENTS": 20,
+    "BYZ_FRAC": 0.3,
+    "M_OVER_N": 0.08,
+    "N_SEEDS": 20,
+    "N_EPISODES": 300,
+    "T_HORIZON": 50,
+    "algorithms": [
+      "Linear IPPO",
+      "MLP IPPO",
+      "MLP+Critic IPPO"
+    ],
+    "framework": "NumPy REINFORCE"
+  }
 }

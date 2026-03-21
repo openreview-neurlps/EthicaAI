@@ -63,5 +63,15 @@
     "date": "2026-03-18",
     "commitment_policy": "70% interact ([5, 6, 7]), 30% move ([0, 1, 2, 3, 4])",
     "selfish_policy": "uniform random 0-7"
+  },
+  "config": {
+    "N_SEEDS": 20,
+    "N_STEPS": 500,
+    "N_AGENTS": 7,
+    "N_ACTIONS": 8,
+    "substrate": "commons_harvest__open",
+    "platform": "WSL Ubuntu-24.04 Python 3.11.15",
+    "meltingpot_version": "2.4.0",
+    "framework": "Melting Pot (source build)"
   }
 }

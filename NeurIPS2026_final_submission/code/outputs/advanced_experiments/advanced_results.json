@@ -90,5 +90,18 @@
     "trap_rate_pct": 100.0,
     "params_per_agent": 97
   },
-  "time_seconds": 127.81002569198608
+  "time_seconds": 127.81002569198608,
+  "config": {
+    "N_AGENTS": 20,
+    "BYZ_FRAC": 0.3,
+    "N_SEEDS": 20,
+    "N_EPISODES": 300,
+    "experiments": [
+      "phase_transition",
+      "communication",
+      "shared_critic",
+      "neural_policy"
+    ],
+    "framework": "NumPy REINFORCE"
+  }
 }

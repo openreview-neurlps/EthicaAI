@@ -101,5 +101,20 @@
       "max_episodes_tested": 500
     }
   ],
-  "time_seconds": 829.3808844089508
+  "time_seconds": 829.3808844089508,
+  "config": {
+    "N_VALUES": [
+      5,
+      10,
+      20,
+      50,
+      100
+    ],
+    "N_SEEDS": 20,
+    "N_EPISODES": 200,
+    "K_ROLLOUTS": 200,
+    "FD_EPS": 0.1,
+    "method": "central finite difference",
+    "framework": "NumPy"
+  }
 }

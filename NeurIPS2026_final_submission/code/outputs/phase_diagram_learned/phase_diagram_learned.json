@@ -112,5 +112,13 @@
   "learning": true,
   "floor_skip_update": true,
   "update_rule": "PPO (clipped Gaussian, numerical gradient)",
-  "description": "Phase diagram WITH IPPO learning. Floor-overridden timesteps excluded from updates."
+  "description": "Phase diagram WITH IPPO learning. Floor-overridden timesteps excluded from updates.",
+  "config": {
+    "N_SEEDS": 10,
+    "N_EPISODES": 200,
+    "N_AGENTS": 20,
+    "BYZ_FRAC": 0.3,
+    "method": "MACCL learned floor",
+    "framework": "NumPy"
+  }
 }

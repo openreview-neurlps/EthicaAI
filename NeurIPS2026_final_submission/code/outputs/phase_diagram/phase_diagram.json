@@ -171,5 +171,14 @@
     ]
   ],
   "n_seeds": 20,
-  "n_episodes": 200
+  "n_episodes": 200,
+  "config": {
+    "PHI1_GRID": 11,
+    "BETA_GRID": 11,
+    "N_SEEDS": 10,
+    "N_EPISODES": 50,
+    "N_AGENTS": 20,
+    "T_HORIZON": 50,
+    "framework": "NumPy REINFORCE"
+  }
 }

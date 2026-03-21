@@ -4,7 +4,9 @@
     "N": 20,
     "BYZ": 0.3,
     "SEEDS": 20,
-    "EPS": 300
+    "EPS": 300,
+    "N_SEEDS": 20,
+    "N_EPISODES": 300
   },
   "results": {
     "0.10": {

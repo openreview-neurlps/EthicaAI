@@ -285,5 +285,13 @@
     "spectrum_pattern_holds": true,
     "situational_fails_in_crisis": true,
     "conclusion": "The Moral Commitment Spectrum generalizes to CPR environments: selfish RL agents over-extract, situational commitment provides partial protection, but only unconditional commitment ensures resource sustainability under adversarial conditions."
+  },
+  "config": {
+    "N_AGENTS": 20,
+    "BYZ_FRAC": 0.3,
+    "N_SEEDS": 20,
+    "N_EPISODES": 300,
+    "environment": "Common Pool Resource (CPR)",
+    "framework": "NumPy REINFORCE"
   }
 }
