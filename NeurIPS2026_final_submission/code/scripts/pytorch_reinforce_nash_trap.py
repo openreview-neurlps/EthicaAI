@@ -16,7 +16,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torch.distributions import Beta
+from torch.distributions import Beta, Normal
 import json
 import os
 import sys
@@ -124,6 +124,38 @@ class MLPCriticPolicy(nn.Module):
         return sum(p.numel() for p in self.parameters())
 
 
+class SigmoidPolicy(nn.Module):
+    """MLP policy with sigmoid parameterization (matches NumPy baseline).
+    
+    Output: lambda = sigmoid(MLP(obs)) + Normal noise
+    This is the SAME parameterization as the NumPy REINFORCE baseline,
+    enabling direct framework comparison.
+    """
+    SIGMOID = True  # Flag for training loop dispatch
+    
+    def __init__(self, obs_dim=4, hidden=32):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(obs_dim, hidden),
+            nn.ReLU(),
+            nn.Linear(hidden, hidden),
+            nn.ReLU(),
+            nn.Linear(hidden, 1),
+        )
+        self.log_std = nn.Parameter(torch.tensor(-1.0))  # learnable noise std
+
+    def forward(self, obs):
+        """Returns (mean_lambda, std) for Normal distribution."""
+        logit = self.net(obs).squeeze(-1)
+        mean_lambda = torch.sigmoid(logit)
+        std = torch.exp(self.log_std).clamp(min=0.01, max=0.3)
+        return mean_lambda, std
+
+    @property
+    def param_count(self):
+        return sum(p.numel() for p in self.parameters())
+
+
 # ============================================================
 # REINFORCE Training Loop
 # ============================================================
@@ -158,18 +190,26 @@ def train_reinforce(policy_class, seed, n_episodes=N_EPISODES, lr=LR):
         for t in range(T_HORIZON):
             lambdas = np.zeros(n_honest)
             for i in range(n_honest):
-                alpha, beta_param = agents[i](obs_t)
-                dist = Beta(alpha, beta_param)
-                action = dist.sample()
-                lp = dist.log_prob(action)
-                log_probs[i].append(lp)
+                is_sigmoid = hasattr(agents[i], 'SIGMOID') and agents[i].SIGMOID
+                if is_sigmoid:
+                    mean_lam, std = agents[i](obs_t)
+                    dist = Normal(mean_lam, std)
+                    action = dist.sample()
+                    lp = dist.log_prob(action)
+                    log_probs[i].append(lp)
+                    lam_i = float(torch.clamp(action, 0.01, 0.99).item())
+                else:
+                    alpha, beta_param = agents[i](obs_t)
+                    dist = Beta(alpha, beta_param)
+                    action = dist.sample()
+                    lp = dist.log_prob(action)
+                    log_probs[i].append(lp)
+                    lam_i = float(torch.clamp(action, 0.01, 0.99).item())
 
                 if has_critic:
                     v = agents[i].value(obs_t)
                     values_all[i].append(v)
 
-                # Clamp to valid range
-                lam_i = float(torch.clamp(action, 0.01, 0.99).item())
                 lambdas[i] = lam_i
 
             obs_next, rewards, terminated, _, info = env.step(lambdas)
@@ -244,6 +284,7 @@ def run_all():
         ("PyTorch Linear", LinearPolicy),
         ("PyTorch MLP (32h)", MLPPolicy),
         ("PyTorch MLP+Critic (32h)", MLPCriticPolicy),
+        ("PyTorch Sigmoid MLP (32h)", SigmoidPolicy),
     ]
 
     for name, policy_cls in configs:
@@ -298,7 +339,7 @@ def run_all():
             "DEVICE": str(DEVICE),
             "framework": "PyTorch",
             "torch_version": torch.__version__,
-            "distribution": "Beta(alpha, beta)",
+            "distribution": "Beta(alpha,beta) + Sigmoid+Normal",
             "optimizer": "Adam",
             "grad_clip": 0.5,
         },
