@@ -36,7 +36,23 @@ def add(sev, mod, msg):
     findings.append((sev, mod, msg))
 
 def load_tex():
-    return TEX_FILE.read_text(encoding="utf-8")
+    """Load unified_paper.tex with recursive \\input{} resolution."""
+    return _resolve_inputs(TEX_FILE)
+
+def _resolve_inputs(tex_path, depth=0):
+    """Recursively resolve \\input{file} directives up to depth 5."""
+    if depth > 5 or not tex_path.exists():
+        return ""
+    text = tex_path.read_text(encoding="utf-8", errors="ignore")
+    def replace_input(m):
+        fname = m.group(1)
+        if not fname.endswith(".tex"):
+            fname += ".tex"
+        child = tex_path.parent / fname
+        return _resolve_inputs(child, depth + 1)
+    # Resolve \input{...} (not in comments)
+    resolved = re.sub(r'^(?!%)\s*\\input\{([^}]+)\}', replace_input, text, flags=re.MULTILINE)
+    return resolved
 
 def load_bib():
     return BIB_FILE.read_text(encoding="utf-8")
