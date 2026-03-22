@@ -1,7 +1,7 @@
 % FW Proof Sketch 
 \subsection{Part (iii): Exponential Escape Time via Freidlin--Wentzell Large Deviations}
 
-While the drift analysis in Proposition~\ref{thm:escape_time} establishes a basic supermartingale bound, the exact asymptotic scaling of the escape time from the Nash Trap under gradient-based learning requires a formal Large Deviations Principle (LDP). Here, we model the REINFORCE updates as a continuous-time stochastic differential equation (SDE) and apply Freidlin--Wentzell theory to prove that escaping the trap requires a time exponential in the number of agents $O(e^{cN})$.
+While the drift analysis in the preceding subsection establishes a basic supermartingale bound, the exact asymptotic scaling of the escape time from the Nash Trap under gradient-based learning requires a formal Large Deviations Principle (LDP). Here, we model the REINFORCE updates as a continuous-time stochastic differential equation (SDE) and apply Freidlin--Wentzell theory to prove that escaping the trap requires a time exponential in the number of agents $O(e^{cN})$.
 
 \paragraph{Continuous-Time Limit of Independent REINFORCE.}
 At iteration $k$, each agent $i$ updates its policy parameter $\theta_i$ using the REINFORCE stochastic gradient $g_i(\theta_k)$.
