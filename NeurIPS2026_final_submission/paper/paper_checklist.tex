@@ -1,0 +1,83 @@
+% NeurIPS Paper Checklist (Required for submission)
+% See https://neurips.cc/Conferences/2026/PaperInformation/PaperChecklist
+
+\section*{Paper Checklist}
+
+\begin{enumerate}
+
+\item {\bf Claims}
+    \item[] Question: Do the main claims made in the abstract and introduction accurately reflect the paper's contributions and scope?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: The abstract states three claims (Discovery, Explanation, Prescription) that are directly supported by experiments (Section~4--5) and theory (Section~3, Appendix~\ref{app:impossibility_proof}).
+
+\item {\bf Limitations}
+    \item[] Question: Does the paper discuss the limitations of the work performed by the authors?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Section~5.1 discusses four categories of limitations: algorithm scope, setting assumptions, environment scope, and ethical scope.
+
+\item {\bf Theory Assumptions and Proofs}
+    \item[] Question: For each theoretical result, does the paper provide the full set of assumptions and a complete (or complete sketch of a) proof?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Proposition~1 is stated with explicit assumptions in Section~3. A complete proof sketch using Freidlin--Wentzell theory is in Appendix~\ref{app:impossibility_proof}. Corollary~1 follows directly.
+
+\item {\bf Experimental Result Reproducibility}
+    \item[] Question: Does the paper fully disclose all the information needed to reproduce the main experimental results of the paper to the extent that it affects the main claims and/or conclusions of the paper?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Full source code, hyperparameters, random seeds (20 per condition), and a one-command reproduction script (\texttt{reproduce\_all.py}) are provided. All experiments run on CPU without specialized hardware.
+
+\item {\bf Open access to data and code}
+    \item[] Question: Does the paper provide open access to the data and code, with sufficient instructions to faithfully reproduce the main experimental results?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Code is included in the supplementary material with a README and \texttt{reproduce\_all.py}. All 14 experiment scripts, environment implementations, and output JSON files are provided. A Dockerfile enables containerized reproduction.
+
+\item {\bf Experimental Setting/Details}
+    \item[] Question: Does the paper specify all the training and test details (e.g., data splits, hyperparameters, how they were chosen, and how they were tuned) necessary to understand the results?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Section~3 specifies all environment parameters. Hyperparameters for each algorithm are given in Appendix tables. A full 400+ configuration sweep is reported in Section~4.
+
+\item {\bf Experiment Statistical Significance}
+    \item[] Question: Does the paper report error bars suitably and correctly defined or other appropriate information about the statistical significance of the experiments?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: All results report mean $\pm$ std over 20 seeds. Tables include standard deviations. The trap rate is reported as a binary indicator (100\% across all conditions).
+
+\item {\bf Experiments Compute Resources}
+    \item[] Question: For each experiment, does the paper provide sufficient information on the computer resources (type of compute workers, memory, time of execution) needed to reproduce the experiments?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: All experiments run on standard CPU hardware. \texttt{reproduce\_all.py} reports wall-clock time for each experiment. No GPU is required for the main results.
+
+\item {\bf Code Of Ethics}
+    \item[] Question: Does the research conducted in the paper conform, in every respect, with the NeurIPS Code of Ethics?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: The work is a theoretical and computational study of multi-agent cooperation. No human subjects, private data, or sensitive applications are involved.
+
+\item {\bf Broader Impacts}
+    \item[] Question: Does the paper discuss both potential positive societal impacts and negative societal impacts of the work?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Broader impacts (AI safety, climate policy analogies) are discussed in Appendix~\ref{app:extended_discussion}. The Limitations section addresses ethical scope.
+
+\item {\bf Safeguards}
+    \item[] Question: Does the paper describe safeguards that have been put in place for responsible release of data or models?
+    \item[] Answer: \answerNA{}
+    \item[] Justification: The paper does not release models, datasets, or tools that could be misused. The contribution is a theoretical framework and diagnostic experiments.
+
+\item {\bf Licenses for existing assets}
+    \item[] Question: Are the creators or original owners of assets used in the paper properly credited and are the license and terms of use explicitly mentioned and properly respected?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: CleanRL~\citep{huang2022cleanrl} is properly cited and used under its MIT license. All other code is original.
+
+\item {\bf New Assets}
+    \item[] Question: Are new assets introduced in the paper well documented and is the documentation provided alongside the assets?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: The codebase includes a README with installation instructions, environment specifications, and reproduction commands.
+
+\item {\bf Crowdsourcing and Research with Human Subjects}
+    \item[] Question: For crowdsourcing experiments and research with human subjects, does the paper include the full text of instructions given to participants and screenshots?
+    \item[] Answer: \answerNA{}
+    \item[] Justification: No human subjects or crowdsourcing were involved.
+
+\item {\bf Institutional Review Board (IRB) Approvals or Equivalent for Research with Human Subjects}
+    \item[] Question: Does the paper describe potential risks incurred by study participants, whether combated through Institutional Review Board (IRB) approvals or equivalent?
+    \item[] Answer: \answerNA{}
+    \item[] Justification: No human subjects were involved.
+
+\end{enumerate}
