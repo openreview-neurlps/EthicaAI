@@ -1,0 +1,45 @@
+{
+  "experiment": "Scale Test N=100 (Table 5)",
+  "N": 100,
+  "T": 50,
+  "seeds": 20,
+  "results": [
+    {
+      "label": "Selfish RL (Byz=0%)",
+      "welfare_mean": 26.0,
+      "lambda_mean": 0.497,
+      "survival_mean": 95.0,
+      "welfare_std": 0.0,
+      "lambda_std": 0.002,
+      "survival_std": 4.0
+    },
+    {
+      "label": "Selfish RL (Byz=30%)",
+      "welfare_mean": 24.2,
+      "lambda_mean": 0.497,
+      "survival_mean": 53.7,
+      "welfare_std": 0.0,
+      "lambda_std": 0.001,
+      "survival_std": 7.6
+    },
+    {
+      "label": "Situational (Byz=30%)",
+      "welfare_mean": 26.0,
+      "lambda_mean": 0.713,
+      "survival_mean": 95.3,
+      "welfare_std": 0.1,
+      "lambda_std": 0.007,
+      "survival_std": 4.9
+    },
+    {
+      "label": "Unconditional (Byz=30%)",
+      "welfare_mean": 28.4,
+      "lambda_mean": 1.0,
+      "survival_mean": 99.8,
+      "welfare_std": 0.0,
+      "lambda_std": 0.0,
+      "survival_std": 0.7
+    }
+  ],
+  "time": 197.67140245437622
+}
