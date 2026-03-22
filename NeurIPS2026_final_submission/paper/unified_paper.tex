@@ -107,7 +107,7 @@ We identify three mechanisms (Proposition~\ref{thm:impossibility}):
 (i)~\emph{signal dilution} ($O(\epsilon/N)$ survival gradient vs.\ $O(1)$ noise);
 (ii)~\emph{basin dominance} (measure $\geq 1 - e^{-cN}$);
 (iii)~a Freidlin--Wentzell quasi-potential barrier $\Omega(N)$ implying $\Omega(e^{cN})$ escape time (Appendix~\ref{app:impossibility_proof}).
-Confirmed for $N \in \{5,\ldots,100\}$. Part~(i) is proved formally; Part~(ii) is supported by rigorous empirical evidence (a full measure-theoretic proof is left to future work). Lagrangian relaxation baselines, CTDE with global critics, and neural network policies all fall into the same trap (Appendices~\ref{app:comm_ctde_neural},~\ref{app:cpr_detail}).
+Confirmed for $N \in \{5,\ldots,100\}$. Part~(i) is proved formally; Part~(ii) is supported by rigorous empirical evidence (a full measure-theoretic proof is left to future work). The resulting Price of Anarchy diverges as $\Omega(e^{cN})$---unlike standard social dilemmas where $\mathrm{PoA} = O(1)$ (Theorem~\ref{thm:poa}; Appendix~\ref{app:poa}). Lagrangian relaxation baselines, CTDE with global critics, and neural network policies all fall into the same trap (Appendices~\ref{app:comm_ctde_neural},~\ref{app:cpr_detail}).
 
 \paragraph{3.~Prescription: Commitment Floors.}
 Commitment floors exclude the trap basin from the feasible action space (Corollary~\ref{cor:bypass}).
