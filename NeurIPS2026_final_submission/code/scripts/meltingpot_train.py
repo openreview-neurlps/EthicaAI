@@ -74,9 +74,9 @@ def run_experiment(substrate="commons_harvest__open", method="IPPO", phi1_value=
         )
     )
     
-    # Stop condition for short smoke-test
+    # Stop condition (200 for demonstrating trap convergence)
     stop = {
-        "training_iteration": 2  # Set to ~500 for full convergence
+        "training_iteration": 200
     }
     
     results = tune.run(
