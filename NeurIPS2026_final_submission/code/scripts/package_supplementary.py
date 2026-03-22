@@ -54,14 +54,13 @@ INCLUDE_FROM_OUTPUTS = [
     "outputs/*/*.json",
 ]
 
-# Paths to anonymize
+# Paths to anonymize (generic patterns — no hardcoded author info)
 ANON_REPLACEMENTS = [
-    (r"[Dd]:\\00\.test\\PAPER\\EthicaAI\\?", ""),
-    (r"C:\\Users\\[^\\]+\\", "~/"),
+    (r"[A-Za-z]:\\[^\\]*\\PAPER\\EthicaAI\\?", ""),
+    (r"[A-Za-z]:\\Users\\[^\\]+\\", "~/"),
     (r"/home/[^/]+/", "~/"),
-    (r"Yesol-Pilot", "anonymous"),
-    (r"yesol", "anonymous"),
-    (r"neogenesislab", "anonymous"),
+    # GitHub org/user → anonymous (catch any non-anonymous org)
+    (r"github\.com/[^/]+/EthicaAI", "github.com/anonymous/EthicaAI"),
 ]
 
 
