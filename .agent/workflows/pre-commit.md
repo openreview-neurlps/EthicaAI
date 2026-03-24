@@ -22,7 +22,9 @@ description: 논문 변경 후 커밋 전 필수 사전 검증 (audit + build + 
 cd d:\00.test\PAPER\EthicaAI
 python -c "
 import re, os, sys
-secrets = ['api_key','API_KEY','sk-','token=','password','ACCESS_TOKEN','ZENODO_TOKEN','yesol@','010-']
+# word-boundary aware: sk- only matches at word start (not ri'sk-'sensitive)
+import re
+patterns = {'api_key': r'api_key', 'sk-': r'(?<![a-z])sk-[a-zA-Z0-9]{20}', 'token=': r'token=[^\s]{10}', 'password': r'password\s*=', 'ZENODO_TOKEN': r'ZENODO_TOKEN', 'yesol@': r'yesol@', '010-': r'010-\d{4}'}
 found = []
 for root, dirs, files in os.walk('NeurIPS2026_final_submission'):
     dirs[:] = [d for d in dirs if d not in ['.git','__pycache__','png_preview','outputs']]

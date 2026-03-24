@@ -1,0 +1,18 @@
+% Table: Mechanism Comparison (LIO, Inequity Aversion, Floor)
+\begin{table}[h]
+\centering
+\caption{Cooperation mechanism comparison (non-linear PGG, N=20, 30\% Byzantine, 20 seeds).}
+\label{tab:mechanism_comparison}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Method & $\bar\lambda$ & Survival (\%) & Welfare \\
+\midrule
+Selfish REINFORCE & 0.108 $\pm$ 0.016 & 54.8 & 20.9 \\
+LIO \citep{yang2020learning} & 0.142 $\pm$ 0.027 & 55.3 & 21.5 \\
+Inequity Aversion \citep{hughes2018inequity} & 0.075 $\pm$ 0.005 & 54.7 & 20.4 \\
+\midrule
+Commitment Floor ($\phi_1{=}1.0$) & \textbf{1.000} & \textbf{80.5} & \textbf{28.4} \\
+\bottomrule
+\end{tabular}
+\end{table}

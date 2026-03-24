@@ -81,14 +81,14 @@
 % ABSTRACT
 % ================================================================
 \begin{abstract}
-When must multi-agent systems move beyond self-interest, and how much commitment is enough for collective survival?
-We study \textbf{Tipping-Point Social Dilemmas} (TPSDs)---multi-agent settings where thresholded resource dynamics can trigger irreversible collapse---and report a systematic failure we term the \textbf{Nash Trap}: gradient-based learners converge to locally stable under-commitment equilibria that are individually rational yet collectively catastrophic, \emph{even when cooperation is individually rational} ($M/N \geq 1$).
+When must multi-agent systems move beyond self-interest, and how much commitment suffices for collective survival?
+We provide the \textbf{first formal characterization} of cooperation failure in \textbf{Tipping-Point Social Dilemmas} (TPSDs)---multi-agent settings where thresholded resource dynamics can trigger irreversible collapse. We identify a locally stable equilibrium we call the \textbf{Nash Trap}: gradient-based learners converge to under-commitment at $\lambda \approx 0.5$, individually rational yet collectively catastrophic, \emph{even when cooperation is individually rational} ($M/N \geq 1$).
 
-\textbf{Discovery.}~The Nash Trap is universal across five algorithm families (REINFORCE, PPO, IQL, QMIX, LOLA) with four-architecture cross-validation, $400{+}$ hyperparameter configurations, and 12 $M/N$ conditions---all converge to $\lambda \approx 0.5$ with 100\% trap rate (20 seeds each).
-\textbf{Explanation.}~Escape requires $\Omega(e^{cN})$ gradient evaluations via Freidlin--Wentzell theory. The Price of Anarchy diverges as $\mathrm{PoA} \geq \Omega(e^{cN})$ in TPSDs---in stark contrast to $O(1)$ in standard social dilemmas---driven by signal dilution ($O(\epsilon/N)$ vs.\ $O(1)$ noise), basin dominance ($\geq 1 - e^{-cN}$), and a quasi-potential barrier $\Omega(N)$.
-\textbf{Prescription.}~Commitment floors bypass the trap in $O(1)$ steps; MACCL learns state-dependent floors adaptively (+203\% welfare).
+\textbf{Characterization.}~The Nash Trap is universal across five algorithm families (REINFORCE, PPO, IQL, QMIX, LOLA), four architectures, $400{+}$ hyperparameter configurations, and 12 $M/N$ conditions---100\% trap rate, 0\% escape rate (20 seeds each).
+\textbf{Theory.}~We prove escape requires $\Omega(e^{cN})$ gradient evaluations (Freidlin--Wentzell), and the Price of Anarchy diverges as $\mathrm{PoA} \geq \Omega(e^{cN})$---in stark contrast to $O(1)$ in standard social dilemmas---driven by signal dilution ($O(\epsilon/N)$ per agent), basin dominance (measure $\geq 1 - e^{-cN}$), and a quasi-potential barrier $\Omega(N)$.
+\textbf{Prescription.}~Commitment floors, derived from the environment's tipping-point structure (Theorem~\ref{thm:critical}), bypass the trap in $O(1)$ steps. MACCL learns state-dependent floors adaptively (+203\% welfare), demonstrating that floors can be \emph{learned}, not only prescribed.
 
-Validated across four environment classes (PGG, CPR, Harvest, Cleanup; Table~\ref{tab:cross_env}), multi-dimensional actions ($K{=}3$), adversarial conditions (30\% Byzantine), and scale ($N{=}100$).
+Validated across five environment classes including an external benchmark~\citep{lerer2017maintaining}, multi-dimensional actions ($K{=}3$), adversarial conditions (30\% Byzantine), and scale ($N{=}100$).
 \end{abstract}
 
 % ================================================================
@@ -102,19 +102,19 @@ These are not failures of intent but of \emph{individually rational} decision-ma
 The central question is not whether cooperation is \emph{achievable in principle} (the Folk Theorem guarantees its existence), but whether standard learning dynamics \emph{reliably converge} to sufficient commitment for collective survival.
 We show they do not.
 
-This paper reports a systematic failure pattern, provides a theoretical explanation, and derives a structural remedy:
+This paper provides a formal characterization of cooperation failure in TPSDs, proves its computational intractability, and derives a structural remedy:
 
-\paragraph{1.~Discovery: The Nash Trap.}
-We define Tipping-Point Social Dilemmas (TPSDs, Definition~\ref{def:tpsd})---multi-agent settings with thresholded, near-irreversible collapse dynamics---and demonstrate that gradient-based learners converge to what we call the \emph{Nash Trap}: a locally stable under-commitment equilibrium at $\lambda \approx 0.50$ that is individually rational yet collectively catastrophic.
-This finding is robust across five algorithm families (REINFORCE, PPO~\citep{schulman2017proximal}, IQL, QMIX~\citep{rashid2018qmix}, LOLA~\citep{foerster2018learning}) with four-architecture cross-validation (Linear, MLP, MLP+Critic, Sigmoid MLP) in two frameworks (NumPy, PyTorch), $400{+}$ hyperparameter configurations (Section~\ref{sec:experiments}), and 12 $M/N$ conditions from $M/N = 0.05$ to $M/N = 1.0$ (Section~\ref{sec:mn_sweep}, Table~\ref{tab:mn_sweep}), with 100\% trap rate and 0\% escape rate across 20 seeds per condition.
+\paragraph{1.~Characterization: The Nash Trap.}
+We define Tipping-Point Social Dilemmas (TPSDs, Definition~\ref{def:tpsd})---multi-agent settings with thresholded, near-irreversible collapse dynamics---and provide the first formal characterization of what we call the \emph{Nash Trap}: a locally stable under-commitment equilibrium at $\lambda \approx 0.50$ that is individually rational yet collectively catastrophic.
+The trap is universal across five algorithm families (REINFORCE, PPO~\citep{schulman2017proximal}, IQL, QMIX~\citep{rashid2018qmix}, LOLA~\citep{foerster2018learning}), four architectures (Linear, MLP, MLP+Critic, Sigmoid MLP) in two frameworks (NumPy, PyTorch), $400{+}$ hyperparameter configurations (Section~\ref{sec:experiments}), and 12 $M/N$ conditions from $M/N = 0.05$ to $M/N = 1.0$ (Section~\ref{sec:mn_sweep}, Table~\ref{tab:mn_sweep}), with 100\% trap rate and 0\% escape rate across 20 seeds per condition.
 Crucially, the trap persists \emph{even when $M/N = 1$}---when cooperation is individually rational---because tipping-point dynamics, not payoff misalignment, drive the failure.
 
-\paragraph{2.~Explanation: Why the Trap is Hard to Escape.}
-We identify three mechanisms (Proposition~\ref{thm:impossibility}):
-(i)~\emph{signal dilution} ($O(\epsilon/N)$ survival gradient vs.\ $O(1)$ noise);
-(ii)~\emph{basin dominance} (measure $\geq 1 - e^{-cN}$);
-(iii)~a Freidlin--Wentzell quasi-potential barrier $\Omega(N)$ implying $\Omega(e^{cN})$ escape time (Appendix~\ref{app:impossibility_proof}).
-Confirmed for $N \in \{5,\ldots,100\}$. Parts~(i)--(ii) are proved formally (Hoeffding concentration and chain-rule decomposition); Part~(iii) is established via Freidlin--Wentzell large deviations (Appendix~\ref{app:impossibility_proof}). The resulting Price of Anarchy diverges as $\Omega(e^{cN})$---unlike standard social dilemmas where $\mathrm{PoA} = O(1)$ (Theorem~\ref{thm:poa}; Appendix~\ref{app:poa}). Lagrangian relaxation baselines, CTDE with global critics, and neural network policies all fall into the same trap (Appendices~\ref{app:comm_ctde_neural},~\ref{app:cpr_detail}).
+\paragraph{2.~Theory: Computational Intractability of Escape.}
+We prove escaping the Nash Trap is computationally intractable via three mechanisms (Proposition~\ref{thm:impossibility}):
+(i)~\emph{signal dilution}: each agent's marginal survival gradient is $O(\epsilon/N)$ against $O(1)$ noise;
+(ii)~\emph{basin dominance}: the trap basin captures measure $\geq 1 - e^{-cN}$ under uniform initialization;
+(iii)~\emph{exponential escape time}: a Freidlin--Wentzell quasi-potential barrier of $\Omega(N)$ implies $\Omega(e^{cN})$ gradient evaluations (Appendix~\ref{app:impossibility_proof}).
+Confirmed empirically for $N \in \{5,\ldots,100\}$. Parts~(i)--(ii) are proved formally (Hoeffding concentration and chain-rule decomposition); Part~(iii) is established via large deviations theory. The resulting Price of Anarchy diverges as $\Omega(e^{cN})$---unlike standard social dilemmas where $\mathrm{PoA} = O(1)$ (Theorem~\ref{thm:poa})---making this, to our knowledge, the first exponential PoA result for gradient-based MARL. Lagrangian relaxation, CTDE with global critics, and neural network policies all fall into the same trap (Appendices~\ref{app:comm_ctde_neural},~\ref{app:cpr_detail}).
 
 \paragraph{3.~Prescription: Commitment Floors.}
 Commitment floors exclude the trap basin from the feasible action space (Corollary~\ref{cor:bypass}).
@@ -128,7 +128,7 @@ Results are validated across four environment classes, multi-dimensional actions
 \section{Related Work}
 
 \paragraph{Social Dilemmas and Cooperation Failures.}
-The tension between individual and collective rationality has deep roots in evolutionary game theory~\citep{nowak2006evolutionary, santos2008social} and MARL~\citep{leibo2017multi, hughes2018inequity}. Intrinsic motivation approaches---inequity aversion~\citep{hughes2018inequity}, social influence~\citep{jaques2019social, eccles2019learning}, prosocial agents~\citep{peysakhovich2018prosocial}, norm enforcement~\citep{koster2022spurious}, reward shaping~\citep{tessler2019reward}---promote cooperation but implicitly encode cooperative preferences. Emergent complexity in multi-agent environments~\citep{baker2020emergent} highlights similar challenges. Our contribution departs in three ways: (1)~\emph{irreversible} within-episode collapse ($f(R_{\mathrm{crit}}){=}0.01$), unlike resettable matrix games; (2)~\emph{formal characterization} of the Nash Trap as a locally stable fixed point with basin measure $\geq 1-e^{-cN}$ and escape complexity $\Omega(e^{cN})$; (3)~\emph{structural bypass} via commitment floors that modify the action space, not rewards.
+The tension between individual and collective rationality has deep roots in evolutionary game theory~\citep{nowak2006evolutionary, santos2008social} and MARL~\citep{leibo2017multi, hughes2018inequity}. Intrinsic motivation approaches---inequity aversion~\citep{hughes2018inequity}, social influence~\citep{jaques2019social, eccles2019learning}, prosocial agents~\citep{peysakhovich2018prosocial}, norm enforcement~\citep{koster2022spurious}, reward shaping~\citep{tessler2019reward}, and incentive design~\citep{yang2020learning}---promote cooperation but implicitly encode cooperative preferences. Emergent complexity in multi-agent environments~\citep{baker2020emergent} highlights similar challenges. Our contribution departs in three ways: (1)~\emph{irreversible} within-episode collapse ($f(R_{\mathrm{crit}}){=}0.01$), unlike resettable matrix games; (2)~\emph{formal characterization} of the Nash Trap as a locally stable fixed point with basin measure $\geq 1-e^{-cN}$ and escape complexity $\Omega(e^{cN})$; (3)~\emph{structural bypass} via commitment floors that modify the action space, not rewards. We show empirically that LIO~\citep{yang2020learning} and inequity aversion~\citep{hughes2018inequity} both fail to escape the Nash Trap (Table~\ref{tab:mechanism_comparison}).
 
 \paragraph{Opponent Shaping and Folk Theorem.}
 LOLA~\citep{foerster2018learning}, M-FOS~\citep{lu2022model}, POLA~\citep{zhao2022proximal}, and KPG~\citep{reddi2025kpg} shape learning via meta-gradients but scale poorly beyond pairwise settings (LOLA diverges at $N{=}50$). Classical Folk Theorems guarantee cooperative equilibria \emph{exist} in infinitely repeated games but not \emph{discoverability} by gradient learners; our non-stationary resource dynamics and finite horizon ($T{=}50$) further limit applicability (Remark~\ref{rem:folk_theorem}). Contract-based approaches~\citep{christoffersen2023get} require communication; our framework needs only observable resource levels.
@@ -146,34 +146,9 @@ Mechanism design in MARL~\citep{christoffersen2023get} typically assumes a centr
 \section{Method}
 \label{sec:method}
 
-\subsection{Meta-Ranking Reward Function}
+\paragraph{Agent reward and commitment parameter.}
+Each agent $i$ chooses a commitment level $\lambda_t^{(i)} \in [0,1]$ that interpolates between selfish payoff ($\lambda{=}0$) and prosocial payoff ($\lambda{=}1$), following SVO theory~\citep{mcclintock1989social}. The commitment level adapts to resource level $R_t$ via an exponential moving average (full reward formulation and dynamics in Appendix~\ref{app:extended_discussion}). The key structural feature is that $\lambda$ is a {\em learnable policy parameter}, not a fixed type---agents must discover the appropriate commitment level through experience. We show below (Section~\ref{sec:turning_point}) that gradient-based learning systematically fails to discover sufficient commitment in TPSDs.
 
-\begin{definition}[Meta-Ranking Agent]
-Agent $i$ with SVO angle $\theta_i$ maximizes:
-\begin{equation}
-R_{\text{total}}^{(i)} = (1 - \lambda_t^{(i)}) \cdot U_{\text{self}}^{(i)} + \lambda_t^{(i)} \cdot \left[ U_{\text{meta}}^{(i)} - \psi^{(i)} \right]
-\label{eq:reward}
-\end{equation}
-\end{definition}
-where $U_{\text{meta}}^{(i)} = \frac{1}{N-1}\sum_{j \neq i} U_{\text{self}}^{(j)}$ captures sympathy and $\psi^{(i)} = \beta |U_{\text{self}} - U_{\text{meta}}|$ models restraint cost.
-
-\subsection{Dynamic Commitment Mechanism}
-
-The key innovation is that $\lambda_t$ adapts to resource level $R_t$:
-\begin{equation}
-\lambda_t^{(i)} = \alpha \lambda_{t-1}^{(i)} + (1-\alpha) \cdot g(\theta_i, R_t)
-\label{eq:lambda}
-\end{equation}
-where:
-\begin{equation}
-g(\theta, R) = \begin{cases}
-\max(0, \sin\theta \cdot 0.3) & R < R_{\text{crisis}} \\
-\min(1, 1.5\sin\theta) & R > R_{\text{abundance}} \\
-\sin\theta \cdot (0.7 + 1.6R) & \text{otherwise}
-\end{cases}
-\end{equation}
-
-This implements Sen's insight computationally: when resources are scarce, agents reduce commitment---trading restraint cost against short-term individual payoff. We show below (Section~\ref{sec:turning_point}) that in TPSDs this heuristic can be structurally misaligned with collective safety, because reducing commitment during a crisis accelerates passage through the tipping point.
 
 \subsection{Environment Suite}
 \label{sec:env}
@@ -229,7 +204,7 @@ This linear baseline establishes that the \emph{catastrophic collapse} reported 
 \subsection{Tipping-Point Extension}
 \label{sec:turning_point}
 
-Having established that situational commitment succeeds in linear environments (Section~\ref{sec:discussion} provides a full analysis), we now ask: \emph{does it survive when the environment introduces catastrophic tipping points?} We formalize cooperation via Eq.~\ref{eq:reward} and Eq.~\ref{eq:lambda}.
+Having established that situational commitment succeeds in linear environments (Section~\ref{sec:discussion} provides a full analysis), we now ask: \emph{does it survive when the environment introduces catastrophic tipping points?} Agents choose commitment levels $\lambda_t^{(i)} \in [0,1]$ as described in Section~\ref{sec:method}.
 
 We deploy the same meta-ranking agents in the non-linear PGG (Equations~\ref{eq:resource}--\ref{eq:tipping}) with $R_{\text{crit}} = 0.15$, stochastic shocks ($p_{\text{shock}} = 0.05$, $\delta_{\text{shock}} = 0.15$), and 30\% Byzantine adversaries.\footnote{We select 30\% as it exceeds the standard Byzantine fault tolerance threshold ($f < n/3$). Our ``Byzantine'' model is deterministic worst-case (always-defect, $\lambda{=}0$), not arbitrary-failure Byzantine in the distributed systems sense. Sensitivity analysis across $\{0\%, 10\%, 30\%, 50\%\}$ confirms qualitative robustness (Appendix~\ref{app:sensitivity}).}
 
@@ -410,18 +385,24 @@ Table~\ref{tab:cross_env} confirms the Nash Trap across three additional TPSD va
 
 \input{tables/tab_cross_env}
 
-The PoA Divergence (Theorem~\ref{thm:poa}) implies commitment floors should be \emph{imposed as design constraints} in multi-agent deployments near critical thresholds, with direct implications for AI safety and real-world commons governance (Appendix~\ref{app:extended_discussion}).
+\vspace{-4pt}
+\paragraph{Comparison with existing mechanisms.}
+Table~\ref{tab:mechanism_comparison} compares commitment floors against LIO~\citep{yang2020learning} (incentive design) and Inequity Aversion~\citep{hughes2018inequity}.
+Both remain trapped ($\bar\lambda{<}0.15$, survival $\approx\!55\%$)---no better than selfish baselines---confirming that \emph{reward-shaping cannot overcome the structural barrier} of TPSDs; only action-space interventions escape the trap.
+
+\input{tables/tab_mechanism_comparison}
+
+Commitment floors should be \emph{design constraints} near critical thresholds, and need not be hand-specified: MACCL discovers \emph{state-dependent} $\phi_1(R_t)$, recovering $\phi_1{\approx}1.0$ in PGG and a graded $\phi_1(R){\in}[0.67,0.83]$ in Cleanup (+241\% welfare; Appendix~\ref{app:maccl}), demonstrating floors as a \emph{learnable} safety specification.
 \paragraph{Limitations.}\label{sec:limitations}
 Five algorithm families all trapped (100\% rate); agents are homogeneous and communication-free.
 Five TPSD environments tested including one external benchmark~\citep{lerer2017maintaining}; real-world spatial commons remain untested.
 $\lambda$ operationalizes cooperation, not full moral reasoning~\citep{rawls1971,sen1977rational}.
 
-\vspace{-6pt}
+\vspace{-8pt}
 \section{Conclusion}\label{sec:broader_impact}
 \vspace{-4pt}
 
-The \textbf{Nash Trap}---a locally stable, collectively catastrophic equilibrium in TPSDs---persists across five algorithm families, four architectures, $400{+}$ configurations, and four environment classes; escape requires $\Omega(e^{cN})$ gradient evaluations.
-\emph{Commitment floors} bypass the trap in $O(1)$ steps; MACCL learns minimum sufficient floors adaptively (+203\% welfare). When tipping-point dynamics make selfish learning misaligned with collective survival, commitment must be imposed as a safety specification.\footnote{LLMs assisted with code debugging and proofreading. All scientific content is the authors' original work.}
+The \textbf{Nash Trap} persists across five algorithm families, four architectures, $400{+}$ configurations, and five environment classes; escape requires $\Omega(e^{cN})$ gradient evaluations. Existing cooperation mechanisms (LIO, Inequity Aversion) fail; only \emph{commitment floors} bypass the trap in $O(1)$ steps. MACCL learns state-dependent floors (+203\% welfare), showing that the specification can emerge from data.\footnote{LLMs assisted with code debugging and proofreading. All scientific content is the authors' original work.}
 
 % ================================================================
 % REFERENCES

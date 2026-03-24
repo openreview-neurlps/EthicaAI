@@ -1,0 +1,45 @@
+{
+  "results": {
+    "Selfish REINFORCE": {
+      "welfare": 20.905,
+      "welfare_std": 0.135,
+      "survival": 0.548,
+      "survival_std": 0.102,
+      "mean_lambda": 0.108,
+      "mean_lambda_std": 0.016
+    },
+    "LIO (incentives)": {
+      "welfare": 21.484,
+      "welfare_std": 0.279,
+      "survival": 0.553,
+      "survival_std": 0.105,
+      "mean_lambda": 0.142,
+      "mean_lambda_std": 0.027
+    },
+    "Inequity Aversion": {
+      "welfare": 20.378,
+      "welfare_std": 0.03,
+      "survival": 0.547,
+      "survival_std": 0.101,
+      "mean_lambda": 0.075,
+      "mean_lambda_std": 0.005
+    },
+    "Commitment Floor": {
+      "welfare": 28.4,
+      "welfare_std": 0.0,
+      "survival": 0.805,
+      "survival_std": 0.066,
+      "mean_lambda": 1.0,
+      "mean_lambda_std": 0.0
+    }
+  },
+  "time_seconds": 221.56426811218262,
+  "config": {
+    "N": 20,
+    "T": 50,
+    "seeds": 20,
+    "train": 100,
+    "eval": 50,
+    "byz": 0.3
+  }
+}
