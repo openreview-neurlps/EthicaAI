@@ -1,0 +1,25 @@
+% TPSD ON/OFF Ablation Table — auto-generated from tpsd_ablation_results.json
+\begin{table}[h]
+\centering
+\caption{TPSD ON/OFF ablation: same PGG environment and REINFORCE agents,
+  toggling only the tipping-point recovery dynamics.
+  Linear PGG uses constant $f(R)=0.10$;
+  Nonlinear PGG uses piecewise $f(R)$ with $f(R_{\mathrm{crit}})=0.01$.
+  Both conditions produce 100\% trap rate ($\lambda < 0.85$),
+  confirming that the Nash Trap is a consequence of cooperative incentive
+  structure ($M/N < 1$), while tipping-point dynamics determine
+  whether the trap leads to \emph{irreversible} collapse.
+  ($N{=}20$, 30\% Byzantine, 20 seeds $\times$ 300 episodes.)}
+\label{tab:tpsd_ablation}
+\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+\textbf{Environment} & \textbf{TPSD?} & $\boldsymbol{\bar{\lambda}}$ & \textbf{Survival} & \textbf{Welfare} & \textbf{Trap Rate} \\
+\midrule
+Linear PGG ($f{=}0.10$) & No & $0.432 \pm 0.069$ & 15.0\% & 645.4 & 100\% \\
+Nonlinear PGG ($f{=}f(R)$) & Yes & $0.406 \pm 0.085$ & 35.7\% & 798.0 & 100\% \\
+\midrule
+Oracle ($\phi_1{=}1.0$) & Yes & 1.000 & 100\% & $>$900 & 0\% \\
+\bottomrule
+\end{tabular}
+\end{table}

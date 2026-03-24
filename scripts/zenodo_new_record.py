@@ -68,7 +68,7 @@ metadata = {
             "<li>All evaluated RL algorithms fail in non-linear environments (Nash Trap)</li>"
             "<li>Only unconditional crisis commitment prevents collapse</li>"
             "</ul>"
-            "<p>Code: <a href='https://github.com/neogenesislab/EthicaAI-NeurIPS2026'>GitHub</a></p>"
+            "<p>Code: <a href='https://github.com/openreview-neurlps/EthicaAI'>GitHub</a></p>"
         ),
         "creators": [
             {"person_or_org": {"type": "personal", "given_name": "Anonymous", "family_name": "Author"}}

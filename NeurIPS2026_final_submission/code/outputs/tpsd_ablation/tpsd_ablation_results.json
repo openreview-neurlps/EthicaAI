@@ -1,0 +1,318 @@
+{
+  "experiment": "tpsd_onoff_ablation",
+  "purpose": "Isolate TPSD structure as cause of Nash Trap",
+  "linear_pgg": {
+    "label": "PGG_Linear",
+    "tipping_point": false,
+    "per_seed": [
+      {
+        "seed": 0,
+        "mean_lambda": 0.5621285515659143,
+        "survival_rate": 0.6,
+        "welfare": 948.5937290762555,
+        "trapped": true
+      },
+      {
+        "seed": 1,
+        "mean_lambda": 0.42356623647190206,
+        "survival_rate": 0.0,
+        "welfare": 645.2993188021276,
+        "trapped": true
+      },
+      {
+        "seed": 2,
+        "mean_lambda": 0.36179101110283585,
+        "survival_rate": 0.0,
+        "welfare": 434.75204262915844,
+        "trapped": true
+      },
+      {
+        "seed": 3,
+        "mean_lambda": 0.3367870282489599,
+        "survival_rate": 0.0,
+        "welfare": 459.9225633798475,
+        "trapped": true
+      },
+      {
+        "seed": 4,
+        "mean_lambda": 0.4044676000529546,
+        "survival_rate": 0.0,
+        "welfare": 556.4494288754996,
+        "trapped": true
+      },
+      {
+        "seed": 5,
+        "mean_lambda": 0.4271748117752544,
+        "survival_rate": 0.06666666666666667,
+        "welfare": 682.7582752116402,
+        "trapped": true
+      },
+      {
+        "seed": 6,
+        "mean_lambda": 0.5570715820090167,
+        "survival_rate": 0.7,
+        "welfare": 982.2643753178182,
+        "trapped": true
+      },
+      {
+        "seed": 7,
+        "mean_lambda": 0.35975705843178596,
+        "survival_rate": 0.0,
+        "welfare": 477.852505883438,
+        "trapped": true
+      },
+      {
+        "seed": 8,
+        "mean_lambda": 0.503694996957688,
+        "survival_rate": 0.2,
+        "welfare": 805.9400592938962,
+        "trapped": true
+      },
+      {
+        "seed": 9,
+        "mean_lambda": 0.40785480495639054,
+        "survival_rate": 0.0,
+        "welfare": 583.9594318242752,
+        "trapped": true
+      },
+      {
+        "seed": 10,
+        "mean_lambda": 0.47191055449456,
+        "survival_rate": 0.13333333333333333,
+        "welfare": 752.3563905561219,
+        "trapped": true
+      },
+      {
+        "seed": 11,
+        "mean_lambda": 0.4411672037230086,
+        "survival_rate": 0.2,
+        "welfare": 694.9651877884571,
+        "trapped": true
+      },
+      {
+        "seed": 12,
+        "mean_lambda": 0.4149514883250414,
+        "survival_rate": 0.0,
+        "welfare": 564.181472699261,
+        "trapped": true
+      },
+      {
+        "seed": 13,
+        "mean_lambda": 0.4437054855598157,
+        "survival_rate": 0.06666666666666667,
+        "welfare": 657.9508401355072,
+        "trapped": true
+      },
+      {
+        "seed": 14,
+        "mean_lambda": 0.3109768923149658,
+        "survival_rate": 0.0,
+        "welfare": 425.318600838534,
+        "trapped": true
+      },
+      {
+        "seed": 15,
+        "mean_lambda": 0.3809098199853579,
+        "survival_rate": 0.0,
+        "welfare": 483.8355492286245,
+        "trapped": true
+      },
+      {
+        "seed": 16,
+        "mean_lambda": 0.5198231150576933,
+        "survival_rate": 0.4,
+        "welfare": 859.8626727794286,
+        "trapped": true
+      },
+      {
+        "seed": 17,
+        "mean_lambda": 0.39365184877391446,
+        "survival_rate": 0.0,
+        "welfare": 476.8225588625003,
+        "trapped": true
+      },
+      {
+        "seed": 18,
+        "mean_lambda": 0.3999585868031513,
+        "survival_rate": 0.0,
+        "welfare": 530.9857616509983,
+        "trapped": true
+      },
+      {
+        "seed": 19,
+        "mean_lambda": 0.5249323431720471,
+        "survival_rate": 0.6333333333333333,
+        "welfare": 884.459921163006,
+        "trapped": true
+      }
+    ],
+    "aggregate": {
+      "mean_lambda": 0.4323140509891129,
+      "std_lambda": 0.06948803552654373,
+      "mean_survival": 0.15,
+      "mean_welfare": 645.4265342998199,
+      "trap_rate": 1.0,
+      "n_seeds": 20
+    }
+  },
+  "nonlinear_pgg": {
+    "label": "PGG_TPSD",
+    "tipping_point": true,
+    "per_seed": [
+      {
+        "seed": 0,
+        "mean_lambda": 0.5885063800288985,
+        "survival_rate": 0.6666666666666666,
+        "welfare": 952.7412989180518,
+        "trapped": true
+      },
+      {
+        "seed": 1,
+        "mean_lambda": 0.4219218948982174,
+        "survival_rate": 0.36666666666666664,
+        "welfare": 849.5385690365358,
+        "trapped": true
+      },
+      {
+        "seed": 2,
+        "mean_lambda": 0.28250601716155593,
+        "survival_rate": 0.16666666666666666,
+        "welfare": 673.328378023336,
+        "trapped": true
+      },
+      {
+        "seed": 3,
+        "mean_lambda": 0.32230722896989533,
+        "survival_rate": 0.13333333333333333,
+        "welfare": 693.0557507573485,
+        "trapped": true
+      },
+      {
+        "seed": 4,
+        "mean_lambda": 0.5179120689178767,
+        "survival_rate": 0.5333333333333333,
+        "welfare": 869.4706724857671,
+        "trapped": true
+      },
+      {
+        "seed": 5,
+        "mean_lambda": 0.32259387555939406,
+        "survival_rate": 0.26666666666666666,
+        "welfare": 722.3010977108672,
+        "trapped": true
+      },
+      {
+        "seed": 6,
+        "mean_lambda": 0.25479550380066746,
+        "survival_rate": 0.16666666666666666,
+        "welfare": 633.4022609644387,
+        "trapped": true
+      },
+      {
+        "seed": 7,
+        "mean_lambda": 0.37484040388915835,
+        "survival_rate": 0.3333333333333333,
+        "welfare": 810.2377594696591,
+        "trapped": true
+      },
+      {
+        "seed": 8,
+        "mean_lambda": 0.29410713420626056,
+        "survival_rate": 0.03333333333333333,
+        "welfare": 573.5761870704534,
+        "trapped": true
+      },
+      {
+        "seed": 9,
+        "mean_lambda": 0.4860994884383414,
+        "survival_rate": 0.5333333333333333,
+        "welfare": 916.4699958494856,
+        "trapped": true
+      },
+      {
+        "seed": 10,
+        "mean_lambda": 0.38610373445170043,
+        "survival_rate": 0.3333333333333333,
+        "welfare": 795.1903736739067,
+        "trapped": true
+      },
+      {
+        "seed": 11,
+        "mean_lambda": 0.37365168992899045,
+        "survival_rate": 0.36666666666666664,
+        "welfare": 817.7203833527286,
+        "trapped": true
+      },
+      {
+        "seed": 12,
+        "mean_lambda": 0.3346901254387476,
+        "survival_rate": 0.16666666666666666,
+        "welfare": 798.1407196938625,
+        "trapped": true
+      },
+      {
+        "seed": 13,
+        "mean_lambda": 0.507440923900954,
+        "survival_rate": 0.6333333333333333,
+        "welfare": 886.8613648089274,
+        "trapped": true
+      },
+      {
+        "seed": 14,
+        "mean_lambda": 0.46315437262451936,
+        "survival_rate": 0.5333333333333333,
+        "welfare": 879.6052965845191,
+        "trapped": true
+      },
+      {
+        "seed": 15,
+        "mean_lambda": 0.44333068906986883,
+        "survival_rate": 0.3333333333333333,
+        "welfare": 822.90734095941,
+        "trapped": true
+      },
+      {
+        "seed": 16,
+        "mean_lambda": 0.4595067383048186,
+        "survival_rate": 0.4666666666666667,
+        "welfare": 820.7669843058721,
+        "trapped": true
+      },
+      {
+        "seed": 17,
+        "mean_lambda": 0.4428359490453142,
+        "survival_rate": 0.16666666666666666,
+        "welfare": 680.327069708287,
+        "trapped": true
+      },
+      {
+        "seed": 18,
+        "mean_lambda": 0.42331763147977,
+        "survival_rate": 0.4,
+        "welfare": 889.7104233324511,
+        "trapped": true
+      },
+      {
+        "seed": 19,
+        "mean_lambda": 0.42879879802329834,
+        "survival_rate": 0.5333333333333333,
+        "welfare": 874.8668993934144,
+        "trapped": true
+      }
+    ],
+    "aggregate": {
+      "mean_lambda": 0.40642103240691235,
+      "std_lambda": 0.08502403141573361,
+      "mean_survival": 0.3566666666666667,
+      "mean_welfare": 798.0109413049661,
+      "trap_rate": 1.0,
+      "n_seeds": 20
+    }
+  },
+  "conclusion": {
+    "survival_gap": -0.2066666666666667,
+    "linear_survival": 0.15,
+    "nonlinear_survival": 0.3566666666666667,
+    "tpsd_causes_differential_failure": false
+  }
+}
