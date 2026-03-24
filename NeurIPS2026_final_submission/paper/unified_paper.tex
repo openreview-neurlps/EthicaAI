@@ -335,12 +335,11 @@ $\boldsymbol{\phi_1}$ & \textbf{W (Byz=0\%)} & \textbf{W (Byz=30\%)} & \textbf{A
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:phi1} reveals a \textbf{sharp phase transition}: survival jumps from 30\% to 100\% as $\phi_1$ crosses a critical threshold consistent with Theorem~\ref{thm:critical}. This transition is not gradual---it occurs within a narrow band $\phi_1 \in [0.5, 1.0]$, mirroring the discontinuous recovery dynamics at $R_{\mathrm{crit}}$.
-The key insight is not that $\phi_1 = 1.0$ ``forces cooperation'' (which would be tautologically true), but that the tipping-point structure creates a \emph{minimum viable commitment level} below which no amount of learning prevents collapse, and above which survival is guaranteed.
-This \emph{phase transition in policy space} is a direct reflection of the \emph{phase transition in resource dynamics}---a structural correspondence predicted by Theorem~\ref{thm:critical} and confirmed empirically.
-We note that in extreme adversarial regimes ($\beta \geq 0.5$), even $\phi_1{=}1.0$ may not achieve 100\% survival due to stochastic shocks (Table~\ref{tab:phase_learned}); the floor is required for survival but does not eliminate all collapse risk.
+Table~\ref{tab:phi1} reveals a \textbf{sharp phase transition}: survival jumps from 30\% to 100\% as $\phi_1$ crosses a critical threshold consistent with Theorem~\ref{thm:critical}.
+The key insight is not that $\phi_1{=}1.0$ ``forces cooperation'' (tautologically true), but that the tipping-point structure creates a \emph{minimum viable commitment level}. In milder TPSDs ($f(R_{\text{crit}}){=}0.50$), Theorem~\ref{thm:critical} predicts $\phi_1^*{=}0.59$---a \emph{partial} floor preserving agent autonomy---and MACCL learns $\phi_1(R){\in}[0.67,0.83]$ in Cleanup without hand-specification, demonstrating the floor is a \emph{derived} property, not an arbitrary constraint.
+In extreme adversarial regimes ($\beta{\geq}0.5$), even $\phi_1{=}1.0$ may not achieve 100\% survival (Table~\ref{tab:phase_learned}).
 
-\noindent The Nash Trap persists across a 50$\times$ range of recovery rates ($f(R_{\text{crit}}) \in [0.01, 0.50]$, Appendix~\ref{app:extended_discussion}), meta-learning independently recovers $\phi_1^* = 1.0$ (Appendix~\ref{app:extended_discussion}), and K-level anticipation and spatial extensions confirm the pattern (Appendices~\ref{app:kpg},~\ref{app:spatial}).
+\noindent The Nash Trap persists across a 50$\times$ range of recovery rates ($f(R_{\text{crit}}){\in}[0.01,0.50]$): even at $f{=}0.50$, selfish agents achieve only 11\% survival vs.\ 66\% with floors (Appendix~\ref{app:extended_discussion}). When TPSD conditions are absent (Melting Pot \texttt{commons\_harvest\_open}), all policies survive equally (Appendix~\ref{app:meltingpot}), confirming the trap is structural, not a parameter artifact. Meta-learning recovers $\phi_1^*{=}1.0$ (Appendix~\ref{app:extended_discussion}); K-level anticipation and spatial extensions confirm the pattern (Appendices~\ref{app:kpg},~\ref{app:spatial}).
 
 
 
