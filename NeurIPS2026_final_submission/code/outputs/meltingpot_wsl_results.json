@@ -1,0 +1,26 @@
+{
+  "experiment": "Melting Pot commons_harvest__open",
+  "seeds": 10,
+  "steps": 500,
+  "results": {
+    "Random": {
+      "welfare_mean": 10.0,
+      "welfare_std": 3.5530958044947742,
+      "steps_mean": 500.0,
+      "n_agents": 7
+    },
+    "Greedy Harvest": {
+      "welfare_mean": 16.385714285714283,
+      "welfare_std": 3.4023101395543422,
+      "steps_mean": 500.0,
+      "n_agents": 7
+    },
+    "Restrained (Floor-like)": {
+      "welfare_mean": 17.428571428571427,
+      "welfare_std": 1.9763912692024304,
+      "steps_mean": 500.0,
+      "n_agents": 7
+    }
+  },
+  "time_seconds": 15.563820362091064
+}

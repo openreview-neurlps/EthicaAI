@@ -1732,24 +1732,24 @@ where $\sigma$ is the sigmoid function, with MAE $= 0.004$ and $R^2 = 0.694$ acr
 \label{app:meltingpot}
 
 To test generalization beyond our custom environments, we evaluate the commitment
-mechanism on a high-fidelity simulation of Google DeepMind's \textbf{Melting Pot}
+mechanism directly on Google DeepMind's \textbf{Melting Pot}
 benchmark~\citep{agapiou2022melting} \texttt{commons\_harvest\_open} substrate---a
 spatially extended commons dilemma with renewable resources and \emph{no irreversible
 collapse dynamics} (non-TPSD).
 
 \begin{table}[h]
 \centering
-\caption{Melting Pot \texttt{commons\_harvest\_open} simulation results
-  (10 seeds $\times$ 500 steps). All policies survive the full episode.}
+\caption{Melting Pot \texttt{commons\_harvest\_open} native benchmark results
+  (10 seeds $\times$ 500 steps, $N=7$). All policies easily survive the full episode.}
 \label{tab:meltingpot}
 \small
 \begin{tabular}{lcc}
 \toprule
 \textbf{Policy} & \textbf{Welfare} & \textbf{Steps} \\
 \midrule
-Random & 374.8 $\pm$ 1.9 & 500 \\
-Greedy Harvest & 409.1 $\pm$ 0.0 & 500 \\
-Restrained (Floor-like) & 409.1 $\pm$ 0.0 & 500 \\
+Random & 10.0 $\pm$ 3.6 & 500 \\
+Greedy Harvest & 16.4 $\pm$ 3.4 & 500 \\
+Restrained (Floor-like) & 17.4 $\pm$ 2.0 & 500 \\
 \bottomrule
 \end{tabular}
 \end{table}
