@@ -378,6 +378,9 @@ Table~\ref{tab:cross_env} confirms the Nash Trap across three additional TPSD va
 Table~\ref{tab:mechanism_comparison} compares commitment floors against LIO~\citep{yang2020learning} (incentive design, both linear and MLP variants) and Inequity Aversion~\citep{hughes2018inequity}.
 All reward-shaping methods remain trapped ($\bar\lambda{<}0.14$, survival ${\leq}11\%$), \emph{even when LIO uses a 2-layer MLP} ($h{=}32$)---confirming that the structural barrier of TPSDs cannot be overcome by richer reward signals; only action-space interventions escape the trap.
 
+\paragraph{Exploration Ablation: Random Network Distillation (RND).}
+A natural hypothesis is that the Nash Trap emerges merely because agents fail to thoroughly explore the cooperative sub-space. To formally ablate this, we augmented the PPO baseline with \textbf{Random Network Distillation (RND)}~\citep{burda2018exploration}, a state-of-the-art intrinsic motivation technique. Even when rewarded for visiting novel states (with intrinsic reward successfully converging to $\approx 0.001$), the agents' extrinsic welfare steadily declined from $21.18$ to $20.67$ (the Nash Eq. bound). This mathematically establishes that the TPSD collapse is a \emph{structural attractor}, not an exploration failure: even agents that systematically explore the state space are drawn back into the Nash Trap without the intervention of a Commitment Floor.
+
 \input{tables/tab_mechanism_comparison}
 
 \subsection{Learning the Floor: MACCL}
