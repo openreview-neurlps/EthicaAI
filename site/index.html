@@ -41,7 +41,7 @@
             overflow-x: hidden;
         }
 
-        /* === ?§Îçî === */
+        /* === ?Îçî === */
         .hero {
             background: linear-gradient(135deg, #0d0d2b 0%, #1a0a3e 40%, #0a2040 100%);
             padding: 3rem 2rem 2rem;
@@ -130,7 +130,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* === ???§ÎπÑÍ≤åÏù¥??=== */
+        /* === ???ÎπÑÍ≤åÏù¥??=== */
         .tab-nav {
             display: flex;
             justify-content: center;
@@ -175,7 +175,7 @@
             display: block;
         }
 
-        /* === ?§ÌÉØ Î∞?=== */
+        /* === ?ÌÉØ ?=== */
         .stats {
             display: flex;
             justify-content: center;
@@ -202,7 +202,7 @@
             letter-spacing: 1.5px;
         }
 
-        /* === Figure Í∞§Îü¨Î¶?=== */
+        /* === Figure Í∞§Îü¨?=== */
         .filter-bar {
             display: flex;
             justify-content: center;
@@ -305,7 +305,7 @@
             color: #81d4fa;
         }
 
-        /* === ?∏ÌÑ∞?ôÌã∞Î∏??∞Î™® === */
+        /* === ?ÌÑ∞?Ìã∞??Î™® === */
         .demo-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -484,7 +484,7 @@
             margin-top: 0.2rem;
         }
 
-        /* === ?ºÎ¨∏ ?îÏïΩ ??=== */
+        /* === ?Î¨∏ ?ÏïΩ ??=== */
         .paper-container {
             max-width: 900px;
             margin: 0 auto;
@@ -547,7 +547,7 @@
             text-decoration: underline;
         }
 
-        /* === ?ºÏù¥?∏Î∞ï??=== */
+        /* === ?Ïù¥?Î∞ï??=== */
         .lightbox {
             display: none;
             position: fixed;
@@ -570,7 +570,7 @@
             box-shadow: 0 0 60px rgba(79, 195, 247, 0.2);
         }
 
-        /* === ?∏ÌÑ∞ === */
+        /* === ?ÌÑ∞ === */
         .footer {
             text-align: center;
             padding: 2rem;
@@ -611,31 +611,38 @@
             }
         }
     </style>
+
+    <!-- PostHog Analytics (auto-injected) -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_158CbBeWD8X1eNyD4xpi8VklVxsNZtx5yclocxfpgiO', {api_host:'https://us.i.posthog.com', person_profiles: 'identified_only'});
+    </script>
+
 </head>
 
 <body>
-    <!-- ?àÏñ¥Î°?-->
+    <!-- ?Ïñ¥?-->
     <div class="hero">
-        <div class="emoji">?ß†</div>
+        <div class="emoji">?</div>
         <h1>EthicaAI</h1>
         <p class="subtitle">Beyond Homo Economicus: Computational Verification of Sen's Meta-Ranking Theory via
             Multi-Agent Reinforcement Learning</p>
         <div class="badges">
-            <span class="badge">?ìÑ Preprint 2026</span>
-            <span class="badge">?î¨ 7 SVO Conditions</span>
-            <span class="badge">?åç 4 Environments</span>
-            <span class="badge">?ë• 1000 Agents</span>
+            <span class="badge">? Preprint 2026</span>
+            <span class="badge">? 7 SVO Conditions</span>
+            <span class="badge">? 4 Environments</span>
+            <span class="badge">? 1000 Agents</span>
         </div>
     </div>
 
-    <!-- ???§ÎπÑÍ≤åÏù¥??-->
+    <!-- ???ÎπÑÍ≤åÏù¥??-->
     <nav class="tab-nav">
-        <button class="tab-btn active" onclick="switchTab('dashboard')">?ìä Dashboard</button>
-        <button class="tab-btn" onclick="switchTab('demo')">?éÆ Interactive Demo</button>
-        <button class="tab-btn" onclick="switchTab('paper')">?ìÑ Paper</button>
+        <button class="tab-btn active" onclick="switchTab('dashboard')">? Dashboard</button>
+        <button class="tab-btn" onclick="switchTab('demo')">? Interactive Demo</button>
+        <button class="tab-btn" onclick="switchTab('paper')">? Paper</button>
     </nav>
 
-    <!-- ========== ??1: ?Ä?úÎ≥¥??========== -->
+    <!-- ========== ??1: ??Î≥¥??========== -->
     <div id="tab-dashboard" class="tab-content active">
         <div class="stats">
             <div class="stat">
@@ -670,12 +677,12 @@
         <div class="gallery" id="gallery"></div>
     </div>
 
-    <!-- ========== ??2: ?∏ÌÑ∞?ôÌã∞Î∏??∞Î™® ========== -->
+    <!-- ========== ??2: ?ÌÑ∞?Ìã∞??Î™® ========== -->
     <div id="tab-demo" class="tab-content">
         <div class="demo-container">
             <div class="demo-grid">
                 <div class="demo-panel">
-                    <h3>?ôÔ∏è Settings</h3>
+                    <h3>?Ô∏è Settings</h3>
                     <div class="ctrl-group">
                         <label>Environment</label>
                         <select id="env-select">
@@ -714,11 +721,11 @@
                 <div>
                     <div class="chart-area">
                         <div class="chart-box">
-                            <h4 id="chart1-title">?ìä Contribution Rate</h4>
+                            <h4 id="chart1-title">? Contribution Rate</h4>
                             <canvas id="chart1"></canvas>
                         </div>
                         <div class="chart-box">
-                            <h4 id="chart2-title">?í∞ Mean Payoff</h4>
+                            <h4 id="chart2-title">? Mean Payoff</h4>
                             <canvas id="chart2"></canvas>
                         </div>
                     </div>
@@ -744,12 +751,12 @@
         </div>
     </div>
 
-    <!-- ========== ??3: ?ºÎ¨∏ ?îÏïΩ ========== -->
+    <!-- ========== ??3: ?Î¨∏ ?ÏïΩ ========== -->
     <div id="tab-paper" class="tab-content">
         <div class="paper-container">
             <h2>Abstract</h2>
-            <p>This study formalizes Amartya Sen's theory of <strong>"Meta-Ranking"</strong>?îpreferences over
-                preferences?îwithin a Multi-Agent Reinforcement Learning (MARL) framework. We simulated agents with seven
+            <p>This study formalizes Amartya Sen's theory of <strong>"Meta-Ranking"</strong>?preferences over
+                preferences?within a Multi-Agent Reinforcement Learning (MARL) framework. We simulated agents with seven
                 Social Value Orientations (SVO) across three environments (Cleanup, IPD, PGG) at scales up to 100
                 agents.</p>
 
@@ -799,37 +806,37 @@
                     <th>Implication</th>
                 </tr>
                 <tr>
-                    <td>?§ñ AI Alignment</td>
+                    <td>? AI Alignment</td>
                     <td>Systems should learn <em>when</em> to be moral, not encode static values</td>
                 </tr>
                 <tr>
-                    <td>?ìä Behavioral Economics</td>
+                    <td>? Behavioral Economics</td>
                     <td>Bounded self-interest (Œ∏=15¬∞), not pure altruism, best replicates humans</td>
                 </tr>
                 <tr>
-                    <td>?ß¨ Evolutionary Theory</td>
+                    <td>? Evolutionary Theory</td>
                     <td>A "Moral Minority" of ~12% suffices as an ESS</td>
                 </tr>
             </table>
 
             <h2>Links</h2>
             <p>
-                ?ìÅ <a href="https://github.com/Yesol-Pilot/EthicaAI" target="_blank">GitHub Repository</a><br>
-                ?ìÑ <a href="https://doi.org/10.5281/zenodo.18637742" target="_blank">Zenodo DOI</a>
+                ? <a href="https://github.com/Yesol-Pilot/EthicaAI" target="_blank">GitHub Repository</a><br>
+                ? <a href="https://doi.org/10.5281/zenodo.18637742" target="_blank">Zenodo DOI</a>
             </p>
         </div>
     </div>
 
-    <!-- ?ºÏù¥?∏Î∞ï??-->
+    <!-- ?Ïù¥?Î∞ï??-->
     <div class="lightbox" id="lightbox" onclick="closeLB()"><img id="lb-img" src=""></div>
 
-    <!-- ?∏ÌÑ∞ -->
+    <!-- ?ÌÑ∞ -->
     <div class="footer">
         <p>EthicaAI ¬© 2026 Yesol Heo ¬∑ <a href="https://github.com/Yesol-Pilot/EthicaAI">GitHub</a></p>
     </div>
 
     <script>
-        /* ===== ???ÑÌôò ===== */
+        /* ===== ???Ìôò ===== */
         function switchTab(id) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -838,7 +845,7 @@
             if (id === 'demo' && !window._chartInit) initCharts();
         }
 
-        /* ===== Figure ?∞Ïù¥??===== */
+        /* ===== Figure ?Ïù¥??===== */
         const figs = [
             { id: 1, file: "fig1_learning_curves.png", title: "Learning Curves", desc: "Reward & cooperation convergence", ph: "core" },
             { id: 2, file: "fig2_cooperation_rate.png", title: "Cooperation Rate", desc: "Per-SVO distribution with ceiling effect", ph: "core" },
@@ -888,7 +895,7 @@
         document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
         renderGallery(figs);
 
-        /* ===== SVO ?¨Îùº?¥Îçî ===== */
+        /* ===== SVO ?Îùº?Îçî ===== */
         const svoNames = { 0: 'Selfish', 15: 'Individualist', 30: 'Competitive', 45: 'Prosocial', 60: 'Cooperative', 75: 'Altruistic', 90: 'Full Altruist' };
         const svoSlider = document.getElementById('svo-slider');
         const roundsSlider = document.getElementById('rounds-slider');
@@ -903,7 +910,7 @@
             document.getElementById('mode-val').textContent = document.getElementById('meta-toggle').classList.contains('on') ? 'Dynamic' : 'Static';
         });
 
-        /* ===== ?úÎ??àÏù¥???îÏßÑ (JS ?¨ÌåÖ) ===== */
+        /* ===== ???Ïù¥???ÏßÑ (JS ?ÌåÖ) ===== */
         class SeededRNG {
             constructor(s) { this.s = s % 2147483647; if (this.s <= 0) this.s += 2147483646; }
             next() { this.s = this.s * 16807 % 2147483647; return (this.s - 1) / 2147483646; }
@@ -964,13 +971,13 @@
                 acts.forEach((a, i) => a === 0 ? cc[i]++ : dc[i]++);
                 history.push((2 - acts[0] - acts[1]) / 2);
             }
-            // ?¥Îèô ?âÍ∑†
+            // ?Îèô ?Í∑†
             const w = 10, sm = [];
             for (let i = 0; i < history.length; i++) { const s = Math.max(0, i - w); sm.push(history.slice(s, i + 1).reduce((a, b) => a + b, 0) / (i - s + 1)); }
             return sm;
         }
 
-        /* ===== Ï∞®Ìä∏ (Canvas Í∏∞Î∞ò, ?òÏ°¥???ÜÏùå) ===== */
+        /* ===== Ï∞®Ìä∏ (Canvas Í∏∞Î∞ò, ?Ï°¥???Ïùå) ===== */
         function drawChart(canvasId, datasets, opts = {}) {
             const c = document.getElementById(canvasId), ctx = c.getContext('2d');
             const dpr = window.devicePixelRatio || 1;
@@ -997,7 +1004,7 @@
                 ctx.fillText((yMin + (yMax - yMin) * i / 4).toFixed(2), pad.l - 8, y + 4);
             }
 
-            // ?∞Ïù¥??
+            // ?Ïù¥??
             datasets.forEach(ds => {
                 ctx.strokeStyle = ds.color; ctx.lineWidth = ds.width || 2; ctx.setLineDash(ds.dash || []);
                 ctx.beginPath();
@@ -1015,7 +1022,7 @@
                 }
             });
 
-            // Î≤îÎ?
+            // Î≤î?
             let lx = pad.l + 10;
             ctx.font = '11px Inter';
             datasets.forEach(ds => {
@@ -1025,7 +1032,7 @@
                 lx += ctx.measureText(ds.label).width + 40;
             });
 
-            // XÏ∂??ºÎ≤®
+            // X??Î≤®
             ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.font = '11px Inter'; ctx.textAlign = 'center';
             const xStep = Math.max(1, Math.floor(xLen / 6));
             for (let i = 0; i < xLen; i += xStep) {
@@ -1045,8 +1052,8 @@
             const nR = +document.getElementById('rounds-slider').value;
 
             if (env === 'pgg') {
-                document.getElementById('chart1-title').textContent = '?ìä Contribution Rate';
-                document.getElementById('chart2-title').textContent = '?í∞ Mean Payoff';
+                document.getElementById('chart1-title').textContent = '? Contribution Rate';
+                document.getElementById('chart2-title').textContent = '? Mean Payoff';
                 document.getElementById('rounds-group').style.display = '';
 
                 const rm = simPGG(theta, true, nR, seed), rb = simPGG(theta, false, nR, seed);
@@ -1075,8 +1082,8 @@
                 document.getElementById('m3-lbl').textContent = 'Final Œª_t';
                 document.getElementById('m3-delta').textContent = '';
             } else {
-                document.getElementById('chart1-title').textContent = '?§ù Cooperation Rate (10-round MA)';
-                document.getElementById('chart2-title').textContent = '?ìà Cumulative';
+                document.getElementById('chart1-title').textContent = '? Cooperation Rate (10-round MA)';
+                document.getElementById('chart2-title').textContent = '? Cumulative';
                 document.getElementById('rounds-group').style.display = '';
                 const nR2 = Math.max(50, nR * 20);
                 const cm = simIPD(theta, true, nR2, seed), cb = simIPD(theta, false, nR2, seed);
@@ -1084,7 +1091,7 @@
                     { data: cm, color: '#4fc3f7', label: 'Meta-Ranking', width: 1.5 },
                     { data: cb, color: '#888', label: 'Baseline', width: 1.5, dash: [5, 5] },
                 ], { yMin: 0, yMax: 1.1, xLabel: 'Round' });
-                // ?ÑÏ†Å
+                // ?Ï†Å
                 let cumM = [], cumB = [], sM = 0, sB = 0;
                 cm.forEach((v, i) => { sM += v; cumM.push(sM / (i + 1)); });
                 cb.forEach((v, i) => { sB += v; cumB.push(sB / (i + 1)); });

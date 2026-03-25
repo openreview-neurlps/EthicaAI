@@ -347,28 +347,17 @@ In extreme adversarial regimes ($\beta{\geq}0.5$), even $\phi_1{=}1.0$ may not a
 \subsection{Why Escape is Computationally Intractable}
 \label{sec:intractability}
 
-The universality of the Nash Trap across five algorithm families (Table~\ref{tab:emergence}) raises a fundamental question: \emph{is this a weakness of specific algorithms, or an inherent computational barrier?}
-We establish that it is the latter. The full theoretical characterization comprises three parts (Proposition~\ref{thm:impossibility}; proofs in Appendix~\ref{app:impossibility_proof}):
-(i)~\emph{signal dilution}: each agent's marginal effect on survival is $O(\epsilon/N)$, requiring $\Omega(N^2 \epsilon^{-2})$ samples per informative gradient step;
-(ii)~\emph{basin dominance}: the Nash Trap basin captures measure $\geq 1 - e^{-0.01N}$ under uniform initialization (proved via Hoeffding's inequality);
-(iii)~\emph{exponential escape time}: $\Omega(e^{cN})$ gradient evaluations via Freidlin--Wentzell large deviations (Appendix~\ref{app:impossibility_proof}).
-
-The aggregate welfare consequence is formalized by the following result:
+The universality of the Nash Trap raises a fundamental question: \emph{is this a weakness of specific algorithms, or an inherent barrier?}
+Proposition~\ref{thm:impossibility} (proof in Appendix~\ref{app:impossibility_proof}) establishes the latter via three mechanisms: (i)~signal dilution ($O(\epsilon/N)$ per-agent effect); (ii)~basin dominance (measure $\geq 1{-}e^{-0.01N}$); (iii)~exponential escape time ($\Omega(e^{cN})$ via Freidlin--Wentzell).
 
 \begin{theorem}[Price of Anarchy Divergence in TPSDs]
 \label{thm:poa}
-In any TPSD $\mathcal{E}$ with $N$ agents, let $W^*$ denote the social optimum and $W_{\mathrm{NE}}$ the welfare at the Nash Trap equilibrium $\hat{\lambda}$. Then:
-\[
-  \mathrm{PoA}(\mathcal{E}) = \frac{W^*}{W_{\mathrm{NE}}} \geq \Omega(e^{cN})
-\]
-for some $c > 0$. This is in stark contrast to standard social dilemmas where $\mathrm{PoA} = O(1)$.
+In any TPSD with $N$ agents, $\mathrm{PoA} \geq \Omega(e^{cN})$ for $c{>}0$, vs.\ $O(1)$ in standard social dilemmas.
 \end{theorem}
-
+\vspace{-4pt}
 \begin{proof}[Proof sketch]
-At $\hat{\lambda} \approx 0.5$, the resource crosses $R_{\mathrm{crit}}$ within $O(1/\epsilon)$ steps; $f(R) = \epsilon \ll 1$ makes recovery near-impossible. $P_{\mathrm{surv}}(\hat{\lambda}) \leq e^{-\Omega(N)}$ since under-commitment accumulates linearly while recovery is sub-linear. At $\lambda^* = 1$, $P_{\mathrm{surv}} \geq 1 - \delta$, giving $W^* / W_{\mathrm{NE}} \geq \Omega(e^{cN})$. Full proof: Appendix~\ref{app:poa}.
+At $\hat{\lambda}{\approx}0.5$, $P_{\mathrm{surv}}(\hat{\lambda}) \leq e^{-\Omega(N)}$; at $\lambda^*{=}1$, $P_{\mathrm{surv}} \geq 1{-}\delta$, giving $W^*/W_{\mathrm{NE}} \geq \Omega(e^{cN})$. Full proof: Appendix~\ref{app:poa}.
 \end{proof}
-
-This exponential PoA divergence establishes the Nash Trap as a \emph{fundamental structural pathology}; MACCL learns commitment floors adaptively with formal convergence guarantees (Section~\ref{sec:maccl}).
 
 % ================================================================
 % SECTION 5: DISCUSSION
@@ -386,12 +375,22 @@ Table~\ref{tab:cross_env} confirms the Nash Trap across three additional TPSD va
 
 \vspace{-4pt}
 \paragraph{Comparison with existing mechanisms.}
-Table~\ref{tab:mechanism_comparison} compares commitment floors against LIO~\citep{yang2020learning} (incentive design) and Inequity Aversion~\citep{hughes2018inequity}.
-Both remain trapped ($\bar\lambda{<}0.15$, survival $\approx\!55\%$)---no better than selfish baselines---confirming that \emph{reward-shaping cannot overcome the structural barrier} of TPSDs; only action-space interventions escape the trap.
+Table~\ref{tab:mechanism_comparison} compares commitment floors against LIO~\citep{yang2020learning} (incentive design, both linear and MLP variants) and Inequity Aversion~\citep{hughes2018inequity}.
+All reward-shaping methods remain trapped ($\bar\lambda{<}0.14$, survival ${\leq}11\%$), \emph{even when LIO uses a 2-layer MLP} ($h{=}32$)---confirming that the structural barrier of TPSDs cannot be overcome by richer reward signals; only action-space interventions escape the trap.
 
 \input{tables/tab_mechanism_comparison}
 
-Commitment floors should be \emph{design constraints} near critical thresholds, and need not be hand-specified: MACCL discovers \emph{state-dependent} $\phi_1(R_t)$, recovering $\phi_1{\approx}1.0$ in PGG and a graded $\phi_1(R){\in}[0.67,0.83]$ in Cleanup (+241\% welfare; Appendix~\ref{app:maccl}), demonstrating floors as a \emph{learnable} safety specification.
+\subsection{Learning the Floor: MACCL}
+\label{sec:maccl}
+
+The preceding results raise a natural question: \emph{can the commitment floor be learned rather than hand-specified?}
+We introduce \textbf{MACCL} (Multi-Agent Constrained Commitment Learning), a primal-dual algorithm that discovers state-dependent floors $\phi_1(R;\omega) = \sigma(w_1 R + w_2 R^2 + w_3)$ subject to $P(\text{survival}) \geq 1{-}\delta$.
+At each outer iteration, MACCL computes finite-difference gradients of the Lagrangian $\mathcal{L} = W(\omega) + \mu \cdot (P_{\text{surv}}(\omega) - (1{-}\delta))$ and updates $(\omega, \mu)$ via primal ascent / dual ascent with safety projection.
+
+\noindent\textbf{Results} (20 seeds, Appendix~\ref{app:maccl}):
+In severe TPSDs (PGG), MACCL recovers $\phi_1{\approx}1.0$ with 99.8\% survival (+203\% welfare vs.\ selfish).
+Critically, in the Cleanup environment, MACCL learns a \emph{graded} floor $\phi_1(R){\in}[0.67, 0.83]$---not a blanket $\phi_1{=}1.0$---achieving +241\% welfare while preserving agent autonomy at high resource levels.
+This demonstrates that floors are a \emph{learnable safety specification}: the minimum commitment level is a derived property of the environment's tipping-point dynamics, not an arbitrary constraint.
 \paragraph{Limitations.}\label{sec:limitations}
 Five algorithm families all trapped (100\% rate); agents are homogeneous and communication-free.
 Five TPSD environments tested including one external benchmark~\citep{lerer2017maintaining}; real-world spatial commons remain untested.

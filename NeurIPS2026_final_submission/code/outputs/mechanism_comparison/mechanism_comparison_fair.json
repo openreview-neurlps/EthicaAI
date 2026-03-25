@@ -1,0 +1,54 @@
+{
+  "results": {
+    "Selfish REINFORCE": {
+      "welfare": 20.751,
+      "welfare_std": 0.078,
+      "survival": 0.097,
+      "survival_std": 0.063,
+      "mean_lambda": 0.089,
+      "mean_lambda_std": 0.009
+    },
+    "LIO-Linear": {
+      "welfare": 21.165,
+      "welfare_std": 0.171,
+      "survival": 0.102,
+      "survival_std": 0.067,
+      "mean_lambda": 0.112,
+      "mean_lambda_std": 0.016
+    },
+    "LIO-MLP (h=32)": {
+      "welfare": 21.674,
+      "welfare_std": 0.295,
+      "survival": 0.108,
+      "survival_std": 0.067,
+      "mean_lambda": 0.136,
+      "mean_lambda_std": 0.024
+    },
+    "Inequity Aversion": {
+      "welfare": 20.353,
+      "welfare_std": 0.023,
+      "survival": 0.087,
+      "survival_std": 0.061,
+      "mean_lambda": 0.071,
+      "mean_lambda_std": 0.003
+    },
+    "Commitment Floor": {
+      "welfare": 28.4,
+      "welfare_std": 0.0,
+      "survival": 1.0,
+      "survival_std": 0.0,
+      "mean_lambda": 1.0,
+      "mean_lambda_std": 0.0
+    }
+  },
+  "time_seconds": 806.672646522522,
+  "config": {
+    "N": 20,
+    "T": 50,
+    "seeds": 20,
+    "train": 200,
+    "eval": 50,
+    "byz": 0.3
+  },
+  "note": "LIO-MLP uses 2-layer ReLU network (h=32) for incentive function"
+}

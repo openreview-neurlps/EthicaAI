@@ -1,0 +1,68 @@
+{
+  "experiment": "Melting Pot RL Training - commons_harvest__open",
+  "substrate": "commons_harvest__open",
+  "n_players": 7,
+  "n_seeds": 5,
+  "n_train_episodes": 50,
+  "n_eval_episodes": 10,
+  "n_steps": 500,
+  "summary": {
+    "random_welfare": "9.97 +/- 3.14",
+    "random_steps": "500",
+    "trained_welfare": "9.73 +/- 1.57",
+    "trained_steps": "500"
+  },
+  "per_seed": {
+    "random": [
+      {
+        "welfare": 12.285714285714286,
+        "total_reward": 86.0,
+        "steps": 500
+      },
+      {
+        "welfare": 4.714285714285714,
+        "total_reward": 33.0,
+        "steps": 500
+      },
+      {
+        "welfare": 8.571428571428571,
+        "total_reward": 60.0,
+        "steps": 500
+      },
+      {
+        "welfare": 13.714285714285714,
+        "total_reward": 96.0,
+        "steps": 500
+      },
+      {
+        "welfare": 10.571428571428571,
+        "total_reward": 74.0,
+        "steps": 500
+      }
+    ],
+    "trained_rl": [
+      {
+        "welfare": 10.928571428571427,
+        "steps": 500.0
+      },
+      {
+        "welfare": 8.785714285714286,
+        "steps": 500.0
+      },
+      {
+        "welfare": 12.142857142857144,
+        "steps": 500.0
+      },
+      {
+        "welfare": 9.0,
+        "steps": 500.0
+      },
+      {
+        "welfare": 7.814285714285714,
+        "steps": 500.0
+      }
+    ]
+  },
+  "time_seconds": 273.17441725730896,
+  "conclusion": "In non-TPSD environments, RL agents learn to survive without commitment floors."
+}
