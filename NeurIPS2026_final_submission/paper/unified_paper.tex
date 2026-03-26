@@ -1016,7 +1016,9 @@ We adapt CleanRL~\citep{huang2022cleanrl} reference implementations with \emph{z
 \paragraph{PyTorch Cross-Validation.}
 To address potential concerns about implementation-specific artifacts in our NumPy baselines, we conduct a full cross-validation using \textbf{PyTorch} (v2.6.0) with \texttt{torch.distributions.Beta}, Adam optimizer, and autograd-based gradient computation. Three architectures are tested: Linear (10 params), MLP with 32 hidden units (1,250 params), and MLP+Critic (2,345 params). Each runs 20 seeds $\times$ 300 episodes. Results (Table~\ref{tab:emergence}):
 
-\noindent\textbf{Key finding}: all three PyTorch variants converge within the Nash Trap ($\bar\lambda < 0.50$), confirming \textbf{framework independence}.
+\noindent\textbf{Key finding}: all four PyTorch variants converge within the Nash Trap ($\bar\lambda < 0.50$), confirming \textbf{framework independence}. Bootstrap 95\% confidence intervals are reported in Table~\ref{tab:deep_marl_ablation}.
+
+\input{tables/tab_deep_marl_ablation}
 
 \noindent\textbf{Implementation sensitivity}: the NumPy MLP baseline uses sigmoid parameterization ($\lambda = \sigma(w^\top s + b) + \text{noise}$), while PyTorch uses Beta distributions. This difference in policy parameterization shifts the convergent $\bar\lambda$ from $\approx 0.35$ (NumPy MLP) to $\approx 0.48$ (PyTorch MLP), but crucially, \emph{both remain well within the trap} ($\bar\lambda < 0.85$). The gap demonstrates that while the exact equilibrium point depends on policy representation and gradient-estimation method, the \emph{existence} of the trap is invariant to these choices---precisely as predicted by Proposition~\ref{thm:impossibility}, which bounds the trap basin measure independently of the optimization algorithm.
 
@@ -1512,6 +1514,13 @@ Fixed $\phi_1 = 1.0$ is \emph{survival-optimal} but \emph{welfare-suboptimal}: i
 
 \textbf{Key finding}: In the PGG, MACCL converges to $\phi_1(R) \approx 0.95$--$1.00$ across all $R$ (matching fixed $\phi_1{=}1.0$), confirming that in severe TPSDs with tipping points, unconditional commitment is indeed the unique safety-optimal solution. In the Cleanup environment, MACCL discovers a \emph{state-dependent} floor: $\phi_1(R{=}0) = 0.83$ (high cleaning effort when polluted), decreasing to $\phi_1(R{=}1.0) = 0.67$ (more harvesting when clean). This achieves welfare $0.424$---a $241\%$ improvement over fixed $\phi_1{=}1.0$ ($-0.300$)---while maintaining $100\%$ survival.
 
+\paragraph{Deep MARL GPU Validation.}
+To confirm that the MACCL mechanism operates correctly under full differentiable Deep RL training (PyTorch, CUDA), we compare three GPU-accelerated implementations: (i)~MACCL with primal-dual Lagrangian optimization, (ii)~LIO with bilevel optimization, and (iii)~RND-augmented PPO as an exploration ablation. Results are shown in Table~\ref{tab:deep_marl_gpu}.
+
+\input{tables/tab_deep_marl_gpu}
+
+\noindent The RND ablation is particularly informative: despite adding curiosity-driven intrinsic rewards, the exploration bonus decays to $<0.001$ within 5000 steps as the RND predictor converges, leaving agents trapped. This confirms that the Nash Trap is not caused by insufficient exploration, but by the structural payoff landscape.
+
 % ================================================================
 % APPENDIX: Tipping-Point Coin Game
 % ================================================================
@@ -1577,7 +1586,7 @@ For our default parameters ($M/N{=}0.32$, $\gamma{=}0.99$, $f_{\text{crit}}{=}0.
 \answerYes{All comparisons use Mann-Whitney U with Holm-Bonferroni correction for multiple comparisons. Effect sizes are reported as Cliff's $|\delta|$. 95\% Wilson CIs and standard deviations across seeds are reported throughout. See \texttt{compute\_statistics.py}.}
 
 \item {\bf Experiments Compute Resources}
-\answerYes{All experiments run on a single CPU (no GPU required). Wall-clock times are reported in table footnotes (18--45s/seed for IPPO). Full pipeline: approximately 2--4 hours on a modern CPU.}
+\answerYes{Primary experiments run on a single CPU core (18--45s/seed for IPPO). Deep MARL GPU validation (MACCL, LIO, RND PPO; Table~\ref{tab:deep_marl_gpu}) uses a single NVIDIA RTX 4070 SUPER (12GB VRAM). Full pipeline: approximately 2--4 hours CPU + 30 minutes GPU.}
 
 \item {\bf Code Of Ethics}
 \answerYes{We have reviewed the NeurIPS Code of Ethics and our work complies. Section~\ref{sec:broader_impact} discusses broader impact, including when the framework should and should not be applied.}

@@ -1,0 +1,22 @@
+% Table: Deep MARL REINFORCE Ablation (PyTorch, 20 seeds)
+\begin{table}[h]
+\centering
+\caption{%
+  \textbf{Deep MARL architecture ablation.}
+  PyTorch REINFORCE with four neural architectures all converge to the Nash Trap
+  ($\bar\lambda < 0.85$), confirming the trap is not an artifact of implementation.
+  20 seeds, 300 episodes, Bootstrap 95\% CI reported.
+}
+\label{tab:deep_marl_ablation}
+\small
+\begin{tabular}{@{}lrccc@{}}
+\toprule
+\textbf{Architecture} & \textbf{Params} & $\bar\lambda$ & \textbf{Surv. (\%)} & \textbf{Trap?} \\
+\midrule
+  Linear & 10 & $0.497$ \tiny{[0.487, 0.507]} & $48.0$ \tiny{[42.8, 52.8]} & \cmark \\
+  MLP (32h) & 1282 & $0.482$ \tiny{[0.478, 0.487]} & $45.2$ \tiny{[40.0, 49.7]} & \cmark \\
+  MLP+Critic (32h) & 1475 & $0.480$ \tiny{[0.474, 0.485]} & $43.8$ \tiny{[38.7, 48.5]} & \cmark \\
+  Sigmoid MLP (32h) & 1250 & $0.486$ \tiny{[0.482, 0.489]} & $46.7$ \tiny{[41.8, 51.0]} & \cmark \\
+\bottomrule
+\end{tabular}
+\end{table}

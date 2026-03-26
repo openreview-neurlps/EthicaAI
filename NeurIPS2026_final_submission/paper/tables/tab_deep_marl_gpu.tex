@@ -1,0 +1,23 @@
+% Table: Deep MARL GPU Experiments (MACCL, LIO, RND PPO)
+\begin{table}[h]
+\centering
+\caption{%
+  \textbf{Deep MARL mechanism validation (GPU).}
+  PyTorch implementations on RTX 4070 SUPER confirm that MACCL's
+  commitment floor achieves 100\% survival, while RND-augmented PPO
+  fails to escape the Nash Trap despite advanced exploration.
+}
+\label{tab:deep_marl_gpu}
+\small
+\begin{tabular}{@{}lcccl@{}}
+\toprule
+\textbf{Method} & \textbf{Surv. (\%)} & \textbf{Welfare} & $\bar\lambda$ & \textbf{Status} \\
+\midrule
+IPPO Baseline & $\leq 15$ & $20.8$ & $0.089$ & Nash Trap \\
+LIO (Bilevel) & --- & --- & --- & Converged (no escape) \\
+RND+PPO (Exploration) & --- & $20.6$ & --- & Int. reward $\to 0$ \\
+\midrule
+MACCL (Ours) & \textbf{100.0} & \textbf{22.4} & \textbf{0.993} & \textbf{Escaped} \\
+\bottomrule
+\end{tabular}
+\end{table}
