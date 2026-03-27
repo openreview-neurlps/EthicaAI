@@ -1514,12 +1514,12 @@ Fixed $\phi_1 = 1.0$ is \emph{survival-optimal} but \emph{welfare-suboptimal}: i
 
 \textbf{Key finding}: In the PGG, MACCL converges to $\phi_1(R) \approx 0.95$--$1.00$ across all $R$ (matching fixed $\phi_1{=}1.0$), confirming that in severe TPSDs with tipping points, unconditional commitment is indeed the unique safety-optimal solution. In the Cleanup environment, MACCL discovers a \emph{state-dependent} floor: $\phi_1(R{=}0) = 0.83$ (high cleaning effort when polluted), decreasing to $\phi_1(R{=}1.0) = 0.67$ (more harvesting when clean). This achieves welfare $0.424$---a $241\%$ improvement over fixed $\phi_1{=}1.0$ ($-0.300$)---while maintaining $100\%$ survival.
 
-\paragraph{Deep MARL GPU Validation.}
-To confirm that the MACCL mechanism operates correctly under full differentiable Deep RL training (PyTorch, CUDA), we compare three GPU-accelerated implementations: (i)~MACCL with primal-dual Lagrangian optimization, (ii)~LIO with bilevel optimization, and (iii)~RND-augmented PPO as an exploration ablation. Results are shown in Table~\ref{tab:deep_marl_gpu}.
+\paragraph{Deep MARL GPU Validation (20 seeds).}
+To confirm that the MACCL mechanism operates correctly under full differentiable Deep RL training (PyTorch 2.6, CUDA, RTX 4070 SUPER), we compare three GPU-accelerated implementations with 20 independent seeds each: (i)~MACCL with primal-dual Lagrangian optimization, (ii)~LIO~\citep{yang2020learning} with bilevel meta-gradient optimization via \texttt{higher}, and (iii)~RND-augmented PPO~\citep{burda2018exploration} as an exploration ablation. Results with Bootstrap 95\% CI are shown in Table~\ref{tab:deep_marl_gpu}.
 
 \input{tables/tab_deep_marl_gpu}
 
-\noindent The RND ablation is particularly informative: despite adding curiosity-driven intrinsic rewards, the exploration bonus decays to $<0.001$ within 5000 steps as the RND predictor converges, leaving agents trapped. This confirms that the Nash Trap is not caused by insufficient exploration, but by the structural payoff landscape.
+\noindent \textbf{MACCL achieves 100\% survival across all 20 seeds} ($\bar\lambda = 0.991 \pm 0.001$), with zero variance in survival---the strongest result in the paper. In contrast, LIO's bilevel optimization converges to $\bar\lambda = 0.508$ (Nash Trap), achieving only 54.8\% survival [CI: 51.5, 58.5]. The RND ablation is particularly informative: despite adding curiosity-driven intrinsic rewards, the exploration bonus decays as the RND predictor converges, and agents achieve only 20.2\% survival---\emph{worse} than baseline REINFORCE ($\approx$45\%)---suggesting that RND's intrinsic reward signal actively interferes with the extrinsic gradient. This confirms that the Nash Trap is not caused by insufficient exploration, but by the structural payoff landscape.
 
 % ================================================================
 % APPENDIX: Tipping-Point Coin Game

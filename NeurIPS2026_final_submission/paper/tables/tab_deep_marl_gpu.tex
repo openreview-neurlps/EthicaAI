@@ -1,23 +1,22 @@
-% Table: Deep MARL GPU Experiments (MACCL, LIO, RND PPO)
+% Table: Deep MARL GPU Experiments (MACCL, LIO, RND PPO) — 20 seeds, Bootstrap 95% CI
 \begin{table}[h]
 \centering
 \caption{%
-  \textbf{Deep MARL mechanism validation (GPU).}
-  PyTorch implementations on RTX 4070 SUPER confirm that MACCL's
-  commitment floor achieves 100\% survival, while RND-augmented PPO
-  fails to escape the Nash Trap despite advanced exploration.
+  \textbf{Deep MARL mechanism validation (PyTorch, GPU, 20 seeds).}
+  MACCL's commitment floor achieves 100\% survival across all seeds,
+  while LIO (bilevel) and RND-augmented PPO (exploration ablation) both
+  remain trapped. Bootstrap 95\% CI in brackets.
 }
 \label{tab:deep_marl_gpu}
 \small
-\begin{tabular}{@{}lcccl@{}}
+\begin{tabular}{@{}lcccc@{}}
 \toprule
-\textbf{Method} & \textbf{Surv. (\%)} & \textbf{Welfare} & $\bar\lambda$ & \textbf{Status} \\
+\textbf{Method} & $\bar\lambda$ & \textbf{Surv. (\%)} & \textbf{Welfare} & \textbf{Status} \\
 \midrule
-IPPO Baseline & $\leq 15$ & $20.8$ & $0.089$ & Nash Trap \\
-LIO (Bilevel) & --- & --- & --- & Converged (no escape) \\
-RND+PPO (Exploration) & --- & $20.6$ & --- & Int. reward $\to 0$ \\
+LIO (Bilevel, 20 seeds) & $0.508 \pm 0.024$ & $54.8$ \tiny{[51.5, 58.5]} & $21.22$ & Nash Trap \\
+RND+PPO (Exploration, 20 seeds) & $0.311 \pm 0.033$ & $20.2$ \tiny{[16.3, 23.8]} & $20.73$ & Nash Trap \\
 \midrule
-MACCL (Ours) & \textbf{100.0} & \textbf{22.4} & \textbf{0.993} & \textbf{Escaped} \\
+\textbf{MACCL (Ours, 20 seeds)} & $\mathbf{0.991} \pm 0.001$ & $\mathbf{100.0}$ \tiny{[100, 100]} & $\mathbf{22.38}$ & \textbf{Escaped} \\
 \bottomrule
 \end{tabular}
 \end{table}
