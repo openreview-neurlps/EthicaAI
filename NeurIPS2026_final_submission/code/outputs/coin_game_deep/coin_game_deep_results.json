@@ -8,46 +8,46 @@
   "selfish": {
     "method": "Selfish PPO",
     "n_seeds": 1,
-    "survival_mean": 100.0,
+    "survival_mean": 23.333333333333332,
     "survival_std": 0.0,
     "survival_ci95": [
-      100.0,
-      100.0
+      23.333333333333332,
+      23.333333333333332
     ],
-    "welfare_mean": 0.05,
+    "welfare_mean": -3.5166666666666666,
     "welfare_std": 0.0,
     "welfare_ci95": [
-      0.05,
-      0.05
+      -3.5166666666666666,
+      -3.5166666666666666
     ],
     "per_seed_survival": [
-      100.0
+      23.333333333333332
     ],
     "per_seed_welfare": [
-      0.05
+      -3.5166666666666666
     ]
   },
   "maccl": {
     "method": "MACCL",
     "n_seeds": 1,
-    "survival_mean": 100.0,
+    "survival_mean": 73.33333333333333,
     "survival_std": 0.0,
     "survival_ci95": [
-      100.0,
-      100.0
+      73.33333333333333,
+      73.33333333333333
     ],
-    "welfare_mean": 0.06666666666666667,
+    "welfare_mean": -1.2166666666666666,
     "welfare_std": 0.0,
     "welfare_ci95": [
-      0.06666666666666667,
-      0.06666666666666667
+      -1.2166666666666666,
+      -1.2166666666666666
     ],
     "per_seed_survival": [
-      100.0
+      73.33333333333333
     ],
     "per_seed_welfare": [
-      0.06666666666666667
+      -1.2166666666666666
     ]
   },
-  "total_time_seconds": 194.1699116230011
+  "total_time_seconds": 242.96347880363464
 }

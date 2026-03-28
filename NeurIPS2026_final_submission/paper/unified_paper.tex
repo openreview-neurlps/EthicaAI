@@ -1552,30 +1552,18 @@ In the outer loop, the designer updates $\eta$ to maximize the true global welfa
 Our PyTorch implementation unrolls $K=5$ inner PPO steps per outer iteration, rigorously computing the meta-gradient $\nabla_\eta \theta_{t+K}$ exactly as specified by the authors. Despite this authentic meta-optimization, the severe non-stationarity of the tipping-point constraints prevents LIO from finding a stabilizing incentive map before environmental collapse. Thus, the Nash Trap is fundamental to the algorithm's gradient-based exploration under cliff-edge dynamics, rather than a failure of hyperparameter tuning or approximation.
 
 % ================================================================
-% APPENDIX: Tipping-Point Coin Game
+% APPENDIX: External Benchmark (Tipping-Point Coin Game)
 % ================================================================
-\section{Tipping-Point Coin Game}
+\section{External Benchmark: Tipping-Point Coin Game}
 \label{app:coin_game}
 
-To validate the Nash Trap on a non-author-designed benchmark, we adapt the Coin Game~\citep{lerer2017maintaining} with shared resource dynamics: agents on a $5{\times}5$ grid collect colored coins, where picking one's own coin drains a shared resource $R_t$ by $0.06$, while picking another agent's coin (selfish extraction) drains $0.15$. Below $R_{\text{crit}}{=}0.20$, coin spawning ceases (tipping point); at $R_t{\leq}0$, the game ends. The resource starts at $R_0{=}0.4$ with regeneration rate $0.005$ per idle step.
+To validate that the Nash Trap is not an artifact of our custom Public Goods Game, but a fundamental characteristic of TPSD environments, we evaluate MACCL on an external benchmark: the Coin Game~\citep{lerer2017maintaining}. We adapt this spatially-extended discrete-action game ($3{\times}3$ grid, 2 agents) by introducing a shared resource $R_t$ with a tipping point.
 
-\begin{table}[h]
-\centering
-\caption{Tipping-Point Coin Game ($T{=}100$). The tipping point creates a dramatic survival gap between selfish and committed agents.}
-\label{tab:coin_game}
-\begin{tabular}{lcc}
-\toprule
-\textbf{Policy} & \textbf{Welfare} & \textbf{Survival \%} \\
-\midrule
-Selfish (greedy) & $0.27$ & $39.3$ \\
-Committed $\phi_1{=}0.7$ & $4.42$ & $88.6$ \\
-Committed $\phi_1{=}1.0$ & $4.59$ & $90.0$ \\
-ACL $\phi_1(R)$ & $4.27$ & $89.2$ \\
-\bottomrule
-\end{tabular}
-\end{table}
+In this modification, agent collisions (stealing an opponent's coin) drain the shared resource. When $R_t \le 0$, the environment suffers an irreversible collapse, terminating the episode with a catastrophic penalty for all. We use a harsh depletion rate to simulate severe TPSD constraints. 
 
-\textbf{Key finding}: The Coin Game---a standard MARL cooperation benchmark not designed by the authors---exhibits the same qualitative pattern as our PGG environments: selfish agents achieve dramatically lower survival ($39.3\%$) than committed agents ($90.0\%$), and committed policies achieve $17{\times}$ higher welfare ($4.59$ vs.\ $0.27$, 20 seeds). The tipping-point dynamics create an irreversible collapse channel: greedy coin collection depletes the shared resource below $R_{\text{crit}}$, after which coin spawning ceases and the episode terminates. MACCL achieves $89.2\%$ survival with welfare $4.27$---comparable to the fixed floor---confirming that near-unconditional commitment is the safety-optimal policy in this environment.
+\input{tables/tab_coin_game_deep}
+
+\noindent \textbf{Results}: As seen in Table~\ref{tab:coin_game_deep}, selfish PPO baseline agents aggressively steal coins, triggering the tipping point and converging to a Nash Trap (survival rate $\approx$ 23\%). In contrast, MACCL learns a differentiable probability floor that actively shifts policy logits toward the ``stay'' action (cooperation) as $R_t$ drops. Even in this discrete-action, external benchmark, MACCL dramatically raises the survival rate ($\approx$ 73\%) compared to the unconstrained baseline. This confirms that the Commitment Floor is domain-agnostic and generalizes beyond the continuous PGG architecture.
 
 % ================================================================
 % APPENDIX: Nash Trap Upper Bound

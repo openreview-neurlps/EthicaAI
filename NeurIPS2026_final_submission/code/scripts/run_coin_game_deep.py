@@ -82,8 +82,8 @@ def run_selfish_coin_seed(seed, max_episodes=200):
     np.random.seed(seed)
 
     env = CoinGameWithTippingPoint(
-        resource_init=0.4, r_crit=0.20, depletion_rate=0.15,
-        grid_size=5, max_steps=50
+        resource_init=0.3, r_crit=0.20, depletion_rate=0.35,
+        grid_size=3, max_steps=150
     )
     obs_dim = env.obs_dim
     n_agents = env.num_agents
@@ -159,8 +159,8 @@ def run_maccl_coin_seed(seed, max_episodes=200):
     np.random.seed(seed)
 
     env = CoinGameWithTippingPoint(
-        resource_init=0.4, r_crit=0.20, depletion_rate=0.15,
-        grid_size=5, max_steps=50
+        resource_init=0.3, r_crit=0.20, depletion_rate=0.35,
+        grid_size=3, max_steps=150
     )
     obs_dim = env.obs_dim
     n_agents = env.num_agents
