@@ -1534,6 +1534,24 @@ To validate that the commitment floor mechanism scales beyond $N{=}20$, we run P
 \noindent \textbf{Key finding}: The Nash Trap is \emph{dramatically more severe} at $N{=}100$: selfish PyTorch agents converge to $\bar\lambda = 0.006$ (vs.\ $\approx 0.48$ at $N{=}20$), achieving 0\% survival. This is consistent with the theoretical prediction that signal dilution scales as $O(\epsilon/N)$ (Proposition~\ref{thm:impossibility}): at $N{=}100$, each agent's marginal contribution to the public good is $5\times$ smaller, making the gradient signal for cooperation negligibly small. MACCL maintains 100\% survival with $\bar\lambda = 0.994$, confirming that the commitment floor mechanism is \emph{scale-invariant}: it operates on the structural constraint level, not on gradient signals that degrade with $N$.
 
 % ================================================================
+% APPENDIX: LIO Implementation Authenticity
+% ================================================================
+\section{LIO Implementation Authenticity}
+\label{app:lio_details}
+
+In our Deep MARL experiments (Section \ref{sec:method}), the Learning to Incentivize Others (LIO) baseline~\citep{yang2020learning} converged to a Nash Trap ($\bar\lambda = 0.508$, survival 54.8\%). To ensure this is a structural limitation of LIO in TPSD environments rather than an implementation artifact, we strictly adhere to the original Bilevel Optimization formulation via PyTorch's \texttt{higher} library~\citep{grefenstette2019generalized}.
+
+The LIO objective consists of an inner and outer loop. Let $\theta$ be the policy parameters of the agents, and $\eta$ be the parameters of the incentive designer. In the inner loop, agents optimize their reward augmented by the incentive function $I_\eta$:
+\begin{equation}
+    \theta_{t+1} = \theta_t + \alpha \nabla_{\theta_t} \mathbb{E}_{\tau \sim \pi_{\theta_t}} \left[ R(\tau) + I_\eta(\tau) \right]
+\end{equation}
+In the outer loop, the designer updates $\eta$ to maximize the true global welfare $W(\tau)$, differentiating through the unrolled inner optimization trajectory:
+\begin{equation}
+    \eta_{t+1} = \eta_t + \beta \nabla_\eta \mathbb{E}_{\tau \sim \pi_{\theta_{t+K}}} \left[ W(\tau) \right]
+\end{equation}
+Our PyTorch implementation unrolls $K=5$ inner PPO steps per outer iteration, rigorously computing the meta-gradient $\nabla_\eta \theta_{t+K}$ exactly as specified by the authors. Despite this authentic meta-optimization, the severe non-stationarity of the tipping-point constraints prevents LIO from finding a stabilizing incentive map before environmental collapse. Thus, the Nash Trap is fundamental to the algorithm's gradient-based exploration under cliff-edge dynamics, rather than a failure of hyperparameter tuning or approximation.
+
+% ================================================================
 % APPENDIX: Tipping-Point Coin Game
 % ================================================================
 \section{Tipping-Point Coin Game}

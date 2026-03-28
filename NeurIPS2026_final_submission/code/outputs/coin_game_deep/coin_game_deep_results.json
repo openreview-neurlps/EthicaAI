@@ -1,0 +1,53 @@
+{
+  "experiment": "Coin Game TPSD Deep MARL Validation",
+  "reference": "Lerer & Peysakhovich 2017, adapted with TPSD dynamics",
+  "config": {
+    "device": "cuda",
+    "torch_version": "2.6.0+cu124"
+  },
+  "selfish": {
+    "method": "Selfish PPO",
+    "n_seeds": 1,
+    "survival_mean": 100.0,
+    "survival_std": 0.0,
+    "survival_ci95": [
+      100.0,
+      100.0
+    ],
+    "welfare_mean": 0.05,
+    "welfare_std": 0.0,
+    "welfare_ci95": [
+      0.05,
+      0.05
+    ],
+    "per_seed_survival": [
+      100.0
+    ],
+    "per_seed_welfare": [
+      0.05
+    ]
+  },
+  "maccl": {
+    "method": "MACCL",
+    "n_seeds": 1,
+    "survival_mean": 100.0,
+    "survival_std": 0.0,
+    "survival_ci95": [
+      100.0,
+      100.0
+    ],
+    "welfare_mean": 0.06666666666666667,
+    "welfare_std": 0.0,
+    "welfare_ci95": [
+      0.06666666666666667,
+      0.06666666666666667
+    ],
+    "per_seed_survival": [
+      100.0
+    ],
+    "per_seed_welfare": [
+      0.06666666666666667
+    ]
+  },
+  "total_time_seconds": 194.1699116230011
+}
