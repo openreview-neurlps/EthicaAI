@@ -1,0 +1,23 @@
+% Table: N=100 Scale Validation (PyTorch Deep MARL, 10 seeds)
+\begin{table}[h]
+\centering
+\caption{%
+  \textbf{Scale validation at $N{=}100$ (30\% Byzantine, PyTorch GPU, 10 seeds).}
+  The Nash Trap becomes \emph{dramatically more severe} at $N{=}100$:
+  selfish agents converge to $\bar\lambda \approx 0.006$
+  (vs.\ $\approx 0.48$ at $N{=}20$), achieving 0\% survival across all seeds.
+  MACCL's commitment floor maintains 100\% survival with zero variance.
+  Bootstrap 95\% CI reported.
+}
+\label{tab:scale_n100_deep}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Method ($N{=}100$)} & $\bar\lambda$ & \textbf{Surv. (\%)} & \textbf{Welfare} & \textbf{Status} \\
+\midrule
+Selfish REINFORCE (10 seeds) & $0.006 \pm 0.001$ & $0.0$ \tiny{[0, 0]} & $20.01$ & Nash Trap \\
+\midrule
+\textbf{MACCL (Ours, 10 seeds)} & $\mathbf{0.993} \pm 0.001$ & $\mathbf{100.0}$ \tiny{[100, 100]} & $\mathbf{22.38}$ & \textbf{Escaped} \\
+\bottomrule
+\end{tabular}
+\end{table}
