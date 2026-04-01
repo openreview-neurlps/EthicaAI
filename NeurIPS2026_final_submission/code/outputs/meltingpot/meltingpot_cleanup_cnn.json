@@ -1,14 +1,33 @@
 {
-  "sub": "clean_up",
+  "substrate": "clean_up",
   "results": {
-    "f0.0": {
+    "floor_0.0": {
       "mean": 0.0,
-      "std": 0.0
+      "std": 0.0,
+      "seeds": [
+        0.0,
+        0.0,
+        0.0
+      ]
     },
-    "f0.3": {
-      "mean": 0.0,
-      "std": 0.0
+    "floor_0.2": {
+      "mean": 0.1,
+      "std": 0.06,
+      "seeds": [
+        0.19,
+        0.04,
+        0.06
+      ]
+    },
+    "floor_0.4": {
+      "mean": 0.1,
+      "std": 0.13,
+      "seeds": [
+        0.29,
+        0.0,
+        0.0
+      ]
     }
   },
-  "time": 730
+  "time_s": 13289
 }

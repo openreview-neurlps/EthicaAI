@@ -401,6 +401,18 @@ In severe TPSDs (PGG), MACCL recovers $\phi_1{\approx}1.0$ with 99.8\% survival 
 Critically, in the Cleanup environment, MACCL learns a \emph{graded} floor $\phi_1(R){\in}[0.67, 0.83]$---not a blanket $\phi_1{=}1.0$---achieving +241\% welfare while preserving agent autonomy at high resource levels.
 This demonstrates that floors are a \emph{learnable safety specification}: the minimum commitment level is a derived property of the environment's tipping-point dynamics, not an arbitrary constraint.
 
+\paragraph{Heterogeneous agents: differentiated floors.}
+When agents have unequal endowments ($E \in \{10, 20, 30\}$, 3 groups), MACCL learns \emph{group-specific} floors: $\phi_1{=}0.75$ for low-endowment agents vs.\ $\phi_1{=}0.93$ for high-endowment agents (3~seeds). Low-endowment agents receive a lower floor because their per-unit contribution has less impact on collective resource dynamics, while high-endowment agents are held to higher commitment. This differentiation achieves 100\% survival with comparable welfare to uniform floors, demonstrating that MACCL can discover \emph{equitable} commitment policies without explicit fairness objectives.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.48\textwidth]{figures/fig_floor_spectrum.pdf}
+\hfill
+\includegraphics[width=0.48\textwidth]{figures/fig_byzantine.pdf}
+\caption{Left: Floor spectrum across TPSD severity. Partial floors ($\phi_1{=}0.6$) suffice in mild TPSDs, matching Theorem~\ref{thm:critical} predictions (dashed line). Right: Byzantine sensitivity. Unconditional floors maintain ${\geq}96\%$ survival even at $\beta{=}50\%$.}
+\label{fig:floor_spectrum}
+\end{figure}
+
 \paragraph{Floor spectrum across TPSD severity.}
 A critical concern is whether the floor is always trivially $\phi_1{=}1.0$. We sweep the tipping-point severity $f(R_{\mathrm{crit}}) \in \{0.01, 0.05, 0.10, 0.50\}$ and commitment level $\phi_1 \in [0, 1]$ to find the minimum floor achieving $\geq 90\%$ survival. Results confirm Theorem~\ref{thm:critical}: at $f(R_{\mathrm{crit}}){=}0.10$ (mild TPSD), $\phi_1{=}0.6$ suffices (theory: $0.68$); at $f(R_{\mathrm{crit}}){=}0.50$ (very mild), $\phi_1{=}0.6$ suffices (theory: $0.59$). Only in severe TPSDs ($f(R_{\mathrm{crit}}){=}0.01$) does $\phi_1$ saturate at $1.0$. This demonstrates that \emph{commitment floors preserve agent autonomy in mild-to-moderate TPSDs}, with the required floor level derived from---not imposed on---the environment structure.
 
