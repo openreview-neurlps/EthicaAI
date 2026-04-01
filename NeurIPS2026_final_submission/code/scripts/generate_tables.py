@@ -257,6 +257,45 @@ def generate_tab_scale():
     return provenance_comment(sources) + "\n" + "\n".join(lines) + "\n"
 
 
+def generate_tab_coin_game_deep():
+    data = load_json("coin_game_deep/coin_game_deep_results.json")
+    if not data:
+        return "% MISSING: coin_game_deep_results.json\n"
+
+    sources = ["coin_game_deep/coin_game_deep_results.json"]
+
+    selfish = data.get("selfish", {})
+    maccl = data.get("maccl", {})
+
+    def ci_str(ci):
+        if ci and len(ci) >= 2:
+            return f"[{fmt(ci[0])}, {fmt(ci[1])}]"
+        return "[-, -]"
+
+    lines = []
+    lines.append("\\begin{tabular}{@{}lcc@{}}")
+    lines.append("\\toprule")
+    lines.append("\\textbf{Method} & \\textbf{Surv. (\\%)} & \\textbf{Welfare} \\\\")
+    lines.append("\\midrule")
+
+    s_surv = selfish.get("survival_mean", 0)
+    s_ci = selfish.get("survival_ci95", [])
+    s_welf = selfish.get("welfare_mean", 0)
+    lines.append(f"Selfish PPO & ${fmt(s_surv)}$ \\tiny{{{ci_str(s_ci)}}} & ${fmt(s_welf, 2)}$ \\\\")
+
+    lines.append("\\midrule")
+
+    m_surv = maccl.get("survival_mean", 0)
+    m_ci = maccl.get("survival_ci95", [])
+    m_welf = maccl.get("welfare_mean", 0)
+    lines.append(f"\\textbf{{MACCL (Ours)}} & $\\mathbf{{{fmt(m_surv)}}}$ \\tiny{{{ci_str(m_ci)}}} & $\\mathbf{{{fmt(m_welf, 2)}}}$ \\\\")
+
+    lines.append("\\bottomrule")
+    lines.append("\\end{tabular}")
+
+    return provenance_comment(sources) + "\n" + "\n".join(lines) + "\n"
+
+
 # ================================================================
 # Main
 # ================================================================
@@ -267,6 +306,7 @@ def main():
         "tab_emergence.tex": generate_tab_emergence,
         "tab_stress_test.tex": generate_tab_stress,
         "tab_scale.tex": generate_tab_scale,
+        "tab_coin_game_deep.tex": generate_tab_coin_game_deep,
     }
 
     check_mode = "--check" in sys.argv
@@ -344,6 +384,7 @@ def verify_ssot_connectivity():
         ("tab:emergence", "tab_emergence"),
         ("tab:stress_test", "tab_stress_test"),
         ("tab:scale", "tab_scale"),
+        ("tab:coin_game_deep", "tab_coin_game_deep"),
     ]
 
     print("\n--- SSOT Connectivity Check ---")

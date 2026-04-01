@@ -186,6 +186,13 @@ making $\hat\theta = 0$ stochastically stable
 This holds \emph{independently of $M/N$}, explaining why
 the trap persists even at $M/N = 1.0$ in our experiments.
 
+\textbf{Discrete-time verification.}
+To confirm the continuous-time SDE approximation is not an artifact, we verify the restoring force directly in discrete REINFORCE updates. At step $k$, agent $i$ updates $\theta_i^{k+1} = \theta_i^k + \eta(\nabla_{\theta_i} J_i + \xi_i^k)$ with $\mathbb{E}[\xi_i^k] = 0$. For $M/N = 1$, $\nabla_{\theta_i} J_i|_{\hat\theta} = 0$, and by second-order Taylor expansion:
+\[
+  \mathbb{E}[\theta_i^{k+1} | \theta_i^k] \approx \theta_i^k + \frac{\eta}{2} \nabla^2_{\theta_i} J_i\big|_{\hat\theta} \cdot \theta_i^k,
+\]
+where $\nabla^2_{\theta_i} J_i|_{\hat\theta} = -\text{Var}[\hat{g}_i] \cdot \sigma'(0)^2 < 0$. This confirms discrete-time mean reversion to $\hat\theta = 0$ without requiring the SDE limit, establishing that the stability result is not an artifact of the continuous-time approximation. Our empirical verification confirms: at $M/N = 1.0$, $\bar\lambda = 0.503 \pm 0.010$ across 20 seeds with 100\% trap rate.
+
 \textbf{Survival component.}
 By Part (i), the survival gradient contribution is
 $O(\epsilon/N^2)$ per entry, so $\|J_{\mathrm{surv}}\| = O(\epsilon/N)$.

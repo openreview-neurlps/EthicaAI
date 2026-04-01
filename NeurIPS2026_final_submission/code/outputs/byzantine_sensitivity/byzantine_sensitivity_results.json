@@ -1,0 +1,223 @@
+{
+  "experiment": "Byzantine Sensitivity Analysis",
+  "config": {
+    "N": 20,
+    "T": 50,
+    "seeds": 20,
+    "train_ep": 200,
+    "eval_ep": 50,
+    "beta_sweep": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "M": 1.6,
+    "E": 20.0
+  },
+  "results": {
+    "Selfish REINFORCE": {
+      "beta_0.00": {
+        "welfare_mean": 21.047,
+        "welfare_std": 0.066,
+        "survival_mean": 0.105,
+        "survival_std": 0.06,
+        "mean_lambda_mean": 0.087,
+        "mean_lambda_std": 0.005
+      },
+      "beta_0.10": {
+        "welfare_mean": 20.961,
+        "welfare_std": 0.085,
+        "survival_mean": 0.102,
+        "survival_std": 0.048,
+        "mean_lambda_mean": 0.089,
+        "mean_lambda_std": 0.008
+      },
+      "beta_0.20": {
+        "welfare_mean": 20.884,
+        "welfare_std": 0.066,
+        "survival_mean": 0.122,
+        "survival_std": 0.046,
+        "mean_lambda_mean": 0.092,
+        "mean_lambda_std": 0.007
+      },
+      "beta_0.30": {
+        "welfare_mean": 20.751,
+        "welfare_std": 0.078,
+        "survival_mean": 0.097,
+        "survival_std": 0.063,
+        "mean_lambda_mean": 0.089,
+        "mean_lambda_std": 0.009
+      },
+      "beta_0.40": {
+        "welfare_mean": 20.653,
+        "welfare_std": 0.061,
+        "survival_mean": 0.095,
+        "survival_std": 0.05,
+        "mean_lambda_mean": 0.091,
+        "mean_lambda_std": 0.008
+      },
+      "beta_0.50": {
+        "welfare_mean": 20.56,
+        "welfare_std": 0.062,
+        "survival_mean": 0.095,
+        "survival_std": 0.069,
+        "mean_lambda_mean": 0.093,
+        "mean_lambda_std": 0.01
+      }
+    },
+    "IPPO": {
+      "beta_0.00": {
+        "welfare_mean": 20.592,
+        "welfare_std": 0.024,
+        "survival_mean": 0.097,
+        "survival_std": 0.057,
+        "mean_lambda_mean": 0.049,
+        "mean_lambda_std": 0.002
+      },
+      "beta_0.10": {
+        "welfare_mean": 20.546,
+        "welfare_std": 0.017,
+        "survival_mean": 0.098,
+        "survival_std": 0.048,
+        "mean_lambda_mean": 0.051,
+        "mean_lambda_std": 0.002
+      },
+      "beta_0.20": {
+        "welfare_mean": 20.516,
+        "welfare_std": 0.024,
+        "survival_mean": 0.107,
+        "survival_std": 0.05,
+        "mean_lambda_mean": 0.054,
+        "mean_lambda_std": 0.002
+      },
+      "beta_0.30": {
+        "welfare_mean": 20.455,
+        "welfare_std": 0.018,
+        "survival_mean": 0.082,
+        "survival_std": 0.059,
+        "mean_lambda_mean": 0.054,
+        "mean_lambda_std": 0.002
+      },
+      "beta_0.40": {
+        "welfare_mean": 20.421,
+        "welfare_std": 0.02,
+        "survival_mean": 0.087,
+        "survival_std": 0.044,
+        "mean_lambda_mean": 0.058,
+        "mean_lambda_std": 0.003
+      },
+      "beta_0.50": {
+        "welfare_mean": 20.375,
+        "welfare_std": 0.021,
+        "survival_mean": 0.087,
+        "survival_std": 0.065,
+        "mean_lambda_mean": 0.063,
+        "mean_lambda_std": 0.003
+      }
+    },
+    "Commitment Floor": {
+      "beta_0.00": {
+        "welfare_mean": 32.0,
+        "welfare_std": 0.0,
+        "survival_mean": 1.0,
+        "survival_std": 0.0,
+        "mean_lambda_mean": 1.0,
+        "mean_lambda_std": 0.0
+      },
+      "beta_0.10": {
+        "welfare_mean": 30.8,
+        "welfare_std": 0.0,
+        "survival_mean": 1.0,
+        "survival_std": 0.0,
+        "mean_lambda_mean": 1.0,
+        "mean_lambda_std": 0.0
+      },
+      "beta_0.20": {
+        "welfare_mean": 29.6,
+        "welfare_std": 0.0,
+        "survival_mean": 1.0,
+        "survival_std": 0.0,
+        "mean_lambda_mean": 1.0,
+        "mean_lambda_std": 0.0
+      },
+      "beta_0.30": {
+        "welfare_mean": 28.4,
+        "welfare_std": 0.0,
+        "survival_mean": 1.0,
+        "survival_std": 0.0,
+        "mean_lambda_mean": 1.0,
+        "mean_lambda_std": 0.0
+      },
+      "beta_0.40": {
+        "welfare_mean": 27.2,
+        "welfare_std": 0.0,
+        "survival_mean": 0.992,
+        "survival_std": 0.023,
+        "mean_lambda_mean": 1.0,
+        "mean_lambda_std": 0.0
+      },
+      "beta_0.50": {
+        "welfare_mean": 26.0,
+        "welfare_std": 0.0,
+        "survival_mean": 0.963,
+        "survival_std": 0.041,
+        "mean_lambda_mean": 1.0,
+        "mean_lambda_std": 0.0
+      }
+    },
+    "MACCL": {
+      "beta_0.00": {
+        "welfare_mean": 28.933,
+        "welfare_std": 0.16,
+        "survival_mean": 1.0,
+        "survival_std": 0.0,
+        "mean_lambda_mean": 0.744,
+        "mean_lambda_std": 0.013
+      },
+      "beta_0.10": {
+        "welfare_mean": 27.961,
+        "welfare_std": 0.137,
+        "survival_mean": 0.998,
+        "survival_std": 0.007,
+        "mean_lambda_mean": 0.737,
+        "mean_lambda_std": 0.013
+      },
+      "beta_0.20": {
+        "welfare_mean": 26.978,
+        "welfare_std": 0.125,
+        "survival_mean": 0.983,
+        "survival_std": 0.022,
+        "mean_lambda_mean": 0.727,
+        "mean_lambda_std": 0.013
+      },
+      "beta_0.30": {
+        "welfare_mean": 26.012,
+        "welfare_std": 0.083,
+        "survival_mean": 0.958,
+        "survival_std": 0.038,
+        "mean_lambda_mean": 0.716,
+        "mean_lambda_std": 0.01
+      },
+      "beta_0.40": {
+        "welfare_mean": 25.079,
+        "welfare_std": 0.057,
+        "survival_mean": 0.768,
+        "survival_std": 0.051,
+        "mean_lambda_mean": 0.705,
+        "mean_lambda_std": 0.008
+      },
+      "beta_0.50": {
+        "welfare_mean": 24.207,
+        "welfare_std": 0.045,
+        "survival_mean": 0.547,
+        "survival_std": 0.075,
+        "mean_lambda_mean": 0.701,
+        "mean_lambda_std": 0.008
+      }
+    }
+  },
+  "time_seconds": 1420.0
+}

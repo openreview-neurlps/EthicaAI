@@ -1,0 +1,244 @@
+{
+  "experiment": "Floor Spectrum across TPSD Severity",
+  "config": {
+    "N": 20,
+    "T": 50,
+    "seeds": 20,
+    "byz": 0.3,
+    "f_crit_values": [
+      0.01,
+      0.05,
+      0.1,
+      0.5
+    ],
+    "phi1_values": [
+      0.0,
+      0.3,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1.0
+    ]
+  },
+  "results": {
+    "f_0.01": {
+      "f_crit": 0.01,
+      "theorem2_phi1": 1.0,
+      "sweeps": {
+        "phi_0.0": {
+          "phi1": 0.0,
+          "survival_mean": 0.097,
+          "welfare_mean": 20.75,
+          "survival_std": 0.063
+        },
+        "phi_0.3": {
+          "phi1": 0.3,
+          "survival_mean": 0.29,
+          "welfare_mean": 23.29,
+          "survival_std": 0.111
+        },
+        "phi_0.5": {
+          "phi1": 0.5,
+          "survival_mean": 0.792,
+          "welfare_mean": 24.99,
+          "survival_std": 0.095
+        },
+        "phi_0.6": {
+          "phi1": 0.6,
+          "survival_mean": 0.935,
+          "welfare_mean": 25.83,
+          "survival_std": 0.05
+        },
+        "phi_0.7": {
+          "phi1": 0.7,
+          "survival_mean": 0.99,
+          "welfare_mean": 26.64,
+          "survival_std": 0.015
+        },
+        "phi_0.8": {
+          "phi1": 0.8,
+          "survival_mean": 0.997,
+          "welfare_mean": 27.38,
+          "survival_std": 0.01
+        },
+        "phi_0.9": {
+          "phi1": 0.9,
+          "survival_mean": 1.0,
+          "welfare_mean": 27.96,
+          "survival_std": 0.0
+        },
+        "phi_1.0": {
+          "phi1": 1.0,
+          "survival_mean": 1.0,
+          "welfare_mean": 28.4,
+          "survival_std": 0.0
+        }
+      }
+    },
+    "f_0.05": {
+      "f_crit": 0.05,
+      "theorem2_phi1": 0.786,
+      "sweeps": {
+        "phi_0.0": {
+          "phi1": 0.0,
+          "survival_mean": 0.0,
+          "welfare_mean": 20.99,
+          "survival_std": 0.0
+        },
+        "phi_0.3": {
+          "phi1": 0.3,
+          "survival_mean": 0.078,
+          "welfare_mean": 23.27,
+          "survival_std": 0.063
+        },
+        "phi_0.5": {
+          "phi1": 0.5,
+          "survival_mean": 0.793,
+          "welfare_mean": 24.99,
+          "survival_std": 0.095
+        },
+        "phi_0.6": {
+          "phi1": 0.6,
+          "survival_mean": 0.95,
+          "welfare_mean": 25.83,
+          "survival_std": 0.041
+        },
+        "phi_0.7": {
+          "phi1": 0.7,
+          "survival_mean": 0.995,
+          "welfare_mean": 26.64,
+          "survival_std": 0.012
+        },
+        "phi_0.8": {
+          "phi1": 0.8,
+          "survival_mean": 0.998,
+          "welfare_mean": 27.38,
+          "survival_std": 0.007
+        },
+        "phi_0.9": {
+          "phi1": 0.9,
+          "survival_mean": 1.0,
+          "welfare_mean": 27.96,
+          "survival_std": 0.0
+        },
+        "phi_1.0": {
+          "phi1": 1.0,
+          "survival_mean": 1.0,
+          "welfare_mean": 28.4,
+          "survival_std": 0.0
+        }
+      }
+    },
+    "f_0.1": {
+      "f_crit": 0.1,
+      "theorem2_phi1": 0.679,
+      "sweeps": {
+        "phi_0.0": {
+          "phi1": 0.0,
+          "survival_mean": 0.0,
+          "welfare_mean": 21.26,
+          "survival_std": 0.0
+        },
+        "phi_0.3": {
+          "phi1": 0.3,
+          "survival_mean": 0.0,
+          "welfare_mean": 23.27,
+          "survival_std": 0.0
+        },
+        "phi_0.5": {
+          "phi1": 0.5,
+          "survival_mean": 0.802,
+          "welfare_mean": 24.99,
+          "survival_std": 0.099
+        },
+        "phi_0.6": {
+          "phi1": 0.6,
+          "survival_mean": 0.967,
+          "welfare_mean": 25.83,
+          "survival_std": 0.037
+        },
+        "phi_0.7": {
+          "phi1": 0.7,
+          "survival_mean": 0.998,
+          "welfare_mean": 26.64,
+          "survival_std": 0.007
+        },
+        "phi_0.8": {
+          "phi1": 0.8,
+          "survival_mean": 1.0,
+          "welfare_mean": 27.38,
+          "survival_std": 0.0
+        },
+        "phi_0.9": {
+          "phi1": 0.9,
+          "survival_mean": 1.0,
+          "welfare_mean": 27.96,
+          "survival_std": 0.0
+        },
+        "phi_1.0": {
+          "phi1": 1.0,
+          "survival_mean": 1.0,
+          "welfare_mean": 28.4,
+          "survival_std": 0.0
+        }
+      }
+    },
+    "f_0.5": {
+      "f_crit": 0.5,
+      "theorem2_phi1": 0.593,
+      "sweeps": {
+        "phi_0.0": {
+          "phi1": 0.0,
+          "survival_mean": 0.0,
+          "welfare_mean": 21.71,
+          "survival_std": 0.0
+        },
+        "phi_0.3": {
+          "phi1": 0.3,
+          "survival_mean": 0.0,
+          "welfare_mean": 23.28,
+          "survival_std": 0.0
+        },
+        "phi_0.5": {
+          "phi1": 0.5,
+          "survival_mean": 0.863,
+          "welfare_mean": 24.99,
+          "survival_std": 0.114
+        },
+        "phi_0.6": {
+          "phi1": 0.6,
+          "survival_mean": 0.997,
+          "welfare_mean": 25.83,
+          "survival_std": 0.01
+        },
+        "phi_0.7": {
+          "phi1": 0.7,
+          "survival_mean": 1.0,
+          "welfare_mean": 26.64,
+          "survival_std": 0.0
+        },
+        "phi_0.8": {
+          "phi1": 0.8,
+          "survival_mean": 1.0,
+          "welfare_mean": 27.38,
+          "survival_std": 0.0
+        },
+        "phi_0.9": {
+          "phi1": 0.9,
+          "survival_mean": 1.0,
+          "welfare_mean": 27.96,
+          "survival_std": 0.0
+        },
+        "phi_1.0": {
+          "phi1": 1.0,
+          "survival_mean": 1.0,
+          "welfare_mean": 28.4,
+          "survival_std": 0.0
+        }
+      }
+    }
+  },
+  "time_seconds": 1386.9
+}

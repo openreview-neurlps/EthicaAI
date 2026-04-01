@@ -1,0 +1,577 @@
+{
+  "experiment": "M-FOS and POLA Baseline Comparison",
+  "config": {
+    "N": 20,
+    "T": 50,
+    "seeds": 20,
+    "train_ep": 200,
+    "eval_ep": 50,
+    "byz": 0.3,
+    "M": 1.6,
+    "E": 20.0,
+    "pola_mu": 0.1,
+    "mfos_inner": 10,
+    "mfos_outer": 20
+  },
+  "results": {
+    "Selfish REINFORCE": {
+      "welfare_mean": 20.751,
+      "welfare_std": 0.078,
+      "survival_mean": 0.097,
+      "survival_std": 0.063,
+      "mean_lambda_mean": 0.089,
+      "mean_lambda_std": 0.009,
+      "n_seeds": 20
+    },
+    "LOLA": {
+      "welfare_mean": 21.4,
+      "welfare_std": 0.177,
+      "survival_mean": 0.112,
+      "survival_std": 0.072,
+      "mean_lambda_mean": 0.167,
+      "mean_lambda_std": 0.021,
+      "n_seeds": 20
+    },
+    "POLA": {
+      "welfare_mean": 21.403,
+      "welfare_std": 0.177,
+      "survival_mean": 0.112,
+      "survival_std": 0.072,
+      "mean_lambda_mean": 0.167,
+      "mean_lambda_std": 0.021,
+      "n_seeds": 20
+    },
+    "M-FOS": {
+      "welfare_mean": 21.005,
+      "welfare_std": 0.152,
+      "survival_mean": 0.103,
+      "survival_std": 0.067,
+      "mean_lambda_mean": 0.12,
+      "mean_lambda_std": 0.018,
+      "n_seeds": 20
+    },
+    "Commitment Floor": {
+      "welfare_mean": 28.4,
+      "welfare_std": 0.0,
+      "survival_mean": 1.0,
+      "survival_std": 0.0,
+      "mean_lambda_mean": 1.0,
+      "mean_lambda_std": 0.0,
+      "n_seeds": 20
+    }
+  },
+  "per_seed": {
+    "Selfish REINFORCE": [
+      {
+        "welfare": 20.78862806119639,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.09388429299957021
+      },
+      {
+        "welfare": 20.749542730412596,
+        "survival": 0.2,
+        "mean_lambda": 0.08923127743007075
+      },
+      {
+        "welfare": 20.709456051232284,
+        "survival": 0.1,
+        "mean_lambda": 0.0844590537181286
+      },
+      {
+        "welfare": 20.656023746649034,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.0780980650772662
+      },
+      {
+        "welfare": 20.671366531352817,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.07992458706581172
+      },
+      {
+        "welfare": 20.684727046354617,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.08151512456602551
+      },
+      {
+        "welfare": 20.719894047048648,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.08570167226769655
+      },
+      {
+        "welfare": 20.755382918340285,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.08992653789765344
+      },
+      {
+        "welfare": 20.8495632010189,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.10113847631177406
+      },
+      {
+        "welfare": 20.670514591479243,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.07982316565229024
+      },
+      {
+        "welfare": 20.701516069883287,
+        "survival": 0.1,
+        "mean_lambda": 0.08351381784324827
+      },
+      {
+        "welfare": 20.644075535055908,
+        "survival": 0.23333333333333334,
+        "mean_lambda": 0.07667565893522674
+      },
+      {
+        "welfare": 20.923920539846833,
+        "survival": 0.13333333333333333,
+        "mean_lambda": 0.10999054045795655
+      },
+      {
+        "welfare": 20.662642626475385,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.07888602696135491
+      },
+      {
+        "welfare": 20.862525546192952,
+        "survival": 0.0,
+        "mean_lambda": 0.10268161264201826
+      },
+      {
+        "welfare": 20.719985205358093,
+        "survival": 0.0,
+        "mean_lambda": 0.08571252444739158
+      },
+      {
+        "welfare": 20.817258015498158,
+        "survival": 0.1,
+        "mean_lambda": 0.09729262089263743
+      },
+      {
+        "welfare": 20.78728171993724,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.09372401427824255
+      },
+      {
+        "welfare": 20.849693533192614,
+        "survival": 0.1,
+        "mean_lambda": 0.10115399204673903
+      },
+      {
+        "welfare": 20.789326155187986,
+        "survival": 0.1,
+        "mean_lambda": 0.09396739942714052
+      }
+    ],
+    "LOLA": [
+      {
+        "welfare": 21.536305451327447,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.1828935061104109
+      },
+      {
+        "welfare": 21.53116495568973,
+        "survival": 0.23333333333333334,
+        "mean_lambda": 0.18228154234401492
+      },
+      {
+        "welfare": 21.246572815026475,
+        "survival": 0.1,
+        "mean_lambda": 0.14840152559839007
+      },
+      {
+        "welfare": 21.326495355588232,
+        "survival": 0.2,
+        "mean_lambda": 0.15791611376050388
+      },
+      {
+        "welfare": 21.42948979964003,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.17017735710000412
+      },
+      {
+        "welfare": 21.227587212580094,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.1461413348309633
+      },
+      {
+        "welfare": 21.345712619028426,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.16020388321767
+      },
+      {
+        "welfare": 21.313144730146384,
+        "survival": 0.1,
+        "mean_lambda": 0.15632675358885442
+      },
+      {
+        "welfare": 21.348609342135067,
+        "survival": 0.2,
+        "mean_lambda": 0.1605487312065546
+      },
+      {
+        "welfare": 21.231052889349336,
+        "survival": 0.2,
+        "mean_lambda": 0.1465539153987306
+      },
+      {
+        "welfare": 21.295917333344235,
+        "survival": 0.13333333333333333,
+        "mean_lambda": 0.15427587301717066
+      },
+      {
+        "welfare": 21.048918013474317,
+        "survival": 0.23333333333333334,
+        "mean_lambda": 0.1248711920802757
+      },
+      {
+        "welfare": 21.69174407668079,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.20139810436676073
+      },
+      {
+        "welfare": 21.174882686277858,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.1398669864616497
+      },
+      {
+        "welfare": 21.686619643118394,
+        "survival": 0.0,
+        "mean_lambda": 0.20078805275218986
+      },
+      {
+        "welfare": 21.283296137145975,
+        "survival": 0.0,
+        "mean_lambda": 0.15277334966023456
+      },
+      {
+        "welfare": 21.5578932929266,
+        "survival": 0.1,
+        "mean_lambda": 0.18546348725316628
+      },
+      {
+        "welfare": 21.61784160251433,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.19260019077551518
+      },
+      {
+        "welfare": 21.58328398476819,
+        "survival": 0.13333333333333333,
+        "mean_lambda": 0.18848618866287983
+      },
+      {
+        "welfare": 21.521632226448943,
+        "survival": 0.1,
+        "mean_lambda": 0.1811466936248741
+      }
+    ],
+    "POLA": [
+      {
+        "welfare": 21.539300241728984,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.18325002877726018
+      },
+      {
+        "welfare": 21.531801900430185,
+        "survival": 0.23333333333333334,
+        "mean_lambda": 0.18235736909883102
+      },
+      {
+        "welfare": 21.25341667062668,
+        "survival": 0.1,
+        "mean_lambda": 0.1492162703127003
+      },
+      {
+        "welfare": 21.32829212561465,
+        "survival": 0.2,
+        "mean_lambda": 0.15813001495412485
+      },
+      {
+        "welfare": 21.43820077097775,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.17121437749735158
+      },
+      {
+        "welfare": 21.227734194130775,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.1461588326346163
+      },
+      {
+        "welfare": 21.350631366045587,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.1607894483387607
+      },
+      {
+        "welfare": 21.319382287213468,
+        "survival": 0.1,
+        "mean_lambda": 0.15706931990636538
+      },
+      {
+        "welfare": 21.34794181232186,
+        "survival": 0.2,
+        "mean_lambda": 0.1604692633716504
+      },
+      {
+        "welfare": 21.22868240161697,
+        "survival": 0.2,
+        "mean_lambda": 0.14627171447821033
+      },
+      {
+        "welfare": 21.301904749616074,
+        "survival": 0.13333333333333333,
+        "mean_lambda": 0.15498866066858066
+      },
+      {
+        "welfare": 21.04740898331702,
+        "survival": 0.23333333333333334,
+        "mean_lambda": 0.12469154563297834
+      },
+      {
+        "welfare": 21.701833451295425,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.20259922039231215
+      },
+      {
+        "welfare": 21.17567625436286,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.13996145885272154
+      },
+      {
+        "welfare": 21.68718138906498,
+        "survival": 0.0,
+        "mean_lambda": 0.2008549272696404
+      },
+      {
+        "welfare": 21.293533728208462,
+        "survival": 0.0,
+        "mean_lambda": 0.15399211050100695
+      },
+      {
+        "welfare": 21.556365741973522,
+        "survival": 0.1,
+        "mean_lambda": 0.18528163594922858
+      },
+      {
+        "welfare": 21.61941027966667,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.19278693805555583
+      },
+      {
+        "welfare": 21.587199428035763,
+        "survival": 0.13333333333333333,
+        "mean_lambda": 0.18895231286140016
+      },
+      {
+        "welfare": 21.52225985860469,
+        "survival": 0.1,
+        "mean_lambda": 0.18122141173865355
+      }
+    ],
+    "M-FOS": [
+      {
+        "welfare": 21.08556762331531,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.1292342408708706
+      },
+      {
+        "welfare": 20.997885192111543,
+        "survival": 0.2,
+        "mean_lambda": 0.11879585620375503
+      },
+      {
+        "welfare": 20.854319139394267,
+        "survival": 0.1,
+        "mean_lambda": 0.1017046594516987
+      },
+      {
+        "welfare": 20.845322126452043,
+        "survival": 0.2,
+        "mean_lambda": 0.10063358648238546
+      },
+      {
+        "welfare": 20.92575916571964,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.11020942449043387
+      },
+      {
+        "welfare": 20.807389459779923,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.09611779283094272
+      },
+      {
+        "welfare": 21.02533276145221,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.12206342398240594
+      },
+      {
+        "welfare": 20.93025650249562,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.11074482172566844
+      },
+      {
+        "welfare": 21.179292450659798,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.14039195841188054
+      },
+      {
+        "welfare": 20.921102637312043,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.10965507587048114
+      },
+      {
+        "welfare": 20.867350997122635,
+        "survival": 0.13333333333333333,
+        "mean_lambda": 0.10325607108602751
+      },
+      {
+        "welfare": 20.810089099316237,
+        "survival": 0.23333333333333334,
+        "mean_lambda": 0.09643917849002775
+      },
+      {
+        "welfare": 21.350458597896974,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.1607688807020202
+      },
+      {
+        "welfare": 20.890824753053728,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.10605056583972973
+      },
+      {
+        "welfare": 21.178250682687587,
+        "survival": 0.0,
+        "mean_lambda": 0.1402679384151885
+      },
+      {
+        "welfare": 20.92928980034976,
+        "survival": 0.0,
+        "mean_lambda": 0.11062973813687638
+      },
+      {
+        "welfare": 21.155287802151992,
+        "survival": 0.1,
+        "mean_lambda": 0.13753426216095152
+      },
+      {
+        "welfare": 21.15887159663693,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.13796090436153888
+      },
+      {
+        "welfare": 21.222465892810376,
+        "survival": 0.13333333333333333,
+        "mean_lambda": 0.14553165390599787
+      },
+      {
+        "welfare": 20.965216348370223,
+        "survival": 0.1,
+        "mean_lambda": 0.11490670813931153
+      }
+    ],
+    "Commitment Floor": [
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      },
+      {
+        "welfare": 28.39999999999999,
+        "survival": 1.0,
+        "mean_lambda": 1.0
+      }
+    ]
+  },
+  "time_seconds": 1393.8,
+  "note": "M-FOS: meta-learning with inner/outer loops (Lu et al. 2022). POLA: proximal LOLA with KL penalty mu=0.1 (Zhao et al. 2022). Both use mean-field approximation for N=20 scaling. 1-step opponent anticipation (faithful N-agent requires O(N^2) Hessians)."
+}

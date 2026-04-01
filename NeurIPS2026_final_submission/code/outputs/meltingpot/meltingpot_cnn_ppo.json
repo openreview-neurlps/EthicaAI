@@ -1,0 +1,48 @@
+{
+  "substrate": "commons_harvest__open",
+  "results": {
+    "IPPO_floor_0.0": {
+      "mean": 11.18,
+      "std": 0.45,
+      "per_seed": [
+        10.59,
+        11.3,
+        11.66
+      ]
+    },
+    "IPPO_floor_0.3": {
+      "mean": 7.96,
+      "std": 0.84,
+      "per_seed": [
+        9.06,
+        7.8,
+        7.01
+      ]
+    },
+    "IPPO_floor_0.5": {
+      "mean": 5.52,
+      "std": 0.44,
+      "per_seed": [
+        5.47,
+        5.0,
+        6.09
+      ]
+    },
+    "IPPO_floor_0.7": {
+      "mean": 3.38,
+      "std": 0.18,
+      "per_seed": [
+        3.21,
+        3.63,
+        3.3
+      ]
+    }
+  },
+  "config": {
+    "train_ep": 50,
+    "eval_ep": 10,
+    "seeds": 3,
+    "horizon": 200
+  },
+  "time_s": 1475
+}

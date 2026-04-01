@@ -120,6 +120,43 @@ EXTENSION_EXPERIMENTS = [
         "output": "impossibility/impossibility_results.json",
         "paper_ref": "Thm 2, App. (empirical verification)",
     },
+    # === Phase 2 additions ===
+    {
+        "name": "MACCL (NumPy primal-dual)",
+        "script": "maccl.py",
+        "output": "maccl/maccl_results.json",
+        "paper_ref": "Sec. 5, App. (MACCL convergence)",
+    },
+    {
+        "name": "MACCL Multi-Environment",
+        "script": "maccl_multi_env.py",
+        "output": "maccl_multi_env/multi_env_maccl_results.json",
+        "paper_ref": "App. (cross-environment MACCL)",
+    },
+    {
+        "name": "KPG Experiment (K=0,1,2)",
+        "script": "kpg_experiment.py",
+        "output": "kpg_experiment/kpg_results.json",
+        "paper_ref": "App. K (K-level anticipation)",
+    },
+    {
+        "name": "M-FOS / POLA Comparison",
+        "script": "mfos_pola_comparison.py",
+        "output": "mechanism_comparison/mfos_pola_results.json",
+        "paper_ref": "Tab. mechanism comparison (opponent-shaping)",
+    },
+    {
+        "name": "Byzantine Sensitivity Sweep",
+        "script": "byzantine_sensitivity.py",
+        "output": "byzantine_sensitivity/byzantine_sensitivity_results.json",
+        "paper_ref": "App. (beta sensitivity)",
+    },
+    {
+        "name": "Floor Spectrum (TPSD severity sweep)",
+        "script": "mild_tpsd_floor_spectrum.py",
+        "output": "mild_tpsd_spectrum/mild_tpsd_spectrum_results.json",
+        "paper_ref": "Sec. 5 (floor spectrum, Thm 2 verification)",
+    },
 ]
 
 

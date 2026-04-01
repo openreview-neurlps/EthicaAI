@@ -1,0 +1,24 @@
+% ============================================================
+% SCENARIO A: Floor helps in clean_up (POSITIVE)
+% Replace the "Melting Pot validation" paragraph with this:
+% ============================================================
+
+% \paragraph{Melting Pot validation: TPSD structure determines floor utility.}
+% To test whether commitment floors transfer beyond PGG-style environments, we train CNN-PPO agents on two Melting Pot substrates~\citep{agapiou2022melting} with floor probabilities $\phi_1 \in \{0.0, 0.3\}$:
+% (1)~\texttt{commons\_harvest\_\_open} (non-TPSD: resources regenerate continuously), where floors \emph{reduce} reward from 11.2 to 7.96---confirming that forced cooperation is counterproductive when tipping points are absent;
+% (2)~\texttt{clean\_up} (TPSD-like: pollution accumulates without collective cleaning), where floors \emph{improve} reward from [X] to [Y]---demonstrating that commitment mechanisms transfer to visual multi-agent environments when the underlying dilemma has tipping-point structure.
+% This validates Theorem~\ref{thm:critical}: the floor's utility is a derived property of the environment, not an imposed constraint.
+
+% ============================================================
+% SCENARIO B: Floor doesn't help in clean_up (NEGATIVE)
+% Keep existing paragraph, add one sentence about clean_up:
+% ============================================================
+
+% After the existing Melting Pot paragraph, add:
+% On \texttt{clean\_up}, neither baseline IPPO nor floor-augmented IPPO achieves nonzero reward within 30 training episodes (100 steps each), reflecting the fundamental difficulty of this substrate: agents must first learn spatial navigation to food sources while simultaneously coordinating pollution cleanup---a prerequisite that heuristic floor mechanisms cannot provide. This motivates future work on \emph{learned} commitment mechanisms that jointly optimize spatial and cooperative policies.
+
+% ============================================================
+% SCENARIO C: Mixed (small positive or inconclusive)
+% ============================================================
+
+% On \texttt{clean\_up}, floor-augmented IPPO achieves [X] reward vs.\ [Y] baseline ([Z]\% improvement, $p{=}$[P]). While the effect is [modest/not significant], it suggests that commitment mechanisms provide a directional benefit even in complex spatial environments, contingent on sufficient baseline learning.

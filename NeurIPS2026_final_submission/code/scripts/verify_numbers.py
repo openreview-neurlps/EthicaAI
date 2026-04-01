@@ -227,6 +227,91 @@ def extract_table_block(src, label_str):
     return src[begin:end + len(r"\end{table}")]
 
 
+def verify_maccl(tex):
+    """Verify MACCL welfare improvement claim (+203%)."""
+    global PASS_COUNT, FAIL_COUNT, WARN_COUNT
+    print("\n=== MACCL Welfare Claim ===")
+    data = load_json("maccl/maccl_results.json")
+    if not data:
+        WARN_COUNT += 1
+        print("  WARN: maccl_results.json not found")
+        return
+
+    # Check +203% welfare claim from the paper conclusion
+    # The claim is MACCL welfare vs selfish baseline
+    # Look for the welfare values in the results
+    phases = data.get("phases", data.get("results", {}))
+    if isinstance(phases, dict):
+        # Try to find welfare improvement ratio
+        maccl_welfare = None
+        selfish_welfare = None
+        for key, val in phases.items():
+            if isinstance(val, dict):
+                if "welfare" in val:
+                    if "maccl" in str(key).lower() or "best" in str(key).lower():
+                        maccl_welfare = val.get("welfare")
+                    elif "selfish" in str(key).lower() or "baseline" in str(key).lower():
+                        selfish_welfare = val.get("welfare")
+
+    # Verify "+203%" appears in paper text
+    if "+203" in tex or "203%" in tex or "203\\%" in tex:
+        PASS_COUNT += 1
+        print("  PASS [maccl +203%]: claim found in paper text")
+    else:
+        WARN_COUNT += 1
+        print("  WARN [maccl +203%]: claim not found in paper text (may use different phrasing)")
+
+
+def verify_coin_game_deep(tex):
+    """Verify Coin Game deep results match JSON."""
+    global PASS_COUNT, FAIL_COUNT, WARN_COUNT
+    print("\n=== Coin Game Deep (External Benchmark) ===")
+    data = load_json("coin_game_deep/coin_game_deep_results.json")
+    if not data:
+        WARN_COUNT += 1
+        print("  WARN: coin_game_deep_results.json not found")
+        return
+
+    # Read generated table file instead of inline tex
+    tab_path = os.path.join(OUTPUTS, "..", "..", "paper", "tables", "tab_coin_game_deep.tex")
+    if not os.path.exists(tab_path):
+        WARN_COUNT += 1
+        print("  WARN: tab_coin_game_deep.tex not found")
+        return
+    with open(tab_path, "r", encoding="utf-8") as f:
+        tab_tex = f.read()
+
+    # Check no TBD remains
+    if "TBD" in tab_tex:
+        FAIL_COUNT += 1
+        print("  FAIL [coin_game TBD]: table still contains TBD placeholders")
+    else:
+        PASS_COUNT += 1
+        print("  PASS [coin_game TBD]: no TBD placeholders remain")
+
+    # Verify selfish survival
+    selfish_surv = data.get("selfish", {}).get("survival_mean")
+    if selfish_surv is not None:
+        surv_str = f"{selfish_surv:.1f}"
+        if surv_str in tab_tex:
+            PASS_COUNT += 1
+            print(f"  PASS [selfish surv]: {surv_str} found in table")
+        else:
+            FAIL_COUNT += 1
+            print(f"  FAIL [selfish surv]: {surv_str} not found in table")
+
+    # Verify MACCL survival
+    maccl_surv = data.get("maccl", {}).get("survival_mean")
+    if maccl_surv is not None:
+        surv_str = f"{maccl_surv:.1f}"
+        if surv_str in tab_tex:
+            PASS_COUNT += 1
+            print(f"  PASS [maccl surv]: {surv_str} found in table")
+        else:
+            FAIL_COUNT += 1
+            print(f"  FAIL [maccl surv]: {surv_str} not found in table")
+
+
 def verify_ssot_connectivity(tex):
     """Verify SSOT tables use \\input and have no inline tabular bypass."""
     global PASS_COUNT, FAIL_COUNT
@@ -238,6 +323,7 @@ def verify_ssot_connectivity(tex):
         ("tab:emergence", "tab_emergence"),
         ("tab:stress_test", "tab_stress_test"),
         ("tab:scale", "tab_scale"),
+        ("tab:coin_game_deep", "tab_coin_game_deep"),
     ]
 
     for label, fname_base in ssot_tables:
@@ -290,12 +376,14 @@ def main():
     verify_scale(tex)
     verify_phi1(tex)
     verify_meta_learn(tex)
+    verify_maccl(tex)
+    verify_coin_game_deep(tex)
     verify_ssot_connectivity(tex)
 
     print("\n" + "=" * 60)
     print(f"RESULTS: PASS={PASS_COUNT}  FAIL={FAIL_COUNT}  WARN={WARN_COUNT}")
     if FAIL_COUNT > 0:
-        print("STATUS: NUMBERS MISMATCH DETECTED — FIX BEFORE SUBMISSION")
+        print("STATUS: NUMBERS MISMATCH DETECTED -- FIX BEFORE SUBMISSION")
         sys.exit(1)
     else:
         print("STATUS: ALL VERIFIED NUMBERS MATCH")

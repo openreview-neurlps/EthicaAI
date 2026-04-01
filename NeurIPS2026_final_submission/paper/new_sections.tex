@@ -279,3 +279,25 @@ is non-expansive (by convexity of $\mathcal{F}$), preserving
 the Lipschitz property and maintaining feasibility
 at every iterate. \hfill $\square$
 \end{proof}
+
+% ================================================================
+% TPSD ON/OFF Ablation
+% ================================================================
+\subsection{TPSD Ablation: Linear vs.\ Nonlinear Dynamics}
+\label{app:tpsd_ablation}
+
+A natural question is whether the Nash Trap is specific to tipping-point dynamics or a general feature of multi-agent PGGs. Table~\ref{tab:tpsd_ablation} isolates the effect by toggling only the recovery function $f(R)$ while keeping all other parameters identical.
+
+\input{tables/tab_tpsd_ablation}
+
+Both linear ($f(R)=0.10$, constant) and nonlinear ($f(R)$ piecewise with $f(R_{\mathrm{crit}})=0.01$) environments produce 100\% trap rate with $\bar{\lambda} \approx 0.4$--$0.5$. This confirms that the Nash Trap arises from the cooperative incentive structure ($M/N < 1$), not the tipping point per se.
+
+However, the two environments differ critically in \emph{consequence}:
+\begin{itemize}
+    \item \textbf{Linear PGG}: Resource can recover from any level at rate $f_0 = 0.10$. Even after temporary depletion, a brief period of cooperation restores the resource. Survival is low (15\%) but collapse is \emph{reversible}.
+    \item \textbf{Nonlinear PGG (TPSD)}: Once $R_t < R_{\mathrm{crit}} = 0.15$, recovery rate drops to $f = 0.01$ (10$\times$ slower). This near-irreversibility means that brief cooperative fluctuations are insufficient for recovery, and the system enters a permanent low-resource regime.
+\end{itemize}
+
+The paradoxically \emph{higher} survival in the nonlinear case (35.7\% vs.\ 15.0\%) occurs because the tipping-point dynamics create a ``hovering'' effect: the fast recovery rate above $R_{\mathrm{recov}} = 0.25$ acts as a partial stabilizer, keeping resources slightly above $R_{\mathrm{crit}}$ for longer before eventual collapse. In contrast, the linear environment's uniform decline is slower per step but lacks this stabilizer.
+
+This ablation validates that our theoretical results (Theorem~\ref{thm:critical}, Proposition~\ref{thm:impossibility}) address a real structural problem: the Nash Trap exists independently of tipping points, but tipping points transform a bad equilibrium into a \emph{catastrophic} one where commitment floors become essential for survival.

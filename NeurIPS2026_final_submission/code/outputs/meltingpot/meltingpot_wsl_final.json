@@ -1,0 +1,46 @@
+{
+  "commons_harvest__open": {
+    "Selfish": {
+      "mean": 9.96,
+      "std": 3.35
+    },
+    "Floor_0.3": {
+      "mean": 10.1,
+      "std": 2.0
+    },
+    "Floor_0.5": {
+      "mean": 9.36,
+      "std": 2.11
+    },
+    "Floor_0.7": {
+      "mean": 4.96,
+      "std": 1.98
+    },
+    "Floor_1.0": {
+      "mean": 0.0,
+      "std": 0.0
+    }
+  },
+  "clean_up": {
+    "Selfish": {
+      "mean": 0.0,
+      "std": 0.0
+    },
+    "Floor_0.3": {
+      "mean": 0.0,
+      "std": 0.0
+    },
+    "Floor_0.5": {
+      "mean": 0.0,
+      "std": 0.0
+    },
+    "Floor_0.7": {
+      "mean": 0.0,
+      "std": 0.0
+    },
+    "Floor_1.0": {
+      "mean": 0.0,
+      "std": 0.0
+    }
+  }
+}

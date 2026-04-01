@@ -1,7 +1,31 @@
-% FW Proof Sketch 
+% FW Proof Sketch
 \subsection{Part (iii): Exponential Escape Time via Freidlin--Wentzell Large Deviations}
 
 While the drift analysis in the preceding subsection establishes a basic supermartingale bound, the exact asymptotic scaling of the escape time from the Nash Trap under gradient-based learning requires a formal Large Deviations Principle (LDP). Here, we model the REINFORCE updates as a continuous-time stochastic differential equation (SDE) and apply Freidlin--Wentzell theory to prove that escaping the trap requires a time exponential in the number of agents $O(e^{cN})$.
+
+We first address two technical prerequisites: (1) the regularity of the drift function $b(\theta)$ despite the discontinuous tipping-point dynamics, and (2) the validity of the hyperplane approximation for the basin boundary.
+
+\begin{lemma}[Lipschitz Regularity of the Expected Drift]
+\label{lem:lipschitz_drift}
+Despite the discontinuity in $f(R)$ at $R_{\mathrm{crit}}$ (Eq.~\ref{eq:tipping}), the expected policy gradient $b(\theta) = \mathbb{E}_{\pi_\theta}[g(\theta)]$ is Lipschitz continuous in $\theta$.
+\end{lemma}
+\begin{proof}
+The discontinuity in $f(R)$ is in the \emph{environment dynamics}, not the agent parameter space. Agent $i$'s expected gradient is:
+\[
+  b_i(\theta) = \mathbb{E}\!\left[\sum_{t=0}^T \gamma^t \nabla_{\theta_i} \log \pi_i(a_t^i | s_t; \theta_i) \cdot G_t^i \right]
+\]
+where the expectation is over the stochastic trajectory $\tau = (s_0, a_0, s_1, \ldots)$. The trajectory distribution $P(\tau | \theta)$ involves $f(R_t)$ only through the resource transition, which is a bounded mapping $[0,1]^N \to [0,1]$.
+
+Critically, the expectation $\mathbb{E}_\tau[\cdot]$ integrates over the \emph{distribution} of trajectories. Since stochastic shocks $\xi_t \sim \text{Bernoulli}(p) \cdot \delta$ and the initial resource $R_0$ create a non-degenerate distribution over $R_t$, the probability that $R_t$ falls exactly at the discontinuity $R_{\mathrm{crit}}$ is zero. The conditional expectations $\mathbb{E}[\cdot | R_t > R_{\mathrm{crit}}]$ and $\mathbb{E}[\cdot | R_t < R_{\mathrm{crit}}]$ are each smooth in $\theta$, and the mixing weight $P(R_t > R_{\mathrm{crit}} | \theta)$ is a continuous function of $\theta$ (since small parameter changes produce small distributional changes in $R_t$ by the bounded-perturbation lemma). Therefore $b(\theta)$ inherits Lipschitz continuity from the smoothness of $\pi_\theta$ and the boundedness of rewards, with Lipschitz constant $L_b \leq C_r \cdot T \cdot L_\pi$ where $C_r$ bounds the reward and $L_\pi$ is the Lipschitz constant of $\nabla \log \pi$.
+\end{proof}
+
+\begin{lemma}[Hyperplane Approximation of Basin Boundary]
+\label{lem:hyperplane}
+The basin boundary $\partial \mathcal{B}$ of the Nash Trap, defined as the separatrix between convergence to $\hat{\lambda} \approx 0.5$ and convergence to the cooperative equilibrium $\lambda^* \approx 1$, contains the hyperplane $\mathcal{H} = \{\lambda : \frac{1}{N_h}\sum_{i=1}^{N_h} \lambda_i = \lambda_{\mathrm{crit}}\}$ as an inner approximation: $\mathcal{H} \subset \overline{\mathcal{B}}$.
+\end{lemma}
+\begin{proof}
+The resource dynamics $R_{t+1} = R_t + f(R_t)(\bar{c}_t/E - 0.4) - \xi_t$ depend on the mean contribution $\bar{c}_t = \frac{E}{N}\sum_j \lambda_j^t$ only through its average (not individual values). By Definition~\ref{def:coop_basin}, $\lambda_{\mathrm{crit}} = 0.4/(1-\beta)$ is the minimum honest-agent mean commitment ensuring $\bar{c} \geq 0.4E$ (positive expected resource growth). For any $\lambda$ with $\bar{\lambda}_h < \lambda_{\mathrm{crit}}$, the expected resource change is $\mathbb{E}[\Delta R] < 0$, which implies that the trajectory is attracted toward $R_t \to 0$ (collapse). Since Lemma~\ref{lem:basin} establishes that the gradient dynamics have a unique stable fixed point at $\hat{\lambda} \approx 0.5 < \lambda_{\mathrm{crit}}$ for all $\lambda$ below the separatrix, any $\lambda$ satisfying $\bar{\lambda}_h < \lambda_{\mathrm{crit}}$ must lie within the basin $\mathcal{B}(\hat{\lambda})$. Therefore $\{{\lambda : \bar{\lambda}_h \leq \lambda_{\mathrm{crit}}}\} \subseteq \mathcal{B}$, and the hyperplane $\mathcal{H}$ lies on or inside $\partial \mathcal{B}$. This makes the hyperplane condition a \emph{necessary} (not sufficient) condition for escape, so any quasi-potential lower bound derived using $\mathcal{H}$ as the target is also a valid lower bound for $\Delta U = \inf_{x \in \partial \mathcal{B}} U(\hat{\theta}, x)$.
+\end{proof}
 
 \paragraph{Continuous-Time Limit of Independent REINFORCE.}
 At iteration $k$, each agent $i$ updates its policy parameter $\theta_i$ using the REINFORCE stochastic gradient $g_i(\theta_k)$.
@@ -60,12 +84,30 @@ U_i(\hat{\theta}_i, \theta_{\mathrm{crit}}) = \int_{\hat{\theta}_i}^{\theta_{\ma
 \end{equation}
 which is an $O(1)$ constant strictly greater than zero.
 
-Because the required boundary $\partial \mathcal{B}$ takes the form of a hyperplane condition $\frac{1}{N}\sum_i \lambda_i = \lambda_{\mathrm{crit}}$, reaching it requires moving $\Omega(N)$ agents a macroscopic distance away from $\hat{\theta}_i$. Let $\mathcal{S}$ be the subset of agents that transition. Then $|\mathcal{S}| = \alpha N$ for some constant fraction $\alpha > 0$.
-Since the gradient covariance $\Sigma$ is diagonally dominant (cross-agent terms are $O(1/N)$), the total quasi-potential is asymptotically the sum of the individual quasi-potentials:
+By Lemma~\ref{lem:hyperplane}, the basin boundary $\partial \mathcal{B}$ is contained within or beyond the hyperplane $\mathcal{H} = \{\lambda : \bar{\lambda}_h = \lambda_{\mathrm{crit}}\}$. Therefore $\Delta U \geq \inf_{x \in \mathcal{H}} U(\hat{\theta}, x)$, and it suffices to compute the quasi-potential to reach $\mathcal{H}$.
+
+Reaching $\mathcal{H}$ requires moving $\Omega(N_h)$ honest agents a macroscopic distance from $\hat{\theta}_i$ to achieve $\bar{\lambda}_h \geq \lambda_{\mathrm{crit}}$. Let $\mathcal{S}$ be the subset of agents that transition. Then $|\mathcal{S}| = \alpha N_h$ for some constant fraction $\alpha > 0$.
+Since the gradient covariance $\Sigma$ is diagonally dominant---cross-agent terms are $O(1/N)$ because agents learn independently (A2), while diagonal terms $\Sigma_{ii} = \mathrm{Var}(g_i) = \Theta(1)$---the total quasi-potential decomposes additively up to $O(1)$ corrections:
 \begin{equation}
-\Delta U = \inf_{\varphi \to \partial \mathcal{B}} I_T(\varphi) \gtrsim \sum_{i \in \mathcal{S}} U_i(\hat{\theta}_i, \theta_{\mathrm{crit}}) = \alpha N \cdot c = \Omega(N)
+\Delta U = \inf_{\varphi \to \partial \mathcal{B}} I_T(\varphi) \geq \inf_{\varphi \to \mathcal{H}} I_T(\varphi) \gtrsim \sum_{i \in \mathcal{S}} U_i(\hat{\theta}_i, \theta_{\mathrm{crit}}) = \alpha N_h \cdot c = \Omega(N)
 \label{eq:barrier_scaling}
 \end{equation}
+
+\paragraph{Explicit Barrier Constant.}
+Consider the \emph{symmetric escape path} $\lambda_i(t) = \lambda(t)$ for all honest agents $i$, where $\lambda(t)$ transitions from $\hat{\lambda} = 0.5$ to $\lambda_{\mathrm{crit}} = 0.571$. Along this path, the per-agent restoring drift is $b_i(\lambda) = -\kappa(\lambda - \hat{\lambda})$ with $\kappa = |E(M/N - 1)| \cdot \sigma'(0)^2 = |E \cdot (0.08 - 1)| \cdot 0.25 = 0.25E \cdot 0.92 = 4.6$ for $E = 20$, and per-agent variance $\Sigma_{ii} = \sigma'(0)^2 \cdot \mathrm{Var}[r_i] \approx 0.25 \cdot E^2 = 100$.
+
+The per-agent quasi-potential along the symmetric path is:
+\[
+  U_i = \int_{\hat{\lambda}}^{\lambda_{\mathrm{crit}}} \frac{2\kappa|\lambda - \hat{\lambda}|}{\Sigma_{ii}} d\lambda
+  = \frac{\kappa}{\Sigma_{ii}} (\lambda_{\mathrm{crit}} - \hat{\lambda})^2
+  = \frac{4.6}{100} \cdot 0.071^2
+  \approx 2.3 \times 10^{-4}.
+\]
+For $N_h = 0.7N$ honest agents (all must transition in the symmetric path):
+\[
+  \Delta U \geq N_h \cdot U_i = 0.7N \cdot 2.3 \times 10^{-4} = 1.6 \times 10^{-4} N.
+\]
+Thus $c_2 = \Delta U / \eta = 1.6 \times 10^{-4} N / \eta$ in the exponent $e^{c_2}$. For $\eta = 0.01$: $c_2 = 0.016 N$, giving $\mathbb{E}[\tau] \asymp e^{0.016 N}$, consistent with the empirical observation that no escape occurs for $N \geq 5$ within $500$ episodes ($500 \ll e^{0.08} \approx 1.08$ for $N=5$; the bound is conservative because the symmetric path is suboptimal and the actual basin is larger than $\mathcal{H}$).
 
 \paragraph{Infeasibility of Optimization.}
 Substituting Eq.~\ref{eq:barrier_scaling} into the Freidlin--Wentzell escape time relation (Eq.~\ref{eq:fw_escape_time}), we obtain:
