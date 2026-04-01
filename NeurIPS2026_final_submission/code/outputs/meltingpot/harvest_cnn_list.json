@@ -1,0 +1,18 @@
+{
+  "sub": "commons_harvest__open",
+  "results": {
+    "floor_0.0": {
+      "mean": 23.96,
+      "std": 2.25
+    },
+    "floor_0.3": {
+      "mean": 10.79,
+      "std": 2.54
+    },
+    "floor_0.5": {
+      "mean": 6.17,
+      "std": 2.94
+    }
+  },
+  "time": 581
+}
