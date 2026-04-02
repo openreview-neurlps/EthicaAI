@@ -88,7 +88,7 @@ We provide the \textbf{first formal characterization} of cooperation failure in 
 \textbf{Theory.}~We prove escape requires $\Omega(e^{cN})$ gradient evaluations (Freidlin--Wentzell), and the Price of Anarchy diverges as $\mathrm{PoA} \geq \Omega(e^{cN})$---in stark contrast to $O(1)$ in standard social dilemmas---driven by signal dilution ($O(\epsilon/N)$ per agent), basin dominance (measure $\geq 1 - e^{-cN}$), and a quasi-potential barrier $\Omega(N)$.
 \textbf{Prescription.}~Commitment floors, derived from the environment's tipping-point structure (Theorem~\ref{thm:critical}), bypass the trap in $O(1)$ steps. MACCL learns state-dependent floors adaptively (+203\% welfare), demonstrating that floors can be \emph{learned}, not only prescribed.
 
-Validated across five environment classes including an external benchmark~\citep{lerer2017maintaining}, multi-dimensional actions ($K{=}3$), adversarial conditions (30\% Byzantine), and scale ($N{=}100$).
+Validated across five environment classes, Melting Pot visual MARL (where floors improve cooperation in TPSD-like \texttt{clean\_up} but correctly degrade performance in non-TPSD \texttt{commons\_harvest}), heterogeneous agents (MACCL learns group-specific floors), adversarial conditions (30\% Byzantine), and scale ($N{=}100$).
 \end{abstract}
 
 % ================================================================
@@ -378,14 +378,10 @@ Table~\ref{tab:cross_env} confirms the Nash Trap across three additional TPSD va
 Table~\ref{tab:mechanism_comparison} compares commitment floors against LIO~\citep{yang2020learning} (incentive design, both linear and MLP variants) and Inequity Aversion~\citep{hughes2018inequity}.
 All reward-shaping methods remain trapped ($\bar\lambda{<}0.14$, survival ${\leq}11\%$), \emph{even when LIO uses a 2-layer MLP} ($h{=}32$)---confirming that the structural barrier of TPSDs cannot be overcome by richer reward signals; only action-space interventions escape the trap.
 
-\paragraph{Opponent-shaping baselines.}
-We extend the comparison to M-FOS~\citep{lu2022model} (meta-learning opponent shaping, 20 outer batches $\times$ 10 inner steps) and POLA~\citep{zhao2022proximal} (proximal LOLA, $\mu{=}0.1$). Under mean-field approximation at $N{=}20$, M-FOS converges to $\bar\lambda{=}0.120$ (10.3\% survival) and POLA to $\bar\lambda{=}0.167$ (11.2\%)---both firmly within the Nash Trap (20 seeds). This confirms that meta-gradient opponent shaping, which succeeds in 2-player settings, provides no advantage in $N$-agent TPSDs where (i)~signal dilution renders per-agent opponent gradients $O(1/N)$, and (ii)~the tipping-point structure creates a collective action problem that pairwise shaping cannot address.
-
-\paragraph{Byzantine sensitivity.}
-The commitment floor's robustness degrades gracefully under increasing adversarial fractions: unconditional floors ($\phi_1{=}1.0$) maintain $\geq 96\%$ survival even at $\beta{=}50\%$, while MACCL's learned floors degrade from 100\% ($\beta{=}0$) to 55\% ($\beta{=}50\%$) as the Byzantine fraction approaches the theoretical limit $\phi_1^*{=}(\bar\sigma/f(R_{\mathrm{crit}})+\delta)/(1{-}\beta) > 1$ of Theorem~\ref{thm:critical}. Selfish RL and IPPO remain below 13\% survival across all $\beta$ values (Appendix, 20 seeds per condition).
-
-\paragraph{Exploration Ablation: Random Network Distillation (RND).}
-A natural hypothesis is that the Nash Trap emerges merely because agents fail to thoroughly explore the cooperative sub-space. To formally ablate this, we augmented the PPO baseline with \textbf{Random Network Distillation (RND)}~\citep{burda2018exploration}, a state-of-the-art intrinsic motivation technique. Even when rewarded for visiting novel states (with intrinsic reward successfully converging to $\approx 0.001$), the agents' extrinsic welfare steadily declined from $21.18$ to $20.67$ (the Nash Eq. bound). This mathematically establishes that the TPSD collapse is a \emph{structural attractor}, not an exploration failure: even agents that systematically explore the state space are drawn back into the Nash Trap without the intervention of a Commitment Floor.
+\paragraph{Additional baselines.}
+M-FOS~\citep{lu2022model} and POLA~\citep{zhao2022proximal} (opponent shaping) converge to $\bar\lambda{=}0.12$--$0.17$ (20 seeds), confirming that meta-gradient approaches provide no advantage in $N$-agent TPSDs.
+Under Byzantine attack ($\beta{=}0$--$50\%$), unconditional floors maintain ${\geq}96\%$ survival even at $\beta{=}50\%$; MACCL degrades to 55\% (Figure~\ref{fig:floor_spectrum}, right).
+RND exploration bonuses~\citep{burda2018exploration} also fail: welfare declines to the Nash equilibrium bound ($21.18 \to 20.67$), establishing the trap as a \emph{structural attractor}.
 
 \input{tables/tab_mechanism_comparison}
 
@@ -401,32 +397,26 @@ In severe TPSDs (PGG), MACCL recovers $\phi_1{\approx}1.0$ with 99.8\% survival 
 Critically, in the Cleanup environment, MACCL learns a \emph{graded} floor $\phi_1(R){\in}[0.67, 0.83]$---not a blanket $\phi_1{=}1.0$---achieving +241\% welfare while preserving agent autonomy at high resource levels.
 This demonstrates that floors are a \emph{learnable safety specification}: the minimum commitment level is a derived property of the environment's tipping-point dynamics, not an arbitrary constraint.
 
-\paragraph{Heterogeneous agents: differentiated floors.}
-When agents have unequal endowments ($E \in \{10, 20, 30\}$, 3 groups), MACCL learns \emph{group-specific} floors: $\phi_1{=}0.82$ for low-endowment agents vs.\ $\phi_1{=}0.97$ for high-endowment agents (20~seeds, all pairwise differences significant at $p{<}0.001$). Low-endowment agents receive a lower floor because their per-unit contribution has less impact on collective resource dynamics, while high-endowment agents are held to higher commitment. This differentiation achieves 100\% survival with comparable welfare to uniform floors, demonstrating that MACCL can discover \emph{equitable} commitment policies without explicit fairness objectives.
+\paragraph{Heterogeneous agents.}
+With unequal endowments ($E \in \{10, 20, 30\}$), MACCL learns group-specific floors: $\phi_1{=}0.82$ (low) vs.\ $0.97$ (high), $p{<}0.001$ (20~seeds), achieving 100\% survival without explicit fairness objectives.
+
+\paragraph{Floor spectrum (Figure~\ref{fig:floor_spectrum}).}
+Sweeping $f(R_{\mathrm{crit}}) \in \{0.01, 0.05, 0.10, 0.50\}$: partial floors suffice in mild TPSDs ($\phi_1{=}0.6$ at $f{=}0.10$, theory: $0.68$), saturating at $\phi_1{=}1.0$ only in severe cases.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.48\textwidth]{figures/fig_floor_spectrum.pdf}
 \hfill
 \includegraphics[width=0.48\textwidth]{figures/fig_byzantine.pdf}
-\caption{Left: Floor spectrum across TPSD severity. Partial floors ($\phi_1{=}0.6$) suffice in mild TPSDs, matching Theorem~\ref{thm:critical} predictions (dashed line). Right: Byzantine sensitivity. Unconditional floors maintain ${\geq}96\%$ survival even at $\beta{=}50\%$.}
+\caption{Left: Floor spectrum. Partial floors suffice in mild TPSDs (Theorem~\ref{thm:critical} boundary dashed). Right: Byzantine sensitivity (${\geq}96\%$ at $\beta{=}50\%$).}
 \label{fig:floor_spectrum}
 \end{figure}
 
-\paragraph{Floor spectrum across TPSD severity.}
-A critical concern is whether the floor is always trivially $\phi_1{=}1.0$. We sweep the tipping-point severity $f(R_{\mathrm{crit}}) \in \{0.01, 0.05, 0.10, 0.50\}$ and commitment level $\phi_1 \in [0, 1]$ to find the minimum floor achieving $\geq 90\%$ survival. Results confirm Theorem~\ref{thm:critical}: at $f(R_{\mathrm{crit}}){=}0.10$ (mild TPSD), $\phi_1{=}0.6$ suffices (theory: $0.68$); at $f(R_{\mathrm{crit}}){=}0.50$ (very mild), $\phi_1{=}0.6$ suffices (theory: $0.59$). Only in severe TPSDs ($f(R_{\mathrm{crit}}){=}0.01$) does $\phi_1$ saturate at $1.0$. This demonstrates that \emph{commitment floors preserve agent autonomy in mild-to-moderate TPSDs}, with the required floor level derived from---not imposed on---the environment structure.
-
-\paragraph{Melting Pot validation: floors require TPSD structure.}
-To test whether commitment floors transfer to visual multi-agent environments, we train CNN-PPO agents (50 episodes, 200 steps) on Melting Pot's \texttt{commons\_harvest\_\_open} substrate~\citep{agapiou2022melting} with floor probabilities $\phi_1 \in \{0.0, 0.3, 0.5\}$. IPPO without floor learns effective foraging (24.0 reward); commitment floors \emph{significantly reduce} performance (10.8 at $\phi_1{=}0.3$, 6.2 at $\phi_1{=}0.5$) because forced interaction displaces learned harvesting behavior. This is the expected behavior: \texttt{commons\_harvest\_\_open} lacks tipping-point dynamics (resources regenerate continuously), so forcing cooperative actions is counterproductive. This validates our theoretical prediction: \emph{commitment floors help if and only if the environment exhibits TPSD structure}. The framework correctly identifies non-TPSD environments as not requiring intervention.
-On \texttt{clean\_up} (a TPSD-like pollution substrate requiring collective cleaning), CNN-PPO with $\phi_1{=}0.2$ cleaning-action floor achieves 15.3 peak training reward and 0.93 evaluation reward, while IPPO without floor collapses to 0.0 in evaluation despite reaching 4.6 during training. The floor prevents the ``tragedy of the cleaner'': without it, agents learn to free-ride on others' cleaning, leading to pollution accumulation and eventual resource collapse---precisely the TPSD failure mode our framework predicts. This is the first demonstration of commitment floors improving cooperation in a \textit{visual multi-agent} benchmark, confirming transfer beyond tabular PGG environments.
-
-\paragraph{When commitment floors are insufficient.}
-Floors are not a universal solution. They fail when: (1)~the Byzantine fraction exceeds the critical threshold $\beta > 1 - (\bar\sigma/f(R_{\mathrm{crit}}) + \delta)^{-1}$; (2)~agent heterogeneity requires differentiated floors; (3)~the tipping-point structure is unknown a priori; (4)~the environment lacks TPSD dynamics entirely (e.g., Melting Pot \texttt{commons\_harvest\_\_open}), in which case floors are unnecessary and potentially harmful.
+\paragraph{Melting Pot validation.}
+On \texttt{commons\_harvest\_\_open}~\citep{agapiou2022melting} (non-TPSD), floors \emph{reduce} CNN-PPO reward (24.0$\to$6.2 at $\phi_1{=}0.5$). On \texttt{clean\_up} (TPSD-like), floors \emph{improve} reward: $\phi_1{=}0.2$ achieves 15.3 peak and 0.93 eval vs.\ 0.0 without floor---the first positive result on a visual MARL benchmark. This confirms floors help \emph{if and only if} TPSD structure is present.
 
 \paragraph{Limitations.}\label{sec:limitations}
-Five algorithm families all trapped (100\% rate); agents are homogeneous and communication-free.
-Five TPSD environments tested including one external benchmark~\citep{lerer2017maintaining}; real-world spatial commons remain untested.
-$\lambda$ operationalizes cooperation, not full moral reasoning~\citep{rawls1971,sen1977rational}.
+Floors fail when: $\beta$ exceeds Theorem~\ref{thm:critical}'s threshold, the TPSD structure is unknown, or the environment lacks tipping points entirely (Melting Pot \texttt{commons\_harvest}). All TPSD environments are PGG variants; real-world spatial commons remain untested. $\lambda$ operationalizes cooperation, not full moral reasoning~\citep{rawls1971,sen1977rational}.
 
 \vspace{-8pt}
 \section{Conclusion}\label{sec:broader_impact}
