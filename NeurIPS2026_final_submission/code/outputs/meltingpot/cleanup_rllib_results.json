@@ -4,12 +4,12 @@
     "floor_0.0": {
       "eval_mean": 0.0,
       "eval_std": 0.0,
-      "best_train": 4.57
+      "best_train": 4.0
     },
     "floor_0.2": {
-      "eval_mean": 0.93,
-      "eval_std": 1.7,
-      "best_train": 15.29
+      "eval_mean": 1.2,
+      "eval_std": 1.95,
+      "best_train": 17.57
     }
   },
   "config": {
@@ -17,5 +17,5 @@
     "horizon": 1000,
     "entropy": 0.05
   },
-  "time_s": 3296
+  "time_s": 4157
 }
