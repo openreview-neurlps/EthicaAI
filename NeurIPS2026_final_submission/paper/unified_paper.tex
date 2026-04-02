@@ -412,8 +412,8 @@ Sweeping $f(R_{\mathrm{crit}}) \in \{0.01, 0.05, 0.10, 0.50\}$: partial floors s
 \label{fig:floor_spectrum}
 \end{figure}
 
-\paragraph{Gordon-Schaefer fishery benchmark.}
-To test TPSD generality beyond PGG, we implement the Gordon-Schaefer bioeconomic fishery model~\citep{scheffer2009early} with Allee-effect tipping point ($r(B){=}0.01$ below $B_{\mathrm{crit}}{=}0.2$). REINFORCE agents ($N{=}20$, $\beta{=}30\%$, 20~seeds) converge to $\bar\lambda{=}0.51$ with 19.5\% survival (Nash Trap), while $\phi_1{=}0.7$ achieves 87.8\% survival and $\phi_1{=}1.0$ achieves 100\%---matching the PGG pattern precisely in an ecologically grounded setting.
+\paragraph{Fishery benchmark.}
+On a Gordon-Schaefer fishery~\citep{scheffer2009early} with Allee-effect tipping point, agents converge to $\bar\lambda{=}0.51$, 19.5\% survival (Nash Trap, 20~seeds). Floors restore sustainability: $\phi_1{=}0.7$ yields 87.8\%, $\phi_1{=}1.0$ yields 100\%---matching PGG in an ecologically grounded model.
 
 \paragraph{Melting Pot validation.}
 On \texttt{commons\_harvest\_\_open}~\citep{agapiou2022melting} (non-TPSD), floors \emph{reduce} CNN-PPO reward (24.0$\to$6.2 at $\phi_1{=}0.5$). On \texttt{clean\_up} (TPSD-like), floors \emph{improve} reward: $\phi_1{=}0.2$ achieves 15.3 peak and 0.93 eval vs.\ 0.0 without floor---the first positive result on a visual MARL benchmark. This confirms floors help \emph{if and only if} TPSD structure is present.

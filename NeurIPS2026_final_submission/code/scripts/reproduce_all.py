@@ -157,6 +157,12 @@ EXTENSION_EXPERIMENTS = [
         "output": "mild_tpsd_spectrum/mild_tpsd_spectrum_results.json",
         "paper_ref": "Sec. 5 (floor spectrum, Thm 2 verification)",
     },
+    {
+        "name": "Gordon-Schaefer Fishery Benchmark",
+        "script": "fishery_nash_trap.py",
+        "output": "fishery/fishery_results.json",
+        "paper_ref": "Sec. 5 (ecological benchmark, Scheffer 2009)",
+    },
 ]
 
 
