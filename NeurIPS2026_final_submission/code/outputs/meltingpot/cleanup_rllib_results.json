@@ -1,0 +1,21 @@
+{
+  "sub": "clean_up",
+  "results": {
+    "floor_0.0": {
+      "eval_mean": 0.0,
+      "eval_std": 0.0,
+      "best_train": 4.57
+    },
+    "floor_0.2": {
+      "eval_mean": 0.93,
+      "eval_std": 1.7,
+      "best_train": 15.29
+    }
+  },
+  "config": {
+    "train": 200,
+    "horizon": 1000,
+    "entropy": 0.05
+  },
+  "time_s": 3296
+}
