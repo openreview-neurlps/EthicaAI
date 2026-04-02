@@ -88,7 +88,7 @@ We provide the \textbf{first formal characterization} of cooperation failure in 
 \textbf{Theory.}~We prove escape requires $\Omega(e^{cN})$ gradient evaluations (Freidlin--Wentzell), and the Price of Anarchy diverges as $\mathrm{PoA} \geq \Omega(e^{cN})$---in stark contrast to $O(1)$ in standard social dilemmas---driven by signal dilution ($O(\epsilon/N)$ per agent), basin dominance (measure $\geq 1 - e^{-cN}$), and a quasi-potential barrier $\Omega(N)$.
 \textbf{Prescription.}~Commitment floors, derived from the environment's tipping-point structure (Theorem~\ref{thm:critical}), bypass the trap in $O(1)$ steps. MACCL learns state-dependent floors adaptively (+203\% welfare), demonstrating that floors can be \emph{learned}, not only prescribed.
 
-Validated across five environment classes, Melting Pot visual MARL (where floors improve cooperation in TPSD-like \texttt{clean\_up} but correctly degrade performance in non-TPSD \texttt{commons\_harvest}), heterogeneous agents (MACCL learns group-specific floors), adversarial conditions (30\% Byzantine), and scale ($N{=}100$).
+Validated across five PGG environment classes, a Gordon-Schaefer fishery benchmark with ecological tipping points, Melting Pot visual MARL (positive on TPSD-like \texttt{clean\_up}, correctly negative on non-TPSD \texttt{commons\_harvest}), heterogeneous agents (group-specific floors), adversarial conditions ($\beta{=}50\%$), and scale ($N{=}100$).
 \end{abstract}
 
 % ================================================================
@@ -411,6 +411,9 @@ Sweeping $f(R_{\mathrm{crit}}) \in \{0.01, 0.05, 0.10, 0.50\}$: partial floors s
 \caption{Left: Floor spectrum. Partial floors suffice in mild TPSDs (Theorem~\ref{thm:critical} boundary dashed). Right: Byzantine sensitivity (${\geq}96\%$ at $\beta{=}50\%$).}
 \label{fig:floor_spectrum}
 \end{figure}
+
+\paragraph{Gordon-Schaefer fishery benchmark.}
+To test TPSD generality beyond PGG, we implement the Gordon-Schaefer bioeconomic fishery model~\citep{scheffer2009early} with Allee-effect tipping point ($r(B){=}0.01$ below $B_{\mathrm{crit}}{=}0.2$). REINFORCE agents ($N{=}20$, $\beta{=}30\%$, 20~seeds) converge to $\bar\lambda{=}0.51$ with 19.5\% survival (Nash Trap), while $\phi_1{=}0.7$ achieves 87.8\% survival and $\phi_1{=}1.0$ achieves 100\%---matching the PGG pattern precisely in an ecologically grounded setting.
 
 \paragraph{Melting Pot validation.}
 On \texttt{commons\_harvest\_\_open}~\citep{agapiou2022melting} (non-TPSD), floors \emph{reduce} CNN-PPO reward (24.0$\to$6.2 at $\phi_1{=}0.5$). On \texttt{clean\_up} (TPSD-like), floors \emph{improve} reward: $\phi_1{=}0.2$ achieves 15.3 peak and 0.93 eval vs.\ 0.0 without floor---the first positive result on a visual MARL benchmark. This confirms floors help \emph{if and only if} TPSD structure is present.
