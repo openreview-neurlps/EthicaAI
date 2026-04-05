@@ -1,0 +1,53 @@
+{
+  "results": {
+    "optimistic_init": {
+      "init_0.5": {
+        "welfare": 20.649,
+        "survival": 0.09,
+        "mean_lambda": 0.057,
+        "trap_rate": 1.0
+      },
+      "init_0.6": {
+        "welfare": 20.662,
+        "survival": 0.09,
+        "mean_lambda": 0.054,
+        "trap_rate": 1.0
+      },
+      "init_0.7": {
+        "welfare": 20.685,
+        "survival": 0.092,
+        "mean_lambda": 0.052,
+        "trap_rate": 1.0
+      },
+      "init_0.8": {
+        "welfare": 20.722,
+        "survival": 0.092,
+        "mean_lambda": 0.05,
+        "trap_rate": 1.0
+      },
+      "init_0.9": {
+        "welfare": 20.8,
+        "survival": 0.095,
+        "mean_lambda": 0.047,
+        "trap_rate": 1.0
+      }
+    },
+    "curriculum": {
+      "curriculum": {
+        "welfare": 20.844,
+        "survival": 0.113,
+        "mean_lambda": 0.08,
+        "trap_rate": 1.0
+      }
+    },
+    "pbt": {
+      "pbt": {
+        "welfare": 20.663,
+        "survival": 0.108,
+        "mean_lambda": 0.058,
+        "trap_rate": 1.0
+      }
+    }
+  },
+  "time_s": 1132
+}
