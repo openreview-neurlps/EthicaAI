@@ -382,6 +382,8 @@ All reward-shaping methods remain trapped ($\bar\lambda{<}0.14$, survival ${\leq
 M-FOS~\citep{lu2022model} and POLA~\citep{zhao2022proximal} (opponent shaping) converge to $\bar\lambda{=}0.12$--$0.17$ (20 seeds), confirming that meta-gradient approaches provide no advantage in $N$-agent TPSDs.
 Under Byzantine attack ($\beta{=}0$--$50\%$), unconditional floors maintain ${\geq}96\%$ survival even at $\beta{=}50\%$; MACCL degrades to 55\% (Figure~\ref{fig:floor_spectrum}, right).
 RND exploration bonuses~\citep{burda2018exploration} also fail: welfare declines to the Nash equilibrium bound ($21.18 \to 20.67$), establishing the trap as a \emph{structural attractor}.
+Crucially, the trap persists \emph{without adversaries}: at $\beta{=}0$, both REINFORCE and IPPO converge to $\bar\lambda{<}0.10$ with 100\% trap rate (20~seeds), confirming that tipping-point dynamics---not Byzantine agents---are the primary driver.
+Population-based training (selection over 10 policies, 30 generations), curriculum learning (gradual severity increase), and optimistic initialization ($\lambda_0{=}0.9$) all fail to escape (100\% trap rate), ruling out the hypothesis that the trap is an initialization artifact.
 
 \input{tables/tab_mechanism_comparison}
 
@@ -396,6 +398,9 @@ At each outer iteration, MACCL computes finite-difference gradients of the Lagra
 In severe TPSDs (PGG), MACCL recovers $\phi_1{\approx}1.0$ with 99.8\% survival (+203\% welfare vs.\ selfish).
 Critically, in the Cleanup environment, MACCL learns a \emph{graded} floor $\phi_1(R){\in}[0.67, 0.83]$---not a blanket $\phi_1{=}1.0$---achieving +241\% welfare while preserving agent autonomy at high resource levels.
 This demonstrates that floors are a \emph{learnable safety specification}: the minimum commitment level is a derived property of the environment's tipping-point dynamics, not an arbitrary constraint.
+
+\paragraph{Unknown tipping-point parameters.}
+When MACCL has no access to $f(R_{\mathrm{crit}})$, $\beta$, or $\bar\sigma$ and learns $\phi_1(R;\omega)$ purely from survival feedback, it still achieves 100\% survival (floor $\phi_1{=}0.97$) vs.\ 54\% without floor---demonstrating robustness to unknown environment parameters.
 
 \paragraph{Heterogeneous agents.}
 With unequal endowments ($E \in \{10, 20, 30\}$), MACCL learns group-specific floors: $\phi_1{=}0.82$ (low) vs.\ $0.97$ (high), $p{<}0.001$ (20~seeds), achieving 100\% survival without explicit fairness objectives.
