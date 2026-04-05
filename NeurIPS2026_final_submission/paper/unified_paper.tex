@@ -452,6 +452,28 @@ The \textbf{Nash Trap} persists across five algorithm families (including oppone
 % app:comm_ctde_neural → L1708, app:multi_resource → L1641
 % app:phase_transition → L1741, app:init_sweep → L1667
 % Tables/figures removed from body but still referenced in appendix text
+
+\section{Melting Pot Detailed Results}
+\label{app:meltingpot}
+
+\begin{table}[h]
+\centering
+\caption{Melting Pot CNN-PPO results (3~seeds, 500--1000 episodes). On non-TPSD \texttt{commons\_harvest}, floors reduce reward. On TPSD-like \texttt{clean\_up}, floors improve peak training reward 3.4$\times$ and prevent evaluation collapse.}
+\label{tab:meltingpot}
+\small
+\begin{tabular}{llccc}
+\toprule
+\textbf{Substrate} & \textbf{Policy} & \textbf{Best Train} & \textbf{Eval Mean} & \textbf{TPSD?} \\
+\midrule
+\multirow{3}{*}{commons\_harvest} & IPPO (no floor) & 24.0 & 24.0 & \multirow{3}{*}{No} \\
+  & IPPO + $\phi_1{=}0.3$ & --- & 10.8 & \\
+  & IPPO + $\phi_1{=}0.5$ & --- & 6.2 & \\
+\midrule
+\multirow{2}{*}{clean\_up (3 seeds)} & IPPO (no floor) & 6.1 $\pm$ 2.2 & 0.0 $\pm$ 0.0 & \multirow{2}{*}{Yes} \\
+  & IPPO + $\phi_1{=}0.2$ & \textbf{20.8 $\pm$ 1.3} & \textbf{0.29 $\pm$ 0.35} & \\
+\bottomrule
+\end{tabular}
+\end{table}
 \phantomsection\label{tab:scale}
 \phantomsection\label{tab:sota}
 \phantomsection\label{tab:meta_learn}
