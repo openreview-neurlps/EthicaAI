@@ -326,12 +326,20 @@ to $\hat\theta = 0$ without requiring the SDE approximation.
 \end{remark}
 
 % ----------------------------------------------------------------
-% Part (iii): Exponential Escape Time
+% Part (iii): Exponential Escape Time (Conjecture)
 % ----------------------------------------------------------------
-% FW Proof Sketch 
-\subsection{Part (iii): Exponential Escape Time via Freidlin--Wentzell Large Deviations}
+% FW Proof Sketch
+\subsection{Part (iii): Exponential Escape Time---Conjecture Supported by Large-Deviations Heuristics and Empirical Evidence}
 
-While the drift analysis in the preceding subsection establishes a basic supermartingale bound, the exact asymptotic scaling of the escape time from the Nash Trap under gradient-based learning requires a formal Large Deviations Principle (LDP). Here, we model the REINFORCE updates as a continuous-time stochastic differential equation (SDE) and apply Freidlin--Wentzell theory to prove that escaping the trap requires a time exponential in the number of agents $O(e^{cN})$.
+While the drift analysis in the preceding subsection establishes a basic supermartingale bound, the exact asymptotic scaling of the escape time from the Nash Trap under gradient-based learning motivates a Large Deviations Principle (LDP) argument. Here, we model the REINFORCE updates as a continuous-time stochastic differential equation (SDE) and apply Freidlin--Wentzell heuristics to conjecture, supported by empirical evidence, that escaping the trap requires a time exponential in the number of agents $O(e^{cN})$.
+
+\paragraph{Formal status and known gaps.}
+We state Part~(iii) as a \emph{conjecture} rather than a theorem, because several steps in the argument below rely on standard but unverified regularity conditions:
+(1)~the quasi-potential is defined variationally but not explicitly constructed;
+(2)~Freidlin--Wentzell regularity conditions (smoothness, uniform non-degeneracy of $\Sigma$) are assumed rather than verified;
+(3)~the constant $c_2$ is estimated numerically but not derived from first principles;
+(4)~the discrete-to-continuous mapping invokes stochastic approximation conditions that are standard but not individually checked.
+The conclusion is nonetheless strongly supported by empirical evidence (see below and Appendix~\ref{app:impossibility_empirical}).
 
 \paragraph{Continuous-Time Limit of Independent REINFORCE.}
 At iteration $k$, each agent $i$ updates its policy parameter $\theta_i$ using the REINFORCE stochastic gradient $g_i(\theta_k)$.
@@ -372,8 +380,8 @@ Freidlin--Wentzell theory states that the expected escape time $\tau = \inf\{t >
 \end{equation}
 Thus, the computational tractability of escaping the Nash Trap is entirely determined by the scaling of the quasi-potential barrier $\Delta U$.
 
-\paragraph{$\Omega(N)$ Scaling of the Quasi-Potential Barrier.}
-We now prove that the barrier $\Delta U$ grows linearly with the number of agents $N$, rendering the escape time purely exponential in $N$.
+\paragraph{$\Omega(N)$ Scaling of the Quasi-Potential Barrier (Conjectured).}
+We conjecture, supported by Freidlin--Wentzell heuristics and empirical evidence, that the barrier $\Delta U$ grows linearly with the number of agents $N$, rendering the escape time purely exponential in $N$.
 
 To cross the basin boundary $\partial \mathcal{B}$, the joint strategy must reach a point where the systemic survival benefit dominates the individual cost.
 As established in Proposition~\ref{prop:basin_measure}, this requires the population-mean cooperation $\bar{\lambda} = \frac{1}{N} \sum_{i=1}^N \lambda_i$ to cross a critical threshold $\lambda_{\mathrm{crit}} \gg \hat{\lambda}$. Specifically, under BYZ=$30\%$, $\lambda_{\mathrm{crit}} \approx 0.571$.
@@ -402,7 +410,10 @@ Substituting Eq.~\ref{eq:barrier_scaling} into the Freidlin--Wentzell escape tim
 \begin{equation}
 \mathbb{E}[\tau] \asymp \exp\left( \frac{\Omega(N)}{\eta} \right)
 \end{equation}
-This bounds the continuous-time escape. Because $t = k\eta$, the expected number of discrete gradient steps $K_{\mathrm{escape}}$ is $\mathbb{E}[\tau] / \eta$. Absorbing the learning rate and other constants into $c_2 > 0$, we conclude that any gradient-based learning algorithm requires $\Omega(e^{c_2 N})$ gradient evaluations to escape the Nash Trap with constant probability, completing the proof of Part (iii).
+This bounds the continuous-time escape. Because $t = k\eta$, the expected number of discrete gradient steps $K_{\mathrm{escape}}$ is $\mathbb{E}[\tau] / \eta$. Absorbing the learning rate and other constants into $c_2 > 0$, the large-deviations heuristic yields a conjectured lower bound of $\Omega(e^{c_2 N})$ gradient evaluations for any gradient-based learning algorithm to escape the Nash Trap with constant probability.
+
+\paragraph{Empirical support.}
+The conjectured scaling is strongly corroborated by experiments: across all tested scales $N \in \{5, 10, 20, 50, 100\}$, five algorithm families (REINFORCE, PPO, IQL, QMIX, LOLA), four architectures, and $400{+}$ hyperparameter configurations, the Nash Trap captures 100\% of runs with 0\% escape over 500 episodes (20 seeds per condition).
 \qedhere
 
 

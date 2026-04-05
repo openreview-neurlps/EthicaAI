@@ -1,7 +1,17 @@
 % FW Proof Sketch
-\subsection{Part (iii): Exponential Escape Time via Freidlin--Wentzell Large Deviations}
+\subsection{Part (iii): Exponential Escape Time---Conjecture Supported by Large-Deviations Heuristics and Empirical Evidence}
 
-While the drift analysis in the preceding subsection establishes a basic supermartingale bound, the exact asymptotic scaling of the escape time from the Nash Trap under gradient-based learning requires a formal Large Deviations Principle (LDP). Here, we model the REINFORCE updates as a continuous-time stochastic differential equation (SDE) and apply Freidlin--Wentzell theory to prove that escaping the trap requires a time exponential in the number of agents $O(e^{cN})$.
+While the drift analysis in the preceding subsection establishes a basic supermartingale bound, the exact asymptotic scaling of the escape time from the Nash Trap under gradient-based learning motivates a Large Deviations Principle (LDP) argument. Here, we model the REINFORCE updates as a continuous-time stochastic differential equation (SDE) and apply Freidlin--Wentzell heuristics to conjecture, supported by empirical evidence, that escaping the trap requires a time exponential in the number of agents $O(e^{cN})$.
+
+\paragraph{Formal status and known gaps.}
+We state Part~(iii) as a \emph{conjecture} rather than a theorem, because several steps in the argument below rely on standard but unverified regularity conditions. Specifically:
+\begin{enumerate}[leftmargin=*,topsep=2pt,itemsep=1pt]
+\item \emph{Quasi-potential construction.} The quasi-potential $U(\hat\theta,x)$ is defined variationally (Eq.~\ref{eq:action_functional}) but is not explicitly computed; we provide only an upper-bound estimate via the symmetric escape path.
+\item \emph{FW regularity conditions.} Freidlin--Wentzell theory requires the drift $b(\theta)$ and diffusion $\Sigma(\theta)$ to satisfy smoothness and uniform non-degeneracy conditions. Lemma~\ref{lem:lipschitz_drift} establishes Lipschitz continuity of the drift, but uniform ellipticity of $\Sigma(\theta)$ and higher-order smoothness are assumed rather than proved.
+\item \emph{The constant $c_2$.} The exponent $c_2$ in $\Omega(e^{c_2 N})$ is estimated numerically (see below) but not derived from first principles; its value depends on the exact quasi-potential, which is not available in closed form.
+\item \emph{Discrete-to-continuous mapping.} The passage from the discrete REINFORCE iterates to the continuous-time SDE~(Eq.~\ref{eq:sde}) invokes stochastic approximation theory \citep{kushner2003stochastic, borkar2009stochastic}, whose conditions (diminishing step size, boundedness of iterates, etc.) are standard but not individually verified for our setting.
+\end{enumerate}
+Despite these gaps, the conclusion is strongly supported by empirical evidence: across all tested scales $N \in \{5, 10, 20, 50, 100\}$, five algorithm families, and $400{+}$ hyperparameter configurations, the trap rate is 100\% and the escape rate is 0\% over 500 episodes (20 seeds each). We therefore present the argument below as a \emph{theoretical motivation} for the exponential scaling, not a complete proof.
 
 We first address two technical prerequisites: (1) the regularity of the drift function $b(\theta)$ despite the discontinuous tipping-point dynamics, and (2) the validity of the hyperplane approximation for the basin boundary.
 
@@ -66,8 +76,8 @@ Freidlin--Wentzell theory states that the expected escape time $\tau = \inf\{t >
 \end{equation}
 Thus, the computational tractability of escaping the Nash Trap is entirely determined by the scaling of the quasi-potential barrier $\Delta U$.
 
-\paragraph{$\Omega(N)$ Scaling of the Quasi-Potential Barrier.}
-We now prove that the barrier $\Delta U$ grows linearly with the number of agents $N$, rendering the escape time purely exponential in $N$.
+\paragraph{$\Omega(N)$ Scaling of the Quasi-Potential Barrier (Conjectured).}
+We conjecture, supported by Freidlin--Wentzell heuristics and empirical evidence, that the barrier $\Delta U$ grows linearly with the number of agents $N$, rendering the escape time purely exponential in $N$.
 
 To cross the basin boundary $\partial \mathcal{B}$, the joint strategy must reach a point where the systemic survival benefit dominates the individual cost.
 As established in Proposition~\ref{prop:basin_measure}, this requires the population-mean cooperation $\bar{\lambda} = \frac{1}{N} \sum_{i=1}^N \lambda_i$ to cross a critical threshold $\lambda_{\mathrm{crit}} \gg \hat{\lambda}$. Specifically, under BYZ=$30\%$, $\lambda_{\mathrm{crit}} \approx 0.571$.
@@ -114,5 +124,8 @@ Substituting Eq.~\ref{eq:barrier_scaling} into the Freidlin--Wentzell escape tim
 \begin{equation}
 \mathbb{E}[\tau] \asymp \exp\left( \frac{\Omega(N)}{\eta} \right)
 \end{equation}
-This bounds the continuous-time escape. Because $t = k\eta$, the expected number of discrete gradient steps $K_{\mathrm{escape}}$ is $\mathbb{E}[\tau] / \eta$. Absorbing the learning rate and other constants into $c_2 > 0$, we conclude that any gradient-based learning algorithm requires $\Omega(e^{c_2 N})$ gradient evaluations to escape the Nash Trap with constant probability, completing the proof of Part (iii).
+This bounds the continuous-time escape. Because $t = k\eta$, the expected number of discrete gradient steps $K_{\mathrm{escape}}$ is $\mathbb{E}[\tau] / \eta$. Absorbing the learning rate and other constants into $c_2 > 0$, the large-deviations heuristic yields a conjectured lower bound of $\Omega(e^{c_2 N})$ gradient evaluations for any gradient-based learning algorithm to escape the Nash Trap with constant probability.
+
+\paragraph{Empirical support.}
+While the formal argument above has the gaps noted at the start of this subsection, the conjectured scaling is strongly corroborated by experiments. Across all tested scales $N \in \{5, 10, 20, 50, 100\}$, five algorithm families (REINFORCE, PPO, IQL, QMIX, LOLA), four architectures, and $400{+}$ hyperparameter configurations, the Nash Trap captures 100\% of runs with 0\% escape over 500 episodes (20 seeds per condition). This 100\% trap rate with zero escape---observed across thousands of independent trials---is consistent with the exponential scaling predicted by the Freidlin--Wentzell heuristic and would be difficult to explain under any sub-exponential escape time.
 \qedhere

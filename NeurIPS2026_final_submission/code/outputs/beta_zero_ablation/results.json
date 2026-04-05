@@ -1,0 +1,1090 @@
+{
+  "experiment": "beta_zero_ablation",
+  "purpose": "Separate Byzantine adversary effects from tipping-point effects",
+  "hypothesis": "Nash Trap exists even at beta=0 in TPSD, proving tipping-point causation",
+  "config": {
+    "N": 20,
+    "T": 50,
+    "seeds": 20,
+    "train_ep": 200,
+    "eval_ep": 50,
+    "M_mult": 1.6,
+    "E": 20.0,
+    "R_crit": 0.15,
+    "R_recov": 0.25,
+    "betas": [
+      0.0,
+      0.3
+    ],
+    "env_types": [
+      "Linear",
+      "TPSD"
+    ],
+    "algos": [
+      "REINFORCE",
+      "IPPO"
+    ],
+    "mode": "FULL"
+  },
+  "results": {
+    "Linear | beta=0.0 | REINFORCE": {
+      "env_type": "Linear",
+      "beta": 0.0,
+      "algo": "REINFORCE",
+      "mean_lambda": 0.1262,
+      "mean_lambda_std": 0.0114,
+      "survival_pct": 0.0,
+      "welfare": 21.51,
+      "trap_rate": 1.0
+    },
+    "Linear | beta=0.0 | IPPO": {
+      "env_type": "Linear",
+      "beta": 0.0,
+      "algo": "IPPO",
+      "mean_lambda": 0.1002,
+      "mean_lambda_std": 0.0027,
+      "survival_pct": 0.0,
+      "welfare": 21.2,
+      "trap_rate": 1.0
+    },
+    "Linear | beta=0.3 | REINFORCE": {
+      "env_type": "Linear",
+      "beta": 0.3,
+      "algo": "REINFORCE",
+      "mean_lambda": 0.1498,
+      "mean_lambda_std": 0.0172,
+      "survival_pct": 0.0,
+      "welfare": 21.26,
+      "trap_rate": 1.0
+    },
+    "Linear | beta=0.3 | IPPO": {
+      "env_type": "Linear",
+      "beta": 0.3,
+      "algo": "IPPO",
+      "mean_lambda": 0.1339,
+      "mean_lambda_std": 0.0031,
+      "survival_pct": 0.0,
+      "welfare": 21.13,
+      "trap_rate": 1.0
+    },
+    "TPSD | beta=0.0 | REINFORCE": {
+      "env_type": "TPSD",
+      "beta": 0.0,
+      "algo": "REINFORCE",
+      "mean_lambda": 0.0873,
+      "mean_lambda_std": 0.0055,
+      "survival_pct": 10.5,
+      "welfare": 21.05,
+      "trap_rate": 1.0
+    },
+    "TPSD | beta=0.0 | IPPO": {
+      "env_type": "TPSD",
+      "beta": 0.0,
+      "algo": "IPPO",
+      "mean_lambda": 0.0493,
+      "mean_lambda_std": 0.002,
+      "survival_pct": 9.7,
+      "welfare": 20.59,
+      "trap_rate": 1.0
+    },
+    "TPSD | beta=0.3 | REINFORCE": {
+      "env_type": "TPSD",
+      "beta": 0.3,
+      "algo": "REINFORCE",
+      "mean_lambda": 0.0894,
+      "mean_lambda_std": 0.0093,
+      "survival_pct": 9.7,
+      "welfare": 20.75,
+      "trap_rate": 1.0
+    },
+    "TPSD | beta=0.3 | IPPO": {
+      "env_type": "TPSD",
+      "beta": 0.3,
+      "algo": "IPPO",
+      "mean_lambda": 0.0542,
+      "mean_lambda_std": 0.0022,
+      "survival_pct": 8.2,
+      "welfare": 20.45,
+      "trap_rate": 1.0
+    }
+  },
+  "per_seed_data": {
+    "Linear | beta=0.0 | REINFORCE": [
+      {
+        "welfare": 21.62655797763426,
+        "survival": 0.0,
+        "mean_lambda": 0.1355464981361885,
+        "trapped": true
+      },
+      {
+        "welfare": 21.623767022003218,
+        "survival": 0.0,
+        "mean_lambda": 0.1353139185002681,
+        "trapped": true
+      },
+      {
+        "welfare": 21.56353393083832,
+        "survival": 0.0,
+        "mean_lambda": 0.130294494236527,
+        "trapped": true
+      },
+      {
+        "welfare": 21.397530245943003,
+        "survival": 0.0,
+        "mean_lambda": 0.11646085382858332,
+        "trapped": true
+      },
+      {
+        "welfare": 21.398294084371482,
+        "survival": 0.0,
+        "mean_lambda": 0.1165245070309569,
+        "trapped": true
+      },
+      {
+        "welfare": 21.41594316171882,
+        "survival": 0.0,
+        "mean_lambda": 0.11799526347656814,
+        "trapped": true
+      },
+      {
+        "welfare": 21.55740970264129,
+        "survival": 0.0,
+        "mean_lambda": 0.12978414188677415,
+        "trapped": true
+      },
+      {
+        "welfare": 21.526692511506287,
+        "survival": 0.0,
+        "mean_lambda": 0.127224375958857,
+        "trapped": true
+      },
+      {
+        "welfare": 21.53929116139257,
+        "survival": 0.0,
+        "mean_lambda": 0.12827426344938062,
+        "trapped": true
+      },
+      {
+        "welfare": 21.277227471201904,
+        "survival": 0.0,
+        "mean_lambda": 0.10643562260015903,
+        "trapped": true
+      },
+      {
+        "welfare": 21.423920848877763,
+        "survival": 0.0,
+        "mean_lambda": 0.11866007073981384,
+        "trapped": true
+      },
+      {
+        "welfare": 21.47342852510307,
+        "survival": 0.0,
+        "mean_lambda": 0.12278571042525546,
+        "trapped": true
+      },
+      {
+        "welfare": 21.782417306868908,
+        "survival": 0.0,
+        "mean_lambda": 0.1485347755724086,
+        "trapped": true
+      },
+      {
+        "welfare": 21.28274177431383,
+        "survival": 0.0,
+        "mean_lambda": 0.10689514785948573,
+        "trapped": true
+      },
+      {
+        "welfare": 21.547869172939215,
+        "survival": 0.0,
+        "mean_lambda": 0.12898909774493444,
+        "trapped": true
+      },
+      {
+        "welfare": 21.362092452975208,
+        "survival": 0.0,
+        "mean_lambda": 0.11350770441460015,
+        "trapped": true
+      },
+      {
+        "welfare": 21.795464542994928,
+        "survival": 0.0,
+        "mean_lambda": 0.1496220452495773,
+        "trapped": true
+      },
+      {
+        "welfare": 21.55429722978729,
+        "survival": 0.0,
+        "mean_lambda": 0.12952476914894084,
+        "trapped": true
+      },
+      {
+        "welfare": 21.505488842279668,
+        "survival": 0.0,
+        "mean_lambda": 0.1254574035233057,
+        "trapped": true
+      },
+      {
+        "welfare": 21.628916520415725,
+        "survival": 0.0,
+        "mean_lambda": 0.13574304336797738,
+        "trapped": true
+      }
+    ],
+    "Linear | beta=0.0 | IPPO": [
+      {
+        "welfare": 21.247021327398432,
+        "survival": 0.0,
+        "mean_lambda": 0.10391844394986907,
+        "trapped": true
+      },
+      {
+        "welfare": 21.168690117457565,
+        "survival": 0.0,
+        "mean_lambda": 0.09739084312146368,
+        "trapped": true
+      },
+      {
+        "welfare": 21.20176321177266,
+        "survival": 0.0,
+        "mean_lambda": 0.1001469343143883,
+        "trapped": true
+      },
+      {
+        "welfare": 21.252278458442806,
+        "survival": 0.0,
+        "mean_lambda": 0.10435653820356741,
+        "trapped": true
+      },
+      {
+        "welfare": 21.17581622298372,
+        "survival": 0.0,
+        "mean_lambda": 0.09798468524864287,
+        "trapped": true
+      },
+      {
+        "welfare": 21.20347002178911,
+        "survival": 0.0,
+        "mean_lambda": 0.10028916848242626,
+        "trapped": true
+      },
+      {
+        "welfare": 21.21984051560705,
+        "survival": 0.0,
+        "mean_lambda": 0.1016533763005878,
+        "trapped": true
+      },
+      {
+        "welfare": 21.199022531712327,
+        "survival": 0.0,
+        "mean_lambda": 0.09991854430936059,
+        "trapped": true
+      },
+      {
+        "welfare": 21.210443653368525,
+        "survival": 0.0,
+        "mean_lambda": 0.1008703044473768,
+        "trapped": true
+      },
+      {
+        "welfare": 21.169486224800032,
+        "survival": 0.0,
+        "mean_lambda": 0.0974571854000026,
+        "trapped": true
+      },
+      {
+        "welfare": 21.225803724037682,
+        "survival": 0.0,
+        "mean_lambda": 0.10215031033647355,
+        "trapped": true
+      },
+      {
+        "welfare": 21.141650805693097,
+        "survival": 0.0,
+        "mean_lambda": 0.09513756714109109,
+        "trapped": true
+      },
+      {
+        "welfare": 21.273496312342772,
+        "survival": 0.0,
+        "mean_lambda": 0.10612469269523063,
+        "trapped": true
+      },
+      {
+        "welfare": 21.225204187244703,
+        "survival": 0.0,
+        "mean_lambda": 0.1021003489370585,
+        "trapped": true
+      },
+      {
+        "welfare": 21.160601732554856,
+        "survival": 0.0,
+        "mean_lambda": 0.09671681104623765,
+        "trapped": true
+      },
+      {
+        "welfare": 21.202932755322216,
+        "survival": 0.0,
+        "mean_lambda": 0.10024439627685126,
+        "trapped": true
+      },
+      {
+        "welfare": 21.20846453087827,
+        "survival": 0.0,
+        "mean_lambda": 0.1007053775731891,
+        "trapped": true
+      },
+      {
+        "welfare": 21.196828722914844,
+        "survival": 0.0,
+        "mean_lambda": 0.09973572690957058,
+        "trapped": true
+      },
+      {
+        "welfare": 21.175359867621925,
+        "survival": 0.0,
+        "mean_lambda": 0.09794665563516061,
+        "trapped": true
+      },
+      {
+        "welfare": 21.182046004422617,
+        "survival": 0.0,
+        "mean_lambda": 0.0985038337018851,
+        "trapped": true
+      }
+    ],
+    "Linear | beta=0.3 | REINFORCE": [
+      {
+        "welfare": 21.389918730937463,
+        "survival": 0.0,
+        "mean_lambda": 0.1654665155877931,
+        "trapped": true
+      },
+      {
+        "welfare": 21.29641633435665,
+        "survival": 0.0,
+        "mean_lambda": 0.1543352778996011,
+        "trapped": true
+      },
+      {
+        "welfare": 21.177146923632492,
+        "survival": 0.0,
+        "mean_lambda": 0.140136538527677,
+        "trapped": true
+      },
+      {
+        "welfare": 21.028847890545258,
+        "survival": 0.0,
+        "mean_lambda": 0.12248189173157864,
+        "trapped": true
+      },
+      {
+        "welfare": 21.218184662869124,
+        "survival": 0.0,
+        "mean_lambda": 0.14502198367489563,
+        "trapped": true
+      },
+      {
+        "welfare": 21.105679118905705,
+        "survival": 0.0,
+        "mean_lambda": 0.13162846653639376,
+        "trapped": true
+      },
+      {
+        "welfare": 21.148836473902257,
+        "survival": 0.0,
+        "mean_lambda": 0.13676624689312578,
+        "trapped": true
+      },
+      {
+        "welfare": 21.205121454620745,
+        "survival": 0.0,
+        "mean_lambda": 0.14346683983580305,
+        "trapped": true
+      },
+      {
+        "welfare": 21.343676766209704,
+        "survival": 0.0,
+        "mean_lambda": 0.15996151978686962,
+        "trapped": true
+      },
+      {
+        "welfare": 21.12573448293448,
+        "survival": 0.0,
+        "mean_lambda": 0.13401600987315213,
+        "trapped": true
+      },
+      {
+        "welfare": 21.215580620113123,
+        "survival": 0.0,
+        "mean_lambda": 0.14471197858489537,
+        "trapped": true
+      },
+      {
+        "welfare": 21.070822350487628,
+        "survival": 0.0,
+        "mean_lambda": 0.12747885124852715,
+        "trapped": true
+      },
+      {
+        "welfare": 21.520792536789425,
+        "survival": 0.0,
+        "mean_lambda": 0.1810467305701694,
+        "trapped": true
+      },
+      {
+        "welfare": 21.04222428266461,
+        "survival": 0.0,
+        "mean_lambda": 0.12407431936483387,
+        "trapped": true
+      },
+      {
+        "welfare": 21.37732002108232,
+        "survival": 0.0,
+        "mean_lambda": 0.16396666917646688,
+        "trapped": true
+      },
+      {
+        "welfare": 21.290685465861507,
+        "survival": 0.0,
+        "mean_lambda": 0.1536530316501796,
+        "trapped": true
+      },
+      {
+        "welfare": 21.35656317965139,
+        "survival": 0.0,
+        "mean_lambda": 0.16149561662516546,
+        "trapped": true
+      },
+      {
+        "welfare": 21.521608874675238,
+        "survival": 0.0,
+        "mean_lambda": 0.1811439136518146,
+        "trapped": true
+      },
+      {
+        "welfare": 21.414970186171345,
+        "survival": 0.0,
+        "mean_lambda": 0.16844883168706476,
+        "trapped": true
+      },
+      {
+        "welfare": 21.31760374218104,
+        "survival": 0.0,
+        "mean_lambda": 0.1568575883548857,
+        "trapped": true
+      }
+    ],
+    "Linear | beta=0.3 | IPPO": [
+      {
+        "welfare": 21.153536253595934,
+        "survival": 0.0,
+        "mean_lambda": 0.1373257444757066,
+        "trapped": true
+      },
+      {
+        "welfare": 21.14686453166528,
+        "survival": 0.0,
+        "mean_lambda": 0.13653149186491426,
+        "trapped": true
+      },
+      {
+        "welfare": 21.138434171659398,
+        "survival": 0.0,
+        "mean_lambda": 0.13552787757849982,
+        "trapped": true
+      },
+      {
+        "welfare": 21.1545295047094,
+        "survival": 0.0,
+        "mean_lambda": 0.137443988655881,
+        "trapped": true
+      },
+      {
+        "welfare": 21.16398005981566,
+        "survival": 0.0,
+        "mean_lambda": 0.13856905473995873,
+        "trapped": true
+      },
+      {
+        "welfare": 21.10336554908638,
+        "survival": 0.0,
+        "mean_lambda": 0.13135304155790237,
+        "trapped": true
+      },
+      {
+        "welfare": 21.113068428105667,
+        "survival": 0.0,
+        "mean_lambda": 0.13250814620305512,
+        "trapped": true
+      },
+      {
+        "welfare": 21.11394717951912,
+        "survival": 0.0,
+        "mean_lambda": 0.13261275946656242,
+        "trapped": true
+      },
+      {
+        "welfare": 21.094602136738885,
+        "survival": 0.0,
+        "mean_lambda": 0.13030977818320016,
+        "trapped": true
+      },
+      {
+        "welfare": 21.116162600204767,
+        "survival": 0.0,
+        "mean_lambda": 0.13287650002437704,
+        "trapped": true
+      },
+      {
+        "welfare": 21.170925509991044,
+        "survival": 0.0,
+        "mean_lambda": 0.1393958940465529,
+        "trapped": true
+      },
+      {
+        "welfare": 21.086971925714252,
+        "survival": 0.0,
+        "mean_lambda": 0.12940141972788718,
+        "trapped": true
+      },
+      {
+        "welfare": 21.164085008819495,
+        "survival": 0.0,
+        "mean_lambda": 0.1385815486689871,
+        "trapped": true
+      },
+      {
+        "welfare": 21.11296161418868,
+        "survival": 0.0,
+        "mean_lambda": 0.13249543026055707,
+        "trapped": true
+      },
+      {
+        "welfare": 21.086677570349096,
+        "survival": 0.0,
+        "mean_lambda": 0.12936637742251203,
+        "trapped": true
+      },
+      {
+        "welfare": 21.129039714121152,
+        "survival": 0.0,
+        "mean_lambda": 0.13440948977632758,
+        "trapped": true
+      },
+      {
+        "welfare": 21.10863227970689,
+        "survival": 0.0,
+        "mean_lambda": 0.13198003329843846,
+        "trapped": true
+      },
+      {
+        "welfare": 21.09926643335687,
+        "survival": 0.0,
+        "mean_lambda": 0.13086505159010361,
+        "trapped": true
+      },
+      {
+        "welfare": 21.139859313348992,
+        "survival": 0.0,
+        "mean_lambda": 0.13569753730345147,
+        "trapped": true
+      },
+      {
+        "welfare": 21.105343599110753,
+        "survival": 0.0,
+        "mean_lambda": 0.13158852370366064,
+        "trapped": true
+      }
+    ],
+    "TPSD | beta=0.0 | REINFORCE": [
+      {
+        "welfare": 21.10254237318977,
+        "survival": 0.13333333333333333,
+        "mean_lambda": 0.09187853109914737,
+        "trapped": true
+      },
+      {
+        "welfare": 21.052580710064603,
+        "survival": 0.1,
+        "mean_lambda": 0.08771505917205012,
+        "trapped": true
+      },
+      {
+        "welfare": 21.030582647799058,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.08588188731658809,
+        "trapped": true
+      },
+      {
+        "welfare": 20.903970273052575,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.07533085608771502,
+        "trapped": true
+      },
+      {
+        "welfare": 20.971944379043013,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.08099536492025146,
+        "trapped": true
+      },
+      {
+        "welfare": 20.983692146247794,
+        "survival": 0.23333333333333334,
+        "mean_lambda": 0.08197434552064971,
+        "trapped": true
+      },
+      {
+        "welfare": 21.0768972824844,
+        "survival": 0.13333333333333333,
+        "mean_lambda": 0.0897414402070333,
+        "trapped": true
+      },
+      {
+        "welfare": 21.010013541740314,
+        "survival": 0.13333333333333333,
+        "mean_lambda": 0.08416779514502645,
+        "trapped": true
+      },
+      {
+        "welfare": 21.04254961415955,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.08687913451329603,
+        "trapped": true
+      },
+      {
+        "welfare": 21.088049247316885,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.09067077060974034,
+        "trapped": true
+      },
+      {
+        "welfare": 21.04295577797457,
+        "survival": 0.2,
+        "mean_lambda": 0.08691298149788071,
+        "trapped": true
+      },
+      {
+        "welfare": 20.9688309611766,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.08073591343138346,
+        "trapped": true
+      },
+      {
+        "welfare": 21.133015479202584,
+        "survival": 0.1,
+        "mean_lambda": 0.09441795660021504,
+        "trapped": true
+      },
+      {
+        "welfare": 21.023832509892646,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.08531937582438746,
+        "trapped": true
+      },
+      {
+        "welfare": 21.124948762102317,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.09374573017519337,
+        "trapped": true
+      },
+      {
+        "welfare": 20.983422775556345,
+        "survival": 0.0,
+        "mean_lambda": 0.08195189796302889,
+        "trapped": true
+      },
+      {
+        "welfare": 21.173526259478553,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.09779385495654598,
+        "trapped": true
+      },
+      {
+        "welfare": 21.02490521464163,
+        "survival": 0.1,
+        "mean_lambda": 0.08540876788680261,
+        "trapped": true
+      },
+      {
+        "welfare": 21.083587687335264,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.0902989739446053,
+        "trapped": true
+      },
+      {
+        "welfare": 21.127647777412637,
+        "survival": 0.1,
+        "mean_lambda": 0.09397064811771998,
+        "trapped": true
+      }
+    ],
+    "TPSD | beta=0.0 | IPPO": [
+      {
+        "welfare": 20.59782907167718,
+        "survival": 0.1,
+        "mean_lambda": 0.04981908930643169,
+        "trapped": true
+      },
+      {
+        "welfare": 20.56888762647135,
+        "survival": 0.1,
+        "mean_lambda": 0.047407302205946224,
+        "trapped": true
+      },
+      {
+        "welfare": 20.599190765202437,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.049932563766869484,
+        "trapped": true
+      },
+      {
+        "welfare": 20.600258863569206,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.05002157196410051,
+        "trapped": true
+      },
+      {
+        "welfare": 20.57144992891043,
+        "survival": 0.13333333333333333,
+        "mean_lambda": 0.047620827409202086,
+        "trapped": true
+      },
+      {
+        "welfare": 20.572937436112007,
+        "survival": 0.23333333333333334,
+        "mean_lambda": 0.047744786342667454,
+        "trapped": true
+      },
+      {
+        "welfare": 20.60952127093122,
+        "survival": 0.13333333333333333,
+        "mean_lambda": 0.05079343924426853,
+        "trapped": true
+      },
+      {
+        "welfare": 20.594877637538794,
+        "survival": 0.13333333333333333,
+        "mean_lambda": 0.04957313646156661,
+        "trapped": true
+      },
+      {
+        "welfare": 20.614854545786862,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.051237878815572326,
+        "trapped": true
+      },
+      {
+        "welfare": 20.543576025470554,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.045298002122545936,
+        "trapped": true
+      },
+      {
+        "welfare": 20.58716193452436,
+        "survival": 0.2,
+        "mean_lambda": 0.048930161210363324,
+        "trapped": true
+      },
+      {
+        "welfare": 20.548526978661716,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.04571058155514319,
+        "trapped": true
+      },
+      {
+        "welfare": 20.6353015167183,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.05294179305985834,
+        "trapped": true
+      },
+      {
+        "welfare": 20.62569943200434,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.05214161933369495,
+        "trapped": true
+      },
+      {
+        "welfare": 20.59564433261323,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.04963702771776927,
+        "trapped": true
+      },
+      {
+        "welfare": 20.604564372089058,
+        "survival": 0.0,
+        "mean_lambda": 0.05038036434075515,
+        "trapped": true
+      },
+      {
+        "welfare": 20.610630580130266,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.05088588167752232,
+        "trapped": true
+      },
+      {
+        "welfare": 20.60431436971459,
+        "survival": 0.1,
+        "mean_lambda": 0.05035953080954937,
+        "trapped": true
+      },
+      {
+        "welfare": 20.555887937729313,
+        "survival": 0.1,
+        "mean_lambda": 0.04632399481077624,
+        "trapped": true
+      },
+      {
+        "welfare": 20.593741838241904,
+        "survival": 0.1,
+        "mean_lambda": 0.04947848652015881,
+        "trapped": true
+      }
+    ],
+    "TPSD | beta=0.3 | REINFORCE": [
+      {
+        "welfare": 20.78862806119639,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.09388429299957021,
+        "trapped": true
+      },
+      {
+        "welfare": 20.749542730412596,
+        "survival": 0.2,
+        "mean_lambda": 0.08923127743007075,
+        "trapped": true
+      },
+      {
+        "welfare": 20.709456051232284,
+        "survival": 0.1,
+        "mean_lambda": 0.0844590537181286,
+        "trapped": true
+      },
+      {
+        "welfare": 20.656023746649034,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.0780980650772662,
+        "trapped": true
+      },
+      {
+        "welfare": 20.671366531352817,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.07992458706581172,
+        "trapped": true
+      },
+      {
+        "welfare": 20.684727046354617,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.08151512456602551,
+        "trapped": true
+      },
+      {
+        "welfare": 20.719894047048648,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.08570167226769655,
+        "trapped": true
+      },
+      {
+        "welfare": 20.755382918340285,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.08992653789765344,
+        "trapped": true
+      },
+      {
+        "welfare": 20.8495632010189,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.10113847631177406,
+        "trapped": true
+      },
+      {
+        "welfare": 20.670514591479243,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.07982316565229024,
+        "trapped": true
+      },
+      {
+        "welfare": 20.701516069883287,
+        "survival": 0.1,
+        "mean_lambda": 0.08351381784324827,
+        "trapped": true
+      },
+      {
+        "welfare": 20.644075535055908,
+        "survival": 0.23333333333333334,
+        "mean_lambda": 0.07667565893522674,
+        "trapped": true
+      },
+      {
+        "welfare": 20.923920539846833,
+        "survival": 0.13333333333333333,
+        "mean_lambda": 0.10999054045795655,
+        "trapped": true
+      },
+      {
+        "welfare": 20.662642626475385,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.07888602696135491,
+        "trapped": true
+      },
+      {
+        "welfare": 20.862525546192952,
+        "survival": 0.0,
+        "mean_lambda": 0.10268161264201826,
+        "trapped": true
+      },
+      {
+        "welfare": 20.719985205358093,
+        "survival": 0.0,
+        "mean_lambda": 0.08571252444739158,
+        "trapped": true
+      },
+      {
+        "welfare": 20.817258015498158,
+        "survival": 0.1,
+        "mean_lambda": 0.09729262089263743,
+        "trapped": true
+      },
+      {
+        "welfare": 20.78728171993724,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.09372401427824255,
+        "trapped": true
+      },
+      {
+        "welfare": 20.849693533192614,
+        "survival": 0.1,
+        "mean_lambda": 0.10115399204673903,
+        "trapped": true
+      },
+      {
+        "welfare": 20.789326155187986,
+        "survival": 0.1,
+        "mean_lambda": 0.09396739942714052,
+        "trapped": true
+      }
+    ],
+    "TPSD | beta=0.3 | IPPO": [
+      {
+        "welfare": 20.446851187141817,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.05319656989783505,
+        "trapped": true
+      },
+      {
+        "welfare": 20.440970425300236,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.05249647920240961,
+        "trapped": true
+      },
+      {
+        "welfare": 20.485821063546492,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.05783584089839244,
+        "trapped": true
+      },
+      {
+        "welfare": 20.44960927391122,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.05352491356085976,
+        "trapped": true
+      },
+      {
+        "welfare": 20.44625028545683,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.0531250339829559,
+        "trapped": true
+      },
+      {
+        "welfare": 20.44468808242087,
+        "survival": 0.0,
+        "mean_lambda": 0.05293905743105589,
+        "trapped": true
+      },
+      {
+        "welfare": 20.468407721835117,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.05576282402799006,
+        "trapped": true
+      },
+      {
+        "welfare": 20.424155004364934,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.050494643376778295,
+        "trapped": true
+      },
+      {
+        "welfare": 20.41914011258888,
+        "survival": 0.13333333333333333,
+        "mean_lambda": 0.049897632451057744,
+        "trapped": true
+      },
+      {
+        "welfare": 20.46115788407797,
+        "survival": 0.16666666666666666,
+        "mean_lambda": 0.054899748104520585,
+        "trapped": true
+      },
+      {
+        "welfare": 20.443245134422952,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.05276727790749438,
+        "trapped": true
+      },
+      {
+        "welfare": 20.4697390809007,
+        "survival": 0.2,
+        "mean_lambda": 0.055921319154845245,
+        "trapped": true
+      },
+      {
+        "welfare": 20.47466943359505,
+        "survival": 0.1,
+        "mean_lambda": 0.05650826590417264,
+        "trapped": true
+      },
+      {
+        "welfare": 20.448130267267928,
+        "survival": 0.06666666666666667,
+        "mean_lambda": 0.05334884134141984,
+        "trapped": true
+      },
+      {
+        "welfare": 20.464748136411433,
+        "survival": 0.0,
+        "mean_lambda": 0.055327159096598834,
+        "trapped": true
+      },
+      {
+        "welfare": 20.46986981746475,
+        "survival": 0.0,
+        "mean_lambda": 0.05593688303151753,
+        "trapped": true
+      },
+      {
+        "welfare": 20.438009109682714,
+        "survival": 0.1,
+        "mean_lambda": 0.052143941628894484,
+        "trapped": true
+      },
+      {
+        "welfare": 20.489484615221173,
+        "survival": 0.03333333333333333,
+        "mean_lambda": 0.05827197800251988,
+        "trapped": true
+      },
+      {
+        "welfare": 20.464910509446263,
+        "survival": 0.1,
+        "mean_lambda": 0.05534648921979387,
+        "trapped": true
+      },
+      {
+        "welfare": 20.449779327809175,
+        "survival": 0.1,
+        "mean_lambda": 0.05354515807252067,
+        "trapped": true
+      }
+    ]
+  },
+  "time_seconds": 325.4
+}

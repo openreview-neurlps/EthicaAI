@@ -85,7 +85,7 @@ When must multi-agent systems move beyond self-interest, and how much commitment
 We provide the \textbf{first formal characterization} of cooperation failure in \textbf{Tipping-Point Social Dilemmas} (TPSDs)---multi-agent settings where thresholded resource dynamics can trigger irreversible collapse. We identify a locally stable equilibrium we call the \textbf{Nash Trap}: gradient-based learners converge to under-commitment at $\lambda \approx 0.5$, individually rational yet collectively catastrophic, \emph{even when cooperation is individually rational} ($M/N \geq 1$).
 
 \textbf{Characterization.}~The Nash Trap is universal across five algorithm families (REINFORCE, PPO, IQL, QMIX, LOLA), four architectures, $400{+}$ hyperparameter configurations, and 12 $M/N$ conditions---100\% trap rate, 0\% escape rate (20 seeds each).
-\textbf{Theory.}~We prove escape requires $\Omega(e^{cN})$ gradient evaluations (Freidlin--Wentzell), and the Price of Anarchy diverges as $\mathrm{PoA} \geq \Omega(e^{cN})$---in stark contrast to $O(1)$ in standard social dilemmas---driven by signal dilution ($O(\epsilon/N)$ per agent), basin dominance (measure $\geq 1 - e^{-cN}$), and a quasi-potential barrier $\Omega(N)$.
+\textbf{Theory.}~We prove signal dilution and basin dominance (Parts~(i)--(ii)), and present empirical evidence and large-deviations heuristics suggesting escape requires $\Omega(e^{cN})$ gradient evaluations (Part~(iii), stated as a conjecture). The Price of Anarchy diverges as $\mathrm{PoA} \geq \Omega(e^{cN})$---in stark contrast to $O(1)$ in standard social dilemmas---driven by signal dilution ($O(\epsilon/N)$ per agent), basin dominance (measure $\geq 1 - e^{-cN}$), and a conjectured quasi-potential barrier $\Omega(N)$.
 \textbf{Prescription.}~Commitment floors, derived from the environment's tipping-point structure (Theorem~\ref{thm:critical}), bypass the trap in $O(1)$ steps. MACCL learns state-dependent floors adaptively (+203\% welfare), demonstrating that floors can be \emph{learned}, not only prescribed.
 
 Validated across five PGG environment classes, a Gordon-Schaefer fishery benchmark with ecological tipping points, Melting Pot visual MARL (positive on TPSD-like \texttt{clean\_up}, correctly negative on non-TPSD \texttt{commons\_harvest}), heterogeneous agents (group-specific floors), adversarial conditions ($\beta{=}50\%$), and scale ($N{=}100$).
@@ -110,11 +110,11 @@ The trap is universal across five algorithm families (REINFORCE, PPO~\citep{schu
 Crucially, the trap persists \emph{even when $M/N = 1$}---when cooperation is individually rational---because tipping-point dynamics, not payoff misalignment, drive the failure.
 
 \paragraph{2.~Theory: Computational Intractability of Escape.}
-We prove escaping the Nash Trap is computationally intractable via three mechanisms (Proposition~\ref{thm:impossibility}):
+We establish computational intractability of escaping the Nash Trap via three mechanisms (Proposition~\ref{thm:impossibility}):
 (i)~\emph{signal dilution}: each agent's marginal survival gradient is $O(\epsilon/N)$ against $O(1)$ noise;
 (ii)~\emph{basin dominance}: the trap basin captures measure $\geq 1 - e^{-cN}$ under uniform initialization;
-(iii)~\emph{exponential escape time}: a Freidlin--Wentzell quasi-potential barrier of $\Omega(N)$ implies $\Omega(e^{cN})$ gradient evaluations (Appendix~\ref{app:impossibility_proof}).
-Confirmed empirically for $N \in \{5,\ldots,100\}$. Parts~(i)--(ii) are proved formally (Hoeffding concentration and chain-rule decomposition); Part~(iii) is established via large deviations theory. The resulting Price of Anarchy diverges as $\Omega(e^{cN})$---unlike standard social dilemmas where $\mathrm{PoA} = O(1)$ (Theorem~\ref{thm:poa})---making this, to our knowledge, the first exponential PoA result for gradient-based MARL. Lagrangian relaxation, CTDE with global critics, and neural network policies all fall into the same trap (Appendices~\ref{app:comm_ctde_neural},~\ref{app:cpr_detail}).
+(iii)~\emph{exponential escape time}: empirical evidence and large-deviations heuristics suggest escape requires $\Omega(e^{cN})$ gradient evaluations (Appendix~\ref{app:impossibility_proof}).
+Confirmed empirically for $N \in \{5,\ldots,100\}$ with 100\% trap rate and 0\% escape over 500 episodes (20 seeds each). Parts~(i)--(ii) are proved formally (Hoeffding concentration and chain-rule decomposition); Part~(iii) is stated as a conjecture supported by Freidlin--Wentzell heuristics and the empirical evidence above. The resulting Price of Anarchy diverges as $\Omega(e^{cN})$---unlike standard social dilemmas where $\mathrm{PoA} = O(1)$ (Theorem~\ref{thm:poa})---making this, to our knowledge, the first exponential PoA result for gradient-based MARL. Lagrangian relaxation, CTDE with global critics, and neural network policies all fall into the same trap (Appendices~\ref{app:comm_ctde_neural},~\ref{app:cpr_detail}).
 
 \paragraph{3.~Prescription: Commitment Floors.}
 Commitment floors exclude the trap basin from the feasible action space (Corollary~\ref{cor:bypass}).
@@ -348,7 +348,7 @@ In extreme adversarial regimes ($\beta{\geq}0.5$), even $\phi_1{=}1.0$ may not a
 \label{sec:intractability}
 
 The universality of the Nash Trap raises a fundamental question: \emph{is this a weakness of specific algorithms, or an inherent barrier?}
-Proposition~\ref{thm:impossibility} (proof in Appendix~\ref{app:impossibility_proof}) establishes the latter via three mechanisms: (i)~signal dilution ($O(\epsilon/N)$ per-agent effect); (ii)~basin dominance (measure $\geq 1{-}e^{-0.01N}$); (iii)~exponential escape time ($\Omega(e^{cN})$ via Freidlin--Wentzell).
+Proposition~\ref{thm:impossibility} (Appendix~\ref{app:impossibility_proof}) establishes the latter via three mechanisms: (i)~signal dilution ($O(\epsilon/N)$ per-agent effect, proved); (ii)~basin dominance (measure $\geq 1{-}e^{-0.01N}$, proved); (iii)~exponential escape time ($\Omega(e^{cN})$, conjectured via Freidlin--Wentzell heuristics, supported by 100\% trap rate across $N \in \{5,\ldots,100\}$).
 
 \begin{theorem}[Price of Anarchy Divergence in TPSDs]
 \label{thm:poa}
@@ -365,7 +365,7 @@ At $\hat{\lambda}{\approx}0.5$, $P_{\mathrm{surv}}(\hat{\lambda}) \leq e^{-\Omeg
 \section{Discussion}
 \label{sec:discussion}
 
-Our results decompose into three layers: (i)~the Nash Trap persists even when $M/N \geq 1$ across all 24 tested conditions (Appendix~\ref{app:phase_transition}); (ii)~escape requires $\Omega(e^{cN})$ gradient evaluations (Proposition~\ref{thm:impossibility}); (iii)~MACCL learns the minimum sufficient floor, recovering $\phi_1 \approx 1.0$ in severe TPSDs (+203\% welfare; Appendix~\ref{app:maccl}).
+Our results decompose into three layers: (i)~the Nash Trap persists even when $M/N \geq 1$ across all 24 tested conditions (Appendix~\ref{app:phase_transition}); (ii)~empirical evidence and large-deviations heuristics suggest escape requires $\Omega(e^{cN})$ gradient evaluations (Proposition~\ref{thm:impossibility}); (iii)~MACCL learns the minimum sufficient floor, recovering $\phi_1 \approx 1.0$ in severe TPSDs (+203\% welfare; Appendix~\ref{app:maccl}).
 Lagrangian relaxation baselines also converge to $\bar\lambda \approx 0.5$ (Table~\ref{tab:cpo_comparison}), confirming the trap is not merely an unconstrained optimization failure.
 
 \paragraph{Cross-environment validation.}
@@ -1633,7 +1633,7 @@ For our default parameters ($M/N{=}0.32$, $\gamma{=}0.99$, $f_{\text{crit}}{=}0.
 \answerYes{Section~\ref{sec:limitations} discusses algorithm scope, setting assumptions, environment scope, and ethical scope.}
 
 \item {\bf Theory Assumptions and Proofs}
-\answerYes{Theorem~1 (critical floor) states all assumptions (N agents, Byzantine fraction $\beta$, recovery function $f$, shock model) with a proof sketch in the main text. Theorem~2 (PoA divergence) provides a proof sketch with full proof in Appendix~\ref{app:poa}. Proposition~2 (3-part impossibility) is proved via Hoeffding concentration and Freidlin--Wentzell theory in Appendix~\ref{app:impossibility_proof}.}
+\answerYes{Theorem~1 (critical floor) states all assumptions (N agents, Byzantine fraction $\beta$, recovery function $f$, shock model) with a proof sketch in the main text. Theorem~2 (PoA divergence) provides a proof sketch with full proof in Appendix~\ref{app:poa}. Proposition~2 (3-part impossibility): Parts~(i)--(ii) are proved via Hoeffding concentration in Appendix~\ref{app:impossibility_proof}; Part~(iii) is stated as a conjecture supported by Freidlin--Wentzell heuristics and empirical evidence, with formal gaps explicitly acknowledged.}
 
 \item {\bf Experimental Result Reproducibility}
 \answerYes{All experiments use fixed random seeds (reported), standardized hyperparameters (Table, Appendix), and single-file CleanRL conventions. Code is included in the supplementary material. Environment parameters are fully specified in Section~\ref{sec:method}.}
