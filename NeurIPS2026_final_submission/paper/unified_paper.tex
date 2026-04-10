@@ -88,7 +88,7 @@ We provide the \textbf{first formal characterization} of cooperation failure in 
 \textbf{Theory.}~We prove signal dilution and basin dominance (Parts~(i)--(ii)), and present empirical evidence and large-deviations heuristics suggesting escape requires $\Omega(e^{cN})$ gradient evaluations (Part~(iii), stated as a conjecture). The Price of Anarchy diverges as $\mathrm{PoA} \geq \Omega(e^{cN})$---in stark contrast to $O(1)$ in standard social dilemmas---driven by signal dilution ($O(\epsilon/N)$ per agent), basin dominance (measure $\geq 1 - e^{-cN}$), and a conjectured quasi-potential barrier $\Omega(N)$.
 \textbf{Prescription.}~Commitment floors, derived from the environment's tipping-point structure (Theorem~\ref{thm:critical}), bypass the trap in $O(1)$ steps. MACCL learns state-dependent floors adaptively (+203\% welfare), demonstrating that floors can be \emph{learned}, not only prescribed.
 
-Validated across five PGG environment classes, a Gordon-Schaefer fishery benchmark with ecological tipping points, Melting Pot visual MARL (positive on TPSD-like \texttt{clean\_up}, correctly negative on non-TPSD \texttt{commons\_harvest}), heterogeneous agents (group-specific floors), adversarial conditions ($\beta{=}50\%$), and scale ($N{=}100$).
+Validated across five PGG environment classes, a Gordon-Schaefer fishery benchmark with ecological tipping points, Melting Pot visual MARL (a boundary-condition check on TPSD-like \texttt{clean\_up} and correctly negative on non-TPSD \texttt{commons\_harvest}), heterogeneous agents (group-specific floors), adversarial conditions ($\beta{=}50\%$), and scale ($N{=}100$).
 \end{abstract}
 
 % ================================================================
@@ -383,7 +383,9 @@ M-FOS~\citep{lu2022model} and POLA~\citep{zhao2022proximal} (opponent shaping) c
 Under Byzantine attack ($\beta{=}0$--$50\%$), unconditional floors maintain ${\geq}96\%$ survival even at $\beta{=}50\%$; MACCL degrades to 55\% (Figure~\ref{fig:floor_spectrum}, right).
 RND exploration bonuses~\citep{burda2018exploration} also fail: welfare declines to the Nash equilibrium bound ($21.18 \to 20.67$), establishing the trap as a \emph{structural attractor}.
 Crucially, the trap persists \emph{without adversaries}: at $\beta{=}0$, both REINFORCE and IPPO converge to $\bar\lambda{<}0.10$ with 100\% trap rate (20~seeds), confirming that tipping-point dynamics---not Byzantine agents---are the primary driver.
-Population-based training (selection over 10 policies, 30 generations), curriculum learning (gradual severity increase), and optimistic initialization ($\lambda_0{=}0.9$) all fail to escape (100\% trap rate), ruling out the hypothesis that the trap is an initialization artifact.
+Population-based training (selection over 10 policies, 30 generations), curriculum learning (gradual severity $f_{\mathrm{crit}}$: $0.50{\to}0.10{\to}0.01$), and optimistic initialization ($\lambda_0 \in \{0.5, \ldots, 0.9\}$) all fail to escape: 100\% trap rate across all 20 seeds ($\bar\lambda{<}0.08$, survival ${<}12\%$), ruling out the hypothesis that the trap is an initialization artifact (Table~\ref{tab:alternative_baselines}).
+
+\input{tables/tab_alternative_baselines}
 
 \input{tables/tab_mechanism_comparison}
 
@@ -400,7 +402,7 @@ Critically, in the Cleanup environment, MACCL learns a \emph{graded} floor $\phi
 This demonstrates that floors are a \emph{learnable safety specification}: the minimum commitment level is a derived property of the environment's tipping-point dynamics, not an arbitrary constraint.
 
 \paragraph{Unknown tipping-point parameters.}
-When MACCL has no access to $f(R_{\mathrm{crit}})$, $\beta$, or $\bar\sigma$ and learns $\phi_1(R;\omega)$ purely from survival feedback, it still achieves 100\% survival (floor $\phi_1{=}0.97$) vs.\ 54\% without floor---demonstrating robustness to unknown environment parameters.
+When MACCL has no access to $f(R_{\mathrm{crit}})$, $\beta$, or $\bar\sigma$ and learns $\phi_1(R;\omega)$ purely from survival feedback, it matches Known-MACCL within 3\%: 83--100\% survival vs.\ 0.1--52\% without floor across 4~conditions (20~seeds each, $p{<}0.001$). Learned floors converge to $\phi_1{\in}[0.97, 0.99]$, demonstrating that MACCL discovers effective commitment levels even without environment parameters.
 
 \paragraph{Heterogeneous agents.}
 With unequal endowments ($E \in \{10, 20, 30\}$), MACCL learns group-specific floors: $\phi_1{=}0.82$ (low) vs.\ $0.97$ (high), $p{<}0.001$ (20~seeds), achieving 100\% survival without explicit fairness objectives.
@@ -421,7 +423,7 @@ Sweeping $f(R_{\mathrm{crit}}) \in \{0.01, 0.05, 0.10, 0.50\}$: partial floors s
 On a Gordon-Schaefer fishery~\citep{scheffer2009early} with Allee-effect tipping point, agents converge to $\bar\lambda{=}0.51$, 19.5\% survival (Nash Trap, 20~seeds). Floors restore sustainability: $\phi_1{=}0.7$ yields 87.8\%, $\phi_1{=}1.0$ yields 100\%---matching PGG in an ecologically grounded model.
 
 \paragraph{Melting Pot validation.}
-On \texttt{commons\_harvest\_\_open}~\citep{agapiou2022melting} (non-TPSD), floors \emph{reduce} CNN-PPO reward (24.0$\to$6.2 at $\phi_1{=}0.5$). On \texttt{clean\_up} (TPSD-like), floors consistently improve learning: across 3~seeds (500 episodes each), $\phi_1{=}0.2$ achieves 20.8 mean peak reward vs.\ 6.1 without floor, with floor agents maintaining nonzero evaluation reward ($0.29 {\pm} 0.35$) while unfloured agents collapse to $0.0$ in all seeds---the first positive result on a visual MARL benchmark. This confirms floors help \emph{if and only if} TPSD structure is present.
+On \texttt{commons\_harvest\_\_open}~\citep{agapiou2022melting} (non-TPSD), floors \emph{reduce} CNN-PPO reward (24.0$\to$6.2 at $\phi_1{=}0.5$). On \texttt{clean\_up} (TPSD-like), the 25-seed rerun with $\phi_1{=}0.2$ changes late-train reward from 0.02 $\pm$ 0.05 to 0.04 $\pm$ 0.05 (n=25, p=0.136), and evaluation reward from 0.00 $\pm$ 0.01 to 0.06 $\pm$ 0.18 (n=25, p=0.064). We therefore use \texttt{clean\_up} as a boundary-condition check rather than as a standalone flagship positive result.
 
 \paragraph{Limitations.}\label{sec:limitations}
 Floors fail when: $\beta$ exceeds Theorem~\ref{thm:critical}'s threshold, the TPSD structure is unknown, or the environment lacks tipping points entirely (Melting Pot \texttt{commons\_harvest}). All TPSD environments are PGG variants; real-world spatial commons remain untested. $\lambda$ operationalizes cooperation, not full moral reasoning~\citep{rawls1971,sen1977rational}.
@@ -463,7 +465,7 @@ The \textbf{Nash Trap} persists across five algorithm families (including oppone
 
 \begin{table}[h]
 \centering
-\caption{Melting Pot CNN-PPO results (3~seeds, 500--1000 episodes). On non-TPSD \texttt{commons\_harvest}, floors reduce reward. On TPSD-like \texttt{clean\_up}, floors improve peak training reward 3.4$\times$ and prevent evaluation collapse.}
+\caption{Melting Pot CNN-PPO rerun ($n{=}25$, 500--1000 episodes). On non-TPSD \texttt{commons\_harvest}, floors reduce reward. On TPSD-like \texttt{clean\_up}, the 25-seed rerun is best read as a boundary-condition check rather than as a standalone flagship success.}
 \label{tab:meltingpot}
 \small
 \begin{tabular}{llccc}
@@ -474,8 +476,8 @@ The \textbf{Nash Trap} persists across five algorithm families (including oppone
   & IPPO + $\phi_1{=}0.3$ & --- & 10.8 & \\
   & IPPO + $\phi_1{=}0.5$ & --- & 6.2 & \\
 \midrule
-\multirow{2}{*}{clean\_up (3 seeds)} & IPPO (no floor) & 6.1 $\pm$ 2.2 & 0.0 $\pm$ 0.0 & \multirow{2}{*}{Yes} \\
-  & IPPO + $\phi_1{=}0.2$ & \textbf{20.8 $\pm$ 1.3} & \textbf{0.29 $\pm$ 0.35} & \\
+\multirow{2}{*}{clean\_up (25 seeds)} & IPPO (no floor) & 0.02 $\pm$ 0.05 & 0.00 $\pm$ 0.01 & \multirow{2}{*}{Yes} \\
+  & IPPO + $\phi_1{=}0.2$ & \textbf{0.04 $\pm$ 0.05} & \textbf{0.06 $\pm$ 0.18} & \\
 \bottomrule
 \end{tabular}
 \end{table}

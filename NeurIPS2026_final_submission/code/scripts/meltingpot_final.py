@@ -71,6 +71,8 @@ Author: [redacted for blind review]
 #
 # =============================================================================
 
+import argparse
+import functools
 import os
 import sys
 import json
@@ -79,10 +81,74 @@ import hashlib
 import traceback
 import numpy as np
 
+# This experiment is pure eager-mode PPO; torch.compile adds instability here.
+os.environ.setdefault("TORCHDYNAMO_DISABLE", "1")
+os.environ.setdefault("TORCH_COMPILE_DISABLE", "1")
+
 import torch
+
+
+def _identity_disable_dynamo(fn=None, recursive=True):
+    """Keep optimizer paths in eager mode without importing torch._dynamo."""
+    if fn is not None:
+        return fn
+    return lambda wrapped_fn: wrapped_fn
+
+
+if hasattr(torch, "_disable_dynamo"):
+    torch._disable_dynamo = _identity_disable_dynamo
+
+
 import torch.nn as nn
 import torch.optim as optim
 from torch.distributions import Categorical
+
+
+for _optimizer_method in ("state_dict", "load_state_dict", "zero_grad", "add_param_group"):
+    _wrapped = getattr(getattr(optim.Optimizer, _optimizer_method, None), "__wrapped__", None)
+    if _wrapped is not None:
+        setattr(optim.Optimizer, _optimizer_method, _wrapped)
+
+
+def _iter_optimizer_subclasses(base_cls):
+    """Yield optimizer subclasses recursively so we can unwrap step hooks."""
+    pending = list(base_cls.__subclasses__())
+    seen = set()
+    while pending:
+        cls = pending.pop()
+        if cls in seen:
+            continue
+        seen.add(cls)
+        yield cls
+        pending.extend(cls.__subclasses__())
+
+
+def _wrap_optimizer_step_eager(step_fn):
+    """Preserve no-grad semantics without touching torch._dynamo."""
+    @functools.wraps(step_fn)
+    def eager_step(self, *args, **kwargs):
+        prev_grad = torch.is_grad_enabled()
+        try:
+            torch.set_grad_enabled(self.defaults.get("differentiable", False))
+            return step_fn(self, *args, **kwargs)
+        finally:
+            torch.set_grad_enabled(prev_grad)
+    return eager_step
+
+
+for _optimizer_cls in _iter_optimizer_subclasses(optim.Optimizer):
+    _step = getattr(_optimizer_cls, "step", None)
+    _original_step = _step
+    while hasattr(_original_step, "__wrapped__"):
+        _original_step = _original_step.__wrapped__
+    if callable(_original_step) and _original_step is not _step:
+        setattr(_optimizer_cls, "step", _wrap_optimizer_step_eager(_original_step))
+
+try:
+    from torch import _dynamo as torch_dynamo
+    torch_dynamo.config.suppress_errors = True
+except Exception:
+    torch_dynamo = None
 
 # ---------------------------------------------------------------------------
 # Melting Pot import — must succeed or we abort immediately
@@ -177,9 +243,10 @@ LAST_K = 50             # Number of final training episodes used to compute
 
 # --- Seeds ---
 N_SEEDS = 25            # Seeds per condition. Total runs = 25 x 2 = 50.
+MASTER_SEED = 42        # Deterministic master seed for reproducible seed list.
 
 # --- Output ---
-OUTPUT_DIR = "/outputs"  # Docker volume mount point.
+OUTPUT_DIR = os.environ.get("MP_OUTPUT_DIR", "/outputs")  # Docker or local.
 OUTPUT_FILE = "meltingpot_final_results.json"
 
 
@@ -609,6 +676,150 @@ def compute_statistics(results):
 # CHECKPOINTING / RESUMABILITY
 # =============================================================================
 
+def parse_floor_values(spec):
+    """Parse a comma-separated list of floor values."""
+    values = []
+    for chunk in spec.split(","):
+        chunk = chunk.strip()
+        if not chunk:
+            continue
+        values.append(float(chunk))
+    if not values:
+        raise ValueError("At least one floor value is required.")
+    return values
+
+
+def parse_seed_indices(spec, total):
+    """
+    Parse a comma-separated list of seed indices and inclusive ranges.
+
+    Example: "0,1,3-5,8"
+    """
+    selected = []
+    seen = set()
+    for chunk in spec.split(","):
+        chunk = chunk.strip()
+        if not chunk:
+            continue
+
+        if "-" in chunk:
+            start_str, end_str = chunk.split("-", 1)
+            start = int(start_str)
+            end = int(end_str)
+            if end < start:
+                raise ValueError(f"Invalid seed range: {chunk}")
+            indices = range(start, end + 1)
+        else:
+            indices = [int(chunk)]
+
+        for idx in indices:
+            if idx < 0 or idx >= total:
+                raise ValueError(
+                    f"Seed index out of range: {idx} (valid: 0..{total - 1})"
+                )
+            if idx not in seen:
+                selected.append(idx)
+                seen.add(idx)
+
+    if not selected:
+        raise ValueError("At least one seed index is required.")
+    return selected
+
+
+def parse_args():
+    """CLI for shard-aware execution without breaking the default behavior."""
+    parser = argparse.ArgumentParser(
+        description="Run the Melting Pot final experiment with optional sharding."
+    )
+    parser.add_argument(
+        "--output-dir",
+        default=OUTPUT_DIR,
+        help="Directory where the JSON result file will be written.",
+    )
+    parser.add_argument(
+        "--output-file",
+        default=OUTPUT_FILE,
+        help="Result JSON filename.",
+    )
+    parser.add_argument(
+        "--floors",
+        default=",".join(str(v) for v in FLOOR_VALUES),
+        help="Comma-separated floor values to run (default: all final floors).",
+    )
+    parser.add_argument(
+        "--master-seed",
+        type=int,
+        default=MASTER_SEED,
+        help="Master seed used to generate the deterministic seed list.",
+    )
+    parser.add_argument(
+        "--seed-indices",
+        default=None,
+        help=(
+            "Explicit seed indices to run, e.g. '0,1,3-5'. "
+            "Cannot be combined with shard arguments."
+        ),
+    )
+    parser.add_argument(
+        "--num-shards",
+        type=int,
+        default=1,
+        help="Split the seed list into this many modulo shards.",
+    )
+    parser.add_argument(
+        "--shard-index",
+        type=int,
+        default=0,
+        help="0-based shard index to execute when num-shards > 1.",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Print the resolved run plan and exit without running training.",
+    )
+    return parser.parse_args()
+
+
+def build_run_plan(args):
+    """Resolve selected seeds/floors/output path from CLI arguments."""
+    if args.num_shards < 1:
+        raise ValueError("--num-shards must be >= 1.")
+    if args.shard_index < 0 or args.shard_index >= args.num_shards:
+        raise ValueError("--shard-index must satisfy 0 <= shard-index < num-shards.")
+    if args.seed_indices and (args.num_shards != 1 or args.shard_index != 0):
+        raise ValueError("--seed-indices cannot be combined with shard arguments.")
+
+    if args.seed_indices:
+        seed_indices = parse_seed_indices(args.seed_indices, N_SEEDS)
+        selection_mode = "explicit"
+    else:
+        seed_indices = [
+            idx for idx in range(N_SEEDS)
+            if idx % args.num_shards == args.shard_index
+        ]
+        selection_mode = "full" if args.num_shards == 1 else "modulo-shard"
+
+    if not seed_indices:
+        raise ValueError("The resolved shard is empty. Adjust shard parameters.")
+
+    floors = parse_floor_values(args.floors)
+    master_rng = np.random.RandomState(args.master_seed)
+    all_seeds = master_rng.randint(0, 2**31, size=N_SEEDS).tolist()
+
+    return {
+        "output_dir": args.output_dir,
+        "output_file": args.output_file,
+        "output_path": os.path.join(args.output_dir, args.output_file),
+        "floors": floors,
+        "master_seed": args.master_seed,
+        "seed_indices": seed_indices,
+        "selected_seeds": [all_seeds[idx] for idx in seed_indices],
+        "num_shards": args.num_shards,
+        "shard_index": args.shard_index,
+        "selection_mode": selection_mode,
+    }
+
+
 def load_completed(output_path):
     """Load previously completed results from the JSON file."""
     if not os.path.exists(output_path):
@@ -629,14 +840,20 @@ def is_completed(results, seed, floor_prob):
     return False
 
 
-def save_results(output_path, results, stats=None):
+def save_results(output_path, results, run_plan, stats=None):
     """Save all results (and optional statistics) to JSON atomically."""
     data = {
         "experiment": "meltingpot_final",
         "substrate": SUBSTRATE,
         "config": {
-            "n_seeds": N_SEEDS,
-            "floor_values": FLOOR_VALUES,
+            "n_seeds_total": N_SEEDS,
+            "master_seed": run_plan["master_seed"],
+            "selection_mode": run_plan["selection_mode"],
+            "seed_indices": run_plan["seed_indices"],
+            "selected_seeds": run_plan["selected_seeds"],
+            "num_shards": run_plan["num_shards"],
+            "shard_index": run_plan["shard_index"],
+            "floor_values": run_plan["floors"],
             "n_train_episodes": N_TRAIN_EPISODES,
             "horizon": HORIZON,
             "n_eval_episodes": N_EVAL_EPISODES,
@@ -668,31 +885,43 @@ def save_results(output_path, results, stats=None):
 # =============================================================================
 
 def main():
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-    output_path = os.path.join(OUTPUT_DIR, OUTPUT_FILE)
+    args = parse_args()
+    run_plan = build_run_plan(args)
+    os.makedirs(run_plan["output_dir"], exist_ok=True)
+    output_path = run_plan["output_path"]
 
     print("=" * 70)
     print("Melting Pot Final Experiment")
     print(f"  Substrate:  {SUBSTRATE}")
-    print(f"  Floors:     {FLOOR_VALUES}")
-    print(f"  Seeds:      {N_SEEDS} per condition")
+    print(f"  Floors:     {run_plan['floors']}")
+    print(f"  Seeds:      {len(run_plan['selected_seeds'])}/{N_SEEDS} selected")
+    print(f"  Seed idx:   {run_plan['seed_indices']}")
+    print(f"  Sharding:   {run_plan['selection_mode']}")
     print(f"  Episodes:   {N_TRAIN_EPISODES} train + {N_EVAL_EPISODES} eval")
     print(f"  Horizon:    {HORIZON} steps")
     print(f"  Output:     {output_path}")
     print("=" * 70, flush=True)
 
+    if args.dry_run:
+        print("\nDry run only. No training started.", flush=True)
+        return
+
     # Load any previously completed results
-    results = load_completed(output_path)
+    raw_results = load_completed(output_path)
+    allowed_seeds = set(run_plan["selected_seeds"])
+    allowed_floors = set(run_plan["floors"])
+    results = [
+        r for r in raw_results
+        if r["seed"] in allowed_seeds and r["floor_prob"] in allowed_floors
+    ]
+    ignored = len(raw_results) - len(results)
+    if ignored > 0:
+        print(f"\nIgnoring {ignored} out-of-scope results already in {output_path}.",
+              flush=True)
     n_done = len(results)
     if n_done > 0:
         print(f"\nResuming: {n_done} seed-condition pairs already completed.",
               flush=True)
-
-    # --- Generate seed list ---
-    # Use deterministic seeds derived from a master seed so results are
-    # reproducible even if we restart mid-run.
-    master_rng = np.random.RandomState(42)
-    seeds = master_rng.randint(0, 2**31, size=N_SEEDS).tolist()
 
     t_global = time.time()
 
@@ -700,20 +929,23 @@ def main():
     # Interleave seeds across floor values (not all floor=0.0 first then
     # all floor=0.2). This way, if we have to stop early, we still have
     # some seeds for both conditions and can compute partial statistics.
-    total_runs = N_SEEDS * len(FLOOR_VALUES)
+    total_runs = len(run_plan["selected_seeds"]) * len(run_plan["floors"])
     run_idx = 0
 
-    for seed in seeds:
-        for floor_prob in FLOOR_VALUES:
+    for seed_idx, seed in zip(run_plan["seed_indices"], run_plan["selected_seeds"]):
+        for floor_prob in run_plan["floors"]:
             run_idx += 1
 
             if is_completed(results, seed, floor_prob):
-                print(f"\n[{run_idx}/{total_runs}] SKIP seed={seed}, "
+                print(f"\n[{run_idx}/{total_runs}] SKIP seed_idx={seed_idx}, seed={seed}, "
                       f"floor={floor_prob} (already done)", flush=True)
                 continue
 
             print(f"\n{'='*50}")
-            print(f"[{run_idx}/{total_runs}] seed={seed}, floor={floor_prob}")
+            print(
+                f"[{run_idx}/{total_runs}] seed_idx={seed_idx}, "
+                f"seed={seed}, floor={floor_prob}"
+            )
             print(f"{'='*50}", flush=True)
 
             try:
@@ -723,7 +955,7 @@ def main():
                 # Save after every seed (resumability)
                 # Also recompute stats each time so partial results are useful
                 stats = compute_statistics(results)
-                save_results(output_path, results, stats)
+                save_results(output_path, results, run_plan, stats)
 
                 print(f"  Saved ({len(results)} total results). "
                       f"Elapsed: {(time.time()-t_global)/3600:.1f}h",
@@ -742,7 +974,7 @@ def main():
     print("=" * 70, flush=True)
 
     stats = compute_statistics(results)
-    save_results(output_path, results, stats)
+    save_results(output_path, results, run_plan, stats)
 
     for metric in ["late_train", "eval"]:
         if metric in stats:

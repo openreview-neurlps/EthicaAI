@@ -1,8 +1,8 @@
 """MACCL on Mild TPSD: Demonstrates non-trivial (graded) commitment floor.
 
-In severe TPSD (f_crit=0.01), MACCL learns phi1≈1.0 (saturated).
+In severe TPSD (f_crit=0.01), MACCL learns phi1~1.0 (saturated).
 In mild TPSD (f_crit=0.10), Theorem 2 predicts phi1*=0.59.
-This experiment verifies MACCL discovers a graded floor phi1∈[0.5,0.7],
+This experiment verifies MACCL discovers a graded floor phi1 in [0.5,0.7],
 directly refuting the "floors are trivially 1.0" criticism.
 
 Also measures survival duration scaling for escape time analysis.
@@ -44,7 +44,7 @@ def run_maccl(f_crit, seeds):
     for s in range(seeds):
         rng = np.random.RandomState(42 + s)
         # MACCL params
-        omega = np.array([0.0, 0.0, 2.0])  # sigmoid(2.0) ≈ 0.88 initial
+        omega = np.array([0.0, 0.0, 2.0])  # sigmoid(2.0) ~ 0.88 initial
         mu = 1.0
         lr_omega = 0.05; lr_mu = 0.10; fd_eps = 0.01
         delta = 0.05  # 95% survival target
@@ -177,7 +177,7 @@ def run_survival_scaling():
 
         mean_dur = float(np.mean(durations))
         std_dur = float(np.std(durations))
-        print(f"  dur={mean_dur:.0f}±{std_dur:.0f}")
+        print(f"  dur={mean_dur:.0f}+/-{std_dur:.0f}")
         results.append({
             'N': n,
             'mean_duration': mean_dur,

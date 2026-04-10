@@ -4,7 +4,7 @@ Reviewers asked: Can optimistic initialization or population-based methods
 escape the Nash Trap without commitment floors?
 
 Baselines:
-1. Optimistic init: L0 ∈ {0.6, 0.7, 0.8, 0.9} instead of 0.5
+1. Optimistic init: L0 in {0.6, 0.7, 0.8, 0.9} instead of 0.5
 2. Curriculum: Start with mild TPSD (f_crit=0.50), gradually increase to severe (0.01)
 3. PBT: Population of 10 agents, select top-50% by survival, mutate
 """
@@ -79,7 +79,7 @@ def run_optimistic_init():
 
 
 def run_curriculum():
-    """Baseline 2: Curriculum — start mild, increase severity."""
+    """Baseline 2: Curriculum -- start mild, increase severity."""
     results = {}
     phases = [(0.50, 100), (0.10, 100), (0.01, 100)]  # (f_crit, episodes)
     seed_results = []
@@ -166,7 +166,7 @@ if __name__ == '__main__':
 
     # Reference: standard init (already known)
     print("\n=== Standard Init (reference) ===")
-    print("  Standard: λ~0.5, trap=100% (from existing results)")
+    print("  Standard: lam~0.5, trap=100% (from existing results)")
 
     elapsed = time.time() - t0
     print(f"\nTime: {elapsed:.0f}s")
