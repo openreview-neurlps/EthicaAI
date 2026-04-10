@@ -88,7 +88,7 @@ We provide the \textbf{first formal characterization} of cooperation failure in 
 \textbf{Theory.}~We prove signal dilution and basin dominance (Parts~(i)--(ii)), and present empirical evidence and large-deviations heuristics suggesting escape requires $\Omega(e^{cN})$ gradient evaluations (Part~(iii), stated as a conjecture). The Price of Anarchy diverges as $\mathrm{PoA} \geq \Omega(e^{cN})$---in stark contrast to $O(1)$ in standard social dilemmas---driven by signal dilution ($O(\epsilon/N)$ per agent), basin dominance (measure $\geq 1 - e^{-cN}$), and a conjectured quasi-potential barrier $\Omega(N)$.
 \textbf{Prescription.}~Commitment floors, derived from the environment's tipping-point structure (Theorem~\ref{thm:critical}), bypass the trap in $O(1)$ steps. MACCL learns state-dependent floors adaptively (+203\% welfare), demonstrating that floors can be \emph{learned}, not only prescribed.
 
-Validated across five PGG environment classes, a Gordon-Schaefer fishery benchmark with ecological tipping points, Melting Pot visual MARL (a boundary-condition check on TPSD-like \texttt{clean\_up} and correctly negative on non-TPSD \texttt{commons\_harvest}), heterogeneous agents (group-specific floors), adversarial conditions ($\beta{=}50\%$), and scale ($N{=}100$).
+Validated across five PGG environment classes, a Gordon-Schaefer fishery benchmark with ecological tipping points, Melting Pot visual MARL (a boundary-condition check showing predicted non-applicability on non-TPSD \texttt{commons\_harvest} and only a non-significant directional trend on TPSD-like \texttt{clean\_up}), heterogeneous agents (group-specific floors), adversarial conditions ($\beta{=}50\%$), and scale ($N{=}100$).
 \end{abstract}
 
 % ================================================================
@@ -426,7 +426,7 @@ On a Gordon-Schaefer fishery~\citep{scheffer2009early} with Allee-effect tipping
 On \texttt{commons\_harvest\_\_open}~\citep{agapiou2022melting} (non-TPSD), floors \emph{reduce} CNN-PPO reward (24.0$\to$6.2 at $\phi_1{=}0.5$). On \texttt{clean\_up} (TPSD-like), the 25-seed rerun with $\phi_1{=}0.2$ changes late-train reward from 0.02 $\pm$ 0.05 to 0.04 $\pm$ 0.05 (n=25, p=0.136), and evaluation reward from 0.00 $\pm$ 0.01 to 0.06 $\pm$ 0.18 (n=25, p=0.064). We therefore use \texttt{clean\_up} as a boundary-condition check rather than as a standalone flagship positive result.
 
 \paragraph{Limitations.}\label{sec:limitations}
-Floors fail when: $\beta$ exceeds Theorem~\ref{thm:critical}'s threshold, the TPSD structure is unknown, or the environment lacks tipping points entirely (Melting Pot \texttt{commons\_harvest}). All TPSD environments are PGG variants; real-world spatial commons remain untested. $\lambda$ operationalizes cooperation, not full moral reasoning~\citep{rawls1971,sen1977rational}.
+Floors fail when: $\beta$ exceeds Theorem~\ref{thm:critical}'s threshold, the TPSD structure is unknown, or the environment lacks tipping points entirely (Melting Pot \texttt{commons\_harvest}). All five TPSD environments in the main study are author-designed PGG variants; independent third-party replication on externally defined tipping-point benchmarks remains open. Real-world spatial commons also remain untested. $\lambda$ operationalizes cooperation, not full moral reasoning~\citep{rawls1971,sen1977rational}.
 
 \vspace{-8pt}
 \section{Conclusion}\label{sec:broader_impact}
@@ -465,7 +465,7 @@ The \textbf{Nash Trap} persists across five algorithm families (including oppone
 
 \begin{table}[h]
 \centering
-\caption{Melting Pot CNN-PPO rerun ($n{=}25$, 500--1000 episodes). On non-TPSD \texttt{commons\_harvest}, floors reduce reward. On TPSD-like \texttt{clean\_up}, the 25-seed rerun is best read as a boundary-condition check rather than as a standalone flagship success.}
+\caption{Melting Pot CNN-PPO rerun ($n{=}25$, 500--1000 episodes). On non-TPSD \texttt{commons\_harvest}, floors reduce reward. On TPSD-like \texttt{clean\_up}, the 25-seed rerun is best read as a boundary-condition check rather than as a standalone flagship success. For \texttt{clean\_up}, late-train gives $p{=}0.136$, $d{=}0.315$ and evaluation gives $p{=}0.064$, $d{=}0.447$.}
 \label{tab:meltingpot}
 \small
 \begin{tabular}{llccc}
@@ -1808,7 +1808,7 @@ where $\sigma$ is the sigmoid function, with MAE $= 0.004$ and $R^2 = 0.694$ acr
 % APPENDIX: Melting Pot Generalization
 % ================================================================
 \section{Melting Pot Generalization}
-\label{app:meltingpot}
+\label{app:meltingpot_native}
 
 To test generalization beyond our custom environments, we evaluate the commitment
 mechanism directly on Google DeepMind's \textbf{Melting Pot}
@@ -1820,7 +1820,7 @@ collapse dynamics} (non-TPSD).
 \centering
 \caption{Melting Pot \texttt{commons\_harvest\_open} native benchmark results
   (10 seeds $\times$ 500 steps, $N=7$). All policies easily survive the full episode.}
-\label{tab:meltingpot}
+\label{tab:meltingpot_native}
 \small
 \begin{tabular}{lcc}
 \toprule
